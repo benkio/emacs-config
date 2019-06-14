@@ -1,0 +1,236 @@
+* packages
+** Melpa and Use-package
+
+Set up melpa and use package to make things easier
+https://cestlaz.github.io/posts/using-emacs-1-setup/
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+
+(package-initialize)
+
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+(package-refresh-contents)
+(package-install 'use-package))
+
+(setq use-package-always-ensure t)
+#+END_SRC
+
+* View and Theme
+  
+1. Hide: 
+   * menu 
+   * toolbar
+   * scroolbar
+   * splash-screen
+2. Shows: 
+    * line numbers
+    * column line
+    * current line 
+    * parentesis
+    * size of current file
+3. Set manoj-dark theme
+
+#+BEGIN_SRC emacs-lisp
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(setq inhibit-splash-screen t)
+(setq inhibit-startup-message t)
+(global-linum-mode 1)
+(setq column-number-mode t)
+(global-hl-line-mode 1)
+(show-paren-mode 1)
+(display-battery-mode 1)
+(setq column-number-mode t)
+(global-hl-line-mode 1)
+(show-paren-mode 1)
+(size-indication-mode 1)
+(load-theme 'manoj-dark)
+#+END_SRC
+
+* Basic Behaviours
+
+1. Disable: Backup files
+2. Enable: 
+   * Electric parentesis, 
+   * y/n for yes and no
+   * Save cursor position
+   * Visual Line mode
+   * UTF-8
+
+#+BEGIN_SRC elisp-mode
+(setq make-backup-files nil)
+(electric-pair-mode 1)
+(defalias 'yes-or-no-p 'y-or-n-p)
+(savehist-mode 1)
+(global-auto-revert-mode 1)
+(global-visual-line-mode 1)
+(set-language-environment "UTF-8")
+#+END_SRC
+* Which-key
+
+Shows the keys as suggestions
+
+#+BEGIN_SRC emacs-elisp
+(use-package which-key
+  :config
+  (which-key-mode))
+#+END_SRC
+* Magit
+
+Managing git repos.
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :bind (("C-c g s" . magit-status)
+         ("C-c g i" . magit-init)
+         ("C-c g c" . magit-clone))
+  :init)
+#+END_SRC
+* Iedit
+
+Editing mulitiple occurrences of the same highlighted word at once.
+
+#+BEGIN_SRC emacs-lisp
+(use-package iedit
+  :bind (("C-c ;" . iedit-mode)))
+#+END_SRC
+* Projectile
+
+Inspect the git repository you are in and allow you to search files
+and into the files like grep
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :ensure t
+  :config
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
+#+END_SRC
+* YAS
+
+No need to describe yasnippet
+
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :diminish yas-minor-mode
+  :config
+  (add-to-list 'load-path
+               "~/.emacs.d/snippets")
+(yas-global-mode 1))
+
+(use-package yasnippet-snippets)         ; Collection of snippets
+#+END_SRC
+
+* Dired
+
+File system for emacs 
+
+#+BEGIN_SRC emacs-lisp
+(use-package dired
+  :ensure nil
+  :config
+  ;; dired - reuse current buffer by pressing 'a'
+  (put 'dired-find-alternate-file 'disabled nil)
+
+  ;; always delete and copy recursively
+  (setq dired-recursive-deletes 'always)
+  (setq dired-recursive-copies 'always)
+
+  ;; if there is a dired buffer displayed in the next window, use its
+  ;; current subdir, instead of the current subdir of this dired buffer
+  (setq dired-dwim-target t)
+
+  ;; enable some really cool extensions like C-x C-j(dired-jump)
+  (require 'dired-x))
+
+#+END_SRC
+* Winmove
+
+To move between windows 
+
+#+BEGIN_SRC emacs-lisp
+(use-package windmove
+  :config
+  ;; use shift + arrow keys to switch between visible buffers
+  (windmove-default-keybindings))
+#+END_SRC
+* Expand Region
+
+Select by region, back and forth
+
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
+#+END_SRC
+
+* Whitespace
+#+BEGIN_SRC elisp-mode
+(use-package whitespace
+  :init
+  (dolist (hook '(prog-mode-hook text-mode-hook))
+    (add-hook hook #'whitespace-mode))
+  (add-hook 'before-save-hook #'whitespace-cleanup)
+  :config
+  (setq whitespace-line-column 80) ;; limit line length
+  (setq whitespace-style '(face tabs empty trailing lines-tail)))
+#+END_SRC
+* Undo-tree
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :config
+  ;; autosave the undo-tree history
+  (setq undo-tree-history-directory-alist
+        `((".*" . ,temporary-file-directory)))
+  (setq undo-tree-auto-save-history t))
+#+END_SRC
+* AutoComplete
+;; TODO
+* Pandoc
+;; TODO
+* Reveal-js
+;; TODO
+* Programming Languages
+** Python
+;; TODO
+** Scala
+;; TODO
+** Haskell
+#+BEGIN_SRC emacs-lisp
+(use-package haskell-mode
+  :config
+  (add-hook 'haskell-mode-hook #'subword-mode)
+  (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+  (add-hook 'haskell-mode-hook #'haskell-doc-mode))
+#+END_SRC
+** Latex
+;; TODO
+** Web-mode
+;; TOD
+** Markdown
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :ensure t
+  :mode (("\\.md\\'" . gfm-mode)
+         ("\\.markdown\\'" . gfm-mode))
+  :config
+  (setq markdown-fontify-code-blocks-natively t)
+  :preface
+  (defun jekyll-insert-image-url ()
+    (interactive)
+    (let* ((files (directory-files "../assets/images"))
+           (selected-file (completing-read "Select image: " files nil t)))
+      (insert (format "![%s](/assets/images/%s)" selected-file selected-file))))
+
+  (defun jekyll-insert-post-url ()
+    (interactive)
+    (let* ((files (remove "." (mapcar #'file-name-sans-extension (directory-files "."))))
+           (selected-file (completing-read "Select article: " files nil t)))
+      (insert (format "{%% post_url %s %%}" selected-file)))))
+#+END_SRC
