@@ -1,0 +1,10 @@
+* Winmove
+
+To move between windows
+
+#+BEGIN_SRC emacs-lisp
+(use-package windmove
+  :config
+  ;; use shift + arrow keys to switch between visible buffers
+  (windmove-default-keybindings))
+#+END_SRC

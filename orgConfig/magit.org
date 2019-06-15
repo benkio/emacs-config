@@ -1,0 +1,11 @@
+* Magit
+
+Managing git repos.
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :bind (("C-c g s" . magit-status)
+         ("C-c g i" . magit-init)
+         ("C-c g c" . magit-clone))
+  :init)
+#+END_SRC

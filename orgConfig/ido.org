@@ -1,0 +1,10 @@
+* Ido
+
+autocomplete for searching during a command
+#+BEGIN_SRC emacs-lisp
+(use-package ido
+  :config
+  (setq ido-enable-flex-matching t)
+  (ido-everywhere t)
+  (ido-mode 1))
+#+END_SRC

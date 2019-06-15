@@ -1,0 +1,8 @@
+* Expand Region
+
+Select by region, back and forth
+
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
+#+END_SRC

@@ -1,0 +1,38 @@
+* Programming Languages
+** Python
+;; TODO
+** Scala
+   ;; TODO
+** Haskell
+#+BEGIN_SRC emacs-lisp
+(use-package haskell-mode
+  :config
+  (add-hook 'haskell-mode-hook #'subword-mode)
+  (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+  (add-hook 'haskell-mode-hook #'haskell-doc-mode))
+#+END_SRC
+** Latex
+   ;; TODO
+** Web-mode
+;; TODO
+** Markdown
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :ensure t
+  :mode (("\\.md\\'" . gfm-mode)
+         ("\\.markdown\\'" . gfm-mode))
+  :config
+  (setq markdown-fontify-code-blocks-natively t)
+  :preface
+  (defun jekyll-insert-image-url ()
+    (interactive)
+    (let* ((files (directory-files "../assets/images"))
+           (selected-file (completing-read "Select image: " files nil t)))
+      (insert (format "![%s](/assets/images/%s)" selected-file selected-file))))
+
+  (defun jekyll-insert-post-url ()
+    (interactive)
+    (let* ((files (remove "." (mapcar #'file-name-sans-extension (directory-files "."))))
+           (selected-file (completing-read "Select article: " files nil t)))
+      (insert (format "{%% post_url %s %%}" selected-file)))))
+#+END_SRC

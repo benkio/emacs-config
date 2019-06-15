@@ -4,8 +4,28 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
+(setq configPrefix "~/.emacs.d/orgConfig/")
+
+(setq configs '("init.org"
+                "viewAndTheme.org"
+		"basicBehaviours.org"
+		"magit.org"
+		"iedit.org"
+		"projectile.org"
+		"yas.org"
+		"dired.org"
+		"winmove.org"
+		"expandRegion.org"
+		"whitespace.org"
+		"ido.org"
+		"ibuffer.org"
+		"recentf.org"
+		"undotree.org"
+		"programminglanguages.org"))
+
+(set 'configs (mapcar (lambda (x) (concat configPrefix x)) configs))
 (require 'org)
-(org-babel-load-file (expand-file-name "~/.emacs.d/orgConfig/init.org"))
+(mapc (lambda (x) (org-babel-load-file (expand-file-name x))) configs)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

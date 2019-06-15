@@ -1,0 +1,19 @@
+* Basic Behaviours
+
+1. Disable: Backup files
+2. Enable:
+   * Electric parentesis,
+   * y/n for yes and no
+   * Save cursor position
+   * Visual Line mode
+   * UTF-8
+
+#+BEGIN_SRC emacs-lisp
+(setq make-backup-files nil)
+(electric-pair-mode 1)
+(defalias 'yes-or-no-p 'y-or-n-p)
+(savehist-mode 1)
+(global-auto-revert-mode 1)
+(global-visual-line-mode 1)
+(set-language-environment "UTF-8")
+#+END_SRC
