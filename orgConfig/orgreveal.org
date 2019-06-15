@@ -1,0 +1,13 @@
+* Reveal-js
+
+Slide generation from org
+
+#+BEGIN_SRC emacs-lisp
+(use-package ox-reveal
+  :config
+    (require 'ox-reveal)
+    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+    (setq org-reveal-mathjax t))
+
+(use-package htmlize)
+#+END_SRC

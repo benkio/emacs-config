@@ -1,0 +1,33 @@
+* Text Manipulation
+
+Functions for manipulate text
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defun reverse-words (beg end)
+  "Reverse the order of words in region . "
+  (interactive "*r")
+  (apply
+   'insert
+   (reverse
+    (split-string
+     (delete-and-extract-region beg end) "\\b"))))
+
+(defun kill-isearch-match ()
+  "Kill the current isearch match string and continue searching."
+  (interactive)
+  (kill-region isearch-other-end (point)))
+
+(define-key isearch-mode-map [(control k)] 'kill-isearch-match)
+
+(defun random-alnum (&optional arg)
+  "Generate a random character"
+  (interactive "p")
+  (insert
+   (mapconcat (lambda (x)
+                (let* ((alnum "abcdefghijklmnopqrstuvwxyz0123456789")
+                       (i (% (abs (random)) (length alnum))))
+                  (substring alnum i (1+ i))))
+               (number-sequence 1 arg 1)
+               "")
+  ))
+#+END_SRC

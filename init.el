@@ -6,7 +6,7 @@
 
 (setq configPrefix "~/.emacs.d/orgConfig/")
 
-(setq configs '("init.org"
+(setq configs '("packages.org"
                 "viewAndTheme.org"
 		"basicBehaviours.org"
 		"magit.org"
@@ -21,7 +21,20 @@
 		"ibuffer.org"
 		"recentf.org"
 		"undotree.org"
-		"programminglanguages.org"))
+		"orgreveal.org"
+		"whichkey.org"
+		"autocomplete.org"
+		"flycheck.org"
+		"company.org"
+		"programminglanguages.org"
+		"functions/formatting.org"
+		"functions/filenamePathToClipboard.org"
+		"functions/windowManipulation.org"
+		"functions/textManipulation.org"
+		"functions/bufferManipulation.org"
+		"functions/alignmentIntentation.org"
+		"functions/scala.org"
+		))
 
 (set 'configs (mapcar (lambda (x) (concat configPrefix x)) configs))
 (require 'org)

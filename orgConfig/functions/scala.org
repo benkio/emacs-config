@@ -1,0 +1,9 @@
+* Scala
+
+Functions used specifically for dealing with scala code
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+;; Recorded macro for navigating to the scala error starting from the sbt output
+(fset 'navigate-scala-error
+      [?\C-  ?\C-s ?: left ?\M-w ?\C-x ?o ?\M-: ?\( ?f ?i ?n ?d ?- ?f ?i ?l ?e ?  ?\" ?\C-y right return ?\C-u ?- ?\C-x ?o right ?\C-  ?\C-s ?: left ?\M-w ?\C-x ?o ?\M-g ?g ?\C-y return])
+#+END_SRC

@@ -19,21 +19,3 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
 
 (setq use-package-always-ensure t)
 #+END_SRC
-
-* Which-key
-
-Shows the keys as suggestions
-TODO FIX
-
-#+BEGIN_SRC emacs-lisp
-;; (use-package which-key
-;;   :init
-;;   :config
-;;   (which-key-mode +1))
-#+END_SRC
-* AutoComplete
-;; TODO
-* Pandoc
-;; TODO
-* Reveal-js
-;; TODO

@@ -1,0 +1,11 @@
+* Autocomplete
+
+#+BEGIN_SRC emacs-lisp
+(use-package auto-complete
+
+  :init
+  (progn
+  (ac-config-default)
+    (global-auto-complete-mode t)
+  ))
+#+END_SRC

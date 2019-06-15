@@ -1,0 +1,9 @@
+* Which-key
+
+Give you suggestions about the keybindings
+
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :config
+  (which-key-mode))
+#+END_SRC

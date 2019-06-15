@@ -2,7 +2,54 @@
 ** Python
 ;; TODO
 ** Scala
-   ;; TODO
+
+Add all the needed components for scala:
+  * scala mode
+  * sbt mode
+
+NOTE: Need to install the Metals server in order to use it!!!
+
+follow the instructions in here: https://scalameta.org/metals/docs/editors/emacs.html
+
+set the path to the metals-emacs into the code below
+
+#+BEGIN_SRC emacs-lisp
+
+(setq metalsPath "/Users/benkio/home")
+
+(add-to-list 'exec-path 'metalsPath t)
+
+;; Enable scala-mode and sbt-mode
+(use-package scala-mode
+  :mode "\\.s\\(cala\\|bt\\)$")
+
+(use-package sbt-mode
+  :commands sbt-start sbt-command
+  :config
+  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+  ;; allows using SPACE when in the minibuffer
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map))
+#+END_SRC
+** Language Server Protocol(LSP)
+
+Used from emacs to connect to an external server for compilation, error checking and so on.
+Added for making metals works, but could be used for other languages too.
+
+#+begin_src emacs-lisp
+(use-package lsp-mode
+  ;; Optional - enable lsp-mode automatically in scala
+  :hook (scala-mode . lsp)
+  :config (setq lsp-prefer-flymake nil))
+
+(use-package lsp-ui)
+
+;; Add company-lsp backend for metals
+(use-package company-lsp)
+#+end_src
+
 ** Haskell
 #+BEGIN_SRC emacs-lisp
 (use-package haskell-mode
@@ -10,6 +57,13 @@
   (add-hook 'haskell-mode-hook #'subword-mode)
   (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
   (add-hook 'haskell-mode-hook #'haskell-doc-mode))
+
+;; hindent
+(use-package hindent
+  :ensure t)
+(add-hook 'haskell-mode-hook #'hindent-mode)
+(setq hindent-style "johan-tibell")
+
 #+END_SRC
 ** Latex
    ;; TODO

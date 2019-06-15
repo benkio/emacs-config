@@ -1,0 +1,37 @@
+* Formatting
+
+  Functions for formatting code.
+
+#+BEGIN_SRC emacs-lisp
+(defun xml-format ()
+  "intent an xml file using xlint"
+  (interactive)
+  (save-excursion
+    (shell-command-on-region (mark) (point) "xmllint --format -" (buffer-name) t)
+    )
+  )
+
+(defun apply-case-char (startcol endcol function)
+  "apply the function to the char at start position. endcol not used"
+  (move-to-column startcol t)
+  (let ((c (string (following-char))))
+    (delete-char 1)
+    (insert (funcall function c)))
+  )
+
+(defun upcase-first-region (begin end)
+  "Uppercase the first char of each line of the selected region"
+  (interactive "r")
+  (apply-on-rectangle 'apply-case-char begin end 'upcase)
+  )
+
+;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
+(defun unfill-paragraph (&optional region)
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive (progn (barf-if-buffer-read-only) '(t)))
+  (let ((fill-column (point-max))
+        ;; This would override `fill-column' if it's an integer.
+        (emacs-lisp-docstring-fill-column t))
+    (fill-paragraph nil region)))
+
+#+END_SRC
