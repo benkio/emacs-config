@@ -21,16 +21,16 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
 #+END_SRC
 
 * View and Theme
-  
-1. Hide: 
-   * menu 
+
+1. Hide:
+   * menu
    * toolbar
    * scroolbar
    * splash-screen
-2. Shows: 
+2. Shows:
     * line numbers
     * column line
-    * current line 
+    * current line
     * parentesis
     * size of current file
 3. Set manoj-dark theme
@@ -56,14 +56,14 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
 * Basic Behaviours
 
 1. Disable: Backup files
-2. Enable: 
-   * Electric parentesis, 
+2. Enable:
+   * Electric parentesis,
    * y/n for yes and no
    * Save cursor position
    * Visual Line mode
    * UTF-8
 
-#+BEGIN_SRC elisp-mode
+#+BEGIN_SRC emacs-lisp
 (setq make-backup-files nil)
 (electric-pair-mode 1)
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -75,11 +75,13 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
 * Which-key
 
 Shows the keys as suggestions
+TODO FIX
 
-#+BEGIN_SRC emacs-elisp
-(use-package which-key
-  :config
-  (which-key-mode))
+#+BEGIN_SRC emacs-lisp
+;; (use-package which-key
+;;   :init
+;;   :config
+;;   (which-key-mode +1))
 #+END_SRC
 * Magit
 
@@ -130,7 +132,7 @@ No need to describe yasnippet
 
 * Dired
 
-File system for emacs 
+File system for emacs
 
 #+BEGIN_SRC emacs-lisp
 (use-package dired
@@ -153,7 +155,7 @@ File system for emacs
 #+END_SRC
 * Winmove
 
-To move between windows 
+To move between windows
 
 #+BEGIN_SRC emacs-lisp
 (use-package windmove
@@ -171,7 +173,7 @@ Select by region, back and forth
 #+END_SRC
 
 * Whitespace
-#+BEGIN_SRC elisp-mode
+#+BEGIN_SRC emacs-lisp
 (use-package whitespace
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
@@ -181,6 +183,37 @@ Select by region, back and forth
   (setq whitespace-line-column 80) ;; limit line length
   (setq whitespace-style '(face tabs empty trailing lines-tail)))
 #+END_SRC
+* Ido
+
+autocomplete for searching during a command
+#+BEGIN_SRC emacs-lisp
+(use-package ido
+  :config
+  (setq ido-enable-flex-matching t)
+  (ido-everywhere t)
+  (ido-mode 1))
+#+END_SRC
+* IBuffer
+
+Better visualization of open buffers
+
+#+BEGIN_SRC emacs-lisp
+(use-package ibuffer
+:bind ("C-x C-b" . ibuffer))
+#+END_SRC
+* Recentf
+
+Keep a history of open files
+
+#+BEGIN_SRC emacs-lisp
+(use-package recentf
+  :config
+  (progn
+    (setq recentf-max-saved-items 50)
+    (recentf-mode))
+  :bind ("C-c r f" . recentf-open-files))
+
+#+END_SRC
 * Undo-tree
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
@@ -188,7 +221,8 @@ Select by region, back and forth
   ;; autosave the undo-tree history
   (setq undo-tree-history-directory-alist
         `((".*" . ,temporary-file-directory)))
-  (setq undo-tree-auto-save-history t))
+  (setq undo-tree-auto-save-history t)
+  (undo-tree-mode))
 #+END_SRC
 * AutoComplete
 ;; TODO
@@ -200,7 +234,7 @@ Select by region, back and forth
 ** Python
 ;; TODO
 ** Scala
-;; TODO
+   ;; TODO
 ** Haskell
 #+BEGIN_SRC emacs-lisp
 (use-package haskell-mode
@@ -210,9 +244,9 @@ Select by region, back and forth
   (add-hook 'haskell-mode-hook #'haskell-doc-mode))
 #+END_SRC
 ** Latex
-;; TODO
+   ;; TODO
 ** Web-mode
-;; TOD
+;; TODO
 ** Markdown
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
