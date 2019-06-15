@@ -11,7 +11,8 @@
     * current line
     * parentesis
     * size of current file
-3. Set manoj-dark theme
+3. Set monokai theme
+4. Set Font
 
 #+BEGIN_SRC emacs-lisp
 (menu-bar-mode -1)
@@ -28,5 +29,12 @@
 (global-hl-line-mode 1)
 (show-paren-mode 1)
 (size-indication-mode 1)
-(load-theme 'manoj-dark)
+
+;; set a default font
+(when (member "DejaVu Sans Mono" (font-family-list))
+  (set-face-attribute 'default nil :font "DejaVu Sans Mono"))
+
+(use-package monokai-theme
+  :config (load-theme 'monokai t)
+  )
 #+END_SRC
