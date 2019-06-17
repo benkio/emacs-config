@@ -21,7 +21,8 @@ set the path to the metals-emacs into the code below
 
 ;; Enable scala-mode and sbt-mode
 (use-package scala-mode
-  :mode "\\.s\\(cala\\|bt\\)$")
+  :mode "\\.s\\(cala\\|bt\\)$"
+  :config (add-hook 'scala-mode-hook 'hs-minor-mode))
 
 (use-package sbt-mode
   :commands sbt-start sbt-command
