@@ -34,7 +34,5 @@
 (when (member "DejaVu Sans Mono" (font-family-list))
   (set-face-attribute 'default nil :font "DejaVu Sans Mono"))
 
-(use-package monokai-theme
-  :config (load-theme 'monokai t)
-  )
+(load-theme 'adwaita t)
 #+END_SRC
