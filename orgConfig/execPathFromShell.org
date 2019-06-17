@@ -1,0 +1,9 @@
+* Exec Path From Shell
+
+Sometimes the shell into emacs doesn't pick the right path of the system. This package fix it.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package exec-path-from-shell
+  :config (when (memq window-system '(mac ns x)) (exec-path-from-shell-initialize))
+  )
+#+END_SRC
