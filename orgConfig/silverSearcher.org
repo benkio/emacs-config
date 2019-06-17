@@ -1,0 +1,8 @@
+* Silver Searcher
+
+Allow you to quickly search into a project via ag.
+It can also work with projectile
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package ag)
+#+END_SRC
