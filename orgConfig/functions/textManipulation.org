@@ -30,4 +30,8 @@ Functions for manipulate text
                (number-sequence 1 arg 1)
                "")
   ))
+
+(defun insert-random-uuid ()
+  (interactive)
+  (shell-command "uuidgen" t))
 #+END_SRC
