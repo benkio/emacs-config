@@ -6,12 +6,12 @@
    * scroolbar
    * splash-screen
 2. Shows:
-    * line numbers
-    * column line
-    * current line
-    * parentesis
-    * size of current file
-3. Set monokai theme
+   * line numbers
+   * column line
+   * current line
+   * parentesis
+   * size of current file
+3. Set theme
 4. Set Font
 
 #+BEGIN_SRC emacs-lisp
@@ -34,11 +34,5 @@
 (when (member "DejaVu Sans Mono" (font-family-list))
   (set-face-attribute 'default nil :font "DejaVu Sans Mono"))
 
-(use-package ample-theme
-  :init (progn (load-theme 'ample t t)
-               (load-theme 'ample-flat t t)
-               (load-theme 'ample-light t t)
-               (enable-theme 'ample-light))
-  :defer t
-  :ensure t)
+(load-theme (indirect-variable 'default-theme))
 #+END_SRC

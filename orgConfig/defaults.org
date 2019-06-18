@@ -1,0 +1,20 @@
+* Defaults
+
+This files contains custom variables used to customize the current configuration.
+Basically the user of this configuration keeps a branch with just
+changes on this files. Then, the variables are used in different
+places across the whole repo to customize things accordingly.
+
+Name convension of the variables: starts with ~default_~ and add a
+comment before it or after it.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package dracula-theme
+  ;; Dracula-theme
+  ;; Jazz-theme
+  ;; Ample-theme
+  ;; Junio
+  :ensure t
+  :config (defvaralias 'default-theme 'dracula)
+)
+#+END_SRC
