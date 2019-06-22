@@ -34,5 +34,5 @@
 (when (member "DejaVu Sans Mono" (font-family-list))
   (set-face-attribute 'default nil :font "DejaVu Sans Mono"))
 
-(load-theme (indirect-variable 'default-theme))
+(load-theme (indirect-variable 'default-theme) t)
 #+END_SRC
