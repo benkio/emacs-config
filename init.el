@@ -37,6 +37,7 @@
 		"functions/textManipulation.org"
 		"functions/bufferManipulation.org"
 		"functions/alignmentIntentation.org"
+		"functions/fileConversion.org"
 		"functions/scala.org"
 		))
 

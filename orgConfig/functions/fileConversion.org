@@ -1,0 +1,11 @@
+* File Conversion
+
+Collect the functions for file conversions, mainly using shell commands
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defun convert-to-mp3 (file)
+  (interactive "f")
+  (let ((fileComplete (expand-file-name file))
+        (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+  (shell-command (format "ffmpeg -i %s -vn -ar 44100 -ac 2 -b:a 192k %s.mp3" fileComplete fileCompleteNoExtension))))
+#+END_SRC
