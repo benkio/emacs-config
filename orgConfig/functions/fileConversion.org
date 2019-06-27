@@ -8,4 +8,11 @@ Collect the functions for file conversions, mainly using shell commands
   (let ((fileComplete (expand-file-name file))
         (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
   (shell-command (format "ffmpeg -i %s -vn -ar 44100 -ac 2 -b:a 192k %s.mp3" fileComplete fileCompleteNoExtension))))
+
+(defun convert-to-gif (file)
+  (interactive "f")
+  (let ((fileComplete (expand-file-name file))
+        (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+  (shell-command (format "ffmpeg -i %s -f gif %s.gif" fileComplete fileCompleteNoExtension))))
+
 #+END_SRC
