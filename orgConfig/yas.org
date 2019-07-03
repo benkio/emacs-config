@@ -3,12 +3,18 @@
 No need to describe yasnippet
 
 #+BEGIN_SRC emacs-lisp
+
+; Collection of snippets
+(use-package yasnippet-snippets
+  :config (add-to-list 'load-path
+              "~/.emacs.d/plugins/yasnippet")
+)
+
 (use-package yasnippet
   :diminish yas-minor-mode
   :config
   (add-to-list 'load-path
-               "~/.emacs.d/snippets")
-(yas-global-mode 1))
+               "~/.emacs.d/snippets"))
 
-(use-package yasnippet-snippets)         ; Collection of snippets
+(yas-global-mode 1)
 #+END_SRC
