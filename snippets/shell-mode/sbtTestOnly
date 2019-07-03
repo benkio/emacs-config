@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: sbt testOnly
+# key: sbtTO
+# --
+
+sbt "test:testOnly *.$1" $0
