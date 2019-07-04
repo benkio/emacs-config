@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sbt test
+# key: sbtT
+# --
+sbt test$0

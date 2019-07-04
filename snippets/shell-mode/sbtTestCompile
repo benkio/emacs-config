@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sbt test compile
+# key: sbtTC
+# --
+sbt test:compile$0

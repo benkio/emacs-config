@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: sbt Compile
+# key: sbtC
+# --
+
+sbt compile$0
