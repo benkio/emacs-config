@@ -21,6 +21,7 @@
 ;; disable auto-save and auto-backup
 (setq auto-save-default nil)
 (setq make-backup-files nil)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; enable narrow-to-region.
 ;; Look at what it does if you don't know.
 ;; Useful with iedit or just local searching

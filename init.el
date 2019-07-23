@@ -16,6 +16,7 @@
 		"yas.org"
 		"dired.org"
 		"winmove.org"
+		"csvMode.org"
 		"expandRegion.org"
 		"whitespace.org"
 		"ido.org"

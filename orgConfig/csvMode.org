@@ -1,0 +1,7 @@
+* CSV Mode
+
+Mode to handle CSV files
+
+#+BEGIN_SRC emacs-lisp
+(use-package csv-mode)
+#+END_SRC
