@@ -28,5 +28,6 @@
 (put 'narrow-to-region 'disabled nil)
 ;; save the recent files list so you can reopen it though recentF
 ;; and not only when you exit emacs
+(recentf-mode 1)
 (run-at-time nil (* 5 60) 'recentf-save-list)
 #+END_SRC
