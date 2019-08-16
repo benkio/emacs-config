@@ -19,7 +19,7 @@
 		"csvMode.org"
 		"expandRegion.org"
 		"whitespace.org"
-		"ido.org"
+		"counsel.org"
 		"execPathFromShell.org"
 		"ibuffer.org"
 		"recentf.org"
@@ -46,3 +46,17 @@
 (set 'configs (mapcar (lambda (x) (concat configPrefix x)) configs))
 (require 'org)
 (mapc (lambda (x) (org-babel-load-file (expand-file-name x))) configs)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (counsel swiper ivy yasnippet-snippets which-key use-package undo-tree super-save smex scala-mode sbt-mode projectile ox-reveal monokai-theme magit lsp-ui iedit ido-vertical-mode ido-completing-read+ htmlize hindent haskell-mode gruber-darker-theme flycheck flx-ido expand-region exec-path-from-shell dracula-theme csv-mode company-lsp browse-kill-ring auto-complete ample-theme ag))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
