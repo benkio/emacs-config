@@ -3,7 +3,46 @@
 Functions used specifically for dealing with scala code
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-;; Recorded macro for navigating to the scala error starting from the sbt output
-(fset 'navigate-scala-error
-      [?\C-  ?\C-s ?: left ?\M-w ?\C-x ?o ?\M-: ?\( ?f ?i ?n ?d ?- ?f ?i ?l ?e ?  ?\" ?\C-y right return ?\C-u ?- ?\C-x ?o right ?\C-  ?\C-s ?: left ?\M-w ?\C-x ?o ?\M-g ?g ?\C-y return])
+  ;; Recorded macro for navigating to the scala error starting from the sbt output
+  ;;(fset 'navigate-scala-error
+  ;;      [?\C-  ?\C-s ?: left ?\M-w ?\C-x ?o ?\M-: ?\( ?f ?i ?n ?d ?- ?f ?i ?l ?e ?  ?\" ?\C-y right return ?\C-u ?- ?\C-x ?o right ?\C-  ?\C-s ?: left ?\M-w ?\C-x ?o ?\M-g ?g ?\C-y return])
+
+  (defun navigate-scala-error ()
+    "Search into a shell buffer for the first error and move to it"
+    (interactive)
+    ;; Parse and Navigate to file
+    (search-forward "] /Users")
+    (left-char 6)
+    (setq filenamePathPos (point))
+    (search-forward ":")
+    (left-char)
+    (copy-region-as-kill filenamePathPos (point))
+    (other-window 1)
+    (find-file (substring-no-properties (car kill-ring)))
+    (other-window -1)
+
+    ;; Parse and navigate to line
+    (right-char)
+    (setq filenamePathPos (point))
+    (search-forward ":")
+    (left-char)
+    (copy-region-as-kill filenamePathPos (point))
+    (other-window 1)
+    (goto-line (string-to-number (substring-no-properties (car kill-ring))))
+    (other-window -1)
+
+    ;; Parse and navigate to column
+    (right-char)
+    (setq filenamePathPos (point))
+    (search-forward ":")
+    (left-char)
+    (copy-region-as-kill filenamePathPos (point))
+    (other-window 1)
+    (right-char (string-to-number (substring-no-properties (car kill-ring))))
+
+    (pop kill-ring)
+    (pop kill-ring)
+    (pop kill-ring)
+  )
+
 #+END_SRC

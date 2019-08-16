@@ -24,6 +24,7 @@ autocomplete for searching during a command
           ido-case-fold t
           ido-create-new-buffer 'always
           ido-use-filename-at-point nil
+	  ido-show-dot-for-dired t
           ido-max-prospects 10)
   (add-to-list 'ido-ignore-files "\\.DS_Store")))
 #+END_SRC
