@@ -1,6 +1,31 @@
 * Programming Languages
 ** Python
-;; TODO
+#+BEGIN_SRC emacs-lisp
+;; Jupiter Notebook
+(require 'ein)
+(require 'ein-notebook)
+(require 'ein-subpackages)
+
+;; (elpy-enable)
+(setq python-shell-interpreter "ipython"
+       python-shell-interpreter-args "-i --simple-prompt --profile=default")
+
+;; ;; use flycheck not flymake with elpy
+;; (when (require 'flycheck nil t)
+;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+;; ;; enable autopep8 formatting on save
+(require 'py-autopep8)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+;; enable jedi
+(add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook 'jedi:ac-setup)
+(setq jedi:complete-on-dot t)
+(setq jedi:get-in-function-call-delay 0)
+#+END_SRC
+
 ** Scala
 
 Add all the needed components for scala:
@@ -64,10 +89,132 @@ Added for making metals works, but could be used for other languages too.
   :ensure t)
 (add-hook 'haskell-mode-hook #'hindent-mode)
 (setq hindent-style "johan-tibell")
-
 #+END_SRC
 ** Latex
-   ;; TODO
+#+BEGIN_SRC emacs-lisp
+;; LaTeX configuration
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+
+(add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+(add-hook 'LaTeX-mode-hook 'yas-minor-mode)
+
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+(setq TeX-PDF-mode t)
+
+(setq TeX-output-view-style
+    (quote
+     (("^pdf$" "." "evince -f %o"))))
+
+;; Setting up writegood-mode
+(require 'writegood-mode)
+(global-set-key "\C-cg" 'writegood-mode)
+
+(unless (boundp 'org-export-latex-classes)
+  (setq org-export-latex-classes nil))
+
+;; Org xelatex
+;; 'djcb-org-article' for export org documents to the LaTex 'article', using
+;; XeTeX and some fancy fonts; requires XeTeX (see org-latex-to-pdf-process)
+(add-to-list 'org-export-latex-classes
+	     '("xebeamer"
+	       "\\documentclass[11pt]{beamer}
+\\usepackage[T1]{fontenc}
+\\usepackage{fontspec}
+\\usepackage{graphicx} 
+\\usepackage{geometry}
+\\geometry{a4paper, textwidth=6.5in, textheight=10in,
+            marginparsep=7pt, marginparwidth=.6in}
+
+      \\usetheme{{{{beamertheme}}}}\n
+      \\usecolortheme{{{{beamercolortheme}}}}\n
+      \\beamertemplateballitem\n
+      \\setbeameroption{show notes}
+      \\usepackage[utf8]{inputenc}\n
+      \\usepackage[T1]{fontenc}\n
+      \\usepackage{hyperref}\n
+      \\usepackage{color}
+      \\usepackage{listings}
+      \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
+  frame=single,
+  basicstyle=\\small,
+  showspaces=false,showstringspaces=false,
+  showtabs=false,
+  keywordstyle=\\color{blue}\\bfseries,
+  commentstyle=\\color{red},
+  }\n
+      \\usepackage{verbatim}\n
+      \\institute{{{{beamerinstitute}}}}\n          
+       \\subject{{{{beamersubject}}}}\n"
+
+		    ("\\section{%s}" . "\\section*{%s}")
+
+		    ("\\begin{frame}[fragile]\\frametitle{%s}"
+		     "\\end{frame}"
+		     "\\begin{frame}[fragile]\\frametitle{%s}"
+		     "\\end{frame}")))
+
+;; allow for export=>beamer
+
+;; #+LaTeX_CLASS: beamer in org files
+(add-to-list 'org-export-latex-classes
+	     ;; beamer class, for presentations
+	     '("beamer"
+	            "\\documentclass[11pt]{beamer}\n
+      \\mode<{{{beamermode}}}>\n
+      \\usetheme{{{{beamertheme}}}}\n
+      \\usecolortheme{{{{beamercolortheme}}}}\n
+      \\beamertemplateballitem\n
+      \\setbeameroption{show notes}
+      \\usepackage[utf8]{inputenc}\n
+      \\usepackage[T1]{fontenc}\n
+      \\usepackage{hyperref}\n
+      \\usepackage{color}
+      \\usepackage{listings}
+      \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
+  frame=single,
+  basicstyle=\\small,
+  showspaces=false,showstringspaces=false,
+  showtabs=false,
+  keywordstyle=\\color{blue}\\bfseries,
+  commentstyle=\\color{red},
+  }\n
+      \\usepackage{verbatim}\n
+      \\institute{{{{beamerinstitute}}}}\n          
+       \\subject{{{{beamersubject}}}}\n"
+
+		    ("\\section{%s}" . "\\section*{%s}")
+
+		    ("\\begin{frame}[fragile]\\frametitle{%s}"
+		     "\\end{frame}"
+		     "\\begin{frame}[fragile]\\frametitle{%s}"
+		     "\\end{frame}")))
+
+;; letter class, for formal letters
+(add-to-list 'org-export-latex-classes
+
+	     '("letter"
+	            "\\documentclass[11pt]{letter}\n
+      \\usepackage[utf8]{inputenc}\n
+      \\usepackage[T1]{fontenc}\n
+      \\usepackage{color}"
+
+		    ("\\section{%s}" . "\\section*{%s}")
+		    ("\\subsection{%s}" . "\\subsection*{%s}")
+		    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+		    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+		         ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+;; Uses xelatex, just in case I want to have fancy fonts
+(setq org-latex-pdf-process
+      '("xelatex -interaction nonstopmode %f"))
+
+#+END_SRC
 ** Web-mode
 ;; TODO
 ** Markdown
