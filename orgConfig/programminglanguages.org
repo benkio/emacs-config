@@ -127,7 +127,6 @@ Added for making metals works, but could be used for other languages too.
 
 ;; Setting up writegood-mode
 (require 'writegood-mode)
-(global-set-key "\C-cg" 'writegood-mode)
 
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))
