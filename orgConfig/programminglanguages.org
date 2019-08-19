@@ -104,8 +104,8 @@ Added for making metals works, but could be used for other languages too.
 ** Latex
 #+BEGIN_SRC emacs-lisp
 ;; LaTeX configuration
-(use-package auctex
-:ensure t
+(use-package tex
+:ensure auctex
 :config
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
@@ -116,7 +116,6 @@ Added for making metals works, but could be used for other languages too.
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
 (add-hook 'LaTeX-mode-hook 'yas-minor-mode)
-
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
 (setq TeX-PDF-mode t)
