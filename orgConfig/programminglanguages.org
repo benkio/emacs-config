@@ -78,21 +78,35 @@ Added for making metals works, but could be used for other languages too.
 
 ** Haskell
 #+BEGIN_SRC emacs-lisp
-(use-package haskell-mode
-  :config
-  (add-hook 'haskell-mode-hook #'subword-mode)
-  (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
-  (add-hook 'haskell-mode-hook #'haskell-doc-mode))
+  (use-package haskell-mode
+    :config
+    (add-hook 'haskell-mode-hook #'subword-mode)
+    (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+    (add-hook 'haskell-mode-hook #'haskell-doc-mode))
 
-;; hindent
-(use-package hindent
+  ;; hlint extension (requires hlint installed with cabal)
+  (use-package flymake-haskell-multi
+  :ensure t
+  :config
+  (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
+
+  ;; Displays hlint suggestion in minibuffer
+  (use-package flymake-cursor
   :ensure t)
-(add-hook 'haskell-mode-hook #'hindent-mode)
-(setq hindent-style "johan-tibell")
+
+  ;; hindent (require hindente installed with cabal)
+  (use-package hindent
+    :ensure t
+    :config
+    (add-hook 'haskell-mode-hook #'hindent-mode)
+    (setq hindent-style "johan-tibell"))
 #+END_SRC
 ** Latex
 #+BEGIN_SRC emacs-lisp
 ;; LaTeX configuration
+(use-package auctex
+:ensure t
+:config
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
@@ -109,7 +123,7 @@ Added for making metals works, but could be used for other languages too.
 
 (setq TeX-output-view-style
     (quote
-     (("^pdf$" "." "evince -f %o"))))
+     (("^pdf$" "." "evince -f %o")))))
 
 ;; Setting up writegood-mode
 (require 'writegood-mode)
@@ -126,7 +140,7 @@ Added for making metals works, but could be used for other languages too.
 	       "\\documentclass[11pt]{beamer}
 \\usepackage[T1]{fontenc}
 \\usepackage{fontspec}
-\\usepackage{graphicx} 
+\\usepackage{graphicx}
 \\usepackage{geometry}
 \\geometry{a4paper, textwidth=6.5in, textheight=10in,
             marginparsep=7pt, marginparwidth=.6in}
@@ -149,7 +163,7 @@ Added for making metals works, but could be used for other languages too.
   commentstyle=\\color{red},
   }\n
       \\usepackage{verbatim}\n
-      \\institute{{{{beamerinstitute}}}}\n          
+      \\institute{{{{beamerinstitute}}}}\n
        \\subject{{{{beamersubject}}}}\n"
 
 		    ("\\section{%s}" . "\\section*{%s}")
@@ -185,7 +199,7 @@ Added for making metals works, but could be used for other languages too.
   commentstyle=\\color{red},
   }\n
       \\usepackage{verbatim}\n
-      \\institute{{{{beamerinstitute}}}}\n          
+      \\institute{{{{beamerinstitute}}}}\n
        \\subject{{{{beamersubject}}}}\n"
 
 		    ("\\section{%s}" . "\\section*{%s}")

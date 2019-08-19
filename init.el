@@ -32,8 +32,6 @@
 		"silverSearcher.org"
 		"company.org"
 		"browseKillRing.org"
-		"latex.org"
-		"python.org"
 		"programminglanguages.org"
 		"functions/formatting.org"
 		"functions/filenamePathToClipboard.org"
