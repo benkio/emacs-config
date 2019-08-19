@@ -30,4 +30,6 @@
 ;; and not only when you exit emacs
 (recentf-mode 1)
 (run-at-time nil (* 5 60) 'recentf-save-list)
+;; allow to use normal commands into the minibuffer, like replace
+(setq enable-recursive-minibuffers t)
 #+END_SRC
