@@ -32,6 +32,8 @@
 		"silverSearcher.org"
 		"company.org"
 		"browseKillRing.org"
+		"latex.org"
+		"python.org"
 		"programminglanguages.org"
 		"functions/formatting.org"
 		"functions/filenamePathToClipboard.org"
@@ -53,14 +55,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (counsel swiper ivy yasnippet-snippets which-key use-package
-    undo-tree super-save smex scala-mode sbt-mode projectile
-    ox-reveal monokai-theme magit lsp-ui iedit ido-vertical-mode
-    ido-completing-read+ htmlize hindent haskell-mode
-    gruber-darker-theme flycheck flx-ido expand-region
-    exec-path-from-shell dracula-theme csv-mode company-lsp
-    browse-kill-ring auto-complete ample-theme ag auctex
-    py-autopep8 elpy ein org org-bullets))))
+    (counsel swiper ivy yasnippet-snippets which-key use-package undo-tree super-save smex scala-mode sbt-mode projectile ox-reveal monokai-theme magit lsp-ui iedit ido-vertical-mode ido-completing-read+ htmlize hindent haskell-mode gruber-darker-theme flycheck flx-ido expand-region exec-path-from-shell dracula-theme csv-mode company-lsp browse-kill-ring auto-complete ample-theme ag))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
