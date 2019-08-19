@@ -7,9 +7,9 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
 #+BEGIN_SRC emacs-lisp
 (require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
-
+(setq package-archives '(("gnu" . "http://mirrors.163.com/elpa/gnu/")
+                         ("melpa" . "https://melpa.org/packages/")
+                         ("org" . "http://orgmode.org/elpa/")))
 (package-initialize)
 
 ;; Bootstrap `use-package'
