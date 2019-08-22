@@ -38,7 +38,7 @@
 		"functions/windowManipulation.org"
 		"functions/textManipulation.org"
 		"functions/bufferManipulation.org"
-		"functions/alignmentIntentation.org"
+		"functions/alignmentIndentation.org"
 		"functions/fileConversion.org"
 		"functions/scala.org"
 		))
