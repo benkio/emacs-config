@@ -44,4 +44,6 @@ Functions for alignment of text and indentation of buffer
   ;;  (align-to-equals (point-min) (point-max))
   (untabify (point-min) (point-max)))
 
+(global-set-key (kbd "C-c f") 'indent-buffer)
+
 #+END_SRC
