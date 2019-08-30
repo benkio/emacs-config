@@ -22,6 +22,9 @@ Counsel appears to provide additional functions for various ivy and swiper comma
   :config
   (global-set-key "\C-s" 'swiper))
 
+;; Set a reasonable fallback keybinding for isearch
+(global-set-key (kbd "C-c C-s") 'isearch-forward)
+
 (use-package counsel
   :ensure t
   :config
