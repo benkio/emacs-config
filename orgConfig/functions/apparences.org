@@ -1,0 +1,12 @@
+* Apparences
+
+Function used to change the apparence of emacs. Eg. themes
+
+#+BEGIN_SRC emacs-lisp
+
+(defun disable-all-themes ()
+  "disable all active themes."
+  (dolist (i custom-enabled-themes)
+    (disable-theme i)))
+
+#+END_SRC
