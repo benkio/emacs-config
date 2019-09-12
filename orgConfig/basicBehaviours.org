@@ -32,4 +32,10 @@
 (run-at-time nil (* 5 60) 'recentf-save-list)
 ;; allow to use normal commands into the minibuffer, like replace
 (setq enable-recursive-minibuffers t)
+;; change the behaviour of load-theme in order to disable the loaded theme first
+;; for a smooth transition from a dark theme to a light one
+;; https://stackoverflow.com/questions/22866733/emacs-disable-theme-after-loading-a-different-one-themes-conflict
+;; disable-all-themes is into the function package
+(defadvice load-theme (before disable-themes-first activate)
+  (disable-all-themes))
 #+END_SRC
