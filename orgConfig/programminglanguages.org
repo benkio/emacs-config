@@ -40,10 +40,6 @@ set the path to the metals-emacs into the code below
 
 #+BEGIN_SRC emacs-lisp
 
-(setq metalsPath "/Users/benkio/home")
-
-(add-to-list 'exec-path 'metalsPath t)
-
 ;; Enable scala-mode and sbt-mode
 (use-package scala-mode
   :mode "\\.s\\(cala\\|bt\\)$"
