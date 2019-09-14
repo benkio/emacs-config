@@ -1,41 +1,45 @@
 * Basic Behaviours
 
-1. Disable: Backup files
+1. Disable:
+   1. Backup files
+   2. autosave and beckup files
 2. Enable:
-   * Electric parentesis,
-   * y/n for yes and no
-   * Save cursor position
-   * Visual Line mode
-   * UTF-8
-   * Disable autosave and beckup files
-   * Allow narrow-to-region to be used without confirmation
-
+   1. y/n for yes and no
+   2. Save cursor position
+   3. Electric parentesis
+   4. Auto-revert-mode
+   5. Visual Line mode
+   6. UTF-8
+   7. Allow narrow-to-region to be used without confirmation
+   8. Recursive minibuffer change
+   9. Recent-f mode
+3. Set:
+   1. emacs window fullscreen at startup
+   2. Recent-f save list every 5 minutes
+   3. keybindings for scrolling up and down to <M-up> and <M-down> (not natural scrolling)
+4. Enhance:
+   1. The load-theme function in order to unload any previous loaded themes
 #+BEGIN_SRC emacs-lisp
-(setq make-backup-files nil)
-(electric-pair-mode 1)
-(defalias 'yes-or-no-p 'y-or-n-p)
-(savehist-mode 1)
-(global-auto-revert-mode 1)
-(global-visual-line-mode 1)
-(set-language-environment "UTF-8")
-;; disable auto-save and auto-backup
-(setq auto-save-default nil)
-(setq make-backup-files nil)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-;; enable narrow-to-region.
-;; Look at what it does if you don't know.
-;; Useful with iedit or just local searching
-(put 'narrow-to-region 'disabled nil)
-;; save the recent files list so you can reopen it though recentF
-;; and not only when you exit emacs
-(recentf-mode 1)
-(run-at-time nil (* 5 60) 'recentf-save-list)
-;; allow to use normal commands into the minibuffer, like replace
-(setq enable-recursive-minibuffers t)
-;; change the behaviour of load-theme in order to disable the loaded theme first
-;; for a smooth transition from a dark theme to a light one
-;; https://stackoverflow.com/questions/22866733/emacs-disable-theme-after-loading-a-different-one-themes-conflict
-;; disable-all-themes is into the function package
+(setq make-backup-files nil)					;1-1
+(setq auto-save-default nil)					;1-2
+
+(defalias 'yes-or-no-p 'y-or-n-p)				;2-1
+(savehist-mode 1)						;2-2
+(electric-pair-mode 1)						;2-3
+(global-auto-revert-mode 1)					;2-4
+(global-visual-line-mode 1)					;2-5
+(set-language-environment "UTF-8")				;2-6
+(put 'narrow-to-region 'disabled nil)				;2-7
+(setq enable-recursive-minibuffers t)				;2-8
+(recentf-mode 1)						;2-9
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))	;3-1
+(run-at-time nil (* 5 60) 'recentf-save-list)			;3-2
+								;3-3
+(global-set-key (kbd "M-<up>") 'scroll-down-command) ; Alt+up
+(global-set-key (kbd "M-<down>") 'scroll-up-command) ; Alt+down
+
+
 (defadvice load-theme (before disable-themes-first activate)
-  (disable-all-themes))
+  (disable-all-themes))                                         ;4-1
 #+END_SRC
