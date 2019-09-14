@@ -31,8 +31,7 @@
 (size-indication-mode 1)
 
 ;; set a default font
-(when (member "DejaVu Sans Mono" (font-family-list))
-  (set-face-attribute 'default nil :font "DejaVu Sans Mono"))
+(set-frame-font "Ubuntu Mono 10" nil t)
 
 (load-theme (indirect-variable 'default-theme) t)
 #+END_SRC
