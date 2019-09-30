@@ -1,3 +1,17 @@
+* Org Packages
+
+  Contains the packages for org mode
+
+* Github markdown conversion
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package ox-gfm
+  :config
+    (require 'ox-gfm nil t))
+
+#+END_SRC
+
 * Reveal-js
 
 Slide generation from org
