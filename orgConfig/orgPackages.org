@@ -4,6 +4,8 @@
 
 * Github markdown conversion
 
+  Converts org file to github markdown with the command: `M-x org-gfm-export-to-markdown`
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package ox-gfm
