@@ -24,7 +24,7 @@
 		"ibuffer.org"
 		"recentf.org"
 		"undotree.org"
-		"orgreveal.org"
+		"orgPackages.org"
 		"whichkey.org"
 		"autocomplete.org"
 		"supersave.org"
