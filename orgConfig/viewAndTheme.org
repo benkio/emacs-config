@@ -30,8 +30,8 @@
 (show-paren-mode 1)
 (size-indication-mode 1)
 
-;; set a default font
-(set-frame-font "Ubuntu Mono 10" nil t)
+;; set a default font (this way to support emacs-deamon)
+(setq default-frame-alist '((font . "Ubuntu Mono 10")))
 
 (load-theme (indirect-variable 'default-theme) t)
 #+END_SRC
