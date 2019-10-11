@@ -34,4 +34,18 @@ Functions for manipulate text
 (defun insert-random-uuid ()
   (interactive)
   (shell-command "uuidgen" t))
+
+(defun duplicate-line()
+  (interactive)
+  (setq column (current-column))
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank)
+  (move-beginning-of-line 1)
+  (right-char column)
+)
+(global-set-key (kbd "C-d") 'duplicate-line)
 #+END_SRC

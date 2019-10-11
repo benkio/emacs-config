@@ -13,7 +13,8 @@
     ;; Parse and Navigate to file
     (search-forward ".scala")
     (beginning-of-line)
-    (right-char 8)
+    (search-forward "]")
+    (right-char)
     (setq filenamePathPos (point))
     (search-forward ":")
     (left-char)
