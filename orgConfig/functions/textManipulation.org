@@ -46,6 +46,8 @@ Functions for manipulate text
   (yank)
   (move-beginning-of-line 1)
   (right-char column)
+  (pop kill-ring)
+  (pop kill-ring)
 )
 (global-set-key (kbd "C-d") 'duplicate-line)
 #+END_SRC

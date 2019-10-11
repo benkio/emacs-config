@@ -42,9 +42,9 @@
     (other-window 1)
     (right-char (string-to-number (substring-no-properties (car kill-ring))))
 
-     (pop kill-ring)
-     (pop kill-ring)
-     (pop kill-ring)
-   )
+    (pop kill-ring)
+    (pop kill-ring)
+    (pop kill-ring)
+  )
 
 #+END_SRC
