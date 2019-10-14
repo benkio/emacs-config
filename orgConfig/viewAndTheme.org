@@ -30,26 +30,13 @@
 (show-paren-mode 1)
 (size-indication-mode 1)
 
-;; set a default font (this way to support emacs-deamon)
-;;(setq default-frame-alist '((font . "Ubuntu Mono 10")))
-(defun fontify-frame (frame)
-  (interactive)
-  (if window-system
-      (pcase (x-display-pixel-width)
-	;; ((pred (lambda (x) (> x 3000))) (setq default-frame-alist '((font . "Ubuntu Mono 17"))))
-	;; ((pred (lambda (x) (> x 2000))) (setq default-frame-alist '((font . "Ubuntu Mono 14"))))
-	;; ((pred (lambda (x) (< x 2000))) (setq default-frame-alist '((font . "Ubuntu Mono 10")))))
-	((pred (lambda (x) (> x 3000))) (set-frame-font "Ubuntu Mono 17"))
-	((pred (lambda (x) (> x 2000))) (set-frame-font "Ubuntu Mono 14"))
-	((pred (lambda (x) (< x 2000))) (set-frame-font "Ubuntu Mono 10")))
-    ))
+;; font scaling
+(use-package default-text-scale
+  :ensure t
+  :config
+    (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
+    (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
 
-;; Fontify current frame
-(fontify-frame nil)
-
-;; Fontify any future frames
-(push 'fontify-frame after-make-frame-functions)
-;; (push 'fontify-frame server-switch-hook)
 
 (load-theme (indirect-variable 'default-theme) t)
 #+END_SRC
