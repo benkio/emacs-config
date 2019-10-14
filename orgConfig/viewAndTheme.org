@@ -39,9 +39,9 @@
 	;; ((pred (lambda (x) (> x 3000))) (setq default-frame-alist '((font . "Ubuntu Mono 17"))))
 	;; ((pred (lambda (x) (> x 2000))) (setq default-frame-alist '((font . "Ubuntu Mono 14"))))
 	;; ((pred (lambda (x) (< x 2000))) (setq default-frame-alist '((font . "Ubuntu Mono 10")))))
-	((pred (lambda (x) (> x 3000))) (set-frame-font "Ubuntu Mono 17"))
-	((pred (lambda (x) (> x 2000))) (set-frame-font "Ubuntu Mono 14"))
-	((pred (lambda (x) (< x 2000))) (set-frame-font "Ubuntu Mono 10")))
+	((pred (lambda (x) (> x 3000))) (set-frame-font "Courier New 17"))
+	((pred (lambda (x) (> x 2000))) (set-frame-font "Courier New 14"))
+	((pred (lambda (x) (< x 2000))) (set-frame-font "Courier New 12")))
     ))
 
 ;; Fontify current frame
