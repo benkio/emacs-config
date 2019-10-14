@@ -1,29 +1,63 @@
 * Programming Languages
 ** Python
 #+BEGIN_SRC emacs-lisp
-;; Jupiter Notebook
-(use-package ein)
-;; (use-package ein-notebook) Error (use-package): Failed to install ein-notebook: Package ‘ein-notebook-’ is unavailable
-;; (use-package ein-subpackages) Error (use-package): Failed to install ein-subpackages: Package ‘ein-subpackages-’ is unavailable
+  (use-package python
+  :ensure nil
+  :mode ("\\.py" . python-mode)
+  :config
+  (setq python-indent-offset 4)
+  (elpy-enable))
 
-;; (elpy-enable)
-(setq python-shell-interpreter "ipython"
-       python-shell-interpreter-args "-i --simple-prompt --profile=default")
+  ;; elpy
+  (use-package elpy
+  :after (python)
+  :init
+  (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
+  :config
+  (setq elpy-rpc-backend "jedi")
+  (setq elpy-rpc-python-command "python3")
+  ;; (flycheck-add-next-checker 'python-mypy 'python-flake8 'python-pylint)
+  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 
-;; ;; use flycheck not flymake with elpy
-;; (when (require 'flycheck nil t)
-;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-;; ;; enable autopep8 formatting on save
-(use-package py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+  (use-package py-yapf
+  :config (add-hook 'python-mode-hook 'py-yapf-enable-on-save))
 
-;; enable jedi
-(add-hook 'python-mode-hook 'jedi:setup)
-(add-hook 'python-mode-hook 'jedi:ac-setup)
-(setq jedi:complete-on-dot t)
-(setq jedi:get-in-function-call-delay 0)
+  (use-package flycheck-pycheckers
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
+  ;; Jupiter Notebook
+  (use-package ein)
+  ;; (use-package ein-notebook) Error (use-package): Failed to install ein-notebook: Package ‘ein-notebook-’ is unavailable
+  ;; (use-package ein-subpackages) Error (use-package): Failed to install ein-subpackages: Package ‘ein-subpackages-’ is unavailable
+
+  ;; (elpy-enable)
+  (setq python-shell-interpreter "ipython"
+	 python-shell-interpreter-args "-i --simple-prompt --profile=default")
+
+  ;; ;; use flycheck not flymake with elpy
+  ;; (when (require 'flycheck nil t)
+  ;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  ;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+  ;; ;; enable autopep8 formatting on save
+  (use-package py-autopep8)
+  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+  ;; (use-package flycheck-mypy
+  ;; :init (add-to-list 'flycheck-checkers  'python-mypy))
+
+  ;; ;;
+  ;; enable jedi
+  (use-package jedi
+  :ensure t
+  :init
+  (elpy-enable)
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'python-mode-hook 'jedi:ac-setup)
+  :config
+  (setq jedi:complete-on-dot t)
+  (setq jedi:get-in-function-call-delay 0))
 #+END_SRC
 
 ** Scala
