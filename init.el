@@ -4,10 +4,13 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
+(org-babel-load-file "~/.emacs.d/orgConfig/packages.org")
+
+(package-refresh-contents)
+
 (setq configPrefix "~/.emacs.d/orgConfig/")
 
-(setq configs '("packages.org"
-		"defaults.org"
+(setq configs '("defaults.org"
                 "viewAndTheme.org"
 		"basicBehaviours.org"
 		"magit.org"
