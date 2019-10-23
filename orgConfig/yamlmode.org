@@ -1,0 +1,8 @@
+* Yaml Mode
+
+Add support for the yaml file types
+
+#+BEGIN_SRC emacs-lisp
+(use-package yaml-mode
+  :mode ("\\.yml$" . yaml-mode))
+#+END_SRC

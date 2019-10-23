@@ -17,6 +17,7 @@
 		"iedit.org"
 		"projectile.org"
 		"yas.org"
+		"yamlmode.org"
 		"dired.org"
 		"winmove.org"
 		"csvMode.org"
