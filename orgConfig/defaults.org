@@ -9,12 +9,6 @@ Name convension of the variables: starts with ~default_~ and add a
 comment before it or after it.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-(use-package dracula-theme
-  ;; Dracula-theme
-  ;; Jazz-theme
-  ;; Ample-theme
-  ;; Junio
-  :ensure t
-  :config (defvaralias 'default-theme 'dracula)
-)
+;; NO GLOBAL DEFAULTS YET
+;; THEME DEFAULT SET INTO viewAndTheme.org
 #+END_SRC

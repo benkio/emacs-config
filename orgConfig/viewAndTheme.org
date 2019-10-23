@@ -15,28 +15,37 @@
 4. Set Font
 
 #+BEGIN_SRC emacs-lisp
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(setq inhibit-splash-screen t)
-(setq inhibit-startup-message t)
-(global-linum-mode 1)
-(setq column-number-mode t)
-(global-hl-line-mode 1)
-(show-paren-mode 1)
-(display-battery-mode 1)
-(setq column-number-mode t)
-(global-hl-line-mode 1)
-(show-paren-mode 1)
-(size-indication-mode 1)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (setq inhibit-splash-screen t)
+  (setq inhibit-startup-message t)
+  (global-linum-mode 1)
+  (setq column-number-mode t)
+  (global-hl-line-mode 1)
+  (show-paren-mode 1)
+  (display-battery-mode 1)
+  (setq column-number-mode t)
+  (global-hl-line-mode 1)
+  (show-paren-mode 1)
+  (size-indication-mode 1)
 
-;; font scaling
-(use-package default-text-scale
-  :ensure t
-  :config
-    (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
-    (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
+  ;; font scaling
+  (use-package default-text-scale
+    :ensure t
+    :config
+      (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
+      (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
 
 
-(load-theme (indirect-variable 'default-theme) t)
+  ;; THEME SECTION  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  (use-package dracula-theme
+  ;; Jazz-theme
+  ;; Ample-theme
+  ;; Junio
+  :config (defvaralias 'default-theme 'dracula)
+  )
+
+  (load-theme (indirect-variable 'default-theme) t)
 #+END_SRC
