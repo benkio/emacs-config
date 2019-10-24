@@ -40,11 +40,12 @@
 
   ;; THEME SECTION  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  (use-package dracula-theme
+  (use-package monokai-theme
+  ;; dracula-theme
   ;; Jazz-theme
   ;; Ample-theme
   ;; Junio
-  :config (defvaralias 'default-theme 'dracula)
+  :config (defvaralias 'default-theme 'monokai)
   )
 
   (load-theme (indirect-variable 'default-theme) t)
