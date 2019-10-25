@@ -7,7 +7,6 @@ Keep a history of open files
   :config
   (progn
     (setq recentf-max-saved-items 50)
-    (recentf-mode))
-  :bind ("C-c r f" . recentf-open-files))
+    (recentf-mode)))
 
 #+END_SRC
