@@ -1,4 +1,4 @@
-* Magit
+* Git & Magit
 
 Managing git repos.
 
@@ -8,4 +8,6 @@ Managing git repos.
          ("C-c g i" . magit-init)
          ("C-c g c" . magit-clone))
   :init)
+
+(use-package git-link)
 #+END_SRC
