@@ -30,14 +30,6 @@
   (show-paren-mode 1)
   (size-indication-mode 1)
 
-  ;; font scaling
-  (use-package default-text-scale
-    :ensure t
-    :config
-      (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
-      (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
-
-
   ;; THEME SECTION  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (use-package monokai-theme
@@ -49,4 +41,17 @@
   )
 
   (load-theme (indirect-variable 'default-theme) t)
+
+  (defun set-font-height-on-frame-width (&optional frame)
+    (cond ((> (frame-outer-width frame) 2000)
+           (set-face-attribute 'default nil :height 15000))
+	  ((> (frame-outer-width frame) 1500)
+           (set-face-attribute 'default nil :height 120))
+	  (t
+	  (set-face-attribute 'default nil :height 95))
+    )
+  )
+
+  (add-hook 'after-make-frame-functions 'set-font-height-on-frame-width)
+  (add-hook 'window-setup-hook 'set-font-height-on-frame-width)
 #+END_SRC
