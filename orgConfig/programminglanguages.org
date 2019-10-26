@@ -66,12 +66,6 @@ Add all the needed components for scala:
   * scala mode
   * sbt mode
 
-NOTE: Need to install the Metals server in order to use it!!!
-
-follow the instructions in here: https://scalameta.org/metals/docs/editors/emacs.html
-
-set the path to the metals-emacs into the code below
-
 #+BEGIN_SRC emacs-lisp
 
 ;; Enable scala-mode and sbt-mode
@@ -89,23 +83,6 @@ set the path to the metals-emacs into the code below
    'self-insert-command
    minibuffer-local-completion-map))
 #+END_SRC
-** Language Server Protocol(LSP)
-
-Used from emacs to connect to an external server for compilation, error checking and so on.
-Added for making metals works, but could be used for other languages too.
-
-#+begin_src emacs-lisp
-(use-package lsp-mode
-  ;; Optional - enable lsp-mode automatically in scala
-  :hook (scala-mode . lsp)
-  :config (setq lsp-prefer-flymake nil))
-
-(use-package lsp-ui)
-
-;; Add company-lsp backend for metals
-(use-package company-lsp)
-#+end_src
-
 ** Haskell
 #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode
