@@ -39,7 +39,7 @@
   ;; Junio
   :config
   (defvaralias 'default-theme 'monokai)
-  (setq monokai-highlight         "#5200CC")
+  (setq monokai-highlight         "#006699")
   )
 
   (load-theme (indirect-variable 'default-theme) t)
