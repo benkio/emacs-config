@@ -37,18 +37,21 @@
   ;; Jazz-theme
   ;; Ample-theme
   ;; Junio
-  :config (defvaralias 'default-theme 'monokai)
+  :config
+  (defvaralias 'default-theme 'monokai)
+  (setq monokai-highlight         "#5200CC")
   )
 
   (load-theme (indirect-variable 'default-theme) t)
 
   (defun set-font-height-on-frame-width (&optional frame)
+    (message "Set font based of frame size") ;Adding this will make it run at startup, weird
     (cond ((> (frame-outer-width frame) 1800)
-           (set-face-attribute 'default nil :height 150))
+           (set-face-attribute 'default nil :height 170))
 	  ((> (frame-outer-width frame) 1300)
-           (set-face-attribute 'default nil :height 120))
+           (set-face-attribute 'default nil :height 140))
 	  (t
-	  (set-face-attribute 'default nil :height 95))
+	  (set-face-attribute 'default nil :height 100))
     )
   )
 
