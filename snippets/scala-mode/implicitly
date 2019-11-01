@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: implicitly
+# key: impy
+# --
+val implicitValue$1 = implicitly[$2]$0
