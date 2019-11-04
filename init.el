@@ -36,6 +36,7 @@
 		"flycheck.org"
 		"silverSearcher.org"
 		"company.org"
+		"restclient.org"
 		"browseKillRing.org"
 		"programminglanguages.org"
 		"functions/formatting.org"

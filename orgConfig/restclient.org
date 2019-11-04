@@ -1,0 +1,8 @@
+* RestClient
+
+Emacs Rest Client
+
+#+BEGIN_SRC emacs-lisp
+(use-package restclient)
+
+#+END_SRC
