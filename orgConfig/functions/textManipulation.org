@@ -33,7 +33,8 @@ Functions for manipulate text
 
 (defun insert-random-uuid ()
   (interactive)
-  (setq uuid (shell-command "uuidgen" t))
-  (substring uuid 0 (- (length uuid) 1))
+  (insert
+    (replace-regexp-in-string "\n\\'" ""
+      (shell-command-to-string "uuidgen")))
 )
 #+END_SRC
