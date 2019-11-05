@@ -37,4 +37,7 @@ Functions for manipulate text
     (replace-regexp-in-string "\n\\'" ""
       (shell-command-to-string "uuidgen")))
 )
+
+(global-set-key (kbd "C-c i u u") 'insert-random-uuid)
+
 #+END_SRC
