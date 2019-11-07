@@ -1,34 +1,51 @@
 * View and Theme
 
 1. Hide:
-   * menu
-   * toolbar
-   * scroolbar
-   * splash-screen
+   1. Menu
+   2. Toolbar
+   3. Scroolbar
+   4. Splash-Screen
 2. Shows:
-   * line numbers
-   * column line
-   * current line
-   * parentesis
-   * size of current file
-3. Set theme
-4. Set Font
+   1. Line Numbers
+   2. Column Line
+   3. Current Line
+   4. Battery
+   5. Parentesis
+   6. Size of Current File
+3. Set Frame Title
+4. Set Uniquify (better buffer names on conflict)
+5. Set Theme
+6. Set Font
 
 #+BEGIN_SRC emacs-lisp
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+  (menu-bar-mode -1)		;1-1
+  (tool-bar-mode -1)		;1-2
+  (scroll-bar-mode -1)		;1-3
+				;1-4
   (setq inhibit-splash-screen t)
   (setq inhibit-startup-message t)
-  (global-linum-mode 1)
-  (setq column-number-mode t)
-  (global-hl-line-mode 1)
-  (show-paren-mode 1)
-  (display-battery-mode 1)
-  (setq column-number-mode t)
-  (global-hl-line-mode 1)
-  (show-paren-mode 1)
-  (size-indication-mode 1)
+
+  (global-linum-mode 1)		;2-1
+  (setq column-number-mode t)	;2-2
+  (global-hl-line-mode 1)	;2-3
+  (display-battery-mode 1)	;2-4
+  (show-paren-mode 1)		;2-5
+  (size-indication-mode 1)	;2-6
+
+				;3
+  (setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
+                                ;4
+(use-package uniquify
+  :config
+  (setq uniquify-buffer-name-style 'forward)
+  (setq uniquify-separator "/")
+  ;; rename after killing uniquified
+  (setq uniquify-after-kill-buffer-p t)
+  ;; don't muck with special buffers
+  (setq uniquify-ignore-buffers-re "^\\*"))
 
   ;; THEME SECTION  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

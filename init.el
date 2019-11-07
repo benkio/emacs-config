@@ -45,26 +45,10 @@
 		"functions/alignmentIndentation.org"
 		"functions/fileConversion.org"
 		"functions/scala.org"
+		"functions/cursorMovement.org"
 		"functions/apparences.org"
 		))
 
 (set 'configs (mapcar (lambda (x) (concat configPrefix x)) configs))
 (require 'org)
 (mapc (lambda (x) (org-babel-load-file (expand-file-name x))) configs)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(nrepl-message-colors
-   (quote
-    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
- '(package-selected-packages
-   (quote
-    (git-link yasnippet-snippets yaml-mode writegood-mode which-key use-package undo-tree super-save smex scala-mode sbt-mode py-yapf py-autopep8 ox-reveal ox-gfm monokai-theme magit lsp-ui jedi iedit ido-vertical-mode ido-completing-read+ htmlize hindent haskell-mode gruber-darker-theme flymake-haskell-multi flymake-cursor flycheck-pycheckers flx-ido expand-region exec-path-from-shell elpy ein dracula-theme default-text-scale darkburn-theme csv-mode counsel-projectile company-lsp browse-kill-ring badwolf-theme auctex ample-theme ag afternoon-theme))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:height 140)))))
