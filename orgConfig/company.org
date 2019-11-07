@@ -13,6 +13,7 @@ Company is a text completion framework for Emacs. The name stands for "complete 
     (setq company-tooltip-align-annotations t
           ;; Easy navigation to candidates with M-<n>
           company-show-numbers t)
-    (setq company-dabbrev-downcase nil))
+    (setq company-dabbrev-downcase nil)
+    (setq company-global-modes '(not scala-mode)))
   :diminish company-mode)
 #+END_SRC
