@@ -1,7 +1,5 @@
 * Text Manipulation
 
-Functions for manipulate text
-
 #+BEGIN_SRC emacs-lisp :tangle yes
 (defun reverse-words (beg end)
   "Reverse the order of words in region . "
@@ -40,4 +38,18 @@ Functions for manipulate text
 
 (global-set-key (kbd "C-c i u u") 'insert-random-uuid)
 
+(defun duplicate-line-at (num)
+  (interactive "nLine Number: ")
+  (setq line-number (line-number-at-pos))
+  (goto-line num)
+  (kill-ring-save (line-beginning-position)
+                  (line-end-position))
+  (goto-line line-number)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (pop kill-ring)
+  (insert (car kill-ring))
+)
 #+END_SRC
+
+Functions for manipulate text
