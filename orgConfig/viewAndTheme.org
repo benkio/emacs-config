@@ -38,14 +38,14 @@
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
                                 ;4
-(use-package uniquify
-  :config
+
+  (require 'uniquify)
   (setq uniquify-buffer-name-style 'forward)
   (setq uniquify-separator "/")
   ;; rename after killing uniquified
   (setq uniquify-after-kill-buffer-p t)
   ;; don't muck with special buffers
-  (setq uniquify-ignore-buffers-re "^\\*"))
+  (setq uniquify-ignore-buffers-re "^\\*")
 
   ;; THEME SECTION  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

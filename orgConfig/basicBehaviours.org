@@ -19,6 +19,7 @@
    9. Recent-f mode
    10. Warn when opening files bigger than 100MB
    11. Better Scrolling
+   12. Winner Mode: restore windows, especially for ediff sessions
 3. Set:
    1. Emacs window fullscreen at startup
    2. Recent-f save list every 5 minutes
@@ -27,6 +28,11 @@
    5. Reduce the frequency of garbage collection by making it happen on each 50MB of allocated data (the default is on every 0.76MB)
    6. Smart Tab Behaviour
    7. Path executable on windows (git, 7z, curl...)
+   8. Winner-undo after ediff quits, hook
+   9. Set ediff options:
+      1. Remove separate frame
+      2. Split vertical
+      3. Ignore whitespaces
 4. Enhance:
    1. The load-theme function in order to unload any previous loaded themes
 #+BEGIN_SRC emacs-lisp
@@ -67,6 +73,7 @@
 (setq scroll-margin 0
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
+(winner-mode)                                                   ;2-12
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))	;3-1
 (run-at-time nil (* 5 60) 'recentf-save-list)			;3-2
@@ -83,6 +90,16 @@
   (setenv "PATH" (concat "C:/Program Files/Git/bin;" "C:/Program Files/Git/mingw64/bin;" (getenv "PATH")))
   ;; needed for arc-mode
   (add-to-list 'exec-path "C:/Program Files/7-Zip"))
+                                                                ;3-8
+(defun exit-ediff-hook ()
+  (kill-buffer "*Ediff Registry*")
+  (winner-undo)
+)
+(add-hook 'ediff-after-quit-hook-internal 'exit-ediff-hook)
+                                                                ;3-9
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-diff-options "-w")
 
 (defadvice load-theme (before disable-themes-first activate)
   (disable-all-themes))                                         ;4-1
