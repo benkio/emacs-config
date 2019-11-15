@@ -24,15 +24,16 @@
    1. Emacs window fullscreen at startup
    2. Recent-f save list every 5 minutes
    3. Keybindings for scrolling up and down to <M-up> and <M-down> (not natural scrolling)
-   4. Alwayst load newest byte code first
-   5. Reduce the frequency of garbage collection by making it happen on each 50MB of allocated data (the default is on every 0.76MB)
-   6. Smart Tab Behaviour
-   7. Path executable on windows (git, 7z, curl...)
-   8. Winner-undo after ediff quits, hook
-   9. Set ediff options:
-      1. Remove separate frame
-      2. Split vertical
-      3. Ignore whitespaces
+   4. Keybindings for comment-or-uncomment-region
+   5. Alwayst load newest byte code first
+   6. Reduce the frequency of garbage collection by making it happen on each 50MB of allocated data (the default is on every 0.76MB)
+   7. Smart Tab Behaviour
+   8. Path executable on windows (git, 7z, curl...)
+   9. Winner-undo after ediff quits, hook
+   10. Set ediff options:
+       1. Remove separate frame
+       2. Split vertical
+       3. Ignore whitespaces
 4. Enhance:
    1. The load-theme function in order to unload any previous loaded themes
 #+BEGIN_SRC emacs-lisp
@@ -78,25 +79,27 @@
 (add-to-list 'default-frame-alist '(fullscreen . maximized))	;3-1
 (run-at-time nil (* 5 60) 'recentf-save-list)			;3-2
 								;3-3
+(global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
+                                                                ;3-4
 (global-set-key (kbd "M-<up>") 'scroll-down-command) ; Alt+up
 (global-set-key (kbd "M-<down>") 'scroll-up-command) ; Alt+down
 
-(setq load-prefer-newer t)                                      ;3-4
-(setq gc-cons-threshold 50000000)                               ;3-5
-(setq tab-always-indent 'complete)				;3-6
-(when (eq system-type 'windows-nt)                              ;3-7
+(setq load-prefer-newer t)                                      ;3-5
+(setq gc-cons-threshold 50000000)                               ;3-6
+(setq tab-always-indent 'complete)				;3-7
+(when (eq system-type 'windows-nt)                              ;3-8
   (add-to-list 'exec-path "C:/Program Files/Git/bin")
   (add-to-list 'exec-path "C:/Program Files/Git/mingw64/bin")
   (setenv "PATH" (concat "C:/Program Files/Git/bin;" "C:/Program Files/Git/mingw64/bin;" (getenv "PATH")))
   ;; needed for arc-mode
   (add-to-list 'exec-path "C:/Program Files/7-Zip"))
-                                                                ;3-8
+                                                                ;3-9
 (defun exit-ediff-hook ()
   (kill-buffer "*Ediff Registry*")
   (winner-undo)
 )
 (add-hook 'ediff-after-quit-hook-internal 'exit-ediff-hook)
-                                                                ;3-9
+                                                                ;3-10
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-diff-options "-w")
