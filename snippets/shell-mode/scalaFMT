@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: scala format
+# key: sbtFMT
+# --
+sbt scalafmt && scala test:scalafmt
