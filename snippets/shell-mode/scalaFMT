@@ -2,4 +2,4 @@
 # name: scala format
 # key: sbtFMT
 # --
-sbt scalafmt && scala test:scalafmt
+sbt scalafmt && sbt test:scalafmt
