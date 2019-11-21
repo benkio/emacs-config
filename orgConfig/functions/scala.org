@@ -49,32 +49,45 @@
 ;;   (end-of-line)
 
 ;;   (setq missingType (buffer-substring missingTypeStartingPoint (point)))
-
 ;;   (sbt-find-definitions missingType)
-;;   (beginning-of-buffer)
-;;   (search-forward "package ")
-;;   (setq missingTypePackageStartingPoint (point))
-;;   (end-of-line)
-;;   (setq missingTypePackage (concat (buffer-substring missingTypePackageStartingPoint (point)) "." missingType))
-
-;;   (kill-buffer)
-;;   (kill-buffer "*grep*")
-
-;;   (switch-to-buffer startingBuffer)
-;;   (beginning-of-line)
-;;   (search-forward "] ")
-;;   (setq filenamePathPos (point))
-;;   (search-forward ":")
-;;   (left-char)
-;;   (setq filePath (buffer-substring filenamePathPos (point)))
-;;   (other-window 1)
-;;   (find-file filePath)
-
-;;   (beginning-of-buffer)
-;;   (next-line)
-;;   (newline)
-;;   (insert (concat "import " missingTypePackage))
-;;   (other-window -1)
+;;   (set-process-sentinel (get-process "grep") 'scala-import-type-not-found-sbt-callback)
 ;;   )
+
+;; (defun scala-import-type-not-found-sbt-callback (process event)
+;;   "A callback attached to grep after the call to sbt-find-definitions"
+;;   (message "callback called")
+
+;;   ;; Wait for 1 sec before working to the buffers to give the time to
+;;   ;; sbt-find-definitions to move to the selected buffer
+;;   (sleep-for 2)
+;;   (setq newBuffer (current-buffer))
+;;   (message (concat "wakeup!!!: " (buffer-name newBuffer)))
+;;   (beginning-of-buffer)
+;;   ;; (search-forward "package ")
+;;   ;; (setq missingTypePackageStartingPoint (point))
+;;   ;; (end-of-line)
+;;   ;; (setq missingTypePackage (concat (buffer-substring missingTypePackageStartingPoint (point)) "." missingType))
+
+;;   ;; (message (concat "inport to hit" missingTypePackage))
+
+;;   ;; (kill-buffer)
+;;   ;; (kill-buffer "*grep*")
+
+;;   ;; (switch-to-buffer startingBuffer)
+;;   ;; (beginning-of-line)
+;;   ;; (search-forward "] ")
+;;   ;; (setq filenamePathPos (point))
+;;   ;; (search-forward ":")
+;;   ;; (left-char)
+;;   ;; (setq filePath (buffer-substring filenamePathPos (point)))
+;;   ;; (other-window 1)
+;;   ;; (find-file filePath)
+
+;;   ;; (beginning-of-buffer)
+;;   ;; (next-line)
+;;   ;; (newline)
+;;   ;; (insert (concat "import " missingTypePackage))
+;;   ;; (other-window -1)
+;;     )
 
 #+END_SRC
