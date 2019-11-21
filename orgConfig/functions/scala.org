@@ -10,14 +10,13 @@
     ;; Parse and Navigate to file
     (search-forward ".scala")
     (beginning-of-line)
-    (search-forward "]")
-    (right-char)
+    (search-forward "] ")
     (setq filenamePathPos (point))
     (search-forward ":")
     (left-char)
-    (copy-region-as-kill filenamePathPos (point))
+    (setq filePath (buffer-substring filenamePathPos (point)))
     (other-window 1)
-    (find-file (substring-no-properties (car kill-ring)))
+    (find-file filePath)
     (other-window -1)
 
     ;; Parse and navigate to line
@@ -25,9 +24,9 @@
     (setq filenamePathPos (point))
     (search-forward ":")
     (left-char)
-    (copy-region-as-kill filenamePathPos (point))
+    (setq fileLine (buffer-substring filenamePathPos (point)))
     (other-window 1)
-    (goto-line (string-to-number (substring-no-properties (car kill-ring))))
+    (goto-line (string-to-number fileLine))
     (other-window -1)
 
     ;; Parse and navigate to column
@@ -35,13 +34,9 @@
     (setq filenamePathPos (point))
     (search-forward ":")
     (left-char)
-    (copy-region-as-kill filenamePathPos (point))
+    (setq fileColumn (buffer-substring filenamePathPos (point)))
     (other-window 1)
-    (right-char (string-to-number (substring-no-properties (car kill-ring))))
-
-    (pop kill-ring)
-    (pop kill-ring)
-    (pop kill-ring)
+    (right-char (string-to-number fileColumn))
   )
 
 ;; (defun scala-import-type-not-found ()

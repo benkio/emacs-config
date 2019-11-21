@@ -20,6 +20,7 @@
    10. Warn when opening files bigger than 100MB
    11. Better Scrolling
    12. Winner Mode: restore windows, especially for ediff sessions
+   13. Save on frame focus out: https://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
 3. Set:
    1. Emacs window fullscreen at startup
    2. Recent-f save list every 5 minutes
@@ -75,6 +76,7 @@
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 (winner-mode)                                                   ;2-12
+(add-hook 'focus-out-hook (lambda () (save-some-buffers t)))    ;2-13
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))	;3-1
 (run-at-time nil (* 5 60) 'recentf-save-list)			;3-2
