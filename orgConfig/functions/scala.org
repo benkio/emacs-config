@@ -3,12 +3,9 @@
   Functions used specifically for dealing with scala code
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  ;; Recorded macro for navigating to the scala error starting from the sbt output
-  ;;(fset 'navigate-scala-error
-  ;;      [?\C-  ?\C-s ?: left ?\M-w ?\C-x ?o ?\M-: ?\( ?f ?i ?n ?d ?- ?f ?i ?l ?e ?  ?\" ?\C-y right return ?\C-u ?- ?\C-x ?o right ?\C-  ?\C-s ?: left ?\M-w ?\C-x ?o ?\M-g ?g ?\C-y return])
 
-  (defun navigate-scala-error ()
-    "Search into a shell buffer for the first error and move to it"
+  (defun scala-goto-next-warn-error ()
+    "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
     (interactive)
     ;; Parse and Navigate to file
     (search-forward ".scala")
@@ -46,5 +43,43 @@
     (pop kill-ring)
     (pop kill-ring)
   )
+
+;; (defun scala-import-type-not-found ()
+;;   "Search into an sbt output for the first missing import, search the for the type, copy the right import and add it to the failing file"
+;;   (interactive)
+;;   (search-forward "not found: type ")
+;;   (setq missingTypeStartingPoint (point))
+;;   (setq startingBuffer (buffer-name))
+
+;;   (end-of-line)
+
+;;   (setq missingType (buffer-substring missingTypeStartingPoint (point)))
+
+;;   (sbt-find-definitions missingType)
+;;   (beginning-of-buffer)
+;;   (search-forward "package ")
+;;   (setq missingTypePackageStartingPoint (point))
+;;   (end-of-line)
+;;   (setq missingTypePackage (concat (buffer-substring missingTypePackageStartingPoint (point)) "." missingType))
+
+;;   (kill-buffer)
+;;   (kill-buffer "*grep*")
+
+;;   (switch-to-buffer startingBuffer)
+;;   (beginning-of-line)
+;;   (search-forward "] ")
+;;   (setq filenamePathPos (point))
+;;   (search-forward ":")
+;;   (left-char)
+;;   (setq filePath (buffer-substring filenamePathPos (point)))
+;;   (other-window 1)
+;;   (find-file filePath)
+
+;;   (beginning-of-buffer)
+;;   (next-line)
+;;   (newline)
+;;   (insert (concat "import " missingTypePackage))
+;;   (other-window -1)
+;;   )
 
 #+END_SRC
