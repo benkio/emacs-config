@@ -54,10 +54,6 @@
    (lambda (p e)
      "A callback attached to grep after the call to sbt-find-definitions"
      (message "callback called")
-
-     ;; Wait for 2 sec before working to the buffers to give the time to
-     ;; sbt-find-definitions to move to the selected buffer
-     ;;(sleep-for 2)
      (redisplay)
      (beginning-of-buffer)
      (search-forward "package ")
