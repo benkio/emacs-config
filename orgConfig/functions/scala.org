@@ -39,6 +39,8 @@
       (right-char (string-to-number fileColumn))
     )
 
+    (global-set-key (kbd "C-c c s e") 'scala-goto-next-warn-error)
+
   (defun scala-import-type-not-found ()
     "Search into an sbt output for the first missing import, search the for the type, copy the right import and add it to the failing file"
     (interactive)
@@ -107,4 +109,6 @@
        ))
      )
    )
+
+       (global-set-key (kbd "C-c c s i") 'scala-import-type-not-found)
 #+END_SRC
