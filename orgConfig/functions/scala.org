@@ -1,4 +1,4 @@
-* COMMENT Scala
+* Scala
 
   Functions used specifically for dealing with scala code
 
