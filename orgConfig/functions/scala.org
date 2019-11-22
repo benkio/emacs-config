@@ -1,84 +1,110 @@
-* Scala
+* COMMENT Scala
 
   Functions used specifically for dealing with scala code
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 
-  (defun scala-goto-next-warn-error ()
-    "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
+    (defun scala-goto-next-warn-error ()
+      "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
+      (interactive)
+      ;; Parse and Navigate to file
+      (search-forward ".scala")
+      (beginning-of-line)
+      (search-forward "] ")
+      (setq filenamePathPos (point))
+      (search-forward ":")
+      (left-char)
+      (setq filePath (buffer-substring filenamePathPos (point)))
+      (other-window 1)
+      (find-file filePath)
+      (other-window -1)
+
+      ;; Parse and navigate to line
+      (right-char)
+      (setq filenamePathPos (point))
+      (search-forward ":")
+      (left-char)
+      (setq fileLine (buffer-substring filenamePathPos (point)))
+      (other-window 1)
+      (goto-line (string-to-number fileLine))
+      (other-window -1)
+
+      ;; Parse and navigate to column
+      (right-char)
+      (setq filenamePathPos (point))
+      (search-forward ":")
+      (left-char)
+      (setq fileColumn (buffer-substring filenamePathPos (point)))
+      (other-window 1)
+      (right-char (string-to-number fileColumn))
+    )
+
+  (defun scala-import-type-not-found ()
+    "Search into an sbt output for the first missing import, search the for the type, copy the right import and add it to the failing file"
     (interactive)
-    ;; Parse and Navigate to file
-    (search-forward ".scala")
-    (beginning-of-line)
-    (search-forward "] ")
-    (setq filenamePathPos (point))
-    (search-forward ":")
-    (left-char)
-    (setq filePath (buffer-substring filenamePathPos (point)))
-    (other-window 1)
-    (find-file filePath)
-    (other-window -1)
+    (search-forward "not found: type ")
+    (setq missingTypeStartingPoint (point))
+    (setq startingBuffer (buffer-name (current-buffer)))
+    (end-of-line)
 
-    ;; Parse and navigate to line
-    (right-char)
-    (setq filenamePathPos (point))
-    (search-forward ":")
-    (left-char)
-    (setq fileLine (buffer-substring filenamePathPos (point)))
-    (other-window 1)
-    (goto-line (string-to-number fileLine))
-    (other-window -1)
+    (setq missingType (buffer-substring missingTypeStartingPoint (point)))
+    (message missingType)
+    (sbt-find-definitions missingType)
+    (set-process-sentinel
+     (get-process "grep")
+     (lambda (p e)
+       "A callback attached to grep after the call to sbt-find-definitions"
+       (redisplay)
 
-    ;; Parse and navigate to column
-    (right-char)
-    (setq filenamePathPos (point))
-    (search-forward ":")
-    (left-char)
-    (setq fileColumn (buffer-substring filenamePathPos (point)))
-    (other-window 1)
-    (right-char (string-to-number fileColumn))
-  )
+       (let ((missingTypeImport nil))
+         (if (not (string= (buffer-name (current-buffer)) startingBuffer))
+             (progn
+               ;; grep was successful
+               (beginning-of-buffer)
+               (search-forward "package ")
+               (setq missingTypePackageStartingPoint (point))
+               (end-of-line)
+               (setq missingTypeImport (concat (buffer-substring missingTypePackageStartingPoint (point)) "." missingType))
+               (kill-buffer)
+             )
+             (progn
+               ;; grep failed, fallback trying ag
+               (ag-project-regexp (concat "import.*\." missingType "$"))
+               (set-process-sentinel
+                 (get-process "ag")
+                 (lambda (p e)
+                 "A callback attached to grep after the call to sbt-find-definitions"
+                 (message "ag callback called")
+                 (redisplay)
+                 (switch-to-existing-buffer-other-window "*ag search regexp:import")
+                 (compilation-next-error 1)
+                 (search-forward ":import ")
+                 (setq missingTypeStartingPoint (point))
+                 (end-of-line)
+                 (setq missingTypeImport (buffer-substring missingTypeStartingPoint (point)))
+                 (kill-buffer)
+               ))
+             )
+           )
+           (sleep-for 1)
+           (message (concat "result " missingTypeImport))
+           (kill-buffer "*grep*")
+           (switch-to-buffer startingBuffer)
+           (beginning-of-line)
+           (search-forward "] ")
+           (setq filenamePathPos (point))
+           (search-forward ":")
+           (left-char)
+           (setq filePath (buffer-substring filenamePathPos (point)))
+           (other-window 1)
+           (find-file filePath)
 
-(defun scala-import-type-not-found ()
-  "Search into an sbt output for the first missing import, search the for the type, copy the right import and add it to the failing file"
-  (interactive)
-  (search-forward "not found: type ")
-  (setq missingTypeStartingPoint (point))
-
-  (end-of-line)
-
-  (setq missingType (buffer-substring missingTypeStartingPoint (point)))
-  (sbt-find-definitions missingType)
-  (set-process-sentinel
-   (get-process "grep")
-   (lambda (p e)
-     "A callback attached to grep after the call to sbt-find-definitions"
-     (message "callback called")
-     (redisplay)
-     (beginning-of-buffer)
-     (search-forward "package ")
-     (setq missingTypePackageStartingPoint (point))
-     (end-of-line)
-     (setq missingTypePackage (concat (buffer-substring missingTypePackageStartingPoint (point)) "." missingType))
-
-     (kill-buffer)
-     (kill-buffer "*grep*")
-
-     (beginning-of-line)
-     (search-forward "] ")
-     (setq filenamePathPos (point))
-     (search-forward ":")
-     (left-char)
-     (setq filePath (buffer-substring filenamePathPos (point)))
-     (other-window 1)
-     (find-file filePath)
-
-     (beginning-of-buffer)
-     (next-line)
-     (newline)
-     (insert (concat "import " missingTypePackage))
-     (other-window -1)
+           (beginning-of-buffer)
+           (next-line)
+           (newline)
+           (insert (concat "import " missingTypeImport))
+           (other-window -1)
+       ))
      )
    )
-  )
 #+END_SRC
