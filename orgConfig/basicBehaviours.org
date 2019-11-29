@@ -22,8 +22,8 @@
    12. Winner Mode: restore windows, especially for ediff sessions
    13. Save on frame focus out: https://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
 3. Set:
-   1. Emacs window fullscreen at startup
-   2. Recent-f save list every 5 minutes
+   1. Recent-f save list every 5 minutes
+   2. Emacs window fullscreen at startup
    3. Keybindings for scrolling up and down to <M-up> and <M-down> (not natural scrolling)
    4. Keybindings for comment-or-uncomment-region
    5. Alwayst load newest byte code first
@@ -38,6 +38,7 @@
    11. Keybinding for eval-region
 4. Enhance:
    1. The load-theme function in order to unload any previous loaded themes
+   2. Show the matching paren into the minibuffer, if it is off screen
 #+BEGIN_SRC emacs-lisp
 (setq make-backup-files nil)					;1-1
 (setq auto-save-default nil)					;1-2
@@ -111,4 +112,13 @@
 
 (defadvice load-theme (before disable-themes-first activate)
   (disable-all-themes))                                         ;4-1
+
+                                                                ;4-2
+
+(defadvice show-paren-function (after my-echo-paren-matching-line activate)
+  "If a matching paren is off-screen, echo the matching line."
+  (when (char-equal (char-syntax (char-before (point))) ?\))
+    (let ((matching-text (blink-matching-open)))
+      (when matching-text
+        (message matching-text)))))
 #+END_SRC
