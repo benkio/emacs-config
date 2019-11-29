@@ -46,7 +46,8 @@
         (interactive (list
                     (read-string (format "type (%s): " (thing-at-point 'word))
                                  nil nil (thing-at-point 'word))))
-        (setq importToAdd (funcall 'scala-build-import type))
+
+        (setq importToAdd (funcall 'scala-build-import-ag type))
 
         (if importToAdd
           (save-excursion
@@ -57,20 +58,6 @@
           (user-error "Unable to find import for the type %s" type)
           )
       )
-
-      (defun scala-build-import (type)
-        (setq initialPosition (point))
-        (setq initialBuffer (current-buffer))
-
-        (setq missingTypeImport (funcall 'scala-build-import-ag type))
-        (sleep-for 5)
-        ;;(unless missingTypeImport (delete-window))
-        (delete-window)
-        (switch-to-buffer initialBuffer)
-        (goto-char initialPosition)
-        (message "missingTypeImport %s" missingTypeImport)
-        (eval missingTypeImport)
-    )
 
     (defun scala-build-import-ag (type)
       (setq missingTypeImport nil)
@@ -132,14 +119,14 @@
               package (buffer-substring-no-properties missingTypeStartingPoint (point))
               missingTypeImport (concat "import " package "." type))
             (kill-buffer)
+            )
+          ))
+
+          (sleep-for 2)
+          (switch-to-existing-buffer-other-window "*ag search regexp:(.*")
+          (kill-buffer))
+          (eval missingTypeImport)
           )
-      ))
-        )
-      (sleep-for 2)
-      (switch-to-existing-buffer-other-window "*ag search regexp:(.*")
-      (kill-buffer)
-      (eval missingTypeImport)
-    )
 
       (defun scala-import-type-not-found ()
         "Search into an sbt output for the first missing import, search the for the type, copy the right import and add it to the failing file"
@@ -172,4 +159,4 @@
        )
 
        (global-set-key (kbd "C-c c s i") 'scala-import-type-not-found)
-    #+END_SRC
+  #+END_SRC
