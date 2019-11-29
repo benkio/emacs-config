@@ -76,6 +76,7 @@
                       (when (not (string= major-mode "scala-mode"))
                          (switch-to-buffer "*grep*")
                          (next-error)
+                         (redisplay t)
                       )
                       (message "buffer-name %s " (buffer-name))
                       (beginning-of-buffer)
