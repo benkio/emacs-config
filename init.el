@@ -53,3 +53,17 @@
 (set 'configs (mapcar (lambda (x) (concat configPrefix x)) configs))
 (require 'org)
 (mapc (lambda (x) (org-babel-load-file (expand-file-name x))) configs)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (auctex undo-tree csv-mode yasnippet-snippets yaml-mode writegood-mode which-key use-package super-save scala-mode sbt-mode restclient py-yapf py-autopep8 ox-reveal ox-gfm monokai-theme magit jedi iedit htmlize hindent haskell-mode git-link flymake-haskell-multi flymake-cursor flycheck-pycheckers expand-region exec-path-from-shell elpy ein crux counsel-projectile browse-kill-ring ag))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
