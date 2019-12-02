@@ -14,6 +14,7 @@ Counsel appears to provide additional functions for various ivy and swiper comma
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
+  (setq ivy-initial-inputs-alist nil)
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
   (global-set-key (kbd "<f6>") 'ivy-resume))
 
