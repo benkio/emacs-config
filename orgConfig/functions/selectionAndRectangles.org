@@ -1,0 +1,14 @@
+* Selection and Rectangles
+
+Custom Functions regading selections and rectangles
+
+#+BEGIN_SRC emacs-lisp
+
+(defun reselect-last-region ()
+  (interactive)
+  (let ((start (mark t))
+        (end (point)))
+    (goto-char start)
+    (call-interactively' set-mark-command)
+    (goto-char end)))
+#+END_SRC

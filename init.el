@@ -40,6 +40,7 @@
 		"browseKillRing.org"
 		"programminglanguages.org"
 		"functions/formatting.org"
+		"functions/selectionAndRectangles.org"
 		"functions/filenamePathToClipboard.org"
 		"functions/windowManipulation.org"
 		"functions/textManipulation.org"
