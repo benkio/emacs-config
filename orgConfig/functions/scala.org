@@ -177,19 +177,38 @@
 (defun scala-remove-unused-import ()
   "Parse a shell/sbt output in search of the first unused import and remove it"
   (interactive)
-  (save-excursion
-    (end-of-buffer)
-    (funcall 'scala-goto-next-warn-error "Unused Import" t)
-    (setq bracketImport (line-contains-string ","))
-    (if bracketImport
-        t
+  (funcall 'scala-goto-next-warn-error "Unused Import" t)
+  (setq bracketImport (line-contains-string ","))
+  (if bracketImport
       (progn
-        (beginning-of-line)
-        (kill-line)
-        (delete-char -1) ;; kill newline
-        )
+        (message "comma separated imports")
+        (let (p1 p2)
+          (search-backward ",")
+          (setq p1 (point))
+          (forward-word)
+          (setq p2 (point))
+
+          (kill-region p1 p2)))
+
+    (progn
+      (beginning-of-line)
+      (kill-line)
+      (delete-char -1) ;; kill newline
+      ;; delete the comma from the previous element of imports
+      (when (string= (string (char-before)) ",") (delete-char -1))
       )
     )
+  (when (string= (string (char-before)) "{")
+    (progn ;; Cleanup import with empty brackets
+      (next-line)
+      (beginning-of-line)
+      (kill-line)
+      (previous-line)
+      (beginning-of-line)
+      (kill-line)
+      (delete-char 2)
+      ))
+  (other-window -1)
   )
 
 (defun line-contains-string (args)
