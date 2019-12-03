@@ -3,15 +3,22 @@
   Functions used specifically for dealing with scala code
 
   #+BEGIN_SRC emacs-lisp :tangle yes
-(defun scala-goto-next-warn-error (&optional errorMessage)
+(defun scala-goto-next-warn-error (&optional errorMessage backwardSearch)
   "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
   (interactive)
   ;; Parse and Navigate to file
   (unless errorMessage (setq errorMessage ""))
-
+  (defun searchFunction (backwardDrection)
+    (if backwardDrection
+        're-search-backward
+        're-search-forward
+        )
+    )
+  (setq searchRegexp (concat ".*\\.scala.*" (regexp-quote errorMessage)))
+  (message "searchRegexp %s - %s - %s" searchRegexp errorMessage backwardSearch)
   (condition-case
       nil
-      (re-search-forward (concat ".*\.scala.*" (regexp-quote errorMessage)))
+      (funcall (searchFunction backwardSearch) searchRegexp)
       (error (user-error "no match found for %s" errorMessage))
       )
   (beginning-of-line)
@@ -166,4 +173,30 @@
   )
 
 (global-set-key (kbd "C-c c s i") 'scala-import-type-not-found)
+
+(defun scala-remove-unused-import ()
+  "Parse a shell/sbt output in search of the first unused import and remove it"
+  (interactive)
+  (save-excursion
+    (end-of-buffer)
+    (funcall 'scala-goto-next-warn-error "Unused Import" t)
+    (setq bracketImport (line-contains-string ","))
+    (if bracketImport
+        t
+      (progn
+        (beginning-of-line)
+        (kill-line)
+        (delete-char -1) ;; kill newline
+        )
+      )
+    )
+  )
+
+(defun line-contains-string (args)
+  "Check if the current line contains the input string"
+  (save-excursion
+    (beginning-of-line)
+    (when (search-forward args (line-end-position) t) t)
+    )
+  )
   #+END_SRC
