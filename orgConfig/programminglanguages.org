@@ -257,3 +257,7 @@ Add all the needed components for scala:
            (selected-file (completing-read "Select article: " files nil t)))
       (insert (format "{%% post_url %s %%}" selected-file)))))
 #+END_SRC
+** Elisp
+#+begin_src emacs-lisp :tangle yes
+(use-package s)
+#+end_src

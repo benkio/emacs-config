@@ -3,11 +3,17 @@
   Functions used specifically for dealing with scala code
 
   #+BEGIN_SRC emacs-lisp :tangle yes
-(defun scala-goto-next-warn-error ()
+(defun scala-goto-next-warn-error (&optional errorMessage)
   "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
   (interactive)
   ;; Parse and Navigate to file
-  (search-forward ".scala")
+  (unless errorMessage (setq errorMessage ""))
+
+  (condition-case
+      nil
+      (re-search-forward (concat ".*\.scala.*" (regexp-quote errorMessage)))
+      (error (user-error "no match found for %s" errorMessage))
+      )
   (beginning-of-line)
   (search-forward "] ")
   (setq filenamePathPos (point))
@@ -136,8 +142,7 @@
   (search-forward "not found: type ")
   (setq type (thing-at-point 'word)
         startingBuffer (current-buffer))
-  (previous-line)
-  (previous-line)
+  (forward-line -2)
   (funcall 'scala-goto-next-warn-error)
   (setq missingImport (funcall 'scala-build-import type))
   (sleep-for 2)
