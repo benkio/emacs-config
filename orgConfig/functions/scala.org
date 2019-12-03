@@ -178,16 +178,25 @@
   "Parse a shell/sbt output in search of the first unused import and remove it"
   (interactive)
   (funcall 'scala-goto-next-warn-error "Unused Import" t)
-  (setq bracketImport (line-contains-string ","))
+  (setq bracketImport (line-contains-string ",")
+        importPos (save-excursion (search-backward "import ") (point)))
   (if bracketImport
       (progn
-        (message "comma separated imports")
-        (let (p1 p2)
-          (search-backward ",")
+        (let (p1 p2 afterComma)
+          (condition-case
+              nil
+              (search-backward "," importPos)
+            (error
+             (search-backward "{" importPos)
+             (forward-char)
+             (setq afterComma t)
+             )
+            )
+
           (setq p1 (point))
           (forward-word)
           (setq p2 (point))
-
+          (when afterComma (setq p2 (1+ p2)))
           (kill-region p1 p2)))
 
     (progn
@@ -198,16 +207,51 @@
       (when (string= (string (char-before)) ",") (delete-char -1))
       )
     )
-  (when (string= (string (char-before)) "{")
-    (progn ;; Cleanup import with empty brackets
-      (next-line)
-      (beginning-of-line)
-      (kill-line)
-      (previous-line)
-      (beginning-of-line)
-      (kill-line)
-      (delete-char 2)
-      ))
+  (progn
+    (search-backward "{")
+    (setq openBracketPos (point))
+    (search-forward "}")
+    (setq closedBracketPos (point))
+    (setq remainingImports (s-count-matches "\\w+" (buffer-substring openBracketPos closedBracketPos)))
+    (message "remainingImports " remainingImports)
+    (cond
+     (
+      (= 0 remainingImports)
+      (progn ;; Cleanup import with empty brackets
+        (kill-region openBracketPos closedBracketPos)
+        (goto-char importPos)
+        (beginning-of-buffer)
+        (kill-line)
+        (delete-char -1)
+        ))
+     (
+      (= 1 remainingImports)
+        (save-restriction
+          (narrow-to-region importPos closedBracketPos)
+
+          ;; all on one line, only one import remained
+          ;; Just join 2 lines together works
+          (while (not (= (line-number-at-pos importPos)
+                        (line-number-at-pos closedBracketPos)))
+            (progn
+              (goto-char closedBracketPos)
+              (join-line)
+              (setq closedBracketPos (point))
+              )
+            )
+
+          (beginning-of-line)
+          (while (search-forward "{" nil t)
+            (replace-match ""))
+          (beginning-of-line)
+          (while (search-forward "}" nil t)
+            (replace-match ""))
+          (beginning-of-line)
+          (search-forward "import ")
+          (while (search-forward " " nil t)
+            (replace-match ""))
+          ))
+     ))
   (other-window -1)
   )
 
