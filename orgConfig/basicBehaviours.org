@@ -21,6 +21,7 @@
    11. Better Scrolling
    12. Winner Mode: restore windows, especially for ediff sessions
    13. Save on frame focus out: https://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
+   14. global hs-minor-mode
 3. Set:
    1. Recent-f save list every 5 minutes
    2. Emacs window fullscreen at startup
@@ -78,6 +79,8 @@
       scroll-preserve-screen-position 1)
 (winner-mode)                                                   ;2-12
 (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))    ;2-13
+                                                                ;2-14
+(add-hook 'prog-mode-hook #'hs-minor-mode)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))	;3-1
 (run-at-time nil (* 5 60) 'recentf-save-list)			;3-2
