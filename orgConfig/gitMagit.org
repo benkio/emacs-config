@@ -10,4 +10,9 @@ Managing git repos.
   :init)
 
 (use-package git-link)
+
+(use-package magithub
+  :after magit
+  :config
+  (magithub-feature-autoinject t))
 #+END_SRC
