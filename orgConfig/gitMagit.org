@@ -11,8 +11,6 @@ Managing git repos.
 
 (use-package git-link)
 
-(use-package magithub
-  :after magit
-  :config
-  (magithub-feature-autoinject t))
+(use-package forge
+  :after magit)
 #+END_SRC
