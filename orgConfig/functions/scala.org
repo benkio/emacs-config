@@ -27,6 +27,7 @@
   (search-forward ":")
   (left-char)
   (setq filePath (buffer-substring filenamePathPos (point)))
+  (when (= (count-windows) 1) (split-window-right))
   (other-window 1)
   (find-file filePath)
   (other-window -1)
