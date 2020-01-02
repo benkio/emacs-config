@@ -152,7 +152,7 @@
         startingBuffer (current-buffer))
   (forward-line -2)
   (funcall 'scala-goto-next-warn-error)
-  (setq missingImport (funcall 'scala-build-import type))
+  (setq missingImport (funcall 'scala-build-import-ag type))
   (sleep-for 2)
   (switch-to-buffer startingBuffer)
   (when missingImport
