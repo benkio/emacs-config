@@ -95,7 +95,7 @@
   (switch-to-existing-buffer-other-window "*ag search regexp:import")
   (kill-buffer)
   (unless missingTypeImport
-    (ag-project-regexp (concat "(.*class " type ".*|.*trait " type ".*|.*type " type ".*)"))
+    (ag-project-regexp (concat "(.*object " type ".*|.*class " type ".*|.*trait " type ".*|.*type " type ".*)"))
     (set-process-sentinel
      (get-process "ag")
      (lambda (p e)
@@ -147,7 +147,7 @@
 (defun scala-import-type-not-found ()
   "Search into an sbt output for the first missing import, search the for the type, copy the right import and add it to the failing file"
   (interactive)
-  (search-forward "not found: type ")
+  (search-forward-regexp "not found: \\(type\\|value\\) ")
   (setq type (thing-at-point 'word)
         startingBuffer (current-buffer))
   (forward-line -2)
