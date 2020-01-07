@@ -3,6 +3,22 @@
   Functions used specifically for dealing with scala code
 
   #+BEGIN_SRC emacs-lisp :tangle yes
+(defun sbt-event-file-navigation (&optional notSplitWindow)
+  "Starting from an sbt output line [info] [warn] or [error] this function:
+   - parse the line for the target source file
+   - move to the file: it creates a windows if the count-windows is = 1 and the parameter is false
+  "
+  (beginning-of-line)
+  (search-forward "] ")
+  (setq filenamePathPos (point))
+  (search-forward ":")
+  (left-char)
+  (setq filePath (buffer-substring filenamePathPos (point)))
+  (when (and notSplitWindow (= (count-windows) 1)) (split-window-right))
+  (other-window 1)
+  (find-file filePath)
+  )
+
 (defun scala-goto-next-warn-error (&optional errorMessage backwardSearch)
   "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
   (interactive)
@@ -14,6 +30,16 @@
         're-search-forward
         )
     )
+  (defun parse-go-to-line-or-column (gotoFunction)
+    "parse line or column starting from an sbt output [info] [warn] or [error]"
+    (right-char)
+    (setq filenamePathPos (point))
+    (search-forward ":")
+    (left-char)
+    (setq fileLineOrColumn (buffer-substring filenamePathPos (point)))
+    (other-window 1)
+    (funcall gotoFunction (string-to-number fileLineOrColumn))
+    )
   (setq searchRegexp (concat ".*\\.scala.*" (regexp-quote errorMessage)))
   (message "searchRegexp %s - %s - %s" searchRegexp errorMessage backwardSearch)
   (condition-case
@@ -21,35 +47,13 @@
       (funcall (searchFunction backwardSearch) searchRegexp)
       (error (user-error "no match found for %s" errorMessage))
       )
-  (beginning-of-line)
-  (search-forward "] ")
-  (setq filenamePathPos (point))
-  (search-forward ":")
-  (left-char)
-  (setq filePath (buffer-substring filenamePathPos (point)))
-  (when (= (count-windows) 1) (split-window-right))
-  (other-window 1)
-  (find-file filePath)
+  (sbt-event-file-navigation t)
   (other-window -1)
 
-  ;; Parse and navigate to line
-  (right-char)
-  (setq filenamePathPos (point))
-  (search-forward ":")
-  (left-char)
-  (setq fileLine (buffer-substring filenamePathPos (point)))
-  (other-window 1)
-  (goto-line (string-to-number fileLine))
+  (parse-go-to-line-or-column 'goto-line)
   (other-window -1)
 
-  ;; Parse and navigate to column
-  (right-char)
-  (setq filenamePathPos (point))
-  (search-forward ":")
-  (left-char)
-  (setq fileColumn (buffer-substring filenamePathPos (point)))
-  (other-window 1)
-  (right-char (string-to-number fileColumn))
+  (parse-go-to-line-or-column 'right-char)
   )
 
 (global-set-key (kbd "C-c c s e") 'scala-goto-next-warn-error)
@@ -156,14 +160,7 @@
   (sleep-for 2)
   (switch-to-buffer startingBuffer)
   (when missingImport
-    (beginning-of-line)
-    (search-forward "] ")
-    (setq filenamePathPos (point))
-    (search-forward ":")
-    (left-char)
-    (setq filePath (buffer-substring-no-properties filenamePathPos (point)))
-    (other-window 1)
-    (find-file filePath)
+    (sbt-event-file-navigation)
 
     (beginning-of-buffer)
     (next-line)
