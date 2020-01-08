@@ -71,7 +71,7 @@
       (save-excursion
         (switch-to-buffer startingBuffer)
         (beginning-of-buffer)
-        (next-line)
+        (forward-line)
         (newline)
         (insert importToAdd))
     (user-error "Unable to find import for the type %s" type)
