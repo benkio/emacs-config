@@ -212,50 +212,51 @@
      (setq noBracket t)
      )
    )
- (unless noBracket
-   (setq openBracketPos (point))
-   (search-forward "}")
-   (setq closedBracketPos (point))
-   (setq remainingImports (s-count-matches "\\w+" (buffer-substring openBracketPos closedBracketPos)))
-   (message "remainingImports " remainingImports)
-   (cond
-    (
-     (= 0 remainingImports)
-     (progn ;; Cleanup import with empty brackets
-       (kill-region openBracketPos closedBracketPos)
-       (goto-char importPos)
-       (beginning-of-buffer)
-       (kill-line)
-       (delete-char -1)
-       ))
-    (
-     (= 1 remainingImports)
-       (save-restriction
-         (narrow-to-region importPos closedBracketPos)
-
-         ;; all on one line, only one import remained
-         ;; Just join 2 lines together works
-         (while (not (= (line-number-at-pos importPos)
-                       (line-number-at-pos closedBracketPos)))
-           (progn
-             (goto-char closedBracketPos)
-             (join-line)
-             (setq closedBracketPos (point))
-             )
-           )
-
-         (beginning-of-line)
-         (while (search-forward "{" nil t)
-           (replace-match ""))
-         (beginning-of-line)
-         (while (search-forward "}" nil t)
-           (replace-match ""))
-         (beginning-of-line)
-         (search-forward "import ")
-         (while (search-forward " " nil t)
-           (replace-match ""))
+ (when (and noBracket (> (point) importPos))
+   (progn
+     (setq openBracketPos (point))
+     (search-forward "}")
+     (setq closedBracketPos (point))
+     (setq remainingImports (s-count-matches "\\w+" (buffer-substring openBracketPos closedBracketPos)))
+     (message "remainingImports " remainingImports)
+     (cond
+      (
+       (= 0 remainingImports)
+       (progn ;; Cleanup import with empty brackets
+         (kill-region openBracketPos closedBracketPos)
+         (goto-char importPos)
+         (beginning-of-buffer)
+         (kill-line)
+         (delete-char -1)
          ))
-    ))
+      (
+       (= 1 remainingImports)
+         (save-restriction
+           (narrow-to-region importPos closedBracketPos)
+
+           ;; all on one line, only one import remained
+           ;; Just join 2 lines together works
+           (while (not (= (line-number-at-pos importPos)
+                         (line-number-at-pos closedBracketPos)))
+             (progn
+               (goto-char closedBracketPos)
+               (join-line)
+               (setq closedBracketPos (point))
+               )
+             )
+
+           (beginning-of-line)
+           (while (search-forward "{" nil t)
+             (replace-match ""))
+           (beginning-of-line)
+           (while (search-forward "}" nil t)
+             (replace-match ""))
+           (beginning-of-line)
+           (search-forward "import ")
+           (while (search-forward " " nil t)
+             (replace-match ""))
+           ))
+    )))
   (other-window -1)
   )
 
