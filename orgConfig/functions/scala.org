@@ -204,15 +204,15 @@
       ;; delete the comma from the previous element of imports
       (when (string= (string (char-before)) ",") (delete-char -1))
       ))
- (setq noBracket nil)
+ (setq bracket t)
  (condition-case
      nil
      (search-backward "{")
    (error
-     (setq noBracket t)
+     (setq bracket nil)
      )
    )
- (when (and noBracket (> (point) importPos))
+ (when (and bracket (> (point) importPos))
    (progn
      (setq openBracketPos (point))
      (search-forward "}")
