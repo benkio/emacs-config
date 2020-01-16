@@ -81,7 +81,9 @@
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 (winner-mode)                                                   ;2-12
-(add-hook 'focus-out-hook (lambda () (save-some-buffers t)))    ;2-13
+(add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
+(defadvice select-window (after select-window-and-do-stuff activate) (save-some-buffers t))
+                                                                ;2-13
                                                                 ;2-14
 (add-hook 'prog-mode-hook #'hs-minor-mode)
 
