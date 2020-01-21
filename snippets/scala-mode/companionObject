@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Scala Companion Object
+# key: object
+# --
+object $1 {
+  def apply($2) : $1 = $1($2)$0
+}
