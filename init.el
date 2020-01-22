@@ -28,7 +28,6 @@
 		"ibuffer.org"
 		"recentf.org"
 		"crux.org"
-		"undotree.org"
 		"orgPackages.org"
 		"whichkey.org"
 		"autocomplete.org"
@@ -49,6 +48,7 @@
 		"functions/scala.org"
 		"functions/cursorMovement.org"
 		"functions/apparences.org"
+                "undotree.org"
 		))
 
 (set 'configs (mapcar (lambda (x) (concat configPrefix x)) configs))
