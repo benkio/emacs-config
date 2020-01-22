@@ -1,5 +1,5 @@
 * LaTeX
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package auctex
 :defer t
 :ensure t)

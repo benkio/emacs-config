@@ -2,7 +2,7 @@
 
 Select by region, back and forth
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
 #+END_SRC

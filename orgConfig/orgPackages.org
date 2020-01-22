@@ -6,7 +6,7 @@
 
   Converts org file to github markdown with the command: `M-x org-gfm-export-to-markdown`
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 (use-package ox-gfm
   :config
@@ -18,7 +18,7 @@
 
 Slide generation from org
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package ox-reveal
   :config
     (require 'ox-reveal)

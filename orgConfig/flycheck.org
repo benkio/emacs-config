@@ -1,6 +1,6 @@
 * Flycheck
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package flycheck
   :ensure t
   :init

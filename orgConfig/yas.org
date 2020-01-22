@@ -2,7 +2,7 @@
 
 No need to describe yasnippet
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 ; Collection of snippets
 (use-package yasnippet-snippets

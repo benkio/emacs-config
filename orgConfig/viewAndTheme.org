@@ -17,7 +17,7 @@
 5. Set Theme
 6. Set Font
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (menu-bar-mode -1)		;1-1
   (tool-bar-mode -1)		;1-2
   (scroll-bar-mode -1)		;1-3

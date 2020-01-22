@@ -1,5 +1,5 @@
 * Whitespace
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package whitespace
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))

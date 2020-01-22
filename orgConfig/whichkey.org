@@ -2,7 +2,7 @@
 
 Give you suggestions about the keybindings
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package which-key
   :config
   (which-key-mode))

@@ -1,6 +1,6 @@
 * Programming Languages
 ** Python
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (use-package python
   :ensure nil
   :mode ("\\.py" . python-mode)
@@ -66,7 +66,7 @@ Add all the needed components for scala:
   * scala mode
   * sbt mode
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 ;; Enable scala-mode and sbt-mode
 (use-package scala-mode
@@ -87,7 +87,7 @@ Add all the needed components for scala:
 (add-hook 'scala-mode-hook 'subword-mode)
 #+END_SRC
 ** Haskell
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (use-package haskell-mode
     :config
     (add-hook 'haskell-mode-hook #'subword-mode)
@@ -112,7 +112,7 @@ Add all the needed components for scala:
     (setq hindent-style "johan-tibell"))
 #+END_SRC
 ** Latex
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 ;; LaTeX configuration
 (use-package tex
 :ensure auctex
@@ -240,7 +240,7 @@ Add all the needed components for scala:
 ** Web-mode
 ;; TODO
 ** Markdown
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package markdown-mode
   :ensure t
   :mode (("\\.md\\'" . gfm-mode)
@@ -261,6 +261,6 @@ Add all the needed components for scala:
       (insert (format "{%% post_url %s %%}" selected-file)))))
 #+END_SRC
 ** Elisp
-#+begin_src emacs-lisp :tangle yes
+   #+begin_src emacs-lisp :tangle yes
 (use-package s)
-#+end_src
+   #+end_src

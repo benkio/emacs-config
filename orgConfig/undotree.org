@@ -1,5 +1,5 @@
 * Undo-tree
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package undo-tree
   :config
   ;; autosave the undo-tree history

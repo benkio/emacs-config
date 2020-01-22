@@ -1,6 +1,6 @@
 * Autocomplete
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package auto-complete
 
   :init

@@ -4,7 +4,7 @@
 Set up melpa and use package to make things easier
 https://cestlaz.github.io/posts/using-emacs-1-setup/
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (require 'package)
 (setq package-enable-at-startup nil)
 (setq package-archives '(("gnu" . "http://mirrors.163.com/elpa/gnu/")

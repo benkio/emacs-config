@@ -2,7 +2,7 @@
 
 Function used to change the apparence of emacs. Eg. themes
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 (defun disable-all-themes ()
   "disable all active themes."

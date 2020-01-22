@@ -6,7 +6,7 @@ Swiper helps you search through emacs, and shows you text around the matching te
 
 Counsel appears to provide additional functions for various ivy and swiper commands. Counsel is available via Melpa, and will automatically install both Swiper AND Ivy as dependencies.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 (use-package ivy
   :ensure t

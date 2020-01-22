@@ -3,7 +3,7 @@
 Inspect the git repository you are in and allow you to search files
 and into the files like grep
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package projectile
   :ensure t
   :config

@@ -2,6 +2,6 @@
 
 Mode to handle CSV files
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package csv-mode)
 #+END_SRC

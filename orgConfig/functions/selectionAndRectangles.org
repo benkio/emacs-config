@@ -2,7 +2,7 @@
 
 Custom Functions regading selections and rectangles
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 (defun reselect-last-region ()
   (interactive)

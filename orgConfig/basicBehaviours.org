@@ -40,7 +40,7 @@
    11. Keybinding for eval-region
 4. Enhance:
    1. The load-theme function in order to unload any previous loaded themes
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (setq make-backup-files nil)					;1-1
 (setq auto-save-default nil)					;1-2
 (blink-cursor-mode -1)						;1-3

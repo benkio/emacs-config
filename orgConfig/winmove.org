@@ -2,7 +2,7 @@
 
 To move between windows
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package windmove
   :config
   ;; use shift + arrow keys to switch between visible buffers

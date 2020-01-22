@@ -1,6 +1,6 @@
 * Browse Kill Ring
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 (use-package browse-kill-ring
   :bind ("C-C y" . browse-kill-ring)

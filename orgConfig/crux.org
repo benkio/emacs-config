@@ -4,7 +4,7 @@ https://github.com/bbatsov/crux
 
 package containing a lot of useful functions. So you don't need to copy and paste them from Emacs Redux
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 (use-package  crux
   :bind (("C-c D" . crux-delete-file-and-buffer)

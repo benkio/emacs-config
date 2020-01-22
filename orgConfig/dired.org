@@ -2,7 +2,7 @@
 
 File system for emacs
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package dired
   :ensure nil
   :config

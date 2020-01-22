@@ -2,7 +2,7 @@
 
 Managing git repos.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (use-package magit
   :bind (("C-c g s" . magit-status)
          ("C-c g i" . magit-init)

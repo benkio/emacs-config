@@ -1,6 +1,6 @@
 * Python
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle yes
   (use-package ein
     :ensure t
     :commands (ein:notebooklist-open))

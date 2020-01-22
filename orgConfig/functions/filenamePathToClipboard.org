@@ -2,7 +2,7 @@
 
 functions to get the name of the file and path to clipboard
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (defun copy-file-name-to-clipboard (filename-manipulate-func)
   "Copy the current buffer file name to the clipboard after the application of the input function."
   (interactive)

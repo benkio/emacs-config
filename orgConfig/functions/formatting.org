@@ -2,7 +2,7 @@
 
   Functions for formatting code.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (defun xml-format ()
   "intent an xml file using xlint"
   (interactive)
