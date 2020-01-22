@@ -13,8 +13,7 @@ package containing a lot of useful functions. So you don't need to copy and past
          ("C-S-RET" . crux-smart-open-line-above)
          ("C-c r f" . crux-recentf-find-file)
          ("C-c d" . crux-duplicate-current-line-or-region)
-         ("C-c f" . crux-cleanup-buffer-or-region)
-  )
+         )
 )
 
 #+END_SRC
