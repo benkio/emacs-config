@@ -279,5 +279,5 @@
   (end-of-buffer)
   )
 
-(global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)#+END_SRC
+(global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)
 #+END_SRC
