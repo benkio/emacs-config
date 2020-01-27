@@ -10,7 +10,4 @@ Managing git repos.
   :init)
 
 (use-package git-link)
-
-(use-package forge
-  :after magit)
 #+END_SRC
