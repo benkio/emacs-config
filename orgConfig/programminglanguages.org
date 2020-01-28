@@ -82,9 +82,6 @@ Add all the needed components for scala:
    'minibuffer-complete-word
    'self-insert-command
    minibuffer-local-completion-map))
-
-;; subWord enabled because most of the time you need to jump by camelCase
-(add-hook 'scala-mode-hook 'subword-mode)
 #+END_SRC
 ** Haskell
 #+BEGIN_SRC emacs-lisp :tangle yes
