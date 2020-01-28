@@ -23,9 +23,9 @@
   (use-package py-yapf
   :config (add-hook 'python-mode-hook 'py-yapf-enable-on-save))
 
-  (use-package flycheck-pycheckers
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
+  ;; (use-package flycheck-pycheckers
+  ;; :config
+  ;; (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
   ;; Jupiter Notebook
   (use-package ein)
   ;; (use-package ein-notebook) Error (use-package): Failed to install ein-notebook: Package ‘ein-notebook-’ is unavailable
@@ -130,9 +130,6 @@ Add all the needed components for scala:
 (setq TeX-output-view-style
     (quote
      (("^pdf$" "." "evince -f %o")))))
-
-;; Setting up writegood-mode
-(use-package writegood-mode)
 
 (unless (boundp 'org-export-latex-classes)
   (setq org-export-latex-classes nil))

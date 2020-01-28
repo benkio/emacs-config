@@ -54,3 +54,8 @@
 (set 'configs (mapcar (lambda (x) (concat configPrefix x)) configs))
 (require 'org)
 (mapc (lambda (x) (org-babel-load-file (expand-file-name x))) configs)
+
+;; not Windows friendly packages
+(unless (string-equal system-type "windows-nt")
+  (org-babel-load-file "~/.emacs.d/orgConfig/execPathFromShell.org")
+  )

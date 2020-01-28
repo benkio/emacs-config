@@ -1,9 +1,0 @@
-* LaTeX
-#+BEGIN_SRC emacs-lisp :tangle yes
-(use-package auctex
-:defer t
-:ensure t)
-
-(use-package writegood-mode
-:ensure t)
-#+END_SRC
