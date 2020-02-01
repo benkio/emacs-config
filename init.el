@@ -24,7 +24,6 @@
 		"expandRegion.org"
 		"whitespace.org"
 		"counsel.org"
-		"execPathFromShell.org"
 		"ibuffer.org"
 		"recentf.org"
 		"crux.org"
