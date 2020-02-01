@@ -70,7 +70,7 @@
 	  ((> (frame-outer-width frame) 1400)
            (set-face-attribute 'default nil :height 125))
 	  (t
-	  (set-face-attribute 'default nilg :height 100))
+	  (set-face-attribute 'default nil :height 100))
     )
   )
 

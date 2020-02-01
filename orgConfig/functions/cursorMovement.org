@@ -3,7 +3,7 @@
 Collect all the functions that move the cursor somewhere
 
 #+begin_src emacs-lisp :tangle yes
-(defun er-go-to-column (column)
+(defun goto-column (column)
   (interactive "nColumn: ")
   (move-to-column column t))
 
