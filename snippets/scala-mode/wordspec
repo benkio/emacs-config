@@ -7,10 +7,10 @@ import org.scalatest._
 class $1Spec extends WordSpec with Matchers {
 
   "$1" should {
-     "behave like this" when {
-           "that is provided" in {
+    "behave like this" when {
+      "that is provided" in {
 
-           }
-     }
+      }
+    }
   }
 }
