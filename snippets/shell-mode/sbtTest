@@ -2,4 +2,4 @@
 # name: sbt test
 # key: sbtT
 # --
-sbt test$0
+sbt --supershell=false test$0

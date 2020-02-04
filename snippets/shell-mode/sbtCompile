@@ -3,4 +3,4 @@
 # key: sbtC
 # --
 
-sbt compile$0
+sbt --supershell=false compile$0
