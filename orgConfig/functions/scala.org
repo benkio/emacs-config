@@ -87,38 +87,44 @@
        "A callback attached to ag import"
        (redisplay)
        (switch-to-existing-buffer-other-window "*ag search regexp:import")
-       (when (string= e "finished\n")
-         (compilation-next-error 1)
-         (search-forward ":import ")
-         (setq missingTypeStartingPoint (point))
-         (end-of-line)
-         (setq missingTypeImport (concat "import " (buffer-substring-no-properties missingTypeStartingPoint (point))))
-         (switch-to-existing-buffer-other-window "*ag search regexp:import")
-         (kill-buffer)
-         (ag-project-regexp (concat "(.*object " type ".*|.*class " type ".*|.*trait " type ".*|.*type " type ".*)"))
-         (set-process-sentinel
-          (get-process "ag")
-          (lambda (p e)
-            "A callback attached to ag types"
-            (redisplay)
-            (switch-to-existing-buffer-other-window "*ag search regexp:(.*")
-            (cond
-             ((string= e "finished\n") (progn
-                                         (setq filePath (funcall 'ag-parsing-first-error-file-path))
-                                         (find-file filePath)
-                                         (beginning-of-buffer)
-                                         (search-forward "package ")
-                                         (setq missingTypeStartingPoint (point))
-                                         (end-of-line)
-                                         (setq
-                                          package (buffer-substring-no-properties missingTypeStartingPoint (point))
-                                          missingTypeImport (concat "import " package "." type))
-                                         (kill-buffer)
-                                         ))
-             ((string-prefix-p "exited abnormally" e ()) (kill-buffer))
-             )))
-         ))))
-
+       (message "signal first: %s" e)
+       (cond
+        ((string= e "finished\n") (progn
+                                    (compilation-next-error 1)
+                                    (search-forward ":import ")
+                                    (setq missingTypeStartingPoint (point))
+                                    (end-of-line)
+                                    (setq missingTypeImport (concat "import " (buffer-substring-no-properties missingTypeStartingPoint (point))))
+                                    (switch-to-existing-buffer-other-window "*ag search regexp:import")
+                                    (kill-buffer)
+                                    ))
+        ((string-prefix-p "exited abnormally" e ()) (progn
+                                                      (kill-buffer)
+                                                      (ag-project-regexp (concat "(.*object " type ".*|.*class " type ".*|.*trait " type ".*|.*type " type ".*)"))
+                                                      (set-process-sentinel
+                                                       (get-process "ag")
+                                                       (lambda (p e)
+                                                         "A callback attached to ag types"
+                                                         (redisplay)
+                                                         (switch-to-existing-buffer-other-window "*ag search regexp:(.*")
+                                                         (message "signal second: %s" e)
+                                                         (cond
+                                                          ((string= e "finished\n") (progn
+                                                                                      (setq filePath (funcall 'ag-parsing-first-error-file-path))
+                                                                                      (find-file filePath)
+                                                                                      (beginning-of-buffer)
+                                                                                      (search-forward "package ")
+                                                                                      (setq missingTypeStartingPoint (point))
+                                                                                      (end-of-line)
+                                                                                      (setq
+                                                                                       package (buffer-substring-no-properties missingTypeStartingPoint (point))
+                                                                                       missingTypeImport (concat "import " package "." type))
+                                                                                      (kill-buffer)
+                                                                                      ))
+                                                          ((string-prefix-p "exited abnormally" e ()) (kill-buffer))
+                                                          )))
+                                                      ))
+        ))))
   (while (accept-process-output (get-process "ag") 0.5))
   (when (> (count-windows) 2) (other-window -1))
   (eval missingTypeImport)
