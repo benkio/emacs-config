@@ -8,24 +8,10 @@ Counsel appears to provide additional functions for various ivy and swiper comma
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 
-(use-package ivy
-  :ensure t
-  :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
-  (setq ivy-initial-inputs-alist nil)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume))
-
-(use-package swiper
-  :ensure t
-  :config
-  (global-set-key "\C-s" 'swiper))
-
 ;; Set a reasonable fallback keybinding for isearch
 (global-set-key (kbd "C-c C-s") 'isearch-forward)
 
+;; you can simply install counsel which will bring in the other two as dependencies
 (use-package counsel
   :ensure t
   :config
@@ -39,7 +25,17 @@ Counsel appears to provide additional functions for various ivy and swiper comma
   (global-set-key (kbd "C-c j") 'counsel-git-grep)
   (global-set-key (kbd "C-c a") 'counsel-ag)
   (global-set-key (kbd "C-x l") 'counsel-locate)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+  ;; IVY CONFIGURATIONS
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-initial-inputs-alist nil)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  ;; SWIPER CONFIGURATIONS
+  (global-set-key "\C-s" 'swiper)
+)
 
 (use-package counsel-projectile
   :ensure t
