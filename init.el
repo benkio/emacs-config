@@ -21,6 +21,7 @@
 		"dired.org"
 		"winmove.org"
 		"csvMode.org"
+                "execPathFromShell.org"
 		"expandRegion.org"
 		"whitespace.org"
 		"counsel.org"

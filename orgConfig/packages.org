@@ -6,16 +6,23 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 (require 'package)
-(setq package-enable-at-startup nil)
-(setq package-archives '(("gnu" . "http://mirrors.163.com/elpa/gnu/")
-                         ("melpa" . "https://melpa.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")))
+(setq package-archives
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa-stb" . "https://stable.melpa.org/packages/")
+        ("melpa" . "https://melpa.org/packages/"))
+      tls-checktrust t
+      tls-program '("gnutls-cli --x509cafile %t -p %p %h")
+      gnutls-verify-error t)
+
 (package-initialize)
 
 ;; Bootstrap `use-package'
-(unless (package-installed-p 'use-package)
-(package-refresh-contents)
-(package-install 'use-package))
-
-(setq use-package-always-ensure t)
+(unless (require 'use-package nil t)
+  (if (not (yes-or-no-p (concat "Refresh packages, install use-package and"
+                                " other packages used by init file? ")))
+      (error "you need to install use-package first")
+    (package-refresh-contents)
+    (package-install 'use-package)
+    (require 'use-package)
+    (setq use-package-always-ensure t)))
 #+END_SRC

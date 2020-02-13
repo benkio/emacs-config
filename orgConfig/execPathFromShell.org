@@ -1,0 +1,11 @@
+* Exec Path From Shell
+
+
+#+begin_src emacs-lisp :tangle yes
+
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns x))
+  :config
+  (exec-path-from-shell-initialize))
+#+end_src

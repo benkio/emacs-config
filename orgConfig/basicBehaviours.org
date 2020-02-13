@@ -118,8 +118,6 @@
 
 (global-set-key (kbd "C-c c l e") 'eval-region)                 ;3-12
 
-(setq hs-hide-comments-when-hiding-all t)                       ;3-12
-
 (defadvice load-theme (before disable-themes-first activate)
   (disable-all-themes))                                         ;4-1
 #+END_SRC
