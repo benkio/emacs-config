@@ -10,29 +10,39 @@
 
   ;; elpy
   (use-package elpy
+  :ensure t
   :after (python)
   :init
   (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
   :config
   (setq elpy-rpc-backend "jedi")
-  (setq elpy-rpc-python-command "python3")
-  ;; (flycheck-add-next-checker 'python-mypy 'python-flake8 'python-pylint)
+  (setq elpy-rpc-python-command "~/.pyenv/versions/elpy-rpc/bin/python3")
+  (setq elpy-rpc-virtualenv-path "~/.pyenv/versions/elpy-rpc")
+  ;; (setq elpy-rpc-pythonpath "~/.emacs.d/elpy")
+  (setq elpy-rpc-pythonpath "~/.pyenv/versions/elpy-rpc/lib/python3.7/elpy")
   (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 
+  (use-package flycheck-pycheckers
+  :ensure t
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)
+  ;; (setq flycheck-pycheckers-checkers '(pylint flake8 mypy3))
+  (setq flycheck-pycheckers-checkers '(flake8 mypy3))
+  (setq flycheck-pycheckers-multi-thread "true")
+  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 
   (use-package py-yapf
+  :ensure t
   :config (add-hook 'python-mode-hook 'py-yapf-enable-on-save))
 
-  ;; (use-package flycheck-pycheckers
-  ;; :config
-  ;; (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
   ;; Jupiter Notebook
-  (use-package ein)
+  (use-package ein
+  :ensure t)
   ;; (use-package ein-notebook) Error (use-package): Failed to install ein-notebook: Package ‘ein-notebook-’ is unavailable
   ;; (use-package ein-subpackages) Error (use-package): Failed to install ein-subpackages: Package ‘ein-subpackages-’ is unavailable
 
   ;; (elpy-enable)
-  (setq python-shell-interpreter "ipython"
+  (setq python-shell-interpreter "~/.pyenv/versions/elpy-rpc/bin/ipython3"
 	 python-shell-interpreter-args "-i --simple-prompt --profile=default")
 
   ;; ;; use flycheck not flymake with elpy
@@ -41,9 +51,20 @@
   ;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
   ;; ;; enable autopep8 formatting on save
-  (use-package py-autopep8)
+  (use-package py-autopep8
+  :ensure t)
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
+  (use-package importmagic
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'importmagic-mode))
+
+  (use-package blacken
+  :ensure t)
+
+  (use-package pyenv-mode
+  :ensure t)
   ;; (use-package flycheck-mypy
   ;; :init (add-to-list 'flycheck-checkers  'python-mypy))
 
