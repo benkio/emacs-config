@@ -44,6 +44,22 @@ sNew Name: ")
   (async-shell-command ffmpegCommand)
   )
 
-
+(defun concatenate-media-files ()
+  "Concatenate a list of files with the same encoding"
+  (interactive)
+  ;; ask the user for a list of files
+  ;; at each step ask if it's the last one
+  ;; finally as for the new name of the output
+  (setq files (list (read-file-name "The initial file name: ")))
+  (message "%s" files)
+  (while (yes-or-no-p "Another file? ")
+    (progn
+      (setq files (append files (list (read-file-name "Next file name: "))))
+      )
+    )
+  (setq newFile (read-string "Insert the new file name: "))
+  (message "%s" files)
+  (message "%s" newFile)
+  )
 
 #+end_src
