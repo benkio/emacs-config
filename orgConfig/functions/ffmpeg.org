@@ -60,6 +60,7 @@ sNew Name: ")
   (setq newFile (read-string "Insert the new file name: "))
   (message "%s" files)
   (message "%s" newFile)
+  ;; ffmpeg -f concat -safe 0 -i mylist.txt -c copy output.wav
   )
 
 #+end_src
