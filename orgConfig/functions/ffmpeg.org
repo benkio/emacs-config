@@ -7,7 +7,7 @@ format.
 Feel free to come and add your function if not present
 #+begin_src emacs-lisp :tangle yes
 
-(defun ffmpeg-cut-video (origin startTime endTime newName)
+(defun cut-media-file (origin startTime endTime newName)
   "This function get in input:
 - The path to a specific video
 - The start time of the cut (00:00:00)
