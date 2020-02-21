@@ -44,12 +44,11 @@ sNew Name: ")
   (async-shell-command ffmpegCommand)
   )
 
+(require 'seq)
+
 (defun concatenate-media-files ()
   "Concatenate a list of files with the same encoding"
   (interactive)
-  ;; ask the user for a list of files
-  ;; at each step ask if it's the last one
-  ;; finally as for the new name of the output
   (setq files (list (read-file-name "The initial file name: ")))
   (message "%s" files)
   (while (yes-or-no-p "Another file? ")
@@ -57,10 +56,13 @@ sNew Name: ")
       (setq files (append files (list (read-file-name "Next file name: "))))
       )
     )
-  (setq newFile (read-string "Insert the new file name: "))
-  (message "%s" files)
-  (message "%s" newFile)
-  ;; ffmpeg -f concat -safe 0 -i mylist.txt -c copy output.wav
+  (let* ((newFile (read-string "Insert the new file name: "))
+         (concatContent (seq-drop (seq-reduce (lambda (a b) (concat a "\nfile '" b "'")) files "") 1))
+         (tempFile (make-temp-file "concat" nil nil concatContent))
+         (outputFile (expand-file-name (concat default-directory newFile)))
+         (ffmpegCommand (concat "ffmpeg -f concat -safe 0 -i \"" tempFile "\" -c copy \"" outputFile  "\"")))
+    (async-shell-command ffmpegCommand)
+    )
   )
 
 #+end_src
