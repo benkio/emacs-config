@@ -254,6 +254,17 @@ Add all the needed components for scala:
 #+END_SRC
 ** Web-mode
 ;; TODO
+** Purescript
+
+#+begin_src emacs-lisp :tangle yes
+(use-package purescript-mode
+  :ensure t
+  :config
+  (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation)
+  (add-hook 'purescript-mode-hook 'flycheck-mode)
+)
+#+end_src
+
 ** Markdown
 #+BEGIN_SRC emacs-lisp :tangle yes
 (use-package markdown-mode
