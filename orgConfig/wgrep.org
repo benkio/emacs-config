@@ -1,0 +1,6 @@
+* WGrep
+
+turn grep buffers writable
+#+begin_src emacs-lisp :tangle yes
+(use-package wgrep :ensure t)
+#+end_src

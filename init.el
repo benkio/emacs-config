@@ -19,6 +19,7 @@
                 "yas.org"
                 "yamlmode.org"
                 "dired.org"
+                "wgrep.org"
                 "winmove.org"
                 "csvMode.org"
                 "execPathFromShell.org"
