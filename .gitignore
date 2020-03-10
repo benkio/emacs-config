@@ -10,4 +10,5 @@
 # Undo-tree save-files
 *.~undo-tree
 
-./orgConfig/*.el
+orgConfig/*.el
+orgConfig/functions/*.el
