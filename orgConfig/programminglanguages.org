@@ -260,7 +260,7 @@ Add all the needed components for scala:
 (use-package purescript-mode
   :ensure t
   :config
-  (add-hook 'purescript-mode-hook 'turn-on-purescript-indentation)
+  (add-hook 'purescript-mode-hook 'turn-on-purescript-simple-indent)
   (add-hook 'purescript-mode-hook 'flycheck-mode)
 )
 #+end_src
