@@ -12,3 +12,9 @@
 
 orgConfig/*.el
 orgConfig/functions/*.el
+ac-comphist.dat
+elpa/*
+history
+projectile-bookmarks.eld
+recentf
+transient/*
