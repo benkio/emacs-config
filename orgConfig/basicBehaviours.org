@@ -23,6 +23,7 @@
    12. Winner Mode: restore windows, especially for ediff sessions
    13. Save on frame focus out: https://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
    14. global hs-minor-mode
+   15. Dired hide details by default
 3. Set:
    1. Recent-f save list every 5 minutes
    2. Emacs window fullscreen at startup
@@ -41,6 +42,7 @@
    12. The hide comments in hideShow mode when hide/show all
 4. Enhance:
    1. The load-theme function in order to unload any previous loaded themes
+
 #+BEGIN_SRC emacs-lisp :tangle yes
 (setq make-backup-files nil)					;1-1
 (setq auto-save-default nil)					;1-2
@@ -87,6 +89,10 @@
                                                                 ;2-13
                                                                 ;2-14
 (add-hook 'prog-mode-hook #'hs-minor-mode)
+                                                                ;2-15
+(add-hook 'dired-mode-hook
+      (lambda ()
+        (dired-hide-details-mode)))
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))	;3-1
 (run-at-time nil (* 5 60) 'recentf-save-list)			;3-2
