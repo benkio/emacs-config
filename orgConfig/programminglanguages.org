@@ -265,6 +265,11 @@ Add all the needed components for scala:
 )
 #+end_src
 
+** Typescript
+
+#+begin_src emacs-lisp :tangle yes
+(use-package typescript-mode)
+#+end_src
 ** Markdown
 #+BEGIN_SRC emacs-lisp :tangle yes
 (use-package markdown-mode
