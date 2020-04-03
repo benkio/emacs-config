@@ -37,6 +37,7 @@
                 "silverSearcher.org"
                 "company.org"
                 "restclient.org"
+                "idleHighlightMode.org"
                 "browseKillRing.org"
                 "programminglanguages.org"
                 "functions/formatting.org"
