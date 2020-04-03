@@ -1,0 +1,10 @@
+* Idle Highlight Mode
+
+Highlight the word you are on in case you stop there for some time
+#+begin_src emacs-lisp :tangle yes
+
+(use-package idle-highlight-mode
+  :diminish idle-highlight-mode
+  :config (add-hook 'prog-mode-hook 'idle-highlight-mode))
+
+#+end_src
