@@ -40,6 +40,7 @@
                 "idleHighlightMode.org"
                 "browseKillRing.org"
                 "programminglanguages.org"
+                "highlight.org"
                 "functions/formatting.org"
                 "functions/selectionAndRectangles.org"
                 "functions/filenamePathToClipboard.org"

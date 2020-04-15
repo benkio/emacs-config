@@ -1,0 +1,9 @@
+* Highlight
+
+Allow you to highlight regions and more in a buffer
+
+#+begin_src emacs-lisp :tangle yes
+
+(use-package highlight)
+
+#+end_src
