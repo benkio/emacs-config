@@ -269,9 +269,7 @@
                     (progn
                       (setq param (read-string "param name (RET to finish): "))
                       (while (not (equal "" (s-trim param)))
-                        (message "param: %s" param)
                         (push (s-trim param) params)
-                        (message "params: %s" params)
                         (setq param (read-string "param name (RET to finish): "))
                         )
                       (reverse (cons (car params) (mapcar (lambda (x) (concat x ",")) (cdr params))))
