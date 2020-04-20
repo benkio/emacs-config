@@ -253,7 +253,7 @@
     )
   )
 
-(defun extract-line-or-region (name &optional parameters)
+(defun scala-extract-code-line-or-region (name &optional parameters from to)
   "Extract the code to val or def:
    Require:
      - Name of the val/def
@@ -274,9 +274,15 @@
                         )
                       (reverse (cons (car params) (mapcar (lambda (x) (concat x ",")) (cdr params))))
                       )
-                    ))))
+                    ))
+                (if (use-region-p) (region-beginning) (point))
+                (if (use-region-p) (region-end) (line-end-position))
+                ))
+
   ;; extract code, cut if region or cut from point to end of the line
-  (setq code "TODO")
+  (setq code (buffer-substring from to))
+  (delete-region from to)
+
   ;; Generate code
   (setq resultDefinition (if (string= "nil" (car parameters))
                              (concat "val " name " = " code)
@@ -284,14 +290,17 @@
   (setq resultReference (if (string= "nil" (car parameters))
                             name
                           (concat name (format "%s" parameters))))
-  (message "resultDefinition: %s " resultDefinition)
-  (message "resultReference: %s " resultReference)
   ;; Put the resultReference at point
+  (insert resultReference)
   ;; Move to the closest ^$ line and insert the resultDefinition
+  (re-search-backward "^$")
+  (insert resultDefinition)
   )
 
 (global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)
 (global-set-key (kbd "C-c c s e") 'scala-goto-next-warn-error)
 (global-set-key (kbd "C-c c s u") 'scala-remove-unused-import)
 (global-set-key (kbd "C-c c s p") 'scala-import-type-at-point)
+(global-set-key (kbd "C-c c s x") 'scala-extract-code-line-or-region)
+
 #+END_SRC
