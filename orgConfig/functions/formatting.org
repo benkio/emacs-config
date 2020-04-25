@@ -4,10 +4,19 @@
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 (defun xml-format ()
-  "intent an xml file using xlint"
+  "indent an xml file using xlint on a region or buffer"
   (interactive)
-  (save-excursion
-    (shell-command-on-region (mark) (point) "xmllint --format -" (buffer-name) t)
+  (let (pos1 pos2 bds)
+    (if (use-region-p)
+        (setq pos1 (region-beginning) pos2 (region-end))
+        (setq pos1 (point-min) pos2 (point-max)))
+
+    (condition-case nil
+        (save-excursion
+          (shell-command-on-region pos1 pos2 "xmllint --format -" (buffer-name) t)
+          )
+      (error (message "Please install xmllint"))
+      )
     )
   )
 
