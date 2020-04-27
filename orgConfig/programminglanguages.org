@@ -2,7 +2,7 @@
 ** Python
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package python
-  :ensure nil
+
   :mode ("\\.py" . python-mode)
   :config
   (setq python-indent-offset 4)
@@ -10,7 +10,7 @@
 
   ;; elpy
   (use-package elpy
-  :ensure t
+
   :after (python)
   :init
   (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
@@ -23,7 +23,6 @@
   (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 
   (use-package flycheck-pycheckers
-  :ensure t
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)
   ;; (setq flycheck-pycheckers-checkers '(pylint flake8 mypy3))
@@ -32,12 +31,12 @@
   (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 
   (use-package py-yapf
-  :ensure t
+
   :config (add-hook 'python-mode-hook 'py-yapf-enable-on-save))
 
   ;; Jupiter Notebook
   (use-package ein
-  :ensure t)
+  )
   ;; (use-package ein-notebook) Error (use-package): Failed to install ein-notebook: Package ‘ein-notebook-’ is unavailable
   ;; (use-package ein-subpackages) Error (use-package): Failed to install ein-subpackages: Package ‘ein-subpackages-’ is unavailable
 
@@ -52,26 +51,23 @@
 
   ;; ;; enable autopep8 formatting on save
   (use-package py-autopep8
-  :ensure t)
-  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+   :config (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 
   (use-package importmagic
-  :ensure t
   :config
   (add-hook 'python-mode-hook 'importmagic-mode))
 
-  (use-package blacken
-  :ensure t)
-
+  (use-package blacken)
   (use-package pyenv-mode
-  :ensure t)
+  :defer 2
+  )
   ;; (use-package flycheck-mypy
   ;; :init (add-to-list 'flycheck-checkers  'python-mypy))
 
   ;; ;;
   ;; enable jedi
   (use-package jedi
-  :ensure t
+  :defer 2
   :init
   (elpy-enable)
   (add-hook 'python-mode-hook 'jedi:setup)
@@ -115,17 +111,16 @@ Add all the needed components for scala:
 
   ;; hlint extension (requires hlint installed with cabal)
   (use-package flymake-haskell-multi
-  :ensure t
   :config
   (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
 
   ;; Displays hlint suggestion in minibuffer
   (use-package flymake-cursor
-  :ensure t)
+  )
 
   ;; hindent (require hindente installed with cabal)
   (use-package hindent
-    :ensure t
+
     :config
     (add-hook 'haskell-mode-hook #'hindent-mode)
     (setq hindent-style "johan-tibell"))
@@ -263,7 +258,6 @@ Add all the needed components for scala:
 ** Markdown
 #+BEGIN_SRC emacs-lisp :tangle yes
 (use-package markdown-mode
-  :ensure t
   :mode (("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode))
   :config

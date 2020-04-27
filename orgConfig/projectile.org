@@ -5,7 +5,7 @@ and into the files like grep
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 (use-package projectile
-  :ensure t
+  :defer 2
   :config
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)

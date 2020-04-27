@@ -6,7 +6,8 @@
 
 (org-babel-load-file "~/.emacs.d/orgConfig/packages.org")
 
-(package-refresh-contents)
+(when (not package-archive-contents)
+  (package-refresh-contents))
 
 (setq configPrefix "~/.emacs.d/orgConfig/")
 

@@ -2,7 +2,6 @@
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 (use-package flycheck
-  :ensure t
   :init
   (global-flycheck-mode t)
   :config
