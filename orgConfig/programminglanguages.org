@@ -2,7 +2,7 @@
 ** Python
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package python
-
+  :defer t
   :mode ("\\.py" . python-mode)
   :config
   (setq python-indent-offset 4)
@@ -10,7 +10,6 @@
 
   ;; elpy
   (use-package elpy
-
   :after (python)
   :init
   (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
@@ -31,7 +30,6 @@
   (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 
   (use-package py-yapf
-
   :config (add-hook 'python-mode-hook 'py-yapf-enable-on-save))
 
   ;; Jupiter Notebook
@@ -59,7 +57,7 @@
 
   (use-package blacken)
   (use-package pyenv-mode
-  :defer 2
+  :defer t
   )
   ;; (use-package flycheck-mypy
   ;; :init (add-to-list 'flycheck-checkers  'python-mypy))
@@ -67,7 +65,7 @@
   ;; ;;
   ;; enable jedi
   (use-package jedi
-  :defer 2
+  :defer t
   :init
   (elpy-enable)
   (add-hook 'python-mode-hook 'jedi:setup)
@@ -128,9 +126,12 @@ Add all the needed components for scala:
 ** Latex
 #+BEGIN_SRC emacs-lisp :tangle yes
 ;; LaTeX configuration
+
+
 (use-package tex
-:ensure auctex
-:config
+:defer t
+ :ensure auctex
+ :config
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
@@ -253,7 +254,9 @@ Add all the needed components for scala:
 ** Typescript
 
 #+begin_src emacs-lisp :tangle yes
-(use-package typescript-mode)
+(use-package typescript-mode
+  :defer t
+)
 #+end_src
 ** Markdown
 #+BEGIN_SRC emacs-lisp :tangle yes
