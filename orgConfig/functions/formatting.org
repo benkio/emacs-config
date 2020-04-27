@@ -4,10 +4,51 @@
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 (defun xml-format ()
-  "intent an xml file using xlint"
+  "indent an xml file using xlint on a region or buffer"
   (interactive)
-  (save-excursion
-    (shell-command-on-region (mark) (point) "xmllint --format -" (buffer-name) t)
+  (let (pos1 pos2 commandExist)
+    (if (use-region-p)
+        (setq pos1 (region-beginning) pos2 (region-end))
+      (setq pos1 (point-min) pos2 (point-max)))
+
+    (setq commandExist nil)
+    (condition-case nil
+        (progn
+          (call-process "xmllint")
+          (setq commandExist t)
+          )
+        (error (message "Please install xmllint"))
+      )
+
+    (when commandExist
+      (save-excursion
+        (shell-command-on-region pos1 pos2 "xmllint --format -" (buffer-name) t)
+        )
+      )
+    )
+  )
+
+(defun js-format ()
+  "indent an js file using js-beutifier on a region or buffer"
+  (interactive)
+  (let (pos1 pos2 commandExist)
+    (if (use-region-p)
+        (setq pos1 (region-beginning) pos2 (region-end))
+      (setq pos1 (point-min) pos2 (point-max)))
+    (setq commandExist nil)
+    (condition-case nil
+        (progn
+          (call-process "js-beautify")
+          (setq commandExist t)
+          )
+      (error (message "Please install js-beautify (npm -g install js-beautify)"))
+      )
+
+    (when commandExist
+      (save-excursion
+        (shell-command-on-region pos1 pos2 "js-beautify " (buffer-name) t)
+        )
+      )
     )
   )
 
