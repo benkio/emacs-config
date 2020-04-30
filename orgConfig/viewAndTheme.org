@@ -14,69 +14,74 @@
    6. Size of Current File
 3. Set Frame Title
 4. Set Uniquify (better buffer names on conflict)
-5. Set Theme
-6. Set Font
+5. Set Theme & font
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (menu-bar-mode -1)		;1-1
-  (tool-bar-mode -1)		;1-2
-  (scroll-bar-mode -1)		;1-3
-				;1-4
-  (setq inhibit-splash-screen t)
-  (setq inhibit-startup-message t)
+(menu-bar-mode -1)              ;1-1
+(tool-bar-mode -1)              ;1-2
+(scroll-bar-mode -1)            ;1-3
+                                        ;1-4
+(setq inhibit-splash-screen t)
+(setq inhibit-startup-message t)
 
-  (global-linum-mode 1)		;2-1
-  (setq column-number-mode t)	;2-2
-  (global-hl-line-mode 1)	;2-3
-  (display-battery-mode 1)	;2-4
-  (show-paren-mode 1)		;2-5
-  (size-indication-mode 1)	;2-6
+(global-linum-mode 1)           ;2-1
+(setq column-number-mode t)     ;2-2
+(global-hl-line-mode 1) ;2-3
+(display-battery-mode 1)        ;2-4
+(show-paren-mode 1)             ;2-5
+(size-indication-mode 1)        ;2-6
 
-				;3
-  (setq frame-title-format
+                                        ;3
+(setq frame-title-format
       '((:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
-                                ;4
+                                        ;4
 
-  (require 'uniquify)
-  (setq uniquify-buffer-name-style 'forward)
-  (setq uniquify-separator "/")
-  ;; rename after killing uniquified
-  (setq uniquify-after-kill-buffer-p t)
-  ;; don't muck with special buffers
-  (setq uniquify-ignore-buffers-re "^\\*")
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+;; rename after killing uniquified
+(setq uniquify-after-kill-buffer-p t)
+;; don't muck with special buffers
+(setq uniquify-ignore-buffers-re "^\\*")
 
-  ;; THEME SECTION  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 5 THEME SECTION  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  (use-package ample-theme
-    :init (progn (load-theme 'ample t t)
-              ;; (load-theme 'ample-flat t t)
-              ;; (load-theme 'ample-light t t)
-                 (enable-theme 'ample))
-    :defer t
-    )
-
-   (with-eval-after-load "ample-theme"
-     ;; add one of these blocks for each of the themes you want to customize
-     (custom-theme-set-faces
-      'ample
-      ;; this will overwride the color of strings just for ample-theme
-      '(region ((t (:background "#663300"))))))
-
-   (defun set-font-height-on-frame-width (&optional frame)
-    "Set font based on the frame size"
-    (interactive)
-    (message "Set font based on the frame size") ;Adding this will make it run at startup, weird
-    (cond ((> (frame-outer-width frame) 1800)
-           (set-face-attribute 'default nil :height 155))
-          ((> (frame-outer-width frame) 1400)
-           (set-face-attribute 'default nil :height 125))
-          (t
-          (set-face-attribute 'default nil :height 100))
-    )
+(use-package ample-theme
+  :init (progn (load-theme 'ample t t)
+               ;; (load-theme 'ample-flat t t)
+               ;; (load-theme 'ample-light t t)
+               (enable-theme 'ample))
+  :defer t
+  :custom-face
+  (region ((t (:background "#663300"))))
   )
 
-  (add-hook 'after-make-frame-functions 'set-font-height-on-frame-width)
-  (add-hook 'window-setup-hook 'set-font-height-on-frame-width)
+(use-package use-ttf
+  :custom
+  (use-ttf-default-ttf-fonts '("/.emacs.d/fonts/VT323-Regular.ttf"))
+  (use-ttf-default-ttf-font-name "VT323")
+  )
+
+(condition-case nil
+  (set-frame-font "VT323" nil t)
+  (error (warn "Default font not installed. Wait a bit then run: use-ttf-set-default-font + set-font-height-on-frame-width"))
+)
+
+(defun set-font-height-on-frame-width (&optional frame)
+  "Set font based on the frame size"
+  (interactive)
+  (message "Set font based on the frame size") ;Adding this will make it run at startup, weird
+  (cond ((> (frame-outer-width frame) 1800)
+         (set-face-attribute 'default nil :height 220))
+        ((> (frame-outer-width frame) 1400)
+         (set-face-attribute 'default nil :height 190))
+        (t
+         (set-face-attribute 'default nil :height 165))
+        )
+  )
+
+(add-hook 'after-make-frame-functions 'set-font-height-on-frame-width)
+(add-hook 'window-setup-hook 'set-font-height-on-frame-width)
 #+END_SRC
