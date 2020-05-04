@@ -8,10 +8,9 @@
 2. Shows:
    1. Line Numbers
    2. Column Line
-   3. Current Line
-   4. Battery
-   5. Parentesis
-   6. Size of Current File
+   3. Battery
+   4. Parentesis
+   5. Size of Current File
 3. Set Frame Title
 4. Set Uniquify (better buffer names on conflict)
 5. Set Theme & font
@@ -26,10 +25,9 @@
 
 (global-linum-mode 1)           ;2-1
 (setq column-number-mode t)     ;2-2
-(global-hl-line-mode 1) ;2-3
-(display-battery-mode 1)        ;2-4
-(show-paren-mode 1)             ;2-5
-(size-indication-mode 1)        ;2-6
+(display-battery-mode 1)        ;2-3
+(show-paren-mode 1)             ;2-4
+(size-indication-mode 1)        ;2-5
 
                                         ;3
 (setq frame-title-format
@@ -48,15 +46,7 @@
 
 ;; 5 THEME SECTION  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package ample-theme
-  :init (progn (load-theme 'ample t t)
-               ;; (load-theme 'ample-flat t t)
-               ;; (load-theme 'ample-light t t)
-               (enable-theme 'ample))
-  :defer t
-  :custom-face
-  (region ((t (:background "#663300"))))
-  )
+(load-theme 'tango-dark)
 
 (use-package use-ttf
   :custom
