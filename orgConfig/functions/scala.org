@@ -99,6 +99,19 @@
     )
   )
 
+(defun path-to-package (path)
+  "transferm a path to a package"
+  (interactive)
+  (string-join
+   (butlast
+    (s-split "/"
+             (nth 1
+                  (split-string path "scala/")
+                  )
+             )
+    ) ".")
+  )
+
 ; keybinded functions ;;;;;;;;;;;;;;;;;
 
 (defun sbt-shell-clean-old-output ()

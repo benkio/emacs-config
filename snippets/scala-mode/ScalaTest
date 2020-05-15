@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: ScalaTest WordSpec
+# key: ScalaTest
+# --
+package ${1:`(copy-file-name-to-clipboard 'path-to-package)`}
+
+import org.scalatest._
+
+class ${2:`(nth 0 (s-slice-at "[.]"(funcall 'copy-just-file-name-to-clipboard)))`} extends WordSpec with Matchers {
+
+  "$2" should {
+    "behave like" when {
+      "input X" in {
+        $0
+      }
+    }
+  }
+}
