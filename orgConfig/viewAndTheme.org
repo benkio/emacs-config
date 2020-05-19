@@ -67,11 +67,11 @@
   (interactive)
   (message "Set font based on the frame size") ;Adding this will make it run at startup, weird
   (cond ((> (frame-outer-width frame) 1800)
-         (set-face-attribute 'default nil :height 220))
+         (set-face-attribute 'default nil :height 240))
         ((> (frame-outer-width frame) 1400)
-         (set-face-attribute 'default nil :height 190))
+         (set-face-attribute 'default nil :height 220))
         (t
-         (set-face-attribute 'default nil :height 165))
+         (set-face-attribute 'default nil :height 185))
         )
   )
 
