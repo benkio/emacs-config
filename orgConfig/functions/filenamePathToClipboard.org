@@ -12,8 +12,7 @@ functions to get the name of the file and path to clipboard
     (when filename
       (let ((changedFilename (funcall filename-manipulate-func filename)))
         (when changedFilename
-          (kill-new changedFilename)
-          (message "Copied buffer file name '%s' to the clipboard." changedFilename))))))
+          (kill-new changedFilename))))))
 
 (defun copy-file-name-and-path-to-clipboard ()
   "Copy the current buffer file name and path to clipboard."
