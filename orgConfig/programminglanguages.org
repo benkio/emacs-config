@@ -259,6 +259,7 @@ Add all the needed components for scala:
 #+begin_src emacs-lisp :tangle yes
 (use-package typescript-mode
   :defer t
+  :mode "\\.\\(ts\\|tsx\\)\\'"
 )
 #+end_src
 ** Markdown
