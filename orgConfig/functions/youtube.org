@@ -1,0 +1,39 @@
+* Youtube
+
+this files contains the functions that interact with youtube. Mainly using ~youtube-dl~.
+#+begin_src emacs-lisp :tangle yes
+
+(defun youtube-dl (youtubeUrl destinationPath outputFormat)
+  "Function that use youtube-dl to download the video and convert it to mp3"
+  (interactive
+   (list
+    (read-string "Youtube URL: ")
+    (read-directory-name "Destination directory: ")
+    (read-string "Output format\n(mp4|flv|ogg|webm|mkv|avi-best|aac|flac|mp3|m4a|opus|vorbis|wav): ")
+    )
+   )
+  (setq commandExist nil
+        youtubeDlCommand nil)
+  (condition-case nil
+      (progn
+        (call-process "youtube-dl")
+        (setq commandExist t)
+        )
+    (error (message "Please install youtube-dl"))
+    )
+  (setq supportedAudioFormats (list "best" "aac" "flac" "mp3" "m4a" "opus" "vorbis" "wav"))
+  (setq supportedVideoFormats (list "mp4" "flv" "ogg" "webm" "mkv" "avi"))
+  (cond
+   ((member outputFormat supportedAudioFormats) (setq youtubeDlCommand (format "youtube-dl -x --audio-format %s %s" outputFormat youtubeUrl)))
+   ((member outputFormat supportedVideoFormats) (setq youtubeDlCommand (format "youtube-dl --recode-video %s %s" outputFormat youtubeUrl)))
+   (t (error (message "Please insert a valid output format: %s" outputFormat)))
+   )
+  (when commandExist
+    (progn
+      (setq command (format "cd %s && %s" destinationPath youtubeDlCommand))
+      (async-shell-command command)
+      )
+    )
+  )
+
+#+end_src

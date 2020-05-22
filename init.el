@@ -53,6 +53,7 @@
                 "functions/cursorMovement.org"
                 "functions/apparences.org"
                 "functions/ffmpeg.org"
+                "functions/youtube.org"
                 "undotree.org"
                 ))
 
