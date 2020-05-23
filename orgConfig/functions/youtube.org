@@ -4,7 +4,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
 #+begin_src emacs-lisp :tangle yes
 
 (defun youtube-dl (youtubeUrl destinationPath outputFormat)
-  "Function that use youtube-dl to download the video and convert it to mp3"
+  "Function that use youtube-dl to download the video and convert it to the specified output format"
   (interactive
    (list
     (read-string "Youtube URL: ")
