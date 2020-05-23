@@ -42,6 +42,7 @@
                 "browseKillRing.org"
                 "programminglanguages.org"
                 "highlight.org"
+                "functions/languageTemplateFunctions.org"
                 "functions/formatting.org"
                 "functions/selectionAndRectangles.org"
                 "functions/filenamePathToClipboard.org"

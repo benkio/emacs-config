@@ -1,0 +1,18 @@
+* Programming Language Template Functions
+
+Template functions that are generic and can be used to replicate the
+same feature cross-languages.
+
+
+#+begin_src emacs-lisp :tangle yes
+
+(defun shell-clean-old-output (startingPhrase)
+  "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation). based on the input value"
+  (interactive "sEnter the phrase to search for: ")
+  (end-of-buffer)
+  (search-backward startingPhrase)
+  (delete-region (point) (goto-char (point-min)))
+  (end-of-buffer)
+  )
+
+#+end_src
