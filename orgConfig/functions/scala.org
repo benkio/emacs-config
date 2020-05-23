@@ -5,19 +5,9 @@
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 (defun sbt-event-file-navigation (&optional notSplitWindow)
-  "Starting from an sbt output line [info] [warn] or [error] this function:
-   - parse the line for the target source file
-   - move to the file: it creates a windows if the count-windows is = 1 and the parameter is false
-  "
-  (beginning-of-line)
-  (search-forward "] ")
-  (setq filenamePathPos (point))
-  (search-forward ":")
-  (left-char)
-  (setq filePath (buffer-substring filenamePathPos (point)))
-  (when (and notSplitWindow (= (count-windows) 1)) (split-window-right))
-  (other-window 1)
-  (find-file filePath)
+  "Navigate to the file that has a problem. it can navigate using a
+  different window."
+  (funcall 'event-file-navigation "] " ":" notSplitWindow)
   )
 
 (defun scala-build-import-ag (inputType)
@@ -92,14 +82,6 @@
   (concat default-directory fileRelativePath)
   )
 
-(defun line-contains-string (args)
-  "Check if the current line contains the input string"
-  (save-excursion
-    (beginning-of-line)
-    (when (search-forward args (line-end-position) t) t)
-    )
-  )
-
 (defun path-to-package (path)
   "transferm a path to a package"
   (interactive)
@@ -124,24 +106,7 @@
   "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
   (interactive)
   (unless errorMessage (setq errorMessage ""))
-  (defun searchFunction (backwardDrection)
-    (if backwardDrection
-        're-search-backward
-      're-search-forward
-      )
-    )
-  (defun parse-go-to-line-or-column (gotoFunction)
-    "parse line or column starting from an sbt output [info] [warn] or [error]"
-    (right-char)
-    (setq filenamePathPos (point))
-    (search-forward ":")
-    (left-char)
-    (setq fileLineOrColumn (buffer-substring filenamePathPos (point)))
-    (other-window 1)
-    (funcall gotoFunction (string-to-number fileLineOrColumn))
-    )
   (setq searchRegexp (concat ".*\\.scala.*" (regexp-quote errorMessage)))
-  (message "searchRegexp %s - %s - %s" searchRegexp errorMessage backwardSearch)
   (condition-case
       nil
       (funcall (searchFunction backwardSearch) searchRegexp)
@@ -150,10 +115,10 @@
   (sbt-event-file-navigation t)
   (other-window -1)
 
-  (parse-go-to-line-or-column 'goto-line)
+  (parse-go-to-line-or-column ":" 'goto-line)
   (other-window -1)
 
-  (parse-go-to-line-or-column 'right-char)
+  (parse-go-to-line-or-column ":" 'right-char)
   )
 
 (defun scala-remove-unused-import ()

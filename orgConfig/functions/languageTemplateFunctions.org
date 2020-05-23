@@ -1,18 +1,68 @@
 * Programming Language Template Functions
 
-Template functions that are generic and can be used to replicate the
-same feature cross-languages.
+  Template functions that are generic and can be used to replicate the
+  same feature cross-languages.
 
 
-#+begin_src emacs-lisp :tangle yes
+  #+begin_src emacs-lisp :tangle yes
+(defun line-contains-string (args)
+  "Check if the current line contains the input string"
+  (save-excursion
+    (beginning-of-line)
+    (when (search-forward args (line-end-position) t) t)
+    )
+  )
+
+(defun searchFunction (backwardDrection)
+  "Return the regexp search function based on input direction:
+   - t: backward
+   - nil: forward
+  "
+  (if backwardDrection
+      're-search-backward
+    're-search-forward
+    )
+  )
 
 (defun shell-clean-old-output (startingPhrase)
   "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation). based on the input value"
-  (interactive "sEnter the phrase to search for: ")
   (end-of-buffer)
   (search-backward startingPhrase)
   (delete-region (point) (goto-char (point-min)))
   (end-of-buffer)
   )
 
-#+end_src
+
+(defun event-file-navigation (startingFilePath endingFilePath &optional notSplitWindow)
+  "Starting from an output buffer this function:
+   - Search for the starting file path in the output from current buffer
+   - Parse the line for the target source file
+   - move to the file: it creates a windows if the count-windows is = 1 and the parameter is false
+  "
+  (beginning-of-line)
+  (search-forward-regexp startingFilePath)
+  (setq filenamePathPos (point))
+  (search-forward-regexp endingFilePath)
+  (left-char)
+  (setq filePath (buffer-substring filenamePathPos (point)))
+  (when (and notSplitWindow (= (count-windows) 1)) (split-window-right))
+  (other-window 1)
+  (find-file filePath)
+  )
+
+(defun parse-go-to-line-or-column (separator gotoFunction)
+  "Higher order function: applies the input function to the number parsed from current position based on the input separator
+   eg. filePath:100:10
+       filePath(100,10)
+
+   applied most of the time with goto-line or right-char
+"
+  (right-char)
+  (setq filenamePathPos (point))
+  (search-forward separator)
+  (left-char)
+  (setq fileLineOrColumn (buffer-substring filenamePathPos (point)))
+  (other-window 1)
+  (funcall gotoFunction (string-to-number fileLineOrColumn))
+  )
+  #+end_src

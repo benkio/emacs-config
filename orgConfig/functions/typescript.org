@@ -1,0 +1,45 @@
+* Typescript Functions
+
+  Functions useful when dealing with typescript.
+
+#+begin_src emacs-lisp :tangle yes
+
+(defun ts-shell-clean-old-output ()
+  "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
+  (interactive)
+  (funcall 'shell-clean-old-output "<s> [webpack.Progress] 100% ")
+  )
+
+(defun ts-event-file-navigation (&optional notSplitWindow)
+  "Navigate to the file that has a problem. it can navigate using a
+  different window."
+  (previous-line) ;; Often called from the line AFTER the actual file path targeted
+  (funcall 'event-file-navigation (regexp-quote "[tsl] ERROR in ") "(" notSplitWindow)
+  )
+
+(defun ts-goto-next-warn-error (&optional errorMessage backwardSearch)
+  "Search into an typescript output for the first warning/error, starting from cursor position, and move to it"
+  (interactive)
+  (unless errorMessage (setq errorMessage ""))
+  (setq searchRegexp (concat ".*TS.*: " (regexp-quote errorMessage)))
+  (condition-case
+      nil
+      (funcall (searchFunction backwardSearch) searchRegexp)
+    (error (user-error "no match found for %s" errorMessage))
+    )
+  (ts-event-file-navigation t)
+  (other-window -1)
+
+  (parse-go-to-line-or-column "," 'goto-line)
+  (other-window -1)
+
+  (parse-go-to-line-or-column ")" 'right-char)
+  (other-window -1)
+  (next-line)
+  (end-of-line)
+  (other-window 1)
+  )
+
+(global-set-key (kbd "C-c c t c") 'ts-shell-clean-old-output)
+(global-set-key (kbd "C-c c t e") 'ts-goto-next-warn-error)
+#+end_src
