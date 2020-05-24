@@ -68,10 +68,12 @@
   (message "Set font based on the frame size") ;Adding this will make it run at startup, weird
   (cond ((> (frame-outer-width frame) 1800)
          (set-face-attribute 'default nil :height 240))
-        ((> (frame-outer-width frame) 1400)
+        ((> (frame-outer-width frame) 1400)                   ;; Macbook pro 1600
          (set-face-attribute 'default nil :height 220))
+        ((> (frame-outer-width frame) 1200)                   ;; Asus 15 inch 1296
+         (set-face-attribute 'default nil :height 120))
         (t
-         (set-face-attribute 'default nil :height 185))
+         (set-face-attribute 'default nil :height 100))
         )
   )
 
