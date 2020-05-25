@@ -4,7 +4,7 @@
   same feature cross-languages.
 
 
-  #+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp :tangle yes
 (defun line-contains-string (args)
   "Check if the current line contains the input string"
   (save-excursion
@@ -92,4 +92,5 @@
   ;; Move to the closest ^$ line and insert the resultDefinition
   (re-search-backward "^$")
   (insert resultDefinition)
-  )#+end_src
+  )
+#+end_src

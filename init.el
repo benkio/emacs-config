@@ -9,55 +9,51 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(setq configPrefix "~/.emacs.d/orgConfig/")
+ (require 'org)
 
-(setq configs '("defaults.org"
-                "viewAndTheme.org"
-                "basicBehaviours.org"
-                "gitMagit.org"
-                "iedit.org"
-                "projectile.org"
-                "yas.org"
-                "yamlmode.org"
-                "dired.org"
-                "wgrep.org"
-                "winmove.org"
-                "csvMode.org"
-                "execPathFromShell.org"
-                "expandRegion.org"
-                "whitespace.org"
-                "counsel.org"
-                "ibuffer.org"
-                "recentf.org"
-                "crux.org"
-                "orgPackages.org"
-                "whichkey.org"
-                "autocomplete.org"
-                "supersave.org"
-                "flycheck.org"
-                "silverSearcher.org"
-                "company.org"
-                "restclient.org"
-                "idleHighlightMode.org"
-                "browseKillRing.org"
-                "programminglanguages.org"
-                "highlight.org"
-                "functions/languageTemplateFunctions.org"
-                "functions/formatting.org"
-                "functions/selectionAndRectangles.org"
-                "functions/filenamePathToClipboard.org"
-                "functions/windowManipulation.org"
-                "functions/textManipulation.org"
-                "functions/alignmentIndentation.org"
-                "functions/fileConversion.org"
-                "functions/scala.org"
-                "functions/cursorMovement.org"
-                "functions/apparences.org"
-                "functions/ffmpeg.org"
-                "functions/youtube.org"
-                "undotree.org"
-                ))
-
-(set 'configs (mapcar (lambda (x) (concat configPrefix x)) configs))
-(require 'org)
-(mapc (lambda (x) (org-babel-load-file (expand-file-name x))) configs)
+(org-babel-load-file "~/.emacs.d/orgConfig/defaults.org"                           )
+(org-babel-load-file "~/.emacs.d/orgConfig/viewAndTheme.org"                       )
+(org-babel-load-file "~/.emacs.d/orgConfig/basicBehaviours.org"                    )
+(org-babel-load-file "~/.emacs.d/orgConfig/gitMagit.org"                           )
+(org-babel-load-file "~/.emacs.d/orgConfig/iedit.org"                              )
+(org-babel-load-file "~/.emacs.d/orgConfig/projectile.org"                         )
+(org-babel-load-file "~/.emacs.d/orgConfig/yas.org"                                )
+(org-babel-load-file "~/.emacs.d/orgConfig/yamlmode.org"                           )
+(org-babel-load-file "~/.emacs.d/orgConfig/dired.org"                              )
+(org-babel-load-file "~/.emacs.d/orgConfig/wgrep.org"                              )
+(org-babel-load-file "~/.emacs.d/orgConfig/winmove.org"                            )
+(org-babel-load-file "~/.emacs.d/orgConfig/csvMode.org"                            )
+(org-babel-load-file "~/.emacs.d/orgConfig/execPathFromShell.org"                  )
+(org-babel-load-file "~/.emacs.d/orgConfig/expandRegion.org"                       )
+(org-babel-load-file "~/.emacs.d/orgConfig/whitespace.org"                         )
+(org-babel-load-file "~/.emacs.d/orgConfig/counsel.org"                            )
+(org-babel-load-file "~/.emacs.d/orgConfig/ibuffer.org"                            )
+(org-babel-load-file "~/.emacs.d/orgConfig/recentf.org"                            )
+(org-babel-load-file "~/.emacs.d/orgConfig/crux.org"                               )
+(org-babel-load-file "~/.emacs.d/orgConfig/orgPackages.org"                        )
+(org-babel-load-file "~/.emacs.d/orgConfig/whichkey.org"                           )
+(org-babel-load-file "~/.emacs.d/orgConfig/autocomplete.org"                       )
+(org-babel-load-file "~/.emacs.d/orgConfig/supersave.org"                          )
+(org-babel-load-file "~/.emacs.d/orgConfig/flycheck.org"                           )
+(org-babel-load-file "~/.emacs.d/orgConfig/silverSearcher.org"                     )
+(org-babel-load-file "~/.emacs.d/orgConfig/company.org"                            )
+(org-babel-load-file "~/.emacs.d/orgConfig/restclient.org"                         )
+(org-babel-load-file "~/.emacs.d/orgConfig/idleHighlightMode.org"                  )
+(org-babel-load-file "~/.emacs.d/orgConfig/browseKillRing.org"                     )
+(org-babel-load-file "~/.emacs.d/orgConfig/programminglanguages.org"               )
+(org-babel-load-file "~/.emacs.d/orgConfig/highlight.org"                          )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/languageTemplateFunctions.org")
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/formatting.org"               )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/selectionAndRectangles.org"   )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/filenamePathToClipboard.org"  )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/windowManipulation.org"       )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/textManipulation.org"         )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/alignmentIndentation.org"     )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/fileConversion.org"           )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/scala.org"                    )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/typescript.org"               )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/cursorMovement.org"           )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/apparences.org"               )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/ffmpeg.org"                   )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/youtube.org"                  )
+(org-babel-load-file "~/.emacs.d/orgConfig/undotree.org"                           )
