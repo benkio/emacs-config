@@ -63,25 +63,6 @@
   (eval missingTypeImport)
   )
 
-(defun ag-parsing-first-error-file-path ()
-  "Parse the ag result buffer and return the first error file path"7
-  (compilation-next-error 1)
-  (search-backward "File: ")
-  (forward-word)
-  (forward-char 2)
-  (setq dirSPoint (point))
-  (end-of-line)
-  (setq fileRelativePath (buffer-substring-no-properties dirSPoint (point)))
-  (search-backward "default-directory: \"")
-  (forward-word 2)
-  (forward-char 3)
-  (setq dirSPoint (point))
-  (search-forward "\"")
-  (left-char)
-  (setq default-directory (buffer-substring-no-properties dirSPoint (point)))
-  (concat default-directory fileRelativePath)
-  )
-
 (defun path-to-package (path)
   "transferm a path to a package"
   (interactive)
