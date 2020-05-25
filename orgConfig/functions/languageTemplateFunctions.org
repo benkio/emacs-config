@@ -32,7 +32,6 @@
   (end-of-buffer)
   )
 
-
 (defun event-file-navigation (startingFilePath endingFilePath &optional notSplitWindow)
   "Starting from an output buffer this function:
    - Search for the starting file path in the output from current buffer
@@ -65,4 +64,32 @@
   (other-window 1)
   (funcall gotoFunction (string-to-number fileLineOrColumn))
   )
-  #+end_src
+
+(defun extract-code-line-or-region-template (value function postDefinitionSyntaxValue postDefinitionSyntaxFunc EndSyntaxValue EndSyntaxFunc name parameters from to)
+  "Template for extracting code to value or function:
+   Based on the input it this extract the selected code to the closest empty line above.
+   - Value: syntax for values in target laguage
+   - function: syntax for function in target laguage
+   - postDefinitionSyntax: what you put between the name + parameters and the body of the function/value. eg (= in scala)
+   - EndSyntax: what to put at the end of the definition of value/function body. Eg in js it's ';' for value but '}' for functionsxs
+   - name: name of the extracted value/function
+   - from: start of the region
+   - to: end of the region
+  "
+  ;; extract code, cut if region or cut from point to end of the line
+  (setq code (buffer-substring from to))
+  (delete-region from to)
+
+  ;; Generate code
+  (setq resultDefinition (if (string= "nil" (car parameters))
+                             (concat value name postDefinitionSyntaxValue code EndSyntaxValue)
+                           (concat function name (format "%s" parameters) postDefinitionSyntaxFunc code EndSyntaxFunc)))
+  (setq resultReference (if (string= "nil" (car parameters))
+                            name
+                          (concat name (format "%s" parameters))))
+  ;; Put the resultReference at point
+  (insert resultReference)
+  ;; Move to the closest ^$ line and insert the resultDefinition
+  (re-search-backward "^$")
+  (insert resultDefinition)
+  )#+end_src

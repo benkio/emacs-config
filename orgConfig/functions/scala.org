@@ -238,38 +238,23 @@
    Return type not specified.
   "
   (interactive (list
-                (read-string "val/def name: " )
+                (read-string "value/function name: " )
                 (progn
-                  (let (param params)
-                    (progn
-                      (setq param (read-string "param name (RET to finish): "))
-                      (while (not (equal "" (s-trim param)))
-                        (push (s-trim param) params)
-                        (setq param (read-string "param name (RET to finish): "))
-                        )
-                      (reverse (cons (car params) (mapcar (lambda (x) (concat x ",")) (cdr params))))
-                      )
-                    ))
+                  (setq
+                   separator (read-string "insert separartor(,): " nil nil ",")
+                   param (read-string "param name (RET to finish): ")
+                   params nil
+                   )
+                  (while (not (equal "" (s-trim param)))
+                    (push (s-trim param) params)
+                    (setq param (read-string "param name (RET to finish): "))
+                    )
+                  (reverse (cons (car params) (mapcar (lambda (x) (concat x separator)) (cdr params))))
+                  )
                 (if (use-region-p) (region-beginning) (point))
                 (if (use-region-p) (region-end) (line-end-position))
                 ))
-
-  ;; extract code, cut if region or cut from point to end of the line
-  (setq code (buffer-substring from to))
-  (delete-region from to)
-
-  ;; Generate code
-  (setq resultDefinition (if (string= "nil" (car parameters))
-                             (concat "val " name " = " code)
-                           (concat "def " name (format "%s" parameters) " = " code)))
-  (setq resultReference (if (string= "nil" (car parameters))
-                            name
-                          (concat name (format "%s" parameters))))
-  ;; Put the resultReference at point
-  (insert resultReference)
-  ;; Move to the closest ^$ line and insert the resultDefinition
-  (re-search-backward "^$")
-  (insert resultDefinition)
+  (funcall 'extract-code-line-or-region-template "val " "def " " = " " = " nil nil name parameters from to)
   )
 
 (global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)
