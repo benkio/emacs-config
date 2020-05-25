@@ -2,11 +2,11 @@
 # name: ScalaTest WordSpec
 # key: ScalaTest
 # --
-package ${1:`(copy-file-name-to-clipboard 'path-to-package)`}
+package ${1:`(path-to-package (buffer-file-name))`}
 
 import org.scalatest._
 
-class ${2:`(nth 0 (s-slice-at "[.]"(funcall 'copy-just-file-name-to-clipboard)))`} extends WordSpec with Matchers {
+class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends WordSpec with Matchers {
 
   "$2" should {
     "behave like" when {

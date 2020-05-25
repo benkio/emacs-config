@@ -10,89 +10,38 @@
   (funcall 'event-file-navigation "] " ":" notSplitWindow)
   )
 
-(defun scala-build-import-ag (inputType)
+(defun scala-build-import (inputType)
 
-  (defun existingImportInPorject (importPrefix importSuffix agBufferName type)
-    (switch-to-existing-buffer-other-window agBufferName)
-    (compilation-next-error 1)
-    (search-forward ":" nil nil 2)
+  (defun existingImportInPorject (importPrefix importSuffix type)
     (setq missingTypeStartingPoint (point))
     (end-of-line)
     (setq result (concat importPrefix (buffer-substring-no-properties missingTypeStartingPoint (point)) importSuffix))
     (eval result)
     )
 
-  (defun importFromPackage (importPrefix importSuffix agBufferName type)
-    (switch-to-existing-buffer-other-window agBufferName)
-    (setq filePath (funcall 'ag-parsing-first-error-file-path))
-    (find-file filePath)
-    (beginning-of-buffer)
-    (search-forward "package ")
-    (setq missingTypeStartingPoint (point))
-    (end-of-line)
-    (setq
-     package (buffer-substring-no-properties missingTypeStartingPoint (point))
-     result (concat importPrefix package "." type))
-    (eval result)
-    )
-
-  (defun searchImportFallback (agBufferName regexpFallbackSearch importPrefix importSuffix agFallbackBufferName type startingBuffer)
-    (switch-to-existing-buffer-other-window agBufferName)
-    (setq result nil
-          currentBuffer (buffer-name))
-    (switch-to-buffer startingBuffer)
-    (ag-project-regexp regexpFallbackSearch)
-    (set-process-sentinel
-     (get-process "ag")
-     (lexical-let (
-                   (agBufferName agBufferName)
-                   (regexpFallbackSearch regexpFallbackSearch)
-                   (importPrefix importPrefix)
-                   (importSuffix importSuffix)
-                   (agFallbackBufferName agFallbackBufferName)
-                   (type type)
-                   )
-       (lambda (p e)
-         (cond
-          ((string= e "finished\n")
-           (setq result (funcall 'importFromPackage importPrefix importSuffix agFallbackBufferName type)))
-          ))))
-    (while (accept-process-output (get-process "ag") 0.5))
-    (switch-to-buffer currentBuffer)
-    (eval result)
-    )
-
   (setq missingTypeImport nil
-        windowNumber (count-windows)
-        )
-  (ag-project-regexp (concat "import.*\\." inputType "$"))
-  (set-process-sentinel
-   (get-process "ag")
-   (lexical-let (
-                 (type inputType)
-                 (bufferName (buffer-name))
-                 )
-     (lambda (p e)
-       (cond
-        ((string= e "finished\n") (funcall 'existingImportInPorject "import " "" "*ag search regexp:import" type))
-        ((string-prefix-p "exited abnormally" e ())
-         (setq missingTypeImport
-               (funcall
-                'searchImportFallback
-                "*ag search regexp:import"
-                (concat "(.*object " type ".*|.*class " type ".*|.*trait " type ".*|.*type " type ".*)")
-                "import "
-                ""
-                "*ag search regexp:(.*"
-                type
-                bufferName
-                )))
-        ))))
-  (while (accept-process-output (get-process "ag") 0.5))
-  (when (/= (count-windows) windowNumber) (delete-window))
+        startingBuffer (buffer-name))
+  (condition-case nil
+      (project-find-regexp (concat "import.*" inputType "$"))
+    (error (project-find-regexp (concat "\\(.*class " inputType ".*\\|.*trait " inputType ".*\\|.*object " inputType ".*\\|.*type " inputType ".*\\)")))
+    )
+
+  (switch-to-buffer "*xref*")
+  (xref-next-line)
+  (xref-goto-xref t)
+
+  (setq result
+        (if (string= (current-word) "import")
+            (existingImportInPorject "" "" inputType) ;; copy import line
+          (concat "import " (path-to-package (buffer-file-name)) "." inputType) ;; copy package and make it an import
+          ))
   (switch-to-buffer startingBuffer)
-  (kill-matching-buffers "*ag search regexp:" nil t)
-  (eval missingTypeImport)
+  (save-excursion
+    (beginning-of-buffer)
+    (end-of-line)
+    (newline 2)
+    (insert result)
+    )
   )
 
 (defun path-to-package (path)
@@ -227,18 +176,7 @@
                 (read-string (format "type (%s): " (thing-at-point 'word))
                              nil nil (thing-at-point 'word))))
 
-  (setq startingBuffer (current-buffer)
-        importToAdd (funcall 'scala-build-import-ag type))
-
-  (if importToAdd
-      (save-excursion
-        (switch-to-buffer startingBuffer)
-        (beginning-of-buffer)
-        (forward-line)
-        (newline)
-        (insert importToAdd))
-    (user-error "Unable to find import for the type %s" type)
-    )
+  (funcall 'scala-build-import type)
   )
 
 (defun scala-extract-code-line-or-region (name &optional parameters from to)
