@@ -10,37 +10,14 @@
   (funcall 'event-file-navigation "] " ":" notSplitWindow)
   )
 
-(defun scala-build-import (inputType)
-
-  (defun existingImportInPorject (importPrefix importSuffix type)
-    (setq missingTypeStartingPoint (point))
-    (end-of-line)
-    (setq result (concat importPrefix (buffer-substring-no-properties missingTypeStartingPoint (point)) importSuffix))
-    (eval result)
-    )
-
-  (setq missingTypeImport nil
-        startingBuffer (buffer-name))
-  (condition-case nil
-      (project-find-regexp (concat "import.*" inputType "$"))
-    (error (project-find-regexp (concat "\\(.*class " inputType ".*\\|.*trait " inputType ".*\\|.*object " inputType ".*\\|.*type " inputType ".*\\)")))
-    )
-
-  (switch-to-buffer "*xref*")
-  (xref-next-line)
-  (xref-goto-xref t)
-
-  (setq result
-        (if (string= (current-word) "import")
-            (existingImportInPorject "" "" inputType) ;; copy import line
-          (concat "import " (path-to-package (buffer-file-name)) "." inputType) ;; copy package and make it an import
-          ))
-  (switch-to-buffer startingBuffer)
-  (save-excursion
-    (beginning-of-buffer)
-    (end-of-line)
-    (newline 2)
-    (insert result)
+(defun scala-build-import-from-existing-import-or-source (type)
+  "Considering the cursor is at the beginning of the target import line
+   or into the scala source file containing the definition of the
+  target file. This functions return the import to insert into the
+  dependent scala source file."
+  (if (string= (current-word) "import")
+      (copy-line-from-point-as-string) ;; copy import line
+    (concat "import " (path-to-package (buffer-file-name)) "." type) ;; copy package and make it an import
     )
   )
 
@@ -175,8 +152,19 @@
   (interactive (list
                 (read-string (format "type (%s): " (thing-at-point 'word))
                              nil nil (thing-at-point 'word))))
-
-  (funcall 'scala-build-import type)
+  (funcall 'build-import
+           type
+           (lambda (type) (concat "import.*" type "$"))
+           (lambda (type) (concat "\\(.*class " inputType ".*\\|.*trait " inputType ".*\\|.*object " inputType ".*\\|.*type " inputType ".*\\)"))
+           'scala-build-import-from-existing-import-or-source
+           (lambda (result) (save-excursion
+                              (beginning-of-buffer)
+                              (end-of-line)
+                              (next-line)
+                              (newline)
+                              (insert result)
+                              ))
+           )
   )
 
 (defun scala-extract-code-line-or-region (name &optional parameters from to)

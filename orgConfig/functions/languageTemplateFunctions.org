@@ -112,4 +112,27 @@
   (re-search-backward "^$")
   (insert resultDefinition)
   )
+
+(defun build-import (inputType existingImportRegexp typeDefinitionRegexp build-import-from-existing-import-or-source importInsertionFunc)
+  "Template function to import a specific type:
+   - type: target type
+   - existingImportRegexp: lambda that computes the regexp, used to search for exisiting type imports.
+   - typeDefinitionRegexp: lambda that computes the regexp, used to search for exisiting type definition.
+   - build-import-from-existing-import-or-source: computes the import to insert. Very context dependent(cursor's position)
+   - importInsertionFunc: executed into the origin buffer, this decides how/where to insert the import.
+"
+  (setq startingBuffer (buffer-name))
+  (condition-case nil
+      (project-find-regexp (funcall existingImportRegexp type))
+    (error (project-find-regexp (funcall typeDefinitionRegexp type)))
+    )
+
+  (switch-to-buffer "*xref*")
+  (xref-next-line)
+  (xref-goto-xref t)
+
+  (setq result (funcall build-import-from-existing-import-or-source inputType))
+  (switch-to-buffer startingBuffer)
+  (funcall importInsertionFunc result)
+  )
 #+end_src
