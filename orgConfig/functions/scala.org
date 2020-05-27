@@ -60,6 +60,29 @@
   (parse-go-to-line-or-column ":" 'right-char)
   )
 
+(defun scala-import-bounds ()
+  "Return the import region bounds"
+  (save-excursion
+    (search-backward-regexp "\\({\\|import\\)")
+    (if (string= (current-word) "import")
+        (progn
+          (setq startOfImport (point)
+                endOfImport (if (char-equal (char-before (line-end-position)) ?{)
+                                (progn
+                                  (end-of-line)
+                                  (cdr (bounds-of-thing-at-point 'sexp)))
+                              (line-end-position)
+                              ))
+          (list startOfImport endOfImport)
+          )
+      (progn
+        (setq endOfImport (cdr (bounds-of-thing-at-point 'sexp)))
+        (search-backward-regexp "\\({\\|import\\)")
+        (list (point) endOfImport)
+        )
+      ))
+  )
+
 (defun scala-remove-unused-import ()
   "Parse a shell/sbt output in search of the first unused import and remove it"
   (interactive)
