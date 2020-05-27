@@ -131,7 +131,7 @@
   (xref-next-line)
   (xref-goto-xref t)
 
-  (setq result (funcall build-import-from-existing-import-or-source inputType))
+  (setq result (funcall build-import-from-existing-import-or-source inputType startingBuffer))
   (switch-to-buffer startingBuffer)
   (funcall importInsertionFunc result)
   )

@@ -10,7 +10,7 @@
   (funcall 'event-file-navigation "] " ":" notSplitWindow)
   )
 
-(defun scala-build-import-from-existing-import-or-source (type)
+(defun scala-build-import-from-existing-import-or-source (type startingBuffer)
   "Considering the cursor is at the beginning of the target import line
    or into the scala source file containing the definition of the
   target file. This functions return the import to insert into the

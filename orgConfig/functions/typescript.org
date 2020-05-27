@@ -69,7 +69,38 @@
   (funcall 'extract-code-line-or-region-template "var " "function " " = " " { \n return " ";" ";\n }" name parameters from to)
   )
 
+(defun ts-build-import-from-existing-import-or-source (type startingBuffer)
+  "Considering the cursor is at the beginning of the target import line
+   or into the typescript source file containing the definition of the
+  target file. This functions return the import to insert into the
+  dependent typescript source file."
+  (if (string= (current-word) "import")
+      (copy-line-from-point-as-string) ;; copy import line
+    (concat "import { " type " } from '" (s-chop-suffixes '(".ts" ".tsx" ".ts.html") (file-relative-name (buffer-file-name) startingBuffer))  "';")
+    )
+  )
+
+(defun ts-import-type-at-point (type)
+  "Try to import into the current file the type at point"
+  (interactive (list
+                (read-string (format "type (%s): " (thing-at-point 'word))
+                             nil nil (thing-at-point 'word))))
+  (funcall 'build-import
+           type
+           (lambda (type) (concat "^import .*" " " type "[ ,]" ".*} from '.*';$"))
+           (lambda (type) (concat "\\(.*class " inputType ".*\\|.*interface " inputType ".*\\|.*type " inputType ".*\\)"))
+           'ts-build-import-from-existing-import-or-source
+           (lambda (result) (save-excursion
+                              (beginning-of-buffer)
+                              (newline)
+                              (previous-line)
+                              (insert result)
+                              ))
+           )
+  )
+
 (global-set-key (kbd "C-c c t c") 'ts-shell-clean-old-output)
 (global-set-key (kbd "C-c c t e") 'ts-goto-next-warn-error)
 (global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
+(global-set-key (kbd "C-c c t p") 'ts-import-type-at-point)
 #+end_src
