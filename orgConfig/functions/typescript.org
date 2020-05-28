@@ -99,9 +99,38 @@
            )
   )
 
+(defun ts-import-bounds ()
+  "Return the import region bounds"
+  (save-excursion
+    (search-backward-regexp "\\({\\|import\\)")
+    (if (char-equal (char-after (point)) ?{)
+        (progn
+          (setq startBracketPoint (point))
+          (search-backward-regexp "\\({\\|import\\)")
+          (setq startOfImport (point))
+          (goto-char startBracketPoint)
+          (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
+          (list startOfImport (line-end-position))
+          )
+      (progn
+        (message "test2")
+        (setq startOfImport (point)
+              endOfImport (if (char-equal (char-before (line-end-position)) ?{)
+                              (progn
+                                (end-of-line)
+                                (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
+                                (line-end-position)
+                                )
+                            (line-end-position)
+                            ))
+        (list startOfImport endOfImport)
+        )
+      ))
+  )
+
 (global-set-key (kbd "C-c c t c") 'ts-shell-clean-old-output)
 (global-set-key (kbd "C-c c t e") 'ts-goto-next-warn-error)
-(global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
 (global-set-key (kbd "C-c c t p") 'ts-import-type-at-point)
+(global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
 
 #+end_src
