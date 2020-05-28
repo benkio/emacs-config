@@ -117,9 +117,9 @@
   (funcall importInsertionFunc result)
   )
 
-(defun remove-unused-import (gotoUnusedImport importBoundFunc narrowImportFix)
+(defun remove-unused-import (unusedImportSearch gotoUnusedImport importBoundFunc narrowImportFix)
   "Template function that clean the unused import applying the input functions"
-  (funcall gotoUnusedImport "Unused Import" t)
+  (funcall gotoUnusedImport unusedImportSearch t t)
   (setq importBounds (funcall importBoundFunc)
         startImport (car importBounds)
         endImport    (cadr importBounds)

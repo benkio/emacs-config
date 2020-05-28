@@ -45,7 +45,8 @@
   "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
   (interactive)
   (unless errorMessage (setq errorMessage ""))
-  (setq searchRegexp (concat ".*\\.scala.*" (regexp-quote errorMessage)))
+  (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
+  (setq searchRegexp (concat ".*\\.scala.*" errorMessage))
   (condition-case
       nil
       (funcall (searchFunction backwardSearch) searchRegexp)
@@ -87,6 +88,7 @@
   "Parse a shell/sbt output in search of the first unused import and remove it"
   (interactive)
   (funcall 'remove-unused-import
+           "Unused Import"
            'scala-goto-next-warn-error
            'scala-import-bounds
            (lambda (targetType)

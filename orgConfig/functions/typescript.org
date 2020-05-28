@@ -17,11 +17,12 @@
   (funcall 'event-file-navigation (regexp-quote "[tsl] ERROR in ") "(" notSplitWindow)
   )
 
-(defun ts-goto-next-warn-error (&optional errorMessage backwardSearch)
+(defun ts-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
   "Search into an typescript output for the first warning/error, starting from cursor position, and move to it"
   (interactive)
   (unless errorMessage (setq errorMessage ""))
-  (setq searchRegexp (concat ".*TS.*: " (regexp-quote errorMessage)))
+  (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
+  (setq searchRegexp (concat ".*TS.*: " errorMessage))
   (condition-case
       nil
       (funcall (searchFunction backwardSearch) searchRegexp)
@@ -128,8 +129,38 @@
       ))
   )
 
+(defun ts-remove-unused-import ()
+  "Parse a shell output in search of the first unused import and remove it"
+  (interactive)
+  (funcall 'remove-unused-import
+           ".*is declared but.*$"
+           'ts-goto-next-warn-error
+           'ts-import-bounds
+           (lambda (targetType)
+             (if (search-forward "," nil t)
+                 (progn ;; multi import
+                   (goto-char targetType)
+                   (setq targetTypeBounds (bounds-of-thing-at-point 'word))
+                   (setq startKillTypeTarget (car targetTypeBounds))
+                   (setq endKillTypeTarget (cdr targetTypeBounds))
+                   (kill-region startKillTypeTarget endKillTypeTarget)
+                   (if (search-backward "," nil t)
+                       (progn
+                         (search-forward ",")
+                         (delete-backward-char 1)
+                         )
+                     (delete-forward-char 1)
+                     )
+                   )
+               (delete-region (point-min) (point-max))           ;; single import
+               )
+             )
+           )
+  )
+
 (global-set-key (kbd "C-c c t c") 'ts-shell-clean-old-output)
 (global-set-key (kbd "C-c c t e") 'ts-goto-next-warn-error)
+(global-set-key (kbd "C-c c t u") 'ts-remove-unused-import)
 (global-set-key (kbd "C-c c t p") 'ts-import-type-at-point)
 (global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
 
