@@ -41,7 +41,7 @@
   (funcall 'shell-clean-old-output "[info] Compiling")
   )
 
-(defun scala-goto-next-warn-error (&optional errorMessage backwardSearch)
+(defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
   "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
   (interactive)
   (unless errorMessage (setq errorMessage ""))
