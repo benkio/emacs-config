@@ -103,4 +103,5 @@
 (global-set-key (kbd "C-c c t e") 'ts-goto-next-warn-error)
 (global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
 (global-set-key (kbd "C-c c t p") 'ts-import-type-at-point)
+
 #+end_src

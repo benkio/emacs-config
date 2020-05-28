@@ -86,34 +86,29 @@
 (defun scala-remove-unused-import ()
   "Parse a shell/sbt output in search of the first unused import and remove it"
   (interactive)
-  (funcall 'scala-goto-next-warn-error "Unused Import" t)
-  (setq importBounds (scala-import-bounds)
-        startImport (car importBounds)
-        endImport    (cadr importBounds)
-        targetType    (point))
-
-  (save-restriction
-    (narrow-to-region startImport endImport)
-    (beginning-of-buffer)
-    (if (search-forward "," nil t)
-        (progn ;; multi import
-          (goto-char targetType)
-          (setq targetTypeBounds (bounds-of-thing-at-point 'word))
-          (setq startKillTypeTarget (car targetTypeBounds))
-          (setq endKillTypeTarget (cdr targetTypeBounds))
-          (kill-region startKillTypeTarget endKillTypeTarget)
-          (if (search-backward "," nil t)
-              (progn
-                (search-forward ",")
-                (delete-backward-char 1)
-                )
-            (delete-forward-char 1)
-            )
-          )
-      (delete-region startImport endImport)           ;; single import
-      )
-    )
-  (other-window -1)
+  (funcall 'remove-unused-import
+           'scala-goto-next-warn-error
+           'scala-import-bounds
+           (lambda (targetType)
+             (if (search-forward "," nil t)
+                 (progn ;; multi import
+                   (goto-char targetType)
+                   (setq targetTypeBounds (bounds-of-thing-at-point 'word))
+                   (setq startKillTypeTarget (car targetTypeBounds))
+                   (setq endKillTypeTarget (cdr targetTypeBounds))
+                   (kill-region startKillTypeTarget endKillTypeTarget)
+                   (if (search-backward "," nil t)
+                       (progn
+                         (search-forward ",")
+                         (delete-backward-char 1)
+                         )
+                     (delete-forward-char 1)
+                     )
+                   )
+               (delete-region (point-min) (point-max))           ;; single import
+               )
+             )
+           )
   )
 
 (defun scala-import-type-at-point (type)

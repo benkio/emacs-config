@@ -5,25 +5,6 @@
 
 
 #+begin_src emacs-lisp :tangle yes
-(defun ag-parsing-first-error-file-path ()
-  "Parse the ag result buffer and return the first error file path"7
-  (compilation-next-error 1)
-  (search-backward "File: ")
-  (forward-word)
-  (forward-char 2)
-  (setq dirSPoint (point))
-  (end-of-line)
-  (setq fileRelativePath (buffer-substring-no-properties dirSPoint (point)))
-  (search-backward "default-directory: \"")
-  (forward-word 2)
-  (forward-char 3)
-  (setq dirSPoint (point))
-  (search-forward "\"")
-  (left-char)
-  (setq default-directory (buffer-substring-no-properties dirSPoint (point)))
-  (concat default-directory fileRelativePath)
-  )
-
 (defun line-contains-string (args)
   "Check if the current line contains the input string"
   (save-excursion
@@ -134,5 +115,21 @@
   (setq result (funcall build-import-from-existing-import-or-source inputType startingBuffer))
   (switch-to-buffer startingBuffer)
   (funcall importInsertionFunc result)
+  )
+
+(defun remove-unused-import (gotoUnusedImport importBoundFunc narrowImportFix)
+  "Template function that clean the unused import applying the input functions"
+  (funcall gotoUnusedImport "Unused Import" t)
+  (setq importBounds (funcall importBoundFunc)
+        startImport (car importBounds)
+        endImport    (cadr importBounds)
+        targetType    (point))
+
+  (save-restriction
+    (narrow-to-region startImport endImport)
+    (beginning-of-buffer)
+    (funcall narrowImportFix targetType)
+    )
+  (other-window -1)
   )
 #+end_src
