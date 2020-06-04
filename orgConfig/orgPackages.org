@@ -29,3 +29,8 @@ Slide generation from org
 
 (use-package htmlize)
 #+END_SRC
+* To Bootstrap HTML Export
+
+#+begin_src emacs-lisp :tangle yes
+(use-package ox-twbs)
+#+end_src
