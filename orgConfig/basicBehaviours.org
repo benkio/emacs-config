@@ -40,7 +40,7 @@
        2. Split vertical
        3. Ignore whitespaces
    11. Keybinding for eval-region
-   12. The hide comments in hideShow mode when hide/show all
+   12. Keybinding for shrink-window and enlarge window
 4. Enhance:
    1. The load-theme function in order to unload any previous loaded themes
 
@@ -125,7 +125,9 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-diff-options "-w")
 
-(global-set-key (kbd "C-c c l e") 'eval-region)                 ;3-12
+(global-set-key (kbd "C-c c l e") 'eval-region)                 ;3-11
+(global-set-key (kbd "C-x M-{") 'enlarge-window)                ;3-12
+(global-set-key (kbd "C-x M-}") 'shrink-window)
 
 (defadvice load-theme (before disable-themes-first activate)
   (disable-all-themes))                                         ;4-1
