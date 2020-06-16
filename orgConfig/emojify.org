@@ -1,0 +1,10 @@
+* Emojify
+
+  Package for showing emoji
+
+#+begin_src emacs-lisp :tangle yes
+
+(use-package emojify
+  :config (add-hook 'after-init-hook #'global-emojify-mode)
+)
+#+end_src

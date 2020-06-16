@@ -22,8 +22,7 @@
   )
 
 (defun path-to-package (path)
-  "transferm a path to a package"
-  (interactive)
+  "transform a path to a package"
   (string-join
    (butlast
     (s-split "/"
@@ -33,6 +32,13 @@
              )
     ) ".")
   )
+(defun scala-path-to-package ()
+  "transform a path to a package, current buffer"
+  (interactive)
+  (setq package (path-to-package (buffer-file-name)))
+  (insert package)
+  )
+
 
 ; keybinded functions ;;;;;;;;;;;;;;;;;
 (defun sbt-shell-clean-old-output ()
