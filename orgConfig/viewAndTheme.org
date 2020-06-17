@@ -6,14 +6,15 @@
    3. Scroolbar
    4. Splash-Screen
 2. Shows:
-   1. Line Numbers
-   2. Column Line
-   3. Battery
-   4. Parentesis
-   5. Size of Current File
+   * Line Numbers
+   * Column Line
+   * Battery
+   * Parentesis
+   * Size of Current File
 3. Set Frame Title
 4. Set Uniquify (better buffer names on conflict)
-5. Set Theme & font
+5. Set Theme
+6. Set Font
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 (menu-bar-mode -1)              ;1-1
@@ -44,32 +45,76 @@
 ;; don't muck with special buffers
 (setq uniquify-ignore-buffers-re "^\\*")
 
-;; 5 THEME SECTION  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 5 Theme Section  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (load-theme 'tango-dark)
 
 (custom-set-faces
  '(region ((t (:inherit nil :background "purple4")))))
 
+;; 6 Font Section ;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package use-ttf
   :custom
-  (use-ttf-default-ttf-fonts '("/.emacs.d/fonts/VT323-Regular.ttf"))
-  (use-ttf-default-ttf-font-name "VT323")
+  (use-ttf-default-ttf-fonts '(
+                               "/.emacs.d/fonts/DejaVuSansMono.ttf"
+                               "/.emacs.d/fonts/symbola.ttf"
+                               ))
+  ;; I commented and not deleted because I'm crying...8bit :'(
+  ;;(use-ttf-default-ttf-fonts '("/.emacs.d/fonts/VT323-Regular.ttf"))
+  ;; (use-ttf-default-ttf-font-name "VT323")
   )
 
-(condition-case nil
-  (set-frame-font "VT323" nil t)
-  (error (warn "Default font not installed. Wait a bit then run: use-ttf-set-default-font + set-font-height-on-frame-width"))
-)
+
+(cond
+ ((string-equal system-type "windows-nt") ; Microsoft Windows
+  (when (member "DejaVu Sans Mono" (font-family-list))
+    (add-to-list 'initial-frame-alist '(font . "DejaVu Sans Mono-10"))
+    (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-10"))
+    )
+  )
+ ((string-equal system-type "darwin")   ; Mac OS X
+  (when (member "DejaVu Sans Mono" (font-family-list))
+    (add-to-list 'initial-frame-alist '(font . "DejaVu Sans Mono-10"))
+    (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-10")))
+  )
+ ((string-equal system-type "gnu/linux") ; linux
+  (when (member "DejaVu Sans Mono" (font-family-list))
+    (add-to-list 'initial-frame-alist '(font . "DejaVu Sans Mono-10"))
+    (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-10")))
+  )
+ )
+
+;; specify font for all unicode characters
+;; useful to display emoji on Mac also
+(when (member "Symbola" (font-family-list))
+  (set-fontset-font t 'unicode "Symbola" nil 'prepend))
+
+;; set font for emoji
+(set-fontset-font
+ t
+ '(#x1f300 . #x1fad0)
+ (cond
+  ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+  ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+  ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+  ((member "Symbola" (font-family-list)) "Symbola")
+  ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji"))
+ ;; Apple Color Emoji should be before Symbola, but Richard Stallman disabled it.
+ ;; GNU Emacs Removes Color Emoji Support on the Mac
+ ;; http://ergoemacs.org/misc/emacs_macos_emoji.html
+ ;;
+ )
+
 
 (defun set-font-height-on-frame-width (&optional frame)
-  "Set font based on the frame size"
+  "Set font based on the frame size. The page in full screen should show 50 lines"
   (interactive)
   (message "Set font based on the frame size") ;Adding this will make it run at startup, weird
   (cond ((> (frame-outer-width frame) 1800)
-         (set-face-attribute 'default nil :height 240))
-        ((> (frame-outer-width frame) 1400)                   ;; Macbook pro 1600
-         (set-face-attribute 'default nil :height 220))
+         (set-face-attribute 'default nil :height 180))
+        ((> (frame-outer-width frame) 1600)                   ;; Macbook pro 1680
+         (set-face-attribute 'default nil :height 160))
         ((> (frame-outer-width frame) 1200)                   ;; Asus 15 inch 1296
          (set-face-attribute 'default nil :height 120))
         (t
