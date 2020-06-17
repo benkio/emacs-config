@@ -57,17 +57,3 @@
 (org-babel-load-file "~/.emacs.d/orgConfig/functions/ffmpeg.org"                    )
 (org-babel-load-file "~/.emacs.d/orgConfig/functions/youtube.org"                   )
 (org-babel-load-file "~/.emacs.d/orgConfig/undotree.org"                            )
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (unicode-fonts yasnippet-snippets yaml-mode which-key wgrep use-ttf use-package undo-tree typescript-mode super-save scala-mode sbt-mode restclient pyenv-mode py-yapf py-autopep8 purescript-mode ox-twbs ox-reveal ox-gfm monokai-theme markdown-mode magit lorem-ipsum jedi importmagic iedit idle-highlight-mode htmlize hindent highlight haskell-mode git-link flymake-haskell-multi flymake-cursor flycheck-pycheckers expand-region exec-path-from-shell emojify elpy ein csv-mode crux counsel-projectile browse-kill-ring blacken auctex ample-theme ag))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(region ((t (:inherit nil :background "purple4")))))

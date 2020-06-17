@@ -52,7 +52,7 @@
 (custom-set-faces
  '(region ((t (:inherit nil :background "purple4")))))
 
-;; 6 Font Section ;;;;;;;;;;;;;;;;;;;;;;
+;; 6 Font Section ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package use-ttf
   :custom
