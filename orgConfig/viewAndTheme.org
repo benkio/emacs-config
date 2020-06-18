@@ -55,6 +55,7 @@
 ;; 6 Font Section ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package use-ttf
+  :ensure t
   :custom
   (use-ttf-default-ttf-fonts '(
                                "/.emacs.d/fonts/DejaVuSansMono.ttf"

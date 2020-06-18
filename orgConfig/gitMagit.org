@@ -9,5 +9,6 @@ Managing git repos.
          ("C-c g c" . magit-clone))
   :init)
 
-(use-package git-link)
+(use-package git-link
+:ensure t)
 #+END_SRC
