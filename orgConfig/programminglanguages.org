@@ -5,74 +5,19 @@
   :defer t
   :mode ("\\.py" . python-mode)
   :config
-  (setq python-indent-offset 4)
-  (elpy-enable))
+  (setq python-indent-offset 4))
 
-  ;; elpy
-  (use-package elpy
-  :after (python)
-  :init
-  (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
+(use-package lsp-python-ms
+  :ensure nil
+  :hook (python-mode . lsp)
   :config
-  (setq elpy-rpc-backend "jedi")
-  (setq elpy-rpc-python-command "~/.pyenv/versions/elpy-rpc/bin/python3")
-  (setq elpy-rpc-virtualenv-path "~/.pyenv/versions/elpy-rpc")
-  ;; (setq elpy-rpc-pythonpath "~/.emacs.d/elpy")
-  (setq elpy-rpc-pythonpath "~/.pyenv/versions/elpy-rpc/lib/python3.7/elpy")
-  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 
-  (use-package flycheck-pycheckers
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)
-  ;; (setq flycheck-pycheckers-checkers '(pylint flake8 mypy3))
-  (setq flycheck-pycheckers-checkers '(flake8 mypy3))
-  (setq flycheck-pycheckers-multi-thread "true")
-  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
-
-  (use-package py-yapf
-  :config (add-hook 'python-mode-hook 'py-yapf-enable-on-save))
-
-  ;; Jupiter Notebook
-  (use-package ein
-  )
-  ;; (use-package ein-notebook) Error (use-package): Failed to install ein-notebook: Package ‘ein-notebook-’ is unavailable
-  ;; (use-package ein-subpackages) Error (use-package): Failed to install ein-subpackages: Package ‘ein-subpackages-’ is unavailable
-
-  ;; (elpy-enable)
-  (setq python-shell-interpreter "~/.pyenv/versions/elpy-rpc/bin/ipython3"
-	 python-shell-interpreter-args "-i --simple-prompt --profile=default")
-
-  ;; ;; use flycheck not flymake with elpy
-  ;; (when (require 'flycheck nil t)
-  ;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  ;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-  ;; ;; enable autopep8 formatting on save
-  (use-package py-autopep8
-   :config (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
-
-  (use-package importmagic
-  :config
-  (add-hook 'python-mode-hook 'importmagic-mode))
-
-  (use-package blacken)
-  (use-package pyenv-mode
-  :defer t
-  )
-  ;; (use-package flycheck-mypy
-  ;; :init (add-to-list 'flycheck-checkers  'python-mypy))
-
-  ;; ;;
-  ;; enable jedi
-  (use-package jedi
-  :defer t
-  :init
-  (elpy-enable)
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (add-hook 'python-mode-hook 'jedi:ac-setup)
-  :config
-  (setq jedi:complete-on-dot t)
-  (setq jedi:get-in-function-call-delay 0))
+  ;; for dev build of language server
+  (setq lsp-python-ms-dir
+        (expand-file-name "~/app/python-language-server/output/bin/Release/"))
+  ;; for executable of language server, if it's not symlinked on your PATH
+  (setq lsp-python-ms-executable
+        "~/app/python-language-server/output/bin/Release/Microsoft.Python.LanguageServer"))
 #+END_SRC
 
 ** Scala
