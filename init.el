@@ -30,6 +30,7 @@
 (org-babel-load-file "~/.emacs.d/orgConfig/whitespace.org"                          )
 (org-babel-load-file "~/.emacs.d/orgConfig/counsel.org"                             )
 (org-babel-load-file "~/.emacs.d/orgConfig/ibuffer.org"                             )
+(org-babel-load-file "~/.emacs.d/orgConfig/hunspell.org"                            )
 (org-babel-load-file "~/.emacs.d/orgConfig/recentf.org"                             )
 (org-babel-load-file "~/.emacs.d/orgConfig/crux.org"                                )
 (org-babel-load-file "~/.emacs.d/orgConfig/orgPackages.org"                         )
