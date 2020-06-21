@@ -47,10 +47,9 @@
 
 ;; 5 Theme Section  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(load-theme 'tango-dark)
-
-(custom-set-faces
- '(region ((t (:inherit nil :background "purple4")))))
+(add-to-list 'default-frame-alist '(foreground-color . "white"))
+(add-to-list 'default-frame-alist '(background-color . "grey5"))
+(set-face-attribute 'region nil :background "dark slate blue")
 
 ;; 6 Font Section ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
