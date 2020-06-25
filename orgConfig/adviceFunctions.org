@@ -14,6 +14,6 @@ Where do I put all the advice function to existing libraries
   )
 
 
-(advice-add 'magit-commit :after #'cleanup-extra-magit-buffers)
+(advice-add 'magit-commit-create :after #'cleanup-extra-magit-buffers)
 
 #+end_src
