@@ -5,6 +5,7 @@ Where do I put all the advice function to existing libraries
 #+begin_src emacs-lisp :tangle yes
 (defun cleanup-extra-magit-buffers ()
   "Clean buffers: magit-process & magit-diff"
+  (message "test advice")
   (window-configuration-to-register "#")
   (switch-to-existing-buffer-other-window "magit-process")
   (kill-buffer)
