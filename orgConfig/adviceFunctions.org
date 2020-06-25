@@ -1,0 +1,19 @@
+* AdviceFunctions
+
+Where do I put all the advice function to existing libraries
+
+#+begin_src emacs-lisp :tangle yes
+(defun cleanup-extra-magit-buffers ()
+  "Clean buffers: magit-process & magit-diff"
+  (window-configuration-to-register "#")
+  (switch-to-existing-buffer-other-window "magit-process")
+  (kill-buffer)
+  (switch-to-existing-buffer-other-window "magit-diff")
+  (kill-buffer)
+  (jump-to-register "#")
+  )
+
+
+(advice-add 'magit-commit :after #'cleanup-extra-magit-buffers)
+
+#+end_src

@@ -60,3 +60,4 @@
 (org-babel-load-file "~/.emacs.d/orgConfig/functions/ffmpeg.org"                    )
 (org-babel-load-file "~/.emacs.d/orgConfig/functions/youtube.org"                   )
 (org-babel-load-file "~/.emacs.d/orgConfig/undotree.org"                            )
+(org-babel-load-file "~/.emacs.d/orgConfig/adviceFunctions.org"                     )
