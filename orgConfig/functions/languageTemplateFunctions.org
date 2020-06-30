@@ -108,9 +108,13 @@
     (error (project-find-regexp (funcall typeDefinitionRegexp type)))
     )
 
-  (switch-to-buffer "*xref*")
-  (xref-next-line)
-  (xref-goto-xref t)
+  ;; In linux, if 1 result is found xref is not created, and the focus
+  ;; goes directly to the match
+  (when (get-buffer "*xref*")
+    (switch-to-buffer "*xref*")
+    (xref-next-line)
+    (xref-goto-xref t)
+    )
 
   (setq result (funcall build-import-from-existing-import-or-source inputType startingBuffer))
   (switch-to-buffer startingBuffer)
