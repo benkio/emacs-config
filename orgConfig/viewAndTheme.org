@@ -115,7 +115,7 @@
          (set-face-attribute 'default nil :height 180))
         ((> (frame-outer-width frame) 1600)                   ;; Macbook pro 1680
          (set-face-attribute 'default nil :height 160))
-        ((> (frame-outer-width frame) 1300)                   ;; Asus 15 inch 1382
+        ((> (frame-outer-width frame) 1200)                   ;; Asus 15 inch 1269
          (set-face-attribute 'default nil :height 90))
         (t
          (set-face-attribute 'default nil :height 50))
