@@ -55,6 +55,7 @@
 (org-babel-load-file "~/.emacs.d/orgConfig/functions/fileConversion.org"            )
 (org-babel-load-file "~/.emacs.d/orgConfig/functions/scala.org"                     )
 (org-babel-load-file "~/.emacs.d/orgConfig/functions/typescript.org"                )
+(org-babel-load-file "~/.emacs.d/orgConfig/functions/haskell.org"                   )
 (org-babel-load-file "~/.emacs.d/orgConfig/functions/cursorMovement.org"            )
 (org-babel-load-file "~/.emacs.d/orgConfig/functions/apparences.org"                )
 (org-babel-load-file "~/.emacs.d/orgConfig/functions/ffmpeg.org"                    )

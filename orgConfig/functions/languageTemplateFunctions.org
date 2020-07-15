@@ -81,12 +81,12 @@
   (delete-region from to)
 
   ;; Generate code
-  (setq resultDefinition (if (string= "nil" (car parameters))
+  (setq resultDefinition (if (string-blank-p parameters)
                              (concat value name postDefinitionSyntaxValue code EndSyntaxValue)
-                           (concat function name (format "%s" parameters) postDefinitionSyntaxFunc code EndSyntaxFunc)))
-  (setq resultReference (if (string= "nil" (car parameters))
+                           (concat function name parameters postDefinitionSyntaxFunc code EndSyntaxFunc)))
+  (setq resultReference (if (string-blank-p parameters)
                             name
-                          (concat name (format "%s" parameters))))
+                          (concat name parameters)))
   ;; Put the resultReference at point
   (insert resultReference)
   ;; Move to the closest ^$ line and insert the resultDefinition

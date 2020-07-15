@@ -152,7 +152,6 @@
                 (read-string "value/function name: " )
                 (progn
                   (setq
-                   separator (read-string "insert separartor(,): " nil nil ",")
                    param (read-string "param name (RET to finish): ")
                    params nil
                    )
@@ -160,7 +159,7 @@
                     (push (s-trim param) params)
                     (setq param (read-string "param name (RET to finish): "))
                     )
-                  (reverse (cons (car params) (mapcar (lambda (x) (concat x separator)) (cdr params))))
+                    (mapconcat 'identity (reverse params) ", ")
                   )
                 (if (use-region-p) (region-beginning) (point))
                 (if (use-region-p) (region-end) (line-end-position))

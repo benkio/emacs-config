@@ -1,47 +1,43 @@
-* Typescript Functions
+* Haskell Functions
 
-  Functions useful when dealing with typescript.
+  Functions useful when dealing with Haskell.
 
 #+begin_src emacs-lisp :tangle yes
-
-(defun ts-shell-clean-old-output ()
+ 
+(defun hs-shell-clean-old-output ()
   "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
   (interactive)
-  (funcall 'shell-clean-old-output "<s> [webpack.Progress] 100% ")
+  (funcall 'shell-clean-old-output "Building library for ")
   )
 
-(defun ts-event-file-navigation (&optional notSplitWindow)
+(defun hs-event-file-navigation (&optional notSplitWindow)
   "Navigate to the file that has a problem. it can navigate using a
   different window."
   (previous-line) ;; Often called from the line AFTER the actual file path targeted
-  (funcall 'event-file-navigation (regexp-quote "[tsl] ERROR in ") "(" notSplitWindow)
+  (funcall 'event-file-navigation "" ":" notSplitWindow)
   )
 
-(defun ts-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
-  "Search into an typescript output for the first warning/error, starting from cursor position, and move to it"
+(defun hs-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
+  "Search into an haskell output for the first warning/error, starting from cursor position, and move to it"
   (interactive)
   (unless errorMessage (setq errorMessage ""))
   (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
-  (setq searchRegexp (concat ".*TS.*: " errorMessage))
+  (setq searchRegexp (concat (getenv "HOME") ".*\\.hs.*" errorMessage))
   (condition-case
       nil
       (funcall (searchFunction backwardSearch) searchRegexp)
     (error (user-error "no match found for %s" errorMessage))
     )
-  (ts-event-file-navigation t)
+  (hs-event-file-navigation t)
   (other-window -1)
 
-  (parse-go-to-line-or-column "," 'goto-line)
+  (parse-go-to-line-or-column ":" 'goto-line)
   (other-window -1)
 
-  (parse-go-to-line-or-column ")" 'right-char)
-  (other-window -1)
-  (next-line)
-  (end-of-line)
-  (other-window 1)
+  (parse-go-to-line-or-column ":" 'right-char)
   )
 
-(defun ts-extract-code-line-or-region (name &optional parameters from to)
+(defun hs-extract-code-line-or-region (name &optional parameters from to)
   "Extract the code to val or def:
    Require:
      - Name of the val/def
@@ -54,7 +50,6 @@
                 (read-string "value/function name: " )
                 (progn
                   (setq
-                   separator (read-string "insert separartor(,): " nil nil ",")
                    param (read-string "param name (RET to finish): ")
                    params nil
                    )
@@ -62,26 +57,28 @@
                     (push (s-trim param) params)
                     (setq param (read-string "param name (RET to finish): "))
                     )
-                  (reverse (cons (car params) (mapcar (lambda (x) (concat x separator)) (cdr params))))
+                  (concat " " (mapconcat 'identity (reverse params) " "))
                   )
                 (if (use-region-p) (region-beginning) (point))
                 (if (use-region-p) (region-end) (line-end-position))
                 ))
-  (funcall 'extract-code-line-or-region-template "var " "function " " = " " { \n return " ";" ";\n }" name parameters from to)
+  (funcall 'extract-code-line-or-region-template "" "" " = " " = " "" "" name parameters from to)
   )
 
-(defun ts-build-import-from-existing-import-or-source (type startingBuffer)
+; TODO TYPESCRIPT COPY PASTE ;;;;;;;;;;
+
+(defun hs-build-import-from-existing-import-or-source (type startingBuffer)
   "Considering the cursor is at the beginning of the target import line
-   or into the typescript source file containing the definition of the
+   or into the haskell source file containing the definition of the
   target file. This functions return the import to insert into the
-  dependent typescript source file."
+  dependent haskell source file."
   (if (string= (current-word) "import")
       (copy-line-from-point-as-string) ;; copy import line
     (concat "import { " type " } from '" (s-chop-suffixes '(".ts" ".tsx" ".ts.html") (file-relative-name (buffer-file-name) startingBuffer))  "';")
     )
   )
 
-(defun ts-import-type-at-point (type)
+(defun hs-import-type-at-point (type)
   "Try to import into the current file the type at point"
   (interactive (list
                 (read-string (format "type (%s): " (thing-at-point 'word))
@@ -90,7 +87,7 @@
            type
            (lambda (type) (concat "^import .*" " " type "[ ,]" ".*} from '.*';$"))
            (lambda (type) (concat "\\(.*class " inputType ".*\\|.*interface " inputType ".*\\|.*type " inputType ".*\\)"))
-           'ts-build-import-from-existing-import-or-source
+           'hs-build-import-from-existing-import-or-source
            (lambda (result) (save-excursion
                               (beginning-of-buffer)
                               (newline)
@@ -100,7 +97,7 @@
            )
   )
 
-(defun ts-import-bounds ()
+(defun hs-import-bounds ()
   "Return the import region bounds"
   (save-excursion
     (search-backward-regexp "\\({\\|import\\)")
@@ -114,7 +111,7 @@
           (list startOfImport (line-end-position))
           )
       (progn
-      
+        
         (setq startOfImport (point)
               endOfImport (if (char-equal (char-before (line-end-position)) ?{)
                               (progn
@@ -129,13 +126,13 @@
       ))
   )
 
-(defun ts-remove-unused-import ()
+(defun hs-remove-unused-import ()
   "Parse a shell output in search of the first unused import and remove it"
   (interactive)
   (funcall 'remove-unused-import
            ".*is declared but.*$"
-           'ts-goto-next-warn-error
-           'ts-import-bounds
+           'hs-goto-next-warn-error
+           'hs-import-bounds
            (lambda (targetType)
              (if (search-forward "," nil t)
                  (progn ;; multi import
@@ -158,10 +155,10 @@
            )
   )
 
-(global-set-key (kbd "C-c c t c") 'ts-shell-clean-old-output)
-(global-set-key (kbd "C-c c t e") 'ts-goto-next-warn-error)
-(global-set-key (kbd "C-c c t u") 'ts-remove-unused-import)
-(global-set-key (kbd "C-c c t p") 'ts-import-type-at-point)
-(global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
+(global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
+(global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
+;; TODO (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)
+;; TODO (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
+(global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
 
 #+end_src
