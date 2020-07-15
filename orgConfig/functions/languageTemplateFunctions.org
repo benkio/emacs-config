@@ -46,7 +46,7 @@
   (setq filePath (buffer-substring filenamePathPos (point)))
   (when (and notSplitWindow (= (count-windows) 1)) (split-window-right))
   (other-window 1)
-  (find-file filePath)
+  (find-file (string-trim filePath))
   )
 
 (defun parse-go-to-line-or-column (separator gotoFunction)
