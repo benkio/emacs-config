@@ -5,6 +5,9 @@ Highlight the word you are on in case you stop there for some time
 
 (use-package idle-highlight-mode
   :diminish idle-highlight-mode
-  :config (add-hook 'prog-mode-hook 'idle-highlight-mode))
+  :config 
+    (add-hook 'prog-mode-hook 'idle-highlight-mode)
+    (custom-set-faces '(idle-highlight ((t (:background "gray20")))))
+)
 
 #+end_src
