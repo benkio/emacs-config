@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: scala format
+# name: sbt format
 # key: sbtFMT
 # --
 sbt --supershell=false scalafmt && sbt --supershell=false test:scalafmt

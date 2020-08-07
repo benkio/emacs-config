@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sbt shell format
+# key: sbtSFMT
+# --
+;scalafmt; test:scalafmt

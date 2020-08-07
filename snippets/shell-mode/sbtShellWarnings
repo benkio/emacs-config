@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: sbt Warnings
+# key: sbtSW
+# --
+
+;printWarnings; test:printWarnings

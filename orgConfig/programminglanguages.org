@@ -199,6 +199,11 @@ Add all the needed components for scala:
 #+begin_src emacs-lisp :tangle yes
 (use-package lorem-ipsum)
 #+end_src
+** Json-mode
+
+#+begin_src emacs-lisp :tangle yes
+(use-package json-mode)
+#+end_src
 ** Typescript
 
 #+begin_src emacs-lisp :tangle yes

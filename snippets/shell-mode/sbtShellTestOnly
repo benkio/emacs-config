@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: sbt Shell testOnly
+# key: sbtSTO
+# --
+
+~ ${1:$$(when (and yas-moving-away-p (not (string= "" yas-text))) (concat yas-text "/"))}testOnly *.$2 $0

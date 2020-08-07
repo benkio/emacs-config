@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: sbt Shell Compile
+# key: sbtSC
+# --
+
+~ ${1:$$(when (and yas-moving-away-p (not (string= "" yas-text))) (concat yas-text "/"))}compile$0
