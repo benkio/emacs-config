@@ -12,21 +12,10 @@ Functions for manipulate text
   (eval result)
   )
 
-(defun reverse-words (beg end)
-  "Reverse the order of words in region . "
-  (interactive "*r")
-  (apply
-   'insert
-   (reverse
-    (split-string
-     (delete-and-extract-region beg end) "\\b"))))
-
 (defun kill-isearch-match ()
   "Kill the current isearch match string and continue searching."
   (interactive)
   (kill-region isearch-other-end (point)))
-
-(define-key isearch-mode-map [(control k)] 'kill-isearch-match)
 
 (defun random-alnum (&optional arg)
   "Generate a random character"
@@ -47,8 +36,6 @@ Functions for manipulate text
       (shell-command-to-string "uuidgen")))
 )
 
-(global-set-key (kbd "C-c i u u") 'insert-random-uuid)
-
 (defun duplicate-line-at (num)
   (interactive "nLine Number: ")
   (setq line-number (line-number-at-pos))
@@ -61,4 +48,6 @@ Functions for manipulate text
   (pop kill-ring)
   (insert (car kill-ring))
   )
-#+END_SRC
+
+(global-set-key (kbd "C-c i u u") 'insert-random-uuid)
+(define-key isearch-mode-map [(control k)] 'kill-isearch-match)#+END_SRC

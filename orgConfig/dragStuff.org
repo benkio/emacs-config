@@ -1,0 +1,10 @@
+* drag-stuff
+
+Move lines and also swap words.
+
+#+begin_src emacs-lisp :tangle yes
+     (use-package drag-stuff
+	:config
+	(drag-stuff-global-mode 1)
+        (drag-stuff-define-keys))
+#+end_src
