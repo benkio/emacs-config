@@ -50,4 +50,5 @@ Functions for manipulate text
   )
 
 (global-set-key (kbd "C-c i u u") 'insert-random-uuid)
-(define-key isearch-mode-map [(control k)] 'kill-isearch-match)#+END_SRC
+(define-key isearch-mode-map [(control k)] 'kill-isearch-match)
+#+END_SRC
