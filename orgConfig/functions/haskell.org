@@ -96,38 +96,6 @@
     (search-backward targetImport) ;;to move at the start of the matchx
     )
 
-                                          ; TODO TYPESCRIPT COPY PASTE ;;;;;;;;;;
-
-  (defun hs-build-import-from-existing-import-or-source (type startingBuffer)
-    "Considering the cursor is at the beginning of the target import line
-     or into the haskell source file containing the definition of the
-    target file. This functions return the import to insert into the
-    dependent haskell source file."
-    (if (string= (current-word) "import")
-        (copy-line-from-point-as-string) ;; copy import line
-      (concat "import { " type " } from '" (s-chop-suffixes '(".ts" ".tsx" ".ts.html") (file-relative-name (buffer-file-name) startingBuffer))  "';")
-      )
-    )
-
-  (defun hs-import-type-at-point (type)
-    "Try to import into the current file the type at point"
-    (interactive (list
-                  (read-string (format "type (%s): " (thing-at-point 'word))
-                               nil nil (thing-at-point 'word))))
-    (funcall 'build-import
-             type
-             (lambda (type) (concat "^import .*" " " type "[ ,]" ".*} from '.*';$"))
-             (lambda (type) (concat "\\(.*class " inputType ".*\\|.*interface " inputType ".*\\|.*type " inputType ".*\\)"))
-             'hs-build-import-from-existing-import-or-source
-             (lambda (result) (save-excursion
-                                (beginning-of-buffer)
-                                (newline)
-                                (previous-line)
-                                (insert result)
-                                ))
-             )
-    )
-
   (defun hs-import-bounds ()
     "Return the import region bounds"
     (save-excursion
@@ -186,9 +154,48 @@
              )
     )
 
+  (defun hs-build-import-from-existing-import-or-source (type startingBuffer)
+    "Considering the cursor is at the beginning of the target import line
+     or into the haskell source file containing the definition of the
+    target file. This functions return the import to insert into the
+    dependent haskell source file."
+    (if (string= (current-word) "import")
+        (copy-line-from-point-as-string) ;; copy import line
+      (progn
+        (beginning-of-buffer)
+        (search-forward "module ")
+        (setq moduleStartPoint (point))
+        (search-forward-regexp " \\|$")
+        (setq moduleName (s-trim (buffer-substring-no-properties moduleStartPoint (point))))
+        (concat "import " moduleName " (" type ")")
+        )
+      )
+    )
+
+  (defun hs-import-type-at-point (type)
+    "Try to import into the current file the type at point"
+    (interactive (list
+                  (read-string (format "type (%s): " (thing-at-point 'word))
+                               nil nil (thing-at-point 'word))))
+    (funcall 'build-import
+             type
+             (lambda (type) (concat "^import .*" type "[ ,]?.*)$"))
+             (lambda (type) (concat "\\(.*data " type ".*\\|.*type " type ".*\\|.*newtype " type ".*\\)"))
+             'hs-build-import-from-existing-import-or-source
+             (lambda (result) (save-excursion
+                                (beginning-of-buffer)
+                                (search-forward "where")
+                                (next-line)
+                                (newline 2)
+                                (previous-line)
+                                (insert result)
+                                ))
+             )
+    )
+
   (global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
   (global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
   (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)
-  ;; TODO (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
+  (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
   (global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
 #+end_src
