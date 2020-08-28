@@ -3,162 +3,192 @@
   Functions useful when dealing with Haskell.
 
 #+begin_src emacs-lisp :tangle yes
- 
-(defun hs-shell-clean-old-output ()
-  "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
-  (interactive)
-  (funcall 'shell-clean-old-output "Building library for ")
-  )
 
-(defun hs-event-file-navigation (&optional notSplitWindow)
-  "Navigate to the file that has a problem. it can navigate using a
-  different window."
-  (previous-line) ;; Often called from the line AFTER the actual file path targeted
-  (funcall 'event-file-navigation "" ":" notSplitWindow)
-  )
-
-(defun hs-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
-  "Search into an haskell output for the first warning/error, starting from cursor position, and move to it"
-  (interactive)
-  (unless errorMessage (setq errorMessage ""))
-  (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
-  (setq searchRegexp (concat (getenv "HOME") ".*\\.hs.*" errorMessage))
-  (condition-case
-      nil
-      (funcall (searchFunction backwardSearch) searchRegexp)
-    (error (user-error "no match found for %s" errorMessage))
+  (defun hs-shell-clean-old-output ()
+    "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
+    (interactive)
+    (funcall 'shell-clean-old-output "Building library for ")
     )
-  (hs-event-file-navigation t)
-  (other-window -1)
 
-  (parse-go-to-line-or-column ":" 'goto-line)
-  (other-window -1)
-
-  (parse-go-to-line-or-column ":" 'right-char)
-  )
-
-(defun hs-extract-code-line-or-region (name &optional parameters from to)
-  "Extract the code to val or def:
-   Require:
-     - Name of the val/def
-     - Optional list of parameters (if empty it will be a val)
-
-   if no code region is selected then it extracts the rest of the line from current position
-   Return type not specified.
-  "
-  (interactive (list
-                (read-string "value/function name: " )
-                (progn
-                  (setq
-                   param (read-string "param name (RET to finish): ")
-                   params nil
-                   )
-                  (while (not (equal "" (s-trim param)))
-                    (push (s-trim param) params)
-                    (setq param (read-string "param name (RET to finish): "))
-                    )
-                  (concat " " (mapconcat 'identity (reverse params) " "))
-                  )
-                (if (use-region-p) (region-beginning) (point))
-                (if (use-region-p) (region-end) (line-end-position))
-                ))
-  (funcall 'extract-code-line-or-region-template "" "" " = " " = " "" "" name parameters from to)
-  )
-
-; TODO TYPESCRIPT COPY PASTE ;;;;;;;;;;
-
-(defun hs-build-import-from-existing-import-or-source (type startingBuffer)
-  "Considering the cursor is at the beginning of the target import line
-   or into the haskell source file containing the definition of the
-  target file. This functions return the import to insert into the
-  dependent haskell source file."
-  (if (string= (current-word) "import")
-      (copy-line-from-point-as-string) ;; copy import line
-    (concat "import { " type " } from '" (s-chop-suffixes '(".ts" ".tsx" ".ts.html") (file-relative-name (buffer-file-name) startingBuffer))  "';")
+  (defun hs-event-file-navigation (&optional notSplitWindow)
+    "Navigate to the file that has a problem. it can navigate using a
+    different window."
+    (previous-line) ;; Often called from the line AFTER the actual file path targeted
+    (funcall 'event-file-navigation "" ":" notSplitWindow)
     )
-  )
 
-(defun hs-import-type-at-point (type)
-  "Try to import into the current file the type at point"
-  (interactive (list
-                (read-string (format "type (%s): " (thing-at-point 'word))
-                             nil nil (thing-at-point 'word))))
-  (funcall 'build-import
-           type
-           (lambda (type) (concat "^import .*" " " type "[ ,]" ".*} from '.*';$"))
-           (lambda (type) (concat "\\(.*class " inputType ".*\\|.*interface " inputType ".*\\|.*type " inputType ".*\\)"))
-           'hs-build-import-from-existing-import-or-source
-           (lambda (result) (save-excursion
-                              (beginning-of-buffer)
-                              (newline)
-                              (previous-line)
-                              (insert result)
-                              ))
-           )
-  )
+  (defun hs-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
+    "Search into an haskell output for the first warning/error, starting from cursor position, and move to it"
+    (interactive)
+    (unless errorMessage (setq errorMessage ""))
+    (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
+    (setq searchRegexp (concat (getenv "HOME") ".*\\.hs.*" errorMessage))
+    (condition-case
+        nil
+        (funcall (searchFunction backwardSearch) searchRegexp)
+      (error (user-error "no match found for %s" errorMessage))
+      )
+    (hs-event-file-navigation t)
+    (other-window -1)
 
-(defun hs-import-bounds ()
-  "Return the import region bounds"
-  (save-excursion
-    (search-backward-regexp "\\({\\|import\\)")
-    (if (char-equal (char-after (point)) ?{)
-        (progn
-          (setq startBracketPoint (point))
-          (search-backward-regexp "\\({\\|import\\)")
-          (setq startOfImport (point))
-          (goto-char startBracketPoint)
-          (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
-          (list startOfImport (line-end-position))
-          )
-      (progn
-        
-        (setq startOfImport (point)
-              endOfImport (if (char-equal (char-before (line-end-position)) ?{)
-                              (progn
-                                (end-of-line)
-                                (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
-                                (line-end-position)
-                                )
-                            (line-end-position)
-                            ))
-        (list startOfImport endOfImport)
-        )
-      ))
-  )
+    (parse-go-to-line-or-column ":" 'goto-line)
+    (other-window -1)
 
-(defun hs-remove-unused-import ()
-  "Parse a shell output in search of the first unused import and remove it"
-  (interactive)
-  (funcall 'remove-unused-import
-           ".*is declared but.*$"
-           'hs-goto-next-warn-error
-           'hs-import-bounds
-           (lambda (targetType)
-             (if (search-forward "," nil t)
-                 (progn ;; multi import
-                   (goto-char targetType)
-                   (setq targetTypeBounds (bounds-of-thing-at-point 'word))
-                   (setq startKillTypeTarget (car targetTypeBounds))
-                   (setq endKillTypeTarget (cdr targetTypeBounds))
-                   (kill-region startKillTypeTarget endKillTypeTarget)
-                   (if (search-backward "," nil t)
-                       (progn
-                         (search-forward ",")
-                         (delete-backward-char 1)
-                         )
-                     (delete-forward-char 1)
+    (parse-go-to-line-or-column ":" 'right-char)
+    )
+
+  (defun hs-extract-code-line-or-region (name &optional parameters from to)
+    "Extract the code to val or def:
+     Require:
+       - Name of the val/def
+       - Optional list of parameters (if empty it will be a val)
+
+     if no code region is selected then it extracts the rest of the line from current position
+     Return type not specified.
+    "
+    (interactive (list
+                  (read-string "value/function name: " )
+                  (progn
+                    (setq
+                     param (read-string "param name (RET to finish): ")
+                     params nil
                      )
-                   )
-               (delete-region (point-min) (point-max))           ;; single import
+                    (while (not (equal "" (s-trim param)))
+                      (push (s-trim param) params)
+                      (setq param (read-string "param name (RET to finish): "))
+                      )
+                    (concat " " (mapconcat 'identity (reverse params) " "))
+                    )
+                  (if (use-region-p) (region-beginning) (point))
+                  (if (use-region-p) (region-end) (line-end-position))
+                  ))
+    (funcall 'extract-code-line-or-region-template "" "" " = " " = " "" "" name parameters from to)
+    )
+
+  (defun hs-goto-next-unused-import (&optional errorMessage backwardSearch isRegexp)
+    "Search into an haskell output for the unused import, and move to it.
+     Special case of hs-goto-next-warn-error since the output doesn't provide
+     the correct column position"
+    (interactive)
+    (unless errorMessage (setq errorMessage ""))
+    (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
+    (setq searchRegexp (concat (getenv "HOME") ".*\\.hs.*" errorMessage))
+    (condition-case
+        nil
+        (funcall (searchFunction backwardSearch) searchRegexp)
+      (error (user-error "no match found for %s" errorMessage))
+      )
+    (hs-event-file-navigation t)
+    (other-window -1)
+
+    (parse-go-to-line-or-column ":" 'goto-line)
+    (other-window -1)
+
+    (save-excursion
+      (search-forward "The import of ‘")
+      (setq p1 (point))
+      (search-forward "’")
+      (left-char)
+      (setq targetImport (buffer-substring-no-properties p1 (point)))
+      )
+    (other-window 1)
+    (search-forward targetImport)
+    (search-backward targetImport) ;;to move at the start of the matchx
+    )
+
+                                          ; TODO TYPESCRIPT COPY PASTE ;;;;;;;;;;
+
+  (defun hs-build-import-from-existing-import-or-source (type startingBuffer)
+    "Considering the cursor is at the beginning of the target import line
+     or into the haskell source file containing the definition of the
+    target file. This functions return the import to insert into the
+    dependent haskell source file."
+    (if (string= (current-word) "import")
+        (copy-line-from-point-as-string) ;; copy import line
+      (concat "import { " type " } from '" (s-chop-suffixes '(".ts" ".tsx" ".ts.html") (file-relative-name (buffer-file-name) startingBuffer))  "';")
+      )
+    )
+
+  (defun hs-import-type-at-point (type)
+    "Try to import into the current file the type at point"
+    (interactive (list
+                  (read-string (format "type (%s): " (thing-at-point 'word))
+                               nil nil (thing-at-point 'word))))
+    (funcall 'build-import
+             type
+             (lambda (type) (concat "^import .*" " " type "[ ,]" ".*} from '.*';$"))
+             (lambda (type) (concat "\\(.*class " inputType ".*\\|.*interface " inputType ".*\\|.*type " inputType ".*\\)"))
+             'hs-build-import-from-existing-import-or-source
+             (lambda (result) (save-excursion
+                                (beginning-of-buffer)
+                                (newline)
+                                (previous-line)
+                                (insert result)
+                                ))
+             )
+    )
+
+  (defun hs-import-bounds ()
+    "Return the import region bounds"
+    (save-excursion
+      (search-backward-regexp "\\((\\|import\\)")
+      (if (char-equal (char-after (point)) ?\( )
+          (progn
+            (setq startBracketPoint (point))
+            (search-backward-regexp "\\((\\|import\\)")
+            (setq startOfImport (point))
+            (goto-char startBracketPoint)
+            (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
+            (list startOfImport (line-end-position))
+            )
+        (progn
+
+          (setq startOfImport (point)
+                endOfImport (if (char-equal (char-before (line-end-position)) ?\( )
+                                (progn
+                                  (end-of-line)
+                                  (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
+                                  (line-end-position)
+                                  )
+                              (line-end-position)
+                              ))
+          (list startOfImport endOfImport)
+          )
+        ))
+    )
+
+  (defun hs-remove-unused-import ()
+    "Parse a shell output (stack) in search of the first unused import and remove it"
+    (interactive)
+    (funcall 'remove-unused-import
+             ".*Wunused-imports.*$"
+             'hs-goto-next-unused-import
+             'hs-import-bounds
+             (lambda (targetType)
+               (if (search-forward "," nil t)
+                   (progn ;; multi import
+                     (goto-char targetType)
+                     (setq targetTypeBounds (bounds-of-thing-at-point 'word))
+                     (setq startKillTypeTarget (car targetTypeBounds))
+                     (setq endKillTypeTarget (cdr targetTypeBounds))
+                     (kill-region startKillTypeTarget endKillTypeTarget)
+                     (if (search-backward "," nil t)
+                         (progn
+                           (search-forward ",")
+                           (delete-backward-char 1)
+                           )
+                       (delete-forward-char 1)
+                       )
+                     )
+                 (delete-region (point-min) (point-max))           ;; single import
+                 )
                )
              )
-           )
-  )
+    )
 
-(global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
-(global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
-;; TODO (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)
-;; TODO (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
-(global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
-
+  (global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
+  (global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
+  (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)
+  ;; TODO (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
+  (global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
 #+end_src
