@@ -22,7 +22,7 @@
    11. Better Scrolling
    12. Winner Mode: restore windows, especially for ediff sessions
    13. Save on frame focus out: https://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
-   14. global hs-minor-mode
+   14. hs-minor-mode when coding
    15. Dired hide details by default
    16. Idle-highlight-mode by default
 3. Set:

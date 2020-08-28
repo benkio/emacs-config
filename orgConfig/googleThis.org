@@ -1,0 +1,7 @@
+* Google This
+
+Allow you to search the thing under cursor on google
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package google-this)
+#+end_src
