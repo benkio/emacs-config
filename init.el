@@ -35,7 +35,6 @@
 (org-babel-load-file "~/.emacs.d/orgConfig/crux.org"                                )
 (org-babel-load-file "~/.emacs.d/orgConfig/orgPackages.org"                         )
 (org-babel-load-file "~/.emacs.d/orgConfig/whichkey.org"                            )
-(org-babel-load-file "~/.emacs.d/orgConfig/autocomplete.org"                        )
 (org-babel-load-file "~/.emacs.d/orgConfig/supersave.org"                           )
 (org-babel-load-file "~/.emacs.d/orgConfig/flycheck.org"                            )
 (org-babel-load-file "~/.emacs.d/orgConfig/silverSearcher.org"                      )
