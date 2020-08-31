@@ -27,3 +27,11 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
 ))
 
 #+END_SRC
+
+** Custom Modes
+
+   Modes that are not in melpa and you found on the internet. Put them
+   into the lisp folder.
+#+begin_src emacs-lisp :tangle yes
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+#+end_src

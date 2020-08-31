@@ -1,0 +1,9 @@
+* Lilypond
+
+  Add lilypond mode.
+
+#+begin_src emacs-lisp :tangle yes
+  ;; http://web.mit.edu/foley/Dotfiles/emacs.d/elisp/lilypond-mode.el
+  (load "~/.emacs.d/lisp/lilypond-mode")
+  (add-to-list 'auto-mode-alist '("\\.ly\\'" . lilypond-mode))
+#+end_src
