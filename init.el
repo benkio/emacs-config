@@ -40,7 +40,7 @@
 (org-babel-load-file "~/.emacs.d/orgConfig/supersave.org"                           )
 (org-babel-load-file "~/.emacs.d/orgConfig/flycheck.org"                            )
 (org-babel-load-file "~/.emacs.d/orgConfig/silverSearcher.org"                      )
-(org-babel-load-file "~/.emacs.d/orgConfig/company.org"                             )
+(org-babel-load-file "~/.emacs.d/orgConfig/autoComplete.org"                        )
 (org-babel-load-file "~/.emacs.d/orgConfig/restclient.org"                          )
 (org-babel-load-file "~/.emacs.d/orgConfig/dragStuff.org"                           )
 (org-babel-load-file "~/.emacs.d/orgConfig/idleHighlightMode.org"                   )

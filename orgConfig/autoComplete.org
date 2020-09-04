@@ -1,0 +1,15 @@
+* AutoComplete
+
+  completition framework as Zamansky
+  https://cestlaz.github.io/posts/using-emacs-45-company/
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package auto-complete
+    :ensure t
+    :init
+    (progn
+      (ac-config-default)
+      (global-auto-complete-mode t)
+      ))
+#+end_src
+
