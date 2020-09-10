@@ -67,8 +67,8 @@ Functions for manipulate text
     (previous-line)
     )
 
-  (global-set-key (kbd "C-x <up>") 'move-line-up)
-  (global-set-key (kbd "C-x <down>") 'move-line-down)
-  (global-set-key (kbd "M-<right>") (lambda () (interactive) (transpose-words 1)))
-  (global-set-key (kbd "M-<left>") (lambda () (interactive) (transpose-words -1)))
+  (global-set-key [(control shift up)] 'move-line-up)
+  (global-set-key [(control shift down)] 'move-line-down)
+  (global-set-key [(control shift right)] (lambda () (interactive) (transpose-words 1)))
+  (global-set-key [(control shift left)] (lambda () (interactive) (transpose-words -1)))
 #+END_SRC
