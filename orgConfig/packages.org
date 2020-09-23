@@ -15,7 +15,7 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
       gnutls-verify-error t)
 
 (package-initialize)
-
+(package-refresh-contents)
 ;; Bootstrap `use-package'
 (unless (require 'use-package nil t)
   (if (not (yes-or-no-p (concat "Refresh packages, install use-package and"
