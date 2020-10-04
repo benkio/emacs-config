@@ -13,7 +13,7 @@
   (defun hs-event-file-navigation (&optional notSplitWindow)
     "Navigate to the file that has a problem. it can navigate using a
     different window."
-    (previous-line) ;; Often called from the line AFTER the actual file path targeted
+    (search-backward-regexp "^/.*$") ;; Often called from the line AFTER the actual file path targeted
     (funcall 'event-file-navigation "" ":" notSplitWindow)
     )
 
