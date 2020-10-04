@@ -34,7 +34,7 @@
     (parse-go-to-line-or-column ":" 'goto-line)
     (other-window -1)
 
-    (parse-go-to-line-or-column ":" 'right-char)
+    (parse-go-to-line-or-column "[:-]" 'right-char)
     )
 
   (defun hs-extract-code-line-or-region (name &optional parameters from to)

@@ -49,16 +49,18 @@ Add all the needed components for scala:
     :mode ("\\.purs$" "\\.hs$") ;;enable the mode for purescript as well
     :config
     (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
-    (add-hook 'haskell-mode-hook #'haskell-doc-mode))
+    (add-hook 'haskell-mode-hook #'haskell-doc-mode)
+    '(haskell-stylish-on-save t)
+    )
 
   ;; hlint extension (requires hlint installed with cabal)
   (use-package flymake-haskell-multi
-  :config
-  (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
+    :config
+    (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
 
   ;; Displays hlint suggestion in minibuffer
   (use-package flymake-cursor
-  )
+    )
 
   ;; hindent (require hindente installed with cabal)
   (use-package hindent
