@@ -58,7 +58,7 @@
   "
     (right-char)
     (setq filenamePathPos (point))
-    (search-forward separator)
+    (search-forward-regexp separator)
     (left-char)
     (setq fileLineOrColumn (buffer-substring filenamePathPos (point)))
     (other-window 1)
