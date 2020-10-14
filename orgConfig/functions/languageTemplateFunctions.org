@@ -27,7 +27,7 @@
   (defun shell-clean-old-output (startingPhrase)
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation). based on the input value"
     (end-of-buffer)
-    (search-backward startingPhrase)
+    (re-search-backward startingPhrase)
     (delete-region (point) (goto-char (point-min)))
     (end-of-buffer)
     )
