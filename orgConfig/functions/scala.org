@@ -44,7 +44,7 @@
 (defun sbt-shell-clean-old-output ()
   "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
   (interactive)
-  (funcall 'shell-clean-old-output "[info] Compiling")
+  (funcall 'shell-clean-old-output "\\[info\\] Compiling")
   )
 
 (defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
