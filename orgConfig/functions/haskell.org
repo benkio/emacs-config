@@ -180,7 +180,7 @@
     (funcall 'build-import
              type
              (lambda (type) (concat "^import .*" type "[ ,]?.*)$"))
-             (lambda (type) (concat "\\(.*data " type ".*\\|.*type " type ".*\\|.*newtype " type ".*\\)"))
+             (lambda (type) (concat "\\(.*data " type ".*\\|.*type " type ".*\\|.*newtype " type ".*\\|" type " ::.*\\)"))
              'hs-build-import-from-existing-import-or-source
              (lambda (result) (save-excursion
                                 (beginning-of-buffer)
