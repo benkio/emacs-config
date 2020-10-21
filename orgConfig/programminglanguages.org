@@ -211,6 +211,7 @@ Add all the needed components for scala:
 (use-package typescript-mode
   :defer t
   :mode "\\.\\(ts\\|tsx\\)\\'"
+  :config (add-to-list 'ac-modes 'typescript-mode)
 )
 #+end_src
 ** Markdown
