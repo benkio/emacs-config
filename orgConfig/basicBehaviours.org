@@ -40,6 +40,7 @@
        3. Ignore whitespaces
    11. Keybinding for eval-region
    12. Keybinding for shrink-window and enlarge window
+   13. Cursor as a line
 4. Enhance:
    1. The load-theme function in order to unload any previous loaded themes
 
@@ -125,6 +126,8 @@
 (global-set-key (kbd "C-c c l e") 'eval-region)                 ;3-11
 (global-set-key (kbd "C-x M-{") 'enlarge-window)                ;3-12
 (global-set-key (kbd "C-x M-}") 'shrink-window)
+
+(setq-default cursor-type 'bar)                                 ;3-13
 
 (defadvice load-theme (before disable-themes-first activate)
   (disable-all-themes))                                         ;4-1
