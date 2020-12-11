@@ -7,7 +7,7 @@
   (defun hs-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
     (interactive)
-    (funcall 'shell-clean-old-output "Building library for ")
+    (funcall 'shell-clean-old-output "\\(Building library for \\|\n\n\n\\)")
     )
 
   (defun hs-event-file-navigation (&optional notSplitWindow)
