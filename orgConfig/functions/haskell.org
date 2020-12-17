@@ -193,6 +193,31 @@
              )
     )
 
+  (defun hs-string-to-multiline-string (&optional $from $to)
+    "Escape the string selected as haskell multiline string"
+    (interactive
+     (if (use-region-p)
+         (list (region-beginning) (region-end))
+       (let ((bds (bounds-of-thing-at-point 'paragraph)) )
+         (list (car bds) (cdr bds)) ) ) )
+    (let (inputStr outputStr)
+      (setq inputStr (buffer-substring-no-properties $from $to))
+      (setq outputStr
+            (let* (
+                   (case-fold-search t)
+                   (first-replace (replace-regexp-in-string "$" (regexp-quote "\\n\\") inputStr))
+                   (second-replace (replace-regexp-in-string "^" (regexp-quote "\\") first-replace))
+                   (remove-starting-backslash (substring second-replace 1 (length second-replace)))
+                   )
+              (substring remove-starting-backslash 0 (- (length remove-starting-backslash) 3))
+              ))
+
+      (save-excursion
+        (delete-region $from $to)
+        (goto-char $from)
+        (insert outputStr) )) )
+  )
+
   (global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
   (global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
   (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)

@@ -8,6 +8,7 @@
    5. Using Tabs
    6. Windows keys
    7. Truncate-lines for minibuffer
+   8. Upcase region warning
 2. Enable:
    1. y/n for yes and no
    2. Save cursor position
@@ -63,6 +64,8 @@
 
 (add-hook 'minibuffer-setup-hook
       (lambda () (setq truncate-lines nil)))                    ;1-7
+
+(put 'upcase-region 'disabled nil)                              ;1-8
 
 (defalias 'yes-or-no-p 'y-or-n-p)				;2-1
 (savehist-mode 1)						;2-2
