@@ -216,11 +216,11 @@
         (delete-region $from $to)
         (goto-char $from)
         (insert outputStr) )) )
-  )
 
   (global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
   (global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
   (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)
   (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
   (global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
+  (global-set-key (kbd "C-c c h s") 'hs-string-to-multiline-string)
 #+end_src
