@@ -59,12 +59,17 @@
   (use-ttf-default-ttf-fonts '(
                                "/.emacs.d/fonts/DejaVuSansMono.ttf"
                                "/.emacs.d/fonts/symbola.ttf"
+                               "/.emacs.d/fonts/Quivira.ttf"
                                ))
   ;; I commented and not deleted because I'm crying...8bit :'(
   ;;(use-ttf-default-ttf-fonts '("/.emacs.d/fonts/VT323-Regular.ttf"))
   ;; (use-ttf-default-ttf-font-name "VT323")
   )
 
+(use-package unicode-fonts
+   :ensure t
+   :config
+    (unicode-fonts-setup))
 
 (cond
  ((string-equal system-type "windows-nt") ; Microsoft Windows
