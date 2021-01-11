@@ -6,7 +6,7 @@
 
   Converts org file to github markdown with the command: `M-x org-gfm-export-to-markdown`
 
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp 
 
 (use-package ox-gfm
   :defer t
@@ -19,7 +19,7 @@
 
 Slide generation from org
 
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp 
 (use-package ox-reveal
   :defer t
   :config
@@ -31,6 +31,11 @@ Slide generation from org
 #+END_SRC
 * To Bootstrap HTML Export
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package ox-twbs)
+#+end_src
+* Export to Jira/Confluence
+
+#+begin_src emacs-lisp
+(use-package ox-jira)
 #+end_src
