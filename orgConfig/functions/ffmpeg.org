@@ -7,62 +7,79 @@ format.
 Feel free to come and add your function if not present
 #+begin_src emacs-lisp :tangle yes
 
-(defun cut-media-file (origin startTime endTime newName)
-  "This function get in input:
-- The path to a specific video
-- The start time of the cut (00:00:00)
-- The end time of the cut (00:00:00)
-- The new name of the output
-Perform a ffmpeg command to cut the input and generate the new output in the same directory
-"
-  (interactive "FFile name to cut from:
-sStart Time (00:00:00):
-sEnd Time (00:00:00):
-sNew Name: ")
+  (defun cut-media-file (origin startTime endTime newName)
+    "This function get in input:
+  - The path to a specific video
+  - The start time of the cut (00:00:00)
+  - The end time of the cut (00:00:00)
+  - The new name of the output
+  Perform a ffmpeg command to cut the input and generate the new output in the same directory
+  "
+    (interactive "FFile name to cut from:
+  sStart Time (00:00:00):
+  sEnd Time (00:00:00):
+  sNew Name: ")
 
-  (setq totalSeconds (+
-                      (-
-                       (string-to-number (substring endTime 6))
-                       (string-to-number (substring startTime 6)))
-                      (*
-                       (-
-                        (string-to-number (substring endTime 3 5))
-                        (string-to-number (substring startTime 3 5)))
-                       60
-                       )
-                      (*
-                       (-
-                        (string-to-number (substring endTime 0 2))
-                        (string-to-number (substring startTime 0 2)))
-                       3600
-                       )
-                      )
-        )
+    (setq totalSeconds (+
+                        (-
+                         (string-to-number (substring endTime 6))
+                         (string-to-number (substring startTime 6)))
+                        (*
+                         (-
+                          (string-to-number (substring endTime 3 5))
+                          (string-to-number (substring startTime 3 5)))
+                         60
+                         )
+                        (*
+                         (-
+                          (string-to-number (substring endTime 0 2))
+                          (string-to-number (substring startTime 0 2)))
+                         3600
+                         )
+                        )
+          )
 
-  (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" origin "\" -t " (number-to-string totalSeconds) " -vcodec copy -acodec copy \"" (concat (file-name-directory origin) newName) "\""))
+    (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" origin "\" -t " (number-to-string totalSeconds) " -vcodec copy -acodec copy \"" (concat (file-name-directory origin) newName) "\""))
 
-  (async-shell-command ffmpegCommand)
-  )
-
-(require 'seq)
-
-(defun concatenate-media-files ()
-  "Concatenate a list of files with the same encoding"
-  (interactive)
-  (setq files (list (read-file-name "The initial file name: ")))
-  (message "%s" files)
-  (while (yes-or-no-p "Another file? ")
-    (progn
-      (setq files (append files (list (read-file-name "Next file name: "))))
-      )
-    )
-  (let* ((newFile (read-string "Insert the new file name: "))
-         (concatContent (seq-drop (seq-reduce (lambda (a b) (concat a "\nfile '" b "'")) files "") 1))
-         (tempFile (make-temp-file "concat" nil nil concatContent))
-         (outputFile (expand-file-name (concat default-directory newFile)))
-         (ffmpegCommand (concat "ffmpeg -f concat -safe 0 -i \"" tempFile "\" -c copy \"" outputFile  "\"")))
     (async-shell-command ffmpegCommand)
     )
-  )
 
+  (require 'seq)
+
+  (defun concatenate-media-files ()
+    "Concatenate a list of files with the same encoding"
+    (interactive)
+    (setq files (list (read-file-name "The initial file name: ")))
+    (message "%s" files)
+    (while (yes-or-no-p "Another file? ")
+      (progn
+        (setq files (append files (list (read-file-name "Next file name: "))))
+        )
+      )
+    (let* ((newFile (read-string "Insert the new file name: "))
+           (concatContent (seq-drop (seq-reduce (lambda (a b) (concat a "\nfile '" b "'")) files "") 1))
+           (tempFile (make-temp-file "concat" nil nil concatContent))
+           (outputFile (expand-file-name (concat default-directory newFile)))
+           (ffmpegCommand (concat "ffmpeg -f concat -safe 0 -i \"" tempFile "\" -c copy \"" outputFile  "\"")))
+      (async-shell-command ffmpegCommand)
+      )
+    )
+
+  (defun play-sound (file)
+    "play the sound using ffplay"
+    (interactive "f")
+    (setq commandExist nil)
+    (condition-case nil
+        (progn
+          (call-process "ffplay")
+          (setq commandExist t)
+          )
+      (error (message "Please install ffplay (ffmpeg)"))
+      )
+
+    (when commandExist
+      (let ((fileComplete (expand-file-name file))
+            (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+        (shell-command (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension))))
+    )
 #+end_src
