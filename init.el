@@ -3,6 +3,7 @@
 ;;;; just comment it out by adding a semicolon to the start of the line.
 ;;;; You may delete these explanatory comments.
 (package-initialize)
+(server-start)
 
 (org-babel-load-file "~/.emacs.d/orgConfig/packages.org")
 
@@ -11,7 +12,7 @@
 
 (setq use-package-always-ensure t)
 
- (require 'org)
+(require 'org)
 
 (org-babel-load-file "~/.emacs.d/orgConfig/defaults.org"                            )
 (org-babel-load-file "~/.emacs.d/orgConfig/viewAndTheme.org"                        )
