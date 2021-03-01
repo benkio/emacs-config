@@ -217,30 +217,11 @@
         (goto-char $from)
         (insert outputStr) )) )
 
-  (defun hindent-buffer (input)
-    "Run hindent on the file in input, if not existing, it just run on the current buffer"
-    (interactive "bBuffer to indent: ")
-    (setq commandExist nil)
-    (condition-case nil
-        (progn
-          (call-process "hindent")
-          (setq commandExist t)
-          )
-      (error (message "Please install hindent"))
-      )
-
-
-    (when commandExist
-      (with-current-buffer input
-       (shell-command (format "hindent %s" (buffer-file-name))))
-      )
-    )
-
   (global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
   (global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
   (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)
   (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
   (global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
   (global-set-key (kbd "C-c c h s") 'hs-string-to-multiline-string)
-  (global-set-key (kbd "C-c c h i") 'hindent-buffer)
+  (global-set-key (kbd "C-c c h i") 'ormolu-format-buffer)
 #+end_src

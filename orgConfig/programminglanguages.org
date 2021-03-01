@@ -68,6 +68,11 @@ Add all the needed components for scala:
     :config
     (add-hook 'haskell-mode-hook #'hindent-mode)
     (setq hindent-style "johan-tibell"))
+
+  ;; ormolu formatter
+  (use-package ormolu
+    :hook (haskell-mode . ormolu-format-on-save-mode)
+    )
 #+END_SRC
 ** Latex
 #+BEGIN_SRC emacs-lisp :tangle yes
