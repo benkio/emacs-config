@@ -80,6 +80,6 @@ Feel free to come and add your function if not present
     (when commandExist
       (let ((fileComplete (expand-file-name file))
             (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-        (shell-command (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension))))
+        (async-shell-command (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension))))
     )
 #+end_src
