@@ -4,173 +4,159 @@
   It depends on the functions defined into `languageTemplateFunctions.org`
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-(defun sbt-event-file-navigation (&optional notSplitWindow)
-  "Navigate to the file that has a problem. it can navigate using a
-  different window."
-  (funcall 'event-file-navigation "] " ":" notSplitWindow)
-  )
-
-(defun scala-build-import-from-existing-import-or-source (type startingBuffer)
-  "Considering the cursor is at the beginning of the target import line
-   or into the scala source file containing the definition of the
-  target file. This functions return the import to insert into the
-  dependent scala source file."
-  (if (string= (current-word) "import")
-      (copy-line-from-point-as-string) ;; copy import line
-    (concat "import " (path-to-package (buffer-file-name)) "." type) ;; copy package and make it an import
+  (defun sbt-event-file-navigation (&optional notSplitWindow)
+    "Navigate to the file that has a problem. it can navigate using a
+    different window."
+    (funcall 'event-file-navigation "] " ":" notSplitWindow)
     )
-  )
 
-(defun path-to-package (path)
-  "transform a path to a package"
-  (string-join
-   (butlast
-    (s-split "/"
-             (nth 1
-                  (split-string path "scala/")
-                  )
-             )
-    ) ".")
-  )
-(defun scala-path-to-package ()
-  "transform a path to a package, current buffer"
-  (interactive)
-  (setq package (path-to-package (buffer-file-name)))
-  (insert package)
-  )
-
-
-; keybinded functions ;;;;;;;;;;;;;;;;;
-(defun sbt-shell-clean-old-output ()
-  "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
-  (interactive)
-  (funcall 'shell-clean-old-output "\\[info\\] Compiling")
-  )
-
-(defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
-  "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
-  (interactive)
-  (unless errorMessage (setq errorMessage ""))
-  (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
-  (setq searchRegexp (concat ".*\\.scala.*" errorMessage))
-  (condition-case
-      nil
-      (funcall (searchFunction backwardSearch) searchRegexp)
-    (error (user-error "no match found for %s" errorMessage))
-    )
-  (sbt-event-file-navigation t)
-  (other-window -1)
-
-  (parse-go-to-line-or-column ":" 'goto-line)
-  (other-window -1)
-
-  (parse-go-to-line-or-column ":" 'right-char)
-  )
-
-(defun scala-import-bounds ()
-  "Return the import region bounds"
-  (save-excursion
-    (search-backward-regexp "\\({\\|import\\)")
+  (defun scala-build-import-from-existing-import-or-source (type startingBuffer)
+    "Considering the cursor is at the beginning of the target import line
+     or into the scala source file containing the definition of the
+    target file. This functions return the import to insert into the
+    dependent scala source file."
     (if (string= (current-word) "import")
-        (progn
-          (setq startOfImport (point)
-                endOfImport (if (char-equal (char-before (line-end-position)) ?{)
-                                (progn
-                                  (end-of-line)
-                                  (cdr (bounds-of-thing-at-point 'sexp)))
-                              (line-end-position)
-                              ))
-          (list startOfImport endOfImport)
-          )
-      (progn
-        (setq endOfImport (cdr (bounds-of-thing-at-point 'sexp)))
-        (search-backward-regexp "\\({\\|import\\)")
-        (list (point) endOfImport)
-        )
-      ))
-  )
+        (copy-line-from-point-as-string) ;; copy import line
+      (concat "import " (path-to-package (buffer-file-name)) "." type) ;; copy package and make it an import
+      )
+    )
 
-(defun scala-remove-unused-import ()
-  "Parse a shell/sbt output in search of the first unused import and remove it"
-  (interactive)
-  (funcall 'remove-unused-import
-           "Unused Import"
-           'scala-goto-next-warn-error
-           'scala-import-bounds
-           (lambda (targetType)
-             (if (search-forward "," nil t)
-                 (progn ;; multi import
-                   (goto-char targetType)
-                   (setq targetTypeBounds (bounds-of-thing-at-point 'word))
-                   (setq startKillTypeTarget (car targetTypeBounds))
-                   (setq endKillTypeTarget (cdr targetTypeBounds))
-                   (kill-region startKillTypeTarget endKillTypeTarget)
-                   (if (search-backward "," nil t)
-                       (progn
-                         (search-forward ",")
-                         (delete-backward-char 1)
-                         )
-                     (delete-forward-char 1)
+  (defun path-to-package (path)
+    "transform a path to a package"
+    (string-join
+     (butlast
+      (s-split "/"
+               (nth 1
+                    (split-string path "scala/")
+                    )
+               )
+      ) ".")
+    )
+  (defun scala-path-to-package ()
+    "transform a path to a package, current buffer"
+    (interactive)
+    (setq package (path-to-package (buffer-file-name)))
+    (insert package)
+    )
+
+
+  ; keybinded functions ;;;;;;;;;;;;;;;;;
+  (defun sbt-shell-clean-old-output ()
+    "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
+    (interactive)
+    (funcall 'shell-clean-old-output "\\[info\\] Compiling")
+    )
+
+  (defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
+    "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
+    (interactive)
+    (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" ":" '(lambda () () ) errorMessage backwardSearch isRegexp)
+    )
+
+  (defun scala-import-bounds ()
+    "Return the import region bounds"
+    (save-excursion
+      (search-backward-regexp "\\({\\|import\\)")
+      (if (string= (current-word) "import")
+          (progn
+            (setq startOfImport (point)
+                  endOfImport (if (char-equal (char-before (line-end-position)) ?{)
+                                  (progn
+                                    (end-of-line)
+                                    (cdr (bounds-of-thing-at-point 'sexp)))
+                                (line-end-position)
+                                ))
+            (list startOfImport endOfImport)
+            )
+        (progn
+          (setq endOfImport (cdr (bounds-of-thing-at-point 'sexp)))
+          (search-backward-regexp "\\({\\|import\\)")
+          (list (point) endOfImport)
+          )
+        ))
+    )
+
+  (defun scala-remove-unused-import ()
+    "Parse a shell/sbt output in search of the first unused import and remove it"
+    (interactive)
+    (funcall 'remove-unused-import
+             "Unused Import"
+             'scala-goto-next-warn-error
+             'scala-import-bounds
+             (lambda (targetType)
+               (if (search-forward "," nil t)
+                   (progn ;; multi import
+                     (goto-char targetType)
+                     (setq targetTypeBounds (bounds-of-thing-at-point 'word))
+                     (setq startKillTypeTarget (car targetTypeBounds))
+                     (setq endKillTypeTarget (cdr targetTypeBounds))
+                     (kill-region startKillTypeTarget endKillTypeTarget)
+                     (if (search-backward "," nil t)
+                         (progn
+                           (search-forward ",")
+                           (delete-backward-char 1)
+                           )
+                       (delete-forward-char 1)
+                       )
                      )
-                   )
-               (delete-region (point-min) (point-max))           ;; single import
+                 (delete-region (point-min) (point-max))           ;; single import
+                 )
                )
              )
-           )
-  )
+    )
 
-(defun scala-import-type-at-point (type)
-  "Try to import into the current file the type at point"
-  (interactive (list
-                (read-string (format "type (%s): " (thing-at-point 'word))
-                             nil nil (thing-at-point 'word))))
-  (funcall 'build-import
-           type
-           (lambda (type) (concat "import.*" type "$"))
-           (lambda (type) (concat "\\(.*class " inputType ".*\\|.*trait " inputType ".*\\|.*object " inputType ".*\\|.*type " inputType ".*\\)"))
-           'scala-build-import-from-existing-import-or-source
-           (lambda (result) (save-excursion
-                              (beginning-of-buffer)
-                              (end-of-line)
-                              (next-line)
-                              (newline)
-                              (insert result)
-                              ))
-           )
-  )
+  (defun scala-import-type-at-point (type)
+    "Try to import into the current file the type at point"
+    (interactive (list
+                  (read-string (format "type (%s): " (thing-at-point 'word))
+                               nil nil (thing-at-point 'word))))
+    (funcall 'build-import
+             type
+             (lambda (type) (concat "import.*" type "$"))
+             (lambda (type) (concat "\\(.*class " inputType ".*\\|.*trait " inputType ".*\\|.*object " inputType ".*\\|.*type " inputType ".*\\)"))
+             'scala-build-import-from-existing-import-or-source
+             (lambda (result) (save-excursion
+                                (beginning-of-buffer)
+                                (end-of-line)
+                                (next-line)
+                                (newline)
+                                (insert result)
+                                ))
+             )
+    )
 
-(defun scala-extract-code-line-or-region (name &optional parameters from to)
-  "Extract the code to val or def:
-   Require:
-     - Name of the val/def
-     - Optional list of parameters (if empty it will be a val)
+  (defun scala-extract-code-line-or-region (name &optional parameters from to)
+    "Extract the code to val or def:
+     Require:
+       - Name of the val/def
+       - Optional list of parameters (if empty it will be a val)
 
-   if no code region is selected then it extracts the rest of the line from current position
-   Return type not specified.
-  "
-  (interactive (list
-                (read-string "value/function name: " )
-                (progn
-                  (setq
-                   param (read-string "param name (RET to finish): ")
-                   params nil
-                   )
-                  (while (not (equal "" (s-trim param)))
-                    (push (s-trim param) params)
-                    (setq param (read-string "param name (RET to finish): "))
+     if no code region is selected then it extracts the rest of the line from current position
+     Return type not specified.
+    "
+    (interactive (list
+                  (read-string "value/function name: " )
+                  (progn
+                    (setq
+                     param (read-string "param name (RET to finish): ")
+                     params nil
+                     )
+                    (while (not (equal "" (s-trim param)))
+                      (push (s-trim param) params)
+                      (setq param (read-string "param name (RET to finish): "))
+                      )
+                      (mapconcat 'identity (reverse params) ", ")
                     )
-                    (mapconcat 'identity (reverse params) ", ")
-                  )
-                (if (use-region-p) (region-beginning) (point))
-                (if (use-region-p) (region-end) (line-end-position))
-                ))
-  (funcall 'extract-code-line-or-region-template "val " "def " " = " " = " nil nil name parameters from to)
-  )
+                  (if (use-region-p) (region-beginning) (point))
+                  (if (use-region-p) (region-end) (line-end-position))
+                  ))
+    (funcall 'extract-code-line-or-region-template "val " "def " " = " " = " nil nil name parameters from to)
+    )
 
-(global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)
-(global-set-key (kbd "C-c c s e") 'scala-goto-next-warn-error)
-(global-set-key (kbd "C-c c s u") 'scala-remove-unused-import)
-(global-set-key (kbd "C-c c s p") 'scala-import-type-at-point)
-(global-set-key (kbd "C-c c s x") 'scala-extract-code-line-or-region)
+  (global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)
+  (global-set-key (kbd "C-c c s e") 'scala-goto-next-warn-error)
+  (global-set-key (kbd "C-c c s u") 'scala-remove-unused-import)
+  (global-set-key (kbd "C-c c s p") 'scala-import-type-at-point)
+  (global-set-key (kbd "C-c c s x") 'scala-extract-code-line-or-region)
 
 #+END_SRC

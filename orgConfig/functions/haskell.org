@@ -20,21 +20,7 @@
   (defun hs-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into an haskell output for the first warning/error, starting from cursor position, and move to it"
     (interactive)
-    (unless errorMessage (setq errorMessage ""))
-    (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
-    (setq searchRegexp (concat ".*\\.hs:.*" errorMessage))
-    (condition-case
-        nil
-        (funcall (searchFunction backwardSearch) searchRegexp)
-      (error (user-error "no match found for %s" errorMessage))
-      )
-    (hs-event-file-navigation t)
-    (other-window -1)
-
-    (parse-go-to-line-or-column ":" 'goto-line)
-    (other-window -1)
-
-    (parse-go-to-line-or-column "[:-]" 'right-char)
+    (goto-next-warn-error 'hs-event-file-navigation ".*\\.hs:.*" ":" "[:-]" '(lambda () () ) errorMessage backwardSearch isRegexp)
     )
 
   (defun hs-extract-code-line-or-region (name &optional parameters from to)

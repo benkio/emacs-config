@@ -49,6 +49,30 @@
     (find-file (string-trim filePath))
     )
 
+  (defun goto-next-warn-error (eventFileNavigationF searchPattern lineDelimiter columnDelimiter postF &optional errorMessage backwardSearch isRegexp)
+    "Template for the goto-next-warn-error function used to navigate to the specific error.
+     Usually it is used with a customized version of the above event-file-navigation function.
+    "
+    (unless errorMessage (setq errorMessage ""))
+    (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
+    (setq searchRegexp (concat searchPattern errorMessage))
+    (condition-case
+        nil
+        (funcall (searchFunction backwardSearch) searchRegexp)
+      (error (user-error "no match found for %s" errorMessage))
+      )
+    (funcall eventFileNavigationF t)
+    (other-window -1)
+
+    (parse-go-to-line-or-column lineDelimiter 'goto-line)
+    (other-window -1)
+
+    (parse-go-to-line-or-column columnDelimiter 'right-char)
+    (recenter-top-bottom)
+    (other-window -1)
+    (funcall postF)
+    )
+
   (defun parse-go-to-line-or-column (separator gotoFunction)
     "Higher order function: applies the input function to the number parsed from current position based on the input separator
      eg. filePath:100:10
