@@ -50,7 +50,7 @@
   (defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
     (interactive)
-    (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" ":" '(lambda () () ) errorMessage backwardSearch isRegexp)
+    (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" ":" '(lambda () (other-window -1) ) errorMessage backwardSearch isRegexp)
     )
 
   (defun scala-import-bounds ()
