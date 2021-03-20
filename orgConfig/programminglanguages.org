@@ -45,12 +45,18 @@ Add all the needed components for scala:
 #+END_SRC
 ** Haskell
 #+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package company-ghci)
   (use-package haskell-mode
     :mode ("\\.purs$" "\\.hs$") ;;enable the mode for purescript as well
     :config
-    (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
-    (add-hook 'haskell-mode-hook #'haskell-doc-mode)
-    (setq haskell-stylish-on-save t)
+    (defun custom-haskell-mode-hook ()
+      "Hook for `haskell-mode'"
+      (set (make-local-variable 'company-backends)
+           '((company-capf company-dabbrev-code company-yasnippet company-files company-ghci)))
+      (interactive-haskell-mode)
+      (haskell-doc-mode)
+      )
+    (add-hook 'haskell-mode-hook 'custom-haskell-mode-hook)
     )
 
   ;; hlint extension (requires hlint installed with cabal)
@@ -59,15 +65,7 @@ Add all the needed components for scala:
     (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
 
   ;; Displays hlint suggestion in minibuffer
-  (use-package flymake-cursor
-    )
-
-  ;; hindent (require hindente installed with cabal)
-  (use-package hindent
-
-    :config
-    (add-hook 'haskell-mode-hook #'hindent-mode)
-    (setq hindent-style "johan-tibell"))
+  (use-package flymake-cursor)
 
   ;; ormolu formatter
   (use-package ormolu)
