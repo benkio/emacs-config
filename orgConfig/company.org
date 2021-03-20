@@ -3,6 +3,7 @@
 Auto completion framework
 
 #+begin_src emacs-lisp
+  (use-package company-ghci)
   (use-package company
     :ensure t
     :defer t
@@ -19,6 +20,7 @@ Auto completion framework
       (add-to-list 'company-backends 'company-dabbrev-code)
       (add-to-list 'company-backends 'company-yasnippet)
       (add-to-list 'company-backends 'company-files)
+      (add-to-list 'company-backends 'company-ghci)
       )
     :diminish company-mode)
 #+end_src
