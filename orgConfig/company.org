@@ -15,6 +15,10 @@ Auto completion framework
       (setq company-tooltip-align-annotations t
             ;; Easy navigation to candidates with M-<n>
             company-show-numbers t)
-      (setq company-dabbrev-downcase nil))
+      (setq company-dabbrev-downcase nil)
+      (add-to-list 'company-backends 'company-dabbrev-code)
+      (add-to-list 'company-backends 'company-yasnippet)
+      (add-to-list 'company-backends 'company-files)
+      )
     :diminish company-mode)
 #+end_src
