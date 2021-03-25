@@ -26,6 +26,7 @@
 (org-babel-load-file "~/.emacs.d/orgConfig/wgrep.org"                               )
 (org-babel-load-file "~/.emacs.d/orgConfig/winmove.org"                             )
 (org-babel-load-file "~/.emacs.d/orgConfig/googleThis.org"                          )
+(org-babel-load-file "~/.emacs.d/orgConfig/goldenRatio.org"                         )
 (org-babel-load-file "~/.emacs.d/orgConfig/csvMode.org"                             )
 (org-babel-load-file "~/.emacs.d/orgConfig/execPathFromShell.org"                   )
 (org-babel-load-file "~/.emacs.d/orgConfig/expandRegion.org"                        )

@@ -1,0 +1,12 @@
+* Golden Ratio
+
+  library that will manage the window size in order to have the window on focus useable and the other windows shrinked but readable
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package golden-ratio
+    :config
+    (require 'golden-ratio)
+    (golden-ratio-mode 1)
+    (setq golden-ratio-auto-scale t)
+    )
+#+end_src
