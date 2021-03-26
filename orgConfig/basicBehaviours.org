@@ -125,6 +125,7 @@
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)
   (setq ediff-diff-options "-w")
+  (global-set-key (kbd "C-c e w") 'ediff-regions-wordwise)
 
   (global-set-key (kbd "C-c c l e") 'eval-region)                 ;3-11
   (global-set-key (kbd "C-x M-{") 'enlarge-window)                ;3-12
