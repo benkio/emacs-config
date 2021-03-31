@@ -239,3 +239,14 @@ Add all the needed components for scala:
    #+begin_src emacs-lisp :tangle yes
 (use-package s)
    #+end_src
+** Elm
+
+#+begin_src emacs-lisp
+  (use-package elm-mode)
+#+end_src
+** Nix
+
+#+begin_src emacs-lisp
+(use-package nix-mode
+  :mode "\\.nix\\'")
+#+end_src
