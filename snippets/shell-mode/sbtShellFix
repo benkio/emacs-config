@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: scalafix
+# key: sbtSFix
+# --
+scalafix RemoveUnused; test:scalafix RemoveUnused
