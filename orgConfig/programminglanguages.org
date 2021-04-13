@@ -250,3 +250,11 @@ Add all the needed components for scala:
 (use-package nix-mode
   :mode "\\.nix\\'")
 #+end_src
+** C#
+
+#+begin_src emacs-lisp
+
+(use-package dotnet)
+(use-package csharp-mode)
+
+#+end_src
