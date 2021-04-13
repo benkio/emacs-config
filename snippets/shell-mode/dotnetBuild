@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dotnet build
+# key: .nb
+# --
+dotnet build

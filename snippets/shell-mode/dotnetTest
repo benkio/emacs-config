@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dotnet test
+# key: .nt
+# --
+dotnet test
