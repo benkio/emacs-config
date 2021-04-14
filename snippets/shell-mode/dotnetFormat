@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: dotnet format
+# key: .nFMT
+# In order to work you need to run first:
+# - dotnet tool install -g dotnet-format
+# - be sure to have the tool into the path ($HOME/.dotnet/tools)
+# - add the `.editorconfig` file at the root of the .net project in order to
+#   automatically remove the unused imports (https://github.com/dotnet/format/blob/main/docs/Supported-.editorconfig-options.md)
+# --
+
+dotnet format --fix-style warn

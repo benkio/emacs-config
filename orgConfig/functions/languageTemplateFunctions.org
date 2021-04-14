@@ -87,6 +87,7 @@
     (setq fileLineOrColumn (buffer-substring filenamePathPos (point)))
     (other-window 1)
     (funcall gotoFunction (string-to-number fileLineOrColumn))
+    fileLineOrColumn
     )
 
   (defun extract-code-line-or-region-template (value function postDefinitionSyntaxValue postDefinitionSyntaxFunc EndSyntaxValue EndSyntaxFunc name parameters from to)
@@ -94,9 +95,12 @@
      Based on the input it this extract the selected code to the closest empty line above.
      - Value: syntax for values in target laguage
      - function: syntax for function in target laguage
-     - postDefinitionSyntax: what you put between the name + parameters and the body of the function/value. eg (= in scala)
-     - EndSyntax: what to put at the end of the definition of value/function body. Eg in js it's ';' for value but '}' for functionsxs
+     - postDefinitionSyntaxValue: what you put between the name of the value and its actual value. eg (= in scala)
+     - postDefinitionSyntaxFunc: what you put between the name + parameters and the body of the function. eg (= in scala)
+     - EndSyntaxValue: what to put at the end of the definition of value body. Eg in js it's ';'
+     - EndSyntaxFunc: what to put at the end of the definition of function body. Eg in js it's '}' for functions
      - name: name of the extracted value/function
+     - parameters: parameters of the extracted function
      - from: start of the region
      - to: end of the region
     "
