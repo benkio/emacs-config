@@ -416,13 +416,15 @@ turn grep buffers writable
   #+END_SRC
 
 ** Search
-*** Silver Searcher
+*** The Silver Searcher
 
 Allow you to quickly search into a project via ag.
 It can also work with projectile
 
 #+BEGIN_SRC emacs-lisp
-(use-package ag)
+(use-package ag
+  :config (global-set-key (kbd "C-c a") 'ag)
+)
 #+END_SRC
 
 *** Google This
@@ -469,7 +471,7 @@ Managing git repos.
 #+END_SRC
 *** Projectile
 
-Inspect the git repository you are in and allow you to search files
+    Inspect the git repository you are in and allow you to search files
 and into the files like grep
 
 #+BEGIN_SRC emacs-lisp
@@ -600,6 +602,19 @@ File system for emacs
   (require 'dired-x))
 
 #+END_SRC
+
+** OS Specific
+*** PATH VARIABLE
+
+    Ensure the PATH variable is in scope for emacs to use
+
+#+begin_src emacs-lisp
+
+  (use-package exec-path-from-shell
+    :if (memq window-system '(mac ns x))
+    :config
+    (exec-path-from-shell-initialize))
+#+end_src
 
 ** Text Check
 *** Hunspell
