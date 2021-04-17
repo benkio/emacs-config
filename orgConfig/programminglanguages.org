@@ -1,4 +1,4 @@
-* DONE Programming Languagesg
+* Programming Languages
 ** Scala
 
 Add all the needed components for scala:
