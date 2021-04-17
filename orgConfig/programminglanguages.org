@@ -1,18 +1,4 @@
-* Programming Languages
-** LSP
-
-setting up LSP used by some languages (haskell primarly)
-
-#+begin_src emacs-lisp
-(use-package lsp-mode
-  :straight t
-  :commands lsp
-  :hook ((typescript-mode js2-mode web-mode) . lsp)
-  :bind (:map lsp-mode-map
-         ("TAB" . completion-at-point))
-  :custom (lsp-headerline-breadcrumb-enable nil))
-#+end_src
-
+* DONE Programming Languagesg
 ** Scala
 
 Add all the needed components for scala:
@@ -205,7 +191,6 @@ Add all the needed components for scala:
 (use-package typescript-mode
   :defer t
   :mode "\\.\\(ts\\|tsx\\)\\'"
-  :config (add-to-list 'ac-modes 'typescript-mode)
 )
 #+end_src
 ** Markdown
