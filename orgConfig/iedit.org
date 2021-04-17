@@ -1,8 +1,0 @@
-* Iedit
-
-Editing mulitiple occurrences of the same highlighted word at once.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-(use-package iedit
-  :bind (("C-c ;" . iedit-mode)))
-#+END_SRC

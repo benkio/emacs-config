@@ -1,8 +1,0 @@
-* RestClient
-
-Emacs Rest Client
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-(use-package restclient)
-
-#+END_SRC

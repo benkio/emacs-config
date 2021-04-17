@@ -1,8 +1,0 @@
-* IBuffer
-
-Better visualization of open buffers
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-(use-package ibuffer
-:bind ("C-x C-b" . ibuffer))
-#+END_SRC
