@@ -2,7 +2,7 @@
 
   Functions useful when dealing with typescript.
 
-#+begin_src emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp :tangle yes
 
     (defun ts-shell-clean-old-output ()
       "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
@@ -150,3 +150,5 @@
     (global-set-key (kbd "C-c c t u") 'ts-remove-unused-import)
     (global-set-key (kbd "C-c c t p") 'ts-import-type-at-point)
     (global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
+
+#+END_SRC
