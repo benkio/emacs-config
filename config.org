@@ -368,6 +368,17 @@
      )
    #+END_SRC
 
+** Keys Cheat Sheet
+*** Which-key
+
+Give you suggestions about the keybindings
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package which-key
+  :config
+  (which-key-mode))
+#+END_SRC
+
 ** Text Manipulation
 *** Iedit
 
@@ -560,6 +571,54 @@ Emacs Rest Client
 (use-package restclient)
 
 #+END_SRC
+
+** File System
+*** Dired
+
+File system for emacs
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package dired
+  :ensure nil
+  :config
+  ;; dired - reuse current buffer by pressing 'a'
+  (put 'dired-find-alternate-file 'disabled nil)
+
+  ;; always delete and copy recursively
+  (setq dired-recursive-deletes 'always)
+  (setq dired-recursive-copies 'always)
+
+  ;; if there is a dired buffer displayed in the next window, use its
+  ;; current subdir, instead of the current subdir of this dired buffer
+  (setq dired-dwim-target t)
+  (setq dired-listing-switches "-alh")
+  ;; enable some really cool extensions like C-x C-j(dired-jump)
+  (require 'dired-x))
+
+#+END_SRC
+
+** Text Check
+*** Hunspell
+
+A substitute of Ispell that works on Windows as well. Tool for spellchecking
+Following these instructions: https://lists.gnu.org/archive/html/help-gnu-emacs/2014-04/msg00030.html
+
+#+begin_src emacs-lisp :tangle yes
+(cond
+((string-equal system-type "windows-nt")
+ (progn
+ ;; Add executable
+(add-to-list 'exec-path "~/.emacs.d/hunspell/bin/")
+
+;; Set dictionary
+
+(setq ispell-program-name (locate-file "hunspell"
+      exec-path exec-suffixes 'file-executable-p))
+
+ )))
+
+(require 'ispell)
+#+end_src
 
 * Functions
 ** Indentation

@@ -7,16 +7,13 @@
 
 (org-babel-load-file "~/.emacs.d/config.org")
 ;; (org-babel-load-file "~/.emacs.d/orgConfig/yas.org"                                 )
-;; (org-babel-load-file "~/.emacs.d/orgConfig/dired.org"                               )
 ;; (org-babel-load-file "~/.emacs.d/orgConfig/execPathFromShell.org"                   )
 
 ;; (org-babel-load-file "~/.emacs.d/orgConfig/expandRegion.org"                        )
 ;; (org-babel-load-file "~/.emacs.d/orgConfig/counsel.org"                             )
 ;; (org-babel-load-file "~/.emacs.d/orgConfig/lilypond.org"                            )
-;; (org-babel-load-file "~/.emacs.d/orgConfig/hunspell.org"                            )
 ;; (org-babel-load-file "~/.emacs.d/orgConfig/recentf.org"                             )
 ;; (org-babel-load-file "~/.emacs.d/orgConfig/crux.org"                                )
-;; (org-babel-load-file "~/.emacs.d/orgConfig/whichkey.org"                            )
 ;; (org-babel-load-file "~/.emacs.d/orgConfig/supersave.org"                           )
 ;; (org-babel-load-file "~/.emacs.d/orgConfig/flycheck.org"                            )
 ;; (org-babel-load-file "~/.emacs.d/orgConfig/company.org"                             )
