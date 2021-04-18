@@ -621,8 +621,7 @@ Auto completion framework
       (setq company-idle-delay 0)
       (setq company-minimum-prefix-length 3)
 
-      (global-company-mode t)
-      )
+      (global-company-mode t))
 #+end_src
 ** Development
 *** Yaml
@@ -660,8 +659,7 @@ snippets for coding and more
 (use-package yasnippet-snippets
   :defer t
   :config (add-to-list 'load-path
-              "~/.emacs.d/plugins/yasnippet")
-)
+              "~/.emacs.d/plugins/yasnippet"))
 
 (use-package yasnippet
   :diminish yas-minor-mode
@@ -740,9 +738,6 @@ Add all the needed components for scala:
 #+END_SRC
 *** Latex
 #+BEGIN_SRC emacs-lisp
-;; LaTeX configuration
-
-
 (use-package tex
 :defer t
  :ensure auctex
@@ -879,8 +874,7 @@ Add all the needed components for scala:
 #+begin_src emacs-lisp
 (use-package typescript-mode
   :defer t
-  :mode "\\.\\(ts\\|tsx\\)\\'"
-)
+  :mode "\\.\\(ts\\|tsx\\)\\'")
 #+end_src
 *** Markdown
 #+BEGIN_SRC emacs-lisp
@@ -1033,16 +1027,16 @@ unctions for alignment of text and indentation of buffer
  (untabify regionStart regionEnd))
 
 #+END_SRC
-** Cursor Movementa
+** Cursor Movement
 
-ollect all the functions that move the cursor somewhere
+Collect all the functions that move the cursor somewhere
 
-+begin_src emacs-lisp
-defun goto-column (column)
+#+begin_src emacs-lisp
+(defun goto-column (column)
  (interactive "nColumn: ")
  (move-to-column column t))
 
-defun switch-to-existing-buffer-other-window (part)
+(defun switch-to-existing-buffer-other-window (part)
  "Switch to buffer with PART in its name."
  (interactive
   (list (read-buffer-to-switch "Switch to buffer in other window: ")))
@@ -1057,16 +1051,15 @@ defun switch-to-existing-buffer-other-window (part)
    (unless candidates
      (user-error "There is no buffers with %S in its name." part))
    (setq candidates (cl-sort candidates #'< :key 'car))
-   (switch-to-buffer-other-window (cdr (car candidates)))))
-+end_src
+   (switch-to-buffer-other-window (cdr (car candidates))))))
+#+end_src
 ** FFMPEG
 
-ere you can find the functions to instruct ffmpeg. Very useful when
-ou have to cut a specific video, extract audio, convert to a specific
-ormat.
+Here you can find the functions to instruct ffmpeg. Very useful when
+you have to cut a specific video, extract audio, convert to a specific
+format.
 
-eel free to come and add your function if not present
-+begin_src emacs-lisp
+#+begin_src emacs-lisp
 
  (defun cut-media-file (origin startTime endTime newName)
    "This function get in input:
@@ -1143,31 +1136,31 @@ eel free to come and add your function if not present
            (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
        (async-shell-command (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension))))
    )
-+end_src
+#+end_src
 ** File Conversion
 
-ollect the functions for file conversions, mainly using shell commands
+Collect the functions for file conversions, mainly using shell commands
 
-+BEGIN_SRC emacs-lisp
-defun convert-to-mp3 (file)
+#+BEGIN_SRC emacs-lisp
+(defun convert-to-mp3 (file)
  (interactive "f")
  (let ((fileComplete (expand-file-name file))
        (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
  (shell-command (format "ffmpeg -i \"%s\" -vn -ar 44100 -ac 2 -b:a 192k \"%s.mp3\"" fileComplete fileCompleteNoExtension))))
 
-defun convert-to-gif (file)
+(defun convert-to-gif (file)
  (interactive "f")
  (let ((fileComplete (expand-file-name file))
        (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
  (shell-command (format "ffmpeg -i %s -vf \"fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse\" -loop 0 %s.gif" fileComplete fileCompleteNoExtension))))
 
-+END_SRC
+#+END_SRC
 ** Filename & Path to clipboard
 
-unctions to get the name of the file and path to clipboard
+Functions to get the name of the file and path to clipboard
 
-+BEGIN_SRC emacs-lisp
-defun copy-file-name-to-clipboard (filename-manipulate-func)
+#+BEGIN_SRC emacs-lisp
+(defun copy-file-name-to-clipboard (filename-manipulate-func)
  "Copy the current buffer file name to the clipboard after the application of the input function."
  (interactive)
  (let ((filename (if (equal major-mode 'dired-mode)
@@ -1178,22 +1171,22 @@ defun copy-file-name-to-clipboard (filename-manipulate-func)
        (when changedFilename
          (kill-new changedFilename))))))
 
-defun copy-file-name-and-path-to-clipboard ()
+(defun copy-file-name-and-path-to-clipboard ()
  "Copy the current buffer file name and path to clipboard."
  (interactive)
  (copy-file-name-to-clipboard 'identity))
 
-defun copy-just-file-name-to-clipboard ()
+(defun copy-just-file-name-to-clipboard ()
  "Copy just the current buffer file name to clipboard."
  (interactive)
  (copy-file-name-to-clipboard 'file-name-nondirectory))
-+END_SRC
+#+END_SRC
 ** Formatting
 
  Functions for formatting code.
 
-+BEGIN_SRC emacs-lisp
-defun xml-format ()
+#+BEGIN_SRC emacs-lisp
+(defun xml-format ()
  "indent an xml file using xlint on a region or buffer"
  (interactive)
  (let (pos1 pos2 commandExist)
@@ -1218,7 +1211,7 @@ defun xml-format ()
    )
  )
 
-defun js-format ()
+(defun js-format ()
  "indent an js file using js-beutifier on a region or buffer"
  (interactive)
  (let (pos1 pos2 commandExist)
@@ -1242,7 +1235,7 @@ defun js-format ()
    )
  )
 
-defun apply-case-char (startcol endcol function)
+(defun apply-case-char (startcol endcol function)
  "apply the function to the char at start position. endcol not used"
  (move-to-column startcol t)
  (let ((c (string (following-char))))
@@ -1250,14 +1243,14 @@ defun apply-case-char (startcol endcol function)
    (insert (funcall function c)))
  )
 
-defun upcase-first-region (begin end)
+(defun upcase-first-region (begin end)
  "Uppercase the first char of each line of the selected region"
  (interactive "r")
  (apply-on-rectangle 'apply-case-char begin end 'upcase)
  )
 
 ;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
-defun unfill-paragraph (&optional region)
+(defun unfill-paragraph (&optional region)
  "Takes a multi-line paragraph and makes it into a single line of text."
  (interactive (progn (barf-if-buffer-read-only) '(t)))
  (let ((fill-column (point-max))
@@ -1265,16 +1258,16 @@ defun unfill-paragraph (&optional region)
        (emacs-lisp-docstring-fill-column t))
    (fill-paragraph nil region)))
 
-+END_SRC
+#+END_SRC
 ** Numbers (Integer)
 
-ontains function to manage integers, in particular increase and decrease.
-ource: https://emacsredux.com/blog/2013/07/25/increment-and-decrement-integer-at-point/
+Contains function to manage integers, in particular increase and decrease.
+source: https://emacsredux.com/blog/2013/07/25/increment-and-decrement-integer-at-point/
 
-+begin_src emacs-lisp
-require 'thingatpt)
+#+begin_src emacs-lisp
+(require 'thingatpt)
 
-defun thing-at-point-goto-end-of-integer ()
+(defun thing-at-point-goto-end-of-integer ()
  "Go to end of integer at point."
  (let ((inhibit-changing-match-data t))
    ;; Skip over optional sign
@@ -1285,9 +1278,9 @@ defun thing-at-point-goto-end-of-integer ()
    ;; Check for at least one digit
    (unless (looking-back "[[:digit:]]")
      (error "No integer here"))))
-put 'integer 'beginning-op 'thing-at-point-goto-end-of-integer)
+(put 'integer 'beginning-op 'thing-at-point-goto-end-of-integer)
 
-defun thing-at-point-goto-beginning-of-integer ()
+(defun thing-at-point-goto-beginning-of-integer ()
  "Go to end of integer at point."
  (let ((inhibit-changing-match-data t))
    ;; Skip backward over digits
@@ -1298,9 +1291,9 @@ defun thing-at-point-goto-beginning-of-integer ()
    ;; Skip backward over optional sign
    (when (looking-back "[+-]")
        (backward-char 1))))
-put 'integer 'beginning-op 'thing-at-point-goto-beginning-of-integer)
+(put 'integer 'beginning-op 'thing-at-point-goto-beginning-of-integer)
 
-defun thing-at-point-bounds-of-integer-at-point ()
+(defun thing-at-point-bounds-of-integer-at-point ()
  "Get boundaries of integer at point."
  (save-excursion
    (let (beg end)
@@ -1309,15 +1302,15 @@ defun thing-at-point-bounds-of-integer-at-point ()
      (thing-at-point-goto-end-of-integer)
      (setq end (point))
      (cons beg end))))
-put 'integer 'bounds-of-thing-at-point 'thing-at-point-bounds-of-integer-at-point)
+(put 'integer 'bounds-of-thing-at-point 'thing-at-point-bounds-of-integer-at-point)
 
-defun thing-at-point-integer-at-point ()
+(defun thing-at-point-integer-at-point ()
  "Get integer at point."
  (let ((bounds (bounds-of-thing-at-point 'integer)))
    (string-to-number (buffer-substring (car bounds) (cdr bounds)))))
-put 'integer 'thing-at-point 'thing-at-point-integer-at-point)
+(put 'integer 'thing-at-point 'thing-at-point-integer-at-point)
 
-defun increment-integer-at-point (&optional inc)
+(defun increment-integer-at-point (&optional inc)
  "Increment integer at point by one.
 
 ith numeric prefix arg INC, increment the integer by INC amount."
@@ -1328,36 +1321,36 @@ ith numeric prefix arg INC, increment the integer by INC amount."
    (delete-region (car bounds) (cdr bounds))
    (insert (int-to-string (+ n inc)))))
 
-defun decrement-integer-at-point (&optional dec)
+(defun decrement-integer-at-point (&optional dec)
  "Decrement integer at point by one.
 
 ith numeric prefix arg DEC, decrement the integer by DEC amount."
  (interactive "p")
  (increment-integer-at-point (- (or dec 1))))
 
-+end_src
+#+end_src
 ** Rectangles
 
-ustom Functions regading rectangles
+Custom Functions regading rectangles
 
-+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 
-defun upcase-rectangle (b e)
+(defun upcase-rectangle (b e)
  "change chars in rectangle to uppercase"
  (interactive "r")
  (apply-on-rectangle 'apply-fun-rectangle-line b e 'upcase-region))
 
-defun downcase-rectangle (b e)
+(defun downcase-rectangle (b e)
  "change chars in rectangle to uppercase"
  (interactive "r")
  (apply-on-rectangle 'apply-fun-rectangle-line b e 'downcase-region))
 
-defun apply-fun-rectangle-line (startcol endcol function)
+(defun apply-fun-rectangle-line (startcol endcol function)
  (when (= (move-to-column startcol) startcol)
    (funcall function (point)
                      (progn (move-to-column endcol 'coerce)
                             (point)))))
-+END_SRC
+#+END_SRC
 ** Selection
 
    function regarding the selection of text
@@ -1367,10 +1360,10 @@ defun apply-fun-rectangle-line (startcol endcol function)
      (defun reselect-last-region ()
       (interactive)
       (let ((start (mark t))
-	    (end (point)))
-	(goto-char start)
-	(call-interactively' set-mark-command)
-	(goto-char end)))
+            (end (point)))
+        (goto-char start)
+        (call-interactively' set-mark-command)
+        (goto-char end)))
 
    #+END_SRC
 ** Random
@@ -1395,8 +1388,7 @@ defun apply-fun-rectangle-line (startcol endcol function)
    (interactive)
    (insert
      (replace-regexp-in-string "\n\\'" ""
-       (shell-command-to-string "uuidgen")))
- )
+       (shell-command-to-string "uuidgen"))))
 
    #+END_SRC
 ** Text Manipulation
