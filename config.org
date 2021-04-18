@@ -303,7 +303,7 @@
       (setq use-package-always-ensure t)
     #+END_SRC
 
-*** Custom Modes
+*** Local Mode Location
 
      Modes that are not in melpa and you found on the internet. Put them
      into the lisp folder.
@@ -378,6 +378,7 @@
 
 ** Super Save
 
+Save your files every time you change the window
 https://github.com/bbatsov/super-save
 
 #+BEGIN_SRC emacs-lisp
@@ -386,14 +387,10 @@ https://github.com/bbatsov/super-save
   (super-save-mode +1))
 #+END_SRC
 ** Undo-tree
+Allow to visually go back and forth between undo history
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
-  :config
-  ;; autosave the undo-tree history
-  ;;(setq undo-tree-history-directory-alist
-  ;;      `((".*" . ,temporary-file-directory)))
-  ;; (setq undo-tree-auto-save-history t)
-  (global-undo-tree-mode))
+  :config (global-undo-tree-mode))
 #+END_SRC
 ** Keys Cheat Sheet
 *** Which-key
@@ -477,8 +474,7 @@ Allow you to quickly search into a project via ag.
 It can also work with projectile
 
 #+BEGIN_SRC emacs-lisp
-(use-package ag
-)
+(use-package ag)
 #+END_SRC
 
 *** Google This
@@ -491,7 +487,7 @@ Allow you to search the thing under cursor on google
 ** Project Management
 *** Git & Magit
 
-Managing git repos.
+Managing git repos
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit)
@@ -548,8 +544,7 @@ and into the files like grep
      :config
      (require 'golden-ratio)
      (golden-ratio-mode 1)
-     (setq golden-ratio-auto-scale t)
-     )
+     (setq golden-ratio-auto-scale t))
  #+end_src
 *** IBuffer
 
@@ -566,8 +561,7 @@ Better visualization of open buffers
  #+BEGIN_SRC emacs-lisp
 
 (use-package browse-kill-ring
-  :config (browse-kill-ring-default-keybindings)
-  )
+  :config (browse-kill-ring-default-keybindings))
 
  #+END_SRC
 
@@ -633,7 +627,7 @@ Add support for the yaml file types
   :mode ("\\.yml$" . yaml-mode))
 #+END_SRC
 
-*** CSV Mode
+*** CSV
 
 Mode to handle CSV files
 
@@ -859,12 +853,12 @@ Add all the needed components for scala:
       '("xelatex -interaction nonstopmode %f"))
 
 #+END_SRC
-*** Web-mode
+*** Web
 
 #+begin_src emacs-lisp
 (use-package lorem-ipsum)
 #+end_src
-*** Json-mode
+*** Json
 
 #+begin_src emacs-lisp
 (use-package json-mode)
@@ -2258,7 +2252,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
    (windmove-default-keybindings)
 #+end_src
 ** Text Manipulation
-*** IEdit Mode
+*** IEdit
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c ;") 'iedit-mode)
 #+end_src
