@@ -1,9 +1,0 @@
-* Super Save
-
-https://github.com/bbatsov/super-save
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-(use-package super-save
-  :config
-  (super-save-mode +1))
-#+END_SRC

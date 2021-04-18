@@ -1,3 +1,4 @@
+#+OPTIONS: toc:2 
 * Emacs Basic Config
 
   Contains all the configuration of emacs out of the box, no packages installed in here
@@ -225,10 +226,7 @@
    (add-to-list 'default-frame-alist '(fullscreen . maximized))
    (run-at-time nil (* 5 60) 'recentf-save-list)
 
-   (global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
 
-   (global-set-key (kbd "M-<up>") 'scroll-down-command) ; Alt+up
-   (global-set-key (kbd "M-<down>") 'scroll-up-command) ; Alt+down
 
    (setq load-prefer-newer t)
    (setq gc-cons-threshold 50000000)
@@ -249,11 +247,7 @@
    (setq ediff-window-setup-function 'ediff-setup-windows-plain)
    (setq ediff-split-window-function 'split-window-horizontally)
    (setq ediff-diff-options "-w")
-   (global-set-key (kbd "C-c e w") 'ediff-regions-wordwise)
 
-   (global-set-key (kbd "C-c c l e") 'eval-region)
-   (global-set-key (kbd "C-x M-{") 'enlarge-window)
-   (global-set-key (kbd "C-x M-}") 'shrink-window)
 
    (setq-default cursor-type 'bar)
 
@@ -295,11 +289,11 @@
             (error "you need to install use-package first")
           (package-install 'use-package)
           (require 'use-package)
-          (setq use-package-always-ensure t)
       ))
+      (setq use-package-always-ensure t)
     #+END_SRC
 
-**** Custom Modes
+*** Custom Modes
 
      Modes that are not in melpa and you found on the internet. Put them
      into the lisp folder.
@@ -314,7 +308,7 @@
    #+BEGIN_SRC emacs-lisp
 
     (use-package use-ttf
-      :ensure t
+
       :custom
       (use-ttf-default-ttf-fonts '(
                                    "/.emacs.d/fonts/DejaVuSansMono.ttf"
@@ -327,7 +321,7 @@
       )
 
     (use-package unicode-fonts
-       :ensure t
+
        :config
         (unicode-fonts-setup))
 
@@ -372,25 +366,43 @@
      )
    #+END_SRC
 
+** Super Save
+
+https://github.com/bbatsov/super-save
+
+#+BEGIN_SRC emacs-lisp
+(use-package super-save
+  :config
+  (super-save-mode +1))
+#+END_SRC
+** Undo-tree
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :config
+  ;; autosave the undo-tree history
+  ;;(setq undo-tree-history-directory-alist
+  ;;      `((".*" . ,temporary-file-directory)))
+  ;; (setq undo-tree-auto-save-history t)
+  (global-undo-tree-mode))
+#+END_SRC
 ** Keys Cheat Sheet
 *** Which-key
 
 Give you suggestions about the keybindings
 
-#+BEGIN_SRC emacs-lisp 
+#+BEGIN_SRC emacs-lisp
 (use-package which-key
   :config
   (which-key-mode))
 #+END_SRC
 
-** Text Manipulation
+** Editing
 *** Iedit
 
   Editing mulitiple occurrences of the same highlighted word at once.
 
   #+BEGIN_SRC emacs-lisp
-  (use-package iedit
-    :bind (("C-c ;" . iedit-mode)))
+  (use-package iedit)
   #+END_SRC
 *** WGrep
 
@@ -415,6 +427,39 @@ turn grep buffers writable
       )
   #+END_SRC
 
+*** Crux
+
+https://github.com/bbatsov/crux
+
+package containing a lot of useful functions. So you don't need to copy and paste them from Emacs Redux
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package  crux)
+
+#+END_SRC
+*** Expand Region
+
+Select by region, back and forth
+
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region)
+#+END_SRC
+*** Idle Highlight
+
+Highlight the word you are on in case you stop there for some time
+
+#+begin_src emacs-lisp
+
+(use-package idle-highlight-mode
+  :diminish idle-highlight-mode
+  :config
+    (add-hook 'prog-mode-hook 'idle-highlight-mode)
+    (custom-set-faces '(idle-highlight ((t (:background "DarkGoldenrod4")))))
+)
+
+#+end_src
+
 ** Search
 *** The Silver Searcher
 
@@ -423,7 +468,6 @@ It can also work with projectile
 
 #+BEGIN_SRC emacs-lisp
 (use-package ag
-  :config (global-set-key (kbd "C-c a") 'ag)
 )
 #+END_SRC
 
@@ -440,13 +484,9 @@ Allow you to search the thing under cursor on google
 Managing git repos.
 
 #+BEGIN_SRC emacs-lisp
-(use-package magit
-  :bind (("C-c g s" . magit-status)
-         ("C-c g i" . magit-init)
-         ("C-c g c" . magit-clone))
-  :init)
+(use-package magit)
 
-(use-package git-link :ensure t) ;; Get git links to remote
+(use-package git-link ) ;; Get git links to remote
 
 (defun kill-magit-extra-buffer-in-current-repo (&rest _)
   "Delete the magit-diff buffer related to the current repo"
@@ -459,7 +499,7 @@ Managing git repos.
     )
   )
 ;;
-;; When 'C-c C-c' is pressed in the magit commit message buffer,
+;; When compliting the magit commit,
 ;; delete the magit-diff buffer related to the current repo.
 ;;
 (add-hook 'git-commit-setup-hook
@@ -478,8 +518,6 @@ and into the files like grep
 (use-package projectile
   :defer 5
   :config
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 #+END_SRC
 
@@ -489,10 +527,7 @@ and into the files like grep
  To move between windows
 
  #+BEGIN_SRC emacs-lisp
- (use-package windmove
-   :config
-   ;; use shift + arrow keys to switch between visible buffers
-   (windmove-default-keybindings))
+ (use-package windmove)
  #+END_SRC
 *** Golden Ratio
 
@@ -511,9 +546,21 @@ and into the files like grep
 Better visualization of open buffers
 
 #+BEGIN_SRC emacs-lisp
-(use-package ibuffer
-:bind ("C-x C-b" . ibuffer))
+(use-package ibuffer)
 #+END_SRC
+** Kill Ring
+*** BrowseKillRing
+
+   Allow to visualize the kill ring in another buffer and choose what to insert at point
+
+ #+BEGIN_SRC emacs-lisp
+
+(use-package browse-kill-ring
+  :config (browse-kill-ring-default-keybindings)
+  )
+
+ #+END_SRC
+
 ** Org
 *** Github markdown conversion
 
@@ -552,6 +599,21 @@ Better visualization of open buffers
   (use-package ox-jira)
   #+end_src
 
+** Completion
+*** Company
+
+Auto completion framework
+
+#+begin_src emacs-lisp
+    (use-package company
+
+      :config
+      (setq company-idle-delay 0)
+      (setq company-minimum-prefix-length 3)
+
+      (global-company-mode t)
+      )
+#+end_src
 ** Development
 *** Yaml
 
@@ -578,12 +640,288 @@ Emacs Rest Client
 
 #+END_SRC
 
+*** Yasnippet
+
+snippets for coding and more
+
+#+BEGIN_SRC emacs-lisp
+
+; Collection of snippets
+(use-package yasnippet-snippets
+  :defer t
+  :config (add-to-list 'load-path
+              "~/.emacs.d/plugins/yasnippet")
+)
+
+(use-package yasnippet
+  :diminish yas-minor-mode
+  :defer t
+  :config
+  (add-to-list 'load-path
+               "~/.emacs.d/snippets"))
+
+(yas-global-mode 1)
+#+END_SRC
+
+*** LSP
+
+    #+begin_src emacs-lisp
+  (use-package lsp-mode
+    :init
+    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+           (csharp-mode . lsp)
+           ;; if you want which-key integration
+           (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
+
+  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+  (use-package lsp-ui :commands lsp-ui-mode)
+    #+end_src
+
+*** Scala
+
+Add all the needed components for scala:
+  * scala mode
+  * sbt mode
+
+#+BEGIN_SRC emacs-lisp
+
+;; Enable scala-mode and sbt-mode
+(use-package scala-mode
+  :mode "\\.s\\(cala\\|bt\\)$"
+  :config (add-hook 'scala-mode-hook 'hs-minor-mode))
+
+(use-package sbt-mode
+  :commands sbt-start sbt-command
+  :config
+  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+  ;; allows using SPACE when in the minibuffer
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map))
+#+END_SRC
+*** Haskell
+#+BEGIN_SRC emacs-lisp
+  (use-package company-ghci)
+  (use-package haskell-mode
+    :mode ("\\.purs$" "\\.hs$") ;;enable the mode for purescript as well
+    :config
+    (defun custom-haskell-mode-hook ()
+      "Hook for `haskell-mode'"
+      (set (make-local-variable 'company-backends)
+           '((company-capf company-dabbrev-code company-yasnippet company-files company-ghci)))
+      (interactive-haskell-mode)
+      (haskell-doc-mode)
+      )
+    (add-hook 'haskell-mode-hook 'custom-haskell-mode-hook)
+    )
+
+  ;; hlint extension (requires hlint installed with cabal)
+  (use-package flymake-haskell-multi
+    :config
+    (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
+
+  ;; Displays hlint suggestion in minibuffer
+  (use-package flymake-cursor)
+
+  ;; ormolu formatter
+  (use-package ormolu)
+#+END_SRC
+*** Latex
+#+BEGIN_SRC emacs-lisp
+;; LaTeX configuration
+
+
+(use-package tex
+:defer t
+ :ensure auctex
+ :config
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+
+(add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+(add-hook 'LaTeX-mode-hook 'yas-minor-mode)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+(setq TeX-PDF-mode t)
+
+(setq TeX-output-view-style
+    (quote
+     (("^pdf$" "." "evince -f %o")))))
+
+(unless (boundp 'org-export-latex-classes)
+  (setq org-export-latex-classes nil))
+
+;; Org xelatex
+;; 'djcb-org-article' for export org documents to the LaTex 'article', using
+;; XeTeX and some fancy fonts; requires XeTeX (see org-latex-to-pdf-process)
+(add-to-list 'org-export-latex-classes
+	     '("xebeamer"
+	       "\\documentclass[11pt]{beamer}
+\\usepackage[T1]{fontenc}
+\\usepackage{fontspec}
+\\usepackage{graphicx}
+\\usepackage{geometry}
+\\geometry{a4paper, textwidth=6.5in, textheight=10in,
+            marginparsep=7pt, marginparwidth=.6in}
+
+      \\usetheme{{{{beamertheme}}}}\n
+      \\usecolortheme{{{{beamercolortheme}}}}\n
+      \\beamertemplateballitem\n
+      \\setbeameroption{show notes}
+      \\usepackage[utf8]{inputenc}\n
+      \\usepackage[T1]{fontenc}\n
+      \\usepackage{hyperref}\n
+      \\usepackage{color}
+      \\usepackage{listings}
+      \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
+  frame=single,
+  basicstyle=\\small,
+  showspaces=false,showstringspaces=false,
+  showtabs=false,
+  keywordstyle=\\color{blue}\\bfseries,
+  commentstyle=\\color{red},
+  }\n
+      \\usepackage{verbatim}\n
+      \\institute{{{{beamerinstitute}}}}\n
+       \\subject{{{{beamersubject}}}}\n"
+
+		    ("\\section{%s}" . "\\section*{%s}")
+
+		    ("\\begin{frame}[fragile]\\frametitle{%s}"
+		     "\\end{frame}"
+		     "\\begin{frame}[fragile]\\frametitle{%s}"
+		     "\\end{frame}")))
+
+;; allow for export=>beamer
+
+;; #+LaTeX_CLASS: beamer in org files
+(add-to-list 'org-export-latex-classes
+	     ;; beamer class, for presentations
+	     '("beamer"
+	            "\\documentclass[11pt]{beamer}\n
+      \\mode<{{{beamermode}}}>\n
+      \\usetheme{{{{beamertheme}}}}\n
+      \\usecolortheme{{{{beamercolortheme}}}}\n
+      \\beamertemplateballitem\n
+      \\setbeameroption{show notes}
+      \\usepackage[utf8]{inputenc}\n
+      \\usepackage[T1]{fontenc}\n
+      \\usepackage{hyperref}\n
+      \\usepackage{color}
+      \\usepackage{listings}
+      \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
+  frame=single,
+  basicstyle=\\small,
+  showspaces=false,showstringspaces=false,
+  showtabs=false,
+  keywordstyle=\\color{blue}\\bfseries,
+  commentstyle=\\color{red},
+  }\n
+      \\usepackage{verbatim}\n
+      \\institute{{{{beamerinstitute}}}}\n
+       \\subject{{{{beamersubject}}}}\n"
+
+		    ("\\section{%s}" . "\\section*{%s}")
+
+		    ("\\begin{frame}[fragile]\\frametitle{%s}"
+		     "\\end{frame}"
+		     "\\begin{frame}[fragile]\\frametitle{%s}"
+		     "\\end{frame}")))
+
+;; letter class, for formal letters
+(add-to-list 'org-export-latex-classes
+
+	     '("letter"
+	            "\\documentclass[11pt]{letter}\n
+      \\usepackage[utf8]{inputenc}\n
+      \\usepackage[T1]{fontenc}\n
+      \\usepackage{color}"
+
+		    ("\\section{%s}" . "\\section*{%s}")
+		    ("\\subsection{%s}" . "\\subsection*{%s}")
+		    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+		    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+		         ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+;; Uses xelatex, just in case I want to have fancy fonts
+(setq org-latex-pdf-process
+      '("xelatex -interaction nonstopmode %f"))
+
+#+END_SRC
+*** Web-mode
+
+#+begin_src emacs-lisp
+(use-package lorem-ipsum)
+#+end_src
+*** Json-mode
+
+#+begin_src emacs-lisp
+(use-package json-mode)
+#+end_src
+*** Typescript
+
+#+begin_src emacs-lisp
+(use-package typescript-mode
+  :defer t
+  :mode "\\.\\(ts\\|tsx\\)\\'"
+)
+#+end_src
+*** Markdown
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :mode (("\\.md\\'" . gfm-mode)
+         ("\\.markdown\\'" . gfm-mode))
+  :config
+  (setq markdown-fontify-code-blocks-natively t)
+  :preface
+  (defun jekyll-insert-image-url ()
+    (interactive)
+    (let* ((files (directory-files "../assets/images"))
+           (selected-file (completing-read "Select image: " files nil t)))
+      (insert (format "![%s](/assets/images/%s)" selected-file selected-file))))
+
+  (defun jekyll-insert-post-url ()
+    (interactive)
+    (let* ((files (remove "." (mapcar #'file-name-sans-extension (directory-files "."))))
+           (selected-file (completing-read "Select article: " files nil t)))
+      (insert (format "{%% post_url %s %%}" selected-file)))))
+#+END_SRC
+*** Elisp
+   #+begin_src emacs-lisp
+(use-package s)
+   #+end_src
+*** Elm
+
+#+begin_src emacs-lisp
+  (use-package elm-mode)
+#+end_src
+*** Nix
+
+#+begin_src emacs-lisp
+(use-package nix-mode
+  :mode "\\.nix\\'")
+#+end_src
+*** C#
+
+#+begin_src emacs-lisp
+
+(use-package dotnet)
+(use-package csharp-mode)
+
+#+end_src
+
 ** File System
 *** Dired
 
 File system for emacs
 
-#+BEGIN_SRC emacs-lisp 
+#+BEGIN_SRC emacs-lisp
 (use-package dired
   :ensure nil
   :config
@@ -598,12 +936,11 @@ File system for emacs
   ;; current subdir, instead of the current subdir of this dired buffer
   (setq dired-dwim-target t)
   (setq dired-listing-switches "-alh")
-  ;; enable some really cool extensions like C-x C-j(dired-jump)
   (require 'dired-x))
 
 #+END_SRC
 
-** OS Specific
+** Cross Platform Compatibility
 *** PATH VARIABLE
 
     Ensure the PATH variable is in scope for emacs to use
@@ -616,13 +953,13 @@ File system for emacs
     (exec-path-from-shell-initialize))
 #+end_src
 
-** Text Check
+** Error Check
 *** Hunspell
 
 A substitute of Ispell that works on Windows as well. Tool for spellchecking
 Following these instructions: https://lists.gnu.org/archive/html/help-gnu-emacs/2014-04/msg00030.html
 
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
 (cond
 ((string-equal system-type "windows-nt")
  (progn
@@ -639,6 +976,18 @@ Following these instructions: https://lists.gnu.org/archive/html/help-gnu-emacs/
 (require 'ispell)
 #+end_src
 
+*** Flycheck
+
+    Check for errors, tipically in code
+
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :init
+  (global-flycheck-mode t)
+  :config
+  (setq flycheck-highlighting-mode 'lines)
+)
+#+END_SRC
 * Local Modes
 
   Modes not on Melpa/Elpa. Imported from local folder
@@ -647,8 +996,11 @@ Following these instructions: https://lists.gnu.org/archive/html/help-gnu-emacs/
 
    Modes that are not in melpa and you found on the internet. Put them
    into the lisp folder.
-#+begin_src emacs-lisp 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
+#+begin_src emacs-lisp
+  (when (executable-find "lilypond")
+    ;; http://web.mit.edu/foley/Dotfiles/emacs.d/elisp/lilypond-mode.el
+    (load "~/.emacs.d/lisp/lilypond-mode")
+    (add-to-list 'auto-mode-alist '("\\.ly\\'" . lilypond-mode)))
 #+end_src
 
 * Functions
@@ -670,7 +1022,6 @@ defun indent-buffer-or-region ()
  (save-excursion (indent-region regionStart regionEnd nil))
  (untabify regionStart regionEnd))
 
-global-set-key (kbd "C-c f") 'indent-buffer-or-region)
 +END_SRC
 ** Cursor Movementa
 
@@ -1036,7 +1387,6 @@ defun apply-fun-rectangle-line (startcol endcol function)
      (replace-regexp-in-string "\n\\'" ""
        (shell-command-to-string "uuidgen")))
  )
- (global-set-key (kbd "C-c i u u") 'insert-random-uuid)
 
    #+END_SRC
 ** Text Manipulation
@@ -1060,10 +1410,6 @@ Functions for manipulate text
     )
 
 
-  (global-set-key [(control shift up)] 'move-line-up)
-  (global-set-key [(control shift down)] 'move-line-down)
-  (global-set-key [(control shift right)] (lambda () (interactive) (transpose-words 1)))
-  (global-set-key [(control shift left)] (lambda () (interactive) (transpose-words -1)))
 #+END_SRC
 ** Window Manipulation
 
@@ -1440,11 +1786,6 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (funcall 'extract-code-line-or-region-template "val " "def " " = " " = " nil nil name parameters from to)
     )
 
-  (global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)
-  (global-set-key (kbd "C-c c s e") 'scala-goto-next-warn-error)
-  (global-set-key (kbd "C-c c s u") 'scala-remove-unused-import)
-  (global-set-key (kbd "C-c c s p") 'scala-import-type-at-point)
-  (global-set-key (kbd "C-c c s x") 'scala-extract-code-line-or-region)
 
 #+END_SRC
 *** Haskell
@@ -1652,13 +1993,6 @@ this files contains the functions that interact with youtube. Mainly using ~yout
         (goto-char $from)
         (insert outputStr) )) )
 
-  (global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
-  (global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
-  (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)
-  (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
-  (global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
-  (global-set-key (kbd "C-c c h s") 'hs-string-to-multiline-string)
-  (global-set-key (kbd "C-c c h i") 'ormolu-format-buffer)
 #+end_src
 *** Typescript
 
@@ -1807,11 +2141,6 @@ this files contains the functions that interact with youtube. Mainly using ~yout
                )
       )
 
-    (global-set-key (kbd "C-c c t c") 'ts-shell-clean-old-output)
-    (global-set-key (kbd "C-c c t e") 'ts-goto-next-warn-error)
-    (global-set-key (kbd "C-c c t u") 'ts-remove-unused-import)
-    (global-set-key (kbd "C-c c t p") 'ts-import-type-at-point)
-    (global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
 
 #+END_SRC
 *** C#
@@ -1847,13 +2176,13 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     )
 
   ; keybinded functions ;;;;;;;;;;;;;;;;;
-  (defun dotnet-shell-clean-old-output ()
+  (defun csharp-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
     (interactive)
     (funcall 'shell-clean-old-output "^Build .*$")
     )
 
-  (defun dotnet-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
+  (defun csharp-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
     (interactive)
     (forward-line)
@@ -1862,7 +2191,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
                                                                                           (left-char)) ) errorMessage backwardSearch isRegexp)
     )
 
-  (defun dotnet-import-type-at-point (type)
+  (defun csharp-import-type-at-point (type)
     "Try to import into the current file the type at point"
     (interactive (list
                   (read-string (format "type (%s): " (thing-at-point 'word))
@@ -1881,7 +2210,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
              )
     )
 
-  (defun dotnet-extract-code-line-or-region (name &optional parameters from to)
+  (defun csharp-extract-code-line-or-region (name &optional parameters from to)
     "Extract the code to val or def:
      Require:
        - Name of the val/def
@@ -1909,8 +2238,123 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (funcall 'extract-code-line-or-region-template "var " "public void " " = " " { " nil "}" name parameters from to)
     )
 
-  (global-set-key (kbd "C-c c d c") 'dotnet-shell-clean-old-output)
-  (global-set-key (kbd "C-c c d e") 'dotnet-goto-next-warn-error)
-  (global-set-key (kbd "C-c c d p") 'dotnet-import-type-at-point)
-  (global-set-key (kbd "C-c c d x") 'dotnet-extract-code-line-or-region)
 #+END_SRC
+* Keybindings
+** COMMENT Window Sizing
+
+   Not needed since there's golden ratio. Commented.
+#+begin_src emacs-lisp
+     (global-set-key (kbd "C-x M-{") 'enlarge-window)
+     (global-set-key (kbd "C-x M-}") 'shrink-window)
+#+end_src
+
+
+** Cursor Movement
+*** Move to Window
+    Use shift + arrow keys to switch between visible buffers
+#+begin_src emacs-lisp
+   (windmove-default-keybindings)
+#+end_src
+** Text Manipulation
+*** IEdit Mode
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c ;") 'iedit-mode)
+#+end_src
+*** Line or Region
+#+begin_src emacs-lisp
+    (global-set-key [(control shift up)] 'move-line-up)
+    (global-set-key [(control shift down)] 'move-line-down)
+    (global-set-key (kbd "C-k") 'crux-smart-kill-line)
+    (global-set-key (kbd "S-RET") 'crux-smart-open-line)
+    (global-set-key (kbd "C-S-RET") 'crux-smart-open-line-above)
+    (global-set-key (kbd "C-c d") 'crux-duplicate-current-line-or-region)
+    (global-set-key (kbd "C-x C-l") 'crux-downcase-region)
+    (global-set-key (kbd "C-x C-u") 'crux-upcase-region)
+#+end_src
+*** Transpose Words
+#+begin_src emacs-lisp
+    (global-set-key [(control shift right)] (lambda () (interactive) (transpose-words 1)))
+    (global-set-key [(control shift left)] (lambda () (interactive) (transpose-words -1)))
+#+end_src
+** Buffers
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c D") 'crux-delete-file-and-buffer)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+end_src
+** Ediff
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c e w") 'ediff-regions-wordwise)
+#+end_src
+** Silver Searcher
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c a") 'ag-project)
+#+end_src
+** Indentation
+#+begin_src emacs-lisp
+ (global-set-key (kbd "C-c f") 'indent-buffer-or-region)
+#+end_src
+** Random
+#+begin_src emacs-lisp
+   (global-set-key (kbd "C-c i u u") 'insert-random-uuid)
+#+end_src
+** Selection
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-=") 'er/expand-region)
+#+end_src
+** History
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c r f") 'crux-recentf-find-file)
+  (global-set-key (kbd "C-c y") 'browse-kill-ring)
+#+end_src
+** Development
+*** Comments
+#+begin_src emacs-lisp
+     (global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
+#+end_src
+*** LSP
+#+begin_src emacs-lisp
+(setq lsp-keymap-prefix "C-c l")
+#+end_src
+*** Scala
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)
+  (global-set-key (kbd "C-c c s e") 'scala-goto-next-warn-error)
+  (global-set-key (kbd "C-c c s u") 'scala-remove-unused-import)
+  (global-set-key (kbd "C-c c s p") 'scala-import-type-at-point)
+  (global-set-key (kbd "C-c c s x") 'scala-extract-code-line-or-region)
+#+end_src
+*** Haskell
+#+begin_src emacs-lisp
+    (global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
+    (global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
+    (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)
+    (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
+    (global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
+    (global-set-key (kbd "C-c c h s") 'hs-string-to-multiline-string)
+    (global-set-key (kbd "C-c c h i") 'ormolu-format-buffer)
+#+end_src
+*** Typescript
+#+begin_src emacs-lisp
+      (global-set-key (kbd "C-c c t c") 'ts-shell-clean-old-output)
+      (global-set-key (kbd "C-c c t e") 'ts-goto-next-warn-error)
+      (global-set-key (kbd "C-c c t u") 'ts-remove-unused-import)
+      (global-set-key (kbd "C-c c t p") 'ts-import-type-at-point)
+      (global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
+#+end_src
+*** CSharp
+#+begin_src emacs-lisp
+    (global-set-key (kbd "C-c c d c") 'csharp-shell-clean-old-output)
+    (global-set-key (kbd "C-c c d e") 'csharp-goto-next-warn-error)
+    (global-set-key (kbd "C-c c d p") 'csharp-import-type-at-point)
+    (global-set-key (kbd "C-c c d x") 'csharp-extract-code-line-or-region)
+#+end_src
+*** Elisp
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c c l e") 'eval-region)
+#+end_src
+*** Magit
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c g s") 'magit-status)
+  (global-set-key (kbd "C-c g i") 'magit-init)
+  (global-set-key (kbd "C-c g c") 'magit-clone)
+#+end_src
