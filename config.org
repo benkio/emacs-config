@@ -1844,7 +1844,8 @@ this files contains the functions that interact with youtube. Mainly using ~yout
       )
     (other-window 1)
     (search-forward targetImport)
-    (search-backward targetImport) ;;to move at the start of the matchx)
+    (search-backward targetImport) ;;to move at the start of the match
+    )
 
   (defun hs-import-bounds ()
     "Return the import region bounds"
@@ -1961,7 +1962,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
       (save-excursion
         (delete-region $from $to)
         (goto-char $from)
-        (insert outputStr) )) )
+        (insert outputStr))))
 
 #+end_src
 *** Typescript
