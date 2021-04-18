@@ -665,7 +665,7 @@ snippets for coding and more
 (yas-global-mode 1)
 #+END_SRC
 
-*** LSP
+*** COMMENT LSP
 
     #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -2277,7 +2277,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
 #+begin_src emacs-lisp
      (global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
 #+end_src
-*** LSP
+*** COMMENT LSP
 #+begin_src emacs-lisp
 (setq lsp-keymap-prefix "C-c l")
 #+end_src
