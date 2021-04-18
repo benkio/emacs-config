@@ -100,8 +100,7 @@
              (set-face-attribute 'default nil :height 90))
             (t
              (set-face-attribute 'default nil :height 50))
-            )
-      )
+            ))
 
     (add-hook 'after-make-frame-functions 'set-font-height-on-frame-width)
     (add-hook 'window-setup-hook 'set-font-height-on-frame-width)
@@ -243,6 +242,7 @@
      (kill-buffer "*Ediff Registry*")
      (winner-undo)
      )
+
    (add-hook 'ediff-after-quit-hook-internal 'exit-ediff-hook)
 
    (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -1026,26 +1026,26 @@ unctions for alignment of text and indentation of buffer
 Collect all the functions that move the cursor somewhere
 
 #+begin_src emacs-lisp
-(defun goto-column (column)
- (interactive "nColumn: ")
- (move-to-column column t))
+  (defun goto-column (column)
+   (interactive "nColumn: ")
+   (move-to-column column t))
 
-(defun switch-to-existing-buffer-other-window (part)
- "Switch to buffer with PART in its name."
- (interactive
-  (list (read-buffer-to-switch "Switch to buffer in other window: ")))
- (let ((candidates
-    (cl-remove
-     nil
-     (mapcar (lambda (buf)
-           (let ((pos (string-match part (buffer-name buf))))
-             (when pos
-           (cons pos buf))))
-         (buffer-list)))))
-   (unless candidates
-     (user-error "There is no buffers with %S in its name." part))
-   (setq candidates (cl-sort candidates #'< :key 'car))
-   (switch-to-buffer-other-window (cdr (car candidates))))))
+  (defun switch-to-existing-buffer-other-window (part)
+   "Switch to buffer with PART in its name."
+   (interactive
+    (list (read-buffer-to-switch "Switch to buffer in other window: ")))
+   (let ((candidates
+      (cl-remove
+       nil
+       (mapcar (lambda (buf)
+             (let ((pos (string-match part (buffer-name buf))))
+               (when pos
+             (cons pos buf))))
+           (buffer-list)))))
+     (unless candidates
+       (user-error "There is no buffers with %S in its name." part))
+     (setq candidates (cl-sort candidates #'< :key 'car))
+     (switch-to-buffer-other-window (cdr (car candidates)))))
 #+end_src
 ** FFMPEG
 
@@ -1394,16 +1394,14 @@ Functions for manipulate text
     "Move current line up using `transpose-lines'"
     (interactive)
     (transpose-lines 1)
-    (previous-line 2)
-    )
+    (previous-line 2))
 
   (defun move-line-down ()
     "Move current line down using `transpose-lines'"
     (interactive)
     (next-line)
     (transpose-lines 1)
-    (previous-line)
-    )
+    (previous-line))
 
 
 #+END_SRC
@@ -1472,8 +1470,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (save-excursion
       (beginning-of-line)
       (when (search-forward args (line-end-position) t) t)
-      )
-    )
+      ))
 
   (defun searchFunction (backwardDrection)
     "Return the regexp search function based on input direction:
@@ -1483,16 +1480,14 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (if backwardDrection
         're-search-backward
       're-search-forward
-      )
-    )
+      ))
 
   (defun shell-clean-old-output (startingPhrase)
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation). based on the input value"
     (end-of-buffer)
     (re-search-backward startingPhrase)
     (delete-region (point) (goto-char (point-min)))
-    (end-of-buffer)
-    )
+    (end-of-buffer))
 
   (defun event-file-navigation (startingFilePath endingFilePath &optional notSplitWindow)
     "Starting from an output buffer this function:
@@ -1508,8 +1503,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (setq filePath (buffer-substring filenamePathPos (point)))
     (when (and notSplitWindow (= (count-windows) 1)) (split-window-right))
     (other-window 1)
-    (find-file (string-trim filePath))
-    )
+    (find-file (string-trim filePath)))
 
   (defun goto-next-warn-error (eventFileNavigationF searchPattern lineDelimiter columnDelimiter postF &optional errorMessage backwardSearch isRegexp)
     "Template for the goto-next-warn-error function used to navigate to the specific error.
@@ -1532,8 +1526,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (parse-go-to-line-or-column columnDelimiter 'right-char)
     (recenter-top-bottom)
     (other-window -1)
-    (funcall postF)
-    )
+    (funcall postF))
 
   (defun parse-go-to-line-or-column (separator gotoFunction)
     "Higher order function: applies the input function to the number parsed from current position based on the input separator
@@ -1549,8 +1542,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (setq fileLineOrColumn (buffer-substring filenamePathPos (point)))
     (other-window 1)
     (funcall gotoFunction (string-to-number fileLineOrColumn))
-    fileLineOrColumn
-    )
+    fileLineOrColumn)
 
   (defun extract-code-line-or-region-template (value function postDefinitionSyntaxValue postDefinitionSyntaxFunc EndSyntaxValue EndSyntaxFunc name parameters from to)
     "Template for extracting code to value or function:
@@ -1581,8 +1573,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (insert resultReference)
     ;; Move to the closest ^$ line and insert the resultDefinition
     (re-search-backward "^$")
-    (insert resultDefinition)
-    )
+    (insert resultDefinition))
 
   (defun build-import (inputType existingImportRegexp typeDefinitionRegexp build-import-from-existing-import-or-source importInsertionFunc)
     "Template function to import a specific type:
@@ -1608,8 +1599,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
 
     (setq result (funcall build-import-from-existing-import-or-source inputType startingBuffer))
     (switch-to-buffer startingBuffer)
-    (funcall importInsertionFunc result)
-    )
+    (funcall importInsertionFunc result))
 
   (defun remove-unused-import (unusedImportSearch gotoUnusedImport importBoundFunc narrowImportFix)
     "Template function that clean the unused import applying the input functions"
@@ -1636,8 +1626,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   (defun sbt-event-file-navigation (&optional notSplitWindow)
     "Navigate to the file that has a problem. it can navigate using a
     different window."
-    (funcall 'event-file-navigation "] " ":" notSplitWindow)
-    )
+    (funcall 'event-file-navigation "] " ":" notSplitWindow))
 
   (defun scala-build-import-from-existing-import-or-source (type startingBuffer)
     "Considering the cursor is at the beginning of the target import line
@@ -1647,8 +1636,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (if (string= (current-word) "import")
         (copy-line-from-point-as-string) ;; copy import line
       (concat "import " (path-to-package (buffer-file-name)) "." type) ;; copy package and make it an import
-      )
-    )
+      ))
 
   (defun path-to-package (path)
     "transform a path to a package"
@@ -1673,14 +1661,12 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   (defun sbt-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
     (interactive)
-    (funcall 'shell-clean-old-output "\\[info\\] Compiling")
-    )
+    (funcall 'shell-clean-old-output "\\[info\\] Compiling"))
 
   (defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
     (interactive)
-    (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" ":" '(lambda () (other-window -1) ) errorMessage backwardSearch isRegexp)
-    )
+    (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" ":" '(lambda () (other-window -1) ) errorMessage backwardSearch isRegexp))
 
   (defun scala-import-bounds ()
     "Return the import region bounds"
@@ -1702,8 +1688,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
           (search-backward-regexp "\\({\\|import\\)")
           (list (point) endOfImport)
           )
-        ))
-    )
+        )))
 
   (defun scala-remove-unused-import ()
     "Parse a shell/sbt output in search of the first unused import and remove it"
@@ -1731,8 +1716,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
                  (delete-region (point-min) (point-max))           ;; single import
                  )
                )
-             )
-    )
+             ))
 
   (defun scala-import-type-at-point (type)
     "Try to import into the current file the type at point"
@@ -1751,8 +1735,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
                                 (newline)
                                 (insert result)
                                 ))
-             )
-    )
+             ))
 
   (defun scala-extract-code-line-or-region (name &optional parameters from to)
     "Extract the code to val or def:
@@ -1793,21 +1776,18 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   (defun hs-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
     (interactive)
-    (funcall 'shell-clean-old-output "\\(Building library for \\|\n\n\n\\)")
-    )
+    (funcall 'shell-clean-old-output "\\(Building library for \\|\n\n\n\\)"))
 
   (defun hs-event-file-navigation (&optional notSplitWindow)
     "Navigate to the file that has a problem. it can navigate using a
     different window."
     (beginning-of-line) ;; Often called from the end of the line of the file path targeted
-    (funcall 'event-file-navigation "" ":" notSplitWindow)
-    )
+    (funcall 'event-file-navigation "" ":" notSplitWindow))
 
   (defun hs-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into an haskell output for the first warning/error, starting from cursor position, and move to it"
     (interactive)
-    (goto-next-warn-error 'hs-event-file-navigation ".*\\.hs:.*" ":" "[:-]" '(lambda () () ) errorMessage backwardSearch isRegexp)
-    )
+    (goto-next-warn-error 'hs-event-file-navigation ".*\\.hs:.*" ":" "[:-]" '(lambda () () ) errorMessage backwardSearch isRegexp))
 
   (defun hs-extract-code-line-or-region (name &optional parameters from to)
     "Extract the code to val or def:
@@ -1834,8 +1814,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
                   (if (use-region-p) (region-beginning) (point))
                   (if (use-region-p) (region-end) (line-end-position))
                   ))
-    (funcall 'extract-code-line-or-region-template "" "" " = " " = " "" "" name parameters from to)
-    )
+    (funcall 'extract-code-line-or-region-template "" "" " = " " = " "" "" name parameters from to))
 
   (defun hs-goto-next-unused-import (&optional errorMessage backwardSearch isRegexp)
     "Search into an haskell output for the unused import, and move to it.
@@ -1865,8 +1844,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
       )
     (other-window 1)
     (search-forward targetImport)
-    (search-backward targetImport) ;;to move at the start of the matchx
-    )
+    (search-backward targetImport) ;;to move at the start of the matchx)
 
   (defun hs-import-bounds ()
     "Return the import region bounds"
@@ -1894,8 +1872,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
                               ))
           (list startOfImport endOfImport)
           )
-        ))
-    )
+        )))
 
   (defun hs-remove-unused-import ()
     "Parse a shell output (stack) in search of the first unused import and remove it"
@@ -1923,8 +1900,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
                  (delete-region (point-min) (point-max))           ;; single import
                  )
                )
-             )
-    )
+             ))
 
   (defun hs-build-import-from-existing-import-or-source (type startingBuffer)
     "Considering the cursor is at the beginning of the target import line
@@ -1941,8 +1917,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
         (setq moduleName (s-trim (buffer-substring-no-properties moduleStartPoint (point))))
         (concat "import " moduleName " (" type ")")
         )
-      )
-    )
+      ))
 
   (defun hs-import-type-at-point (type)
     "Try to import into the current file the type at point"
@@ -1962,8 +1937,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
                                 (previous-line)
                                 (insert result)
                                 ))
-             )
-    )
+             ))
 
   (defun hs-string-to-multiline-string (&optional $from $to)
     "Escape the string selected as haskell multiline string"
@@ -2147,8 +2121,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   (defun dotnet-event-file-navigation (&optional notSplitWindow)
     "Navigate to the file that has a problem. it can navigate using a
     different window."
-    (funcall 'event-file-navigation "^" "(" notSplitWindow)
-    )
+    (funcall 'event-file-navigation "^" "(" notSplitWindow))
 
   (defun dotnet-build-import-from-existing-import-or-source (type startingBuffer)
     "Considering the cursor is at the beginning of the target import line
@@ -2159,8 +2132,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (if (string= (current-word) "using")
         (copy-line-from-point-as-string) ;; copy import line
       (concat "using " (type-namespace) ";") ;; copy namespace and make it an import
-      )
-    )
+      ))
 
   (defun type-namespace ()
     "return the namespace of the current file"
@@ -2175,8 +2147,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   (defun csharp-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
     (interactive)
-    (funcall 'shell-clean-old-output "^Build .*$")
-    )
+    (funcall 'shell-clean-old-output "^Build .*$"))
 
   (defun csharp-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
@@ -2184,8 +2155,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (forward-line)
     (goto-next-warn-error 'dotnet-event-file-navigation ".*\\.cs.*" "," ")" '(lambda () (progn
                                                                                           (other-window -1)
-                                                                                          (left-char)) ) errorMessage backwardSearch isRegexp)
-    )
+                                                                                          (left-char)) ) errorMessage backwardSearch isRegexp))
 
   (defun csharp-import-type-at-point (type)
     "Try to import into the current file the type at point"
@@ -2203,8 +2173,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
                                 (previous-line)
                                 (insert result)
                                 ))
-             )
-    )
+             ))
 
   (defun csharp-extract-code-line-or-region (name &optional parameters from to)
     "Extract the code to val or def:
