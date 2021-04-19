@@ -392,7 +392,32 @@ Allow to visually go back and forth between undo history
 (use-package undo-tree
   :config (global-undo-tree-mode))
 #+END_SRC
-** Keys Cheat Sheet
+** Keybindings
+*** God
+
+This mode add the modal layer to emacs just by removing the modifiers keys, emacs bindings remain the same (more or less)
+
+#+begin_src emacs-lisp
+  (defun my-god-mode-update-modeline ()
+    (let ((limited-colors-p (> 257 (length (defined-colors)))))
+      (cond (god-local-mode (progn
+                              (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
+                              (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
+            (t (progn
+                 (set-face-background 'mode-line (if limited-colors-p "light slate blue" "#8470ff"))
+                 (set-face-background 'mode-line-inactive (if limited-colors-p "light slate blue" "#8470ff")))))))
+
+  (use-package god-mode
+    :config
+    (require 'god-mode)
+    (god-mode)
+    (add-to-list 'god-exempt-major-modes 'dired-mode)
+    (add-to-list 'god-exempt-major-modes 'magit-mode)
+    (add-hook 'god-mode-enabled-hook #'my-god-mode-update-modeline)
+    (add-hook 'god-mode-disabled-hook #'my-god-mode-update-modeline)
+    (require 'god-mode-isearch)
+    )
+#+end_src
 *** Which-key
 
 Give you suggestions about the keybindings
@@ -2322,6 +2347,24 @@ this files contains the functions that interact with youtube. Mainly using ~yout
         (message "Opening file...")
       (message "Aborting")))
 #+end_src
+** God
+
+   Useful keybindings in god mode
+
+   #+begin_src emacs-lisp
+     (define-key god-local-mode-map (kbd "z") #'repeat)
+     (define-key god-local-mode-map (kbd "i") #'god-local-mode)
+     (define-key god-local-mode-map (kbd ".") #'repeat)
+     ;; x1 x2 x3 x0
+     (global-set-key (kbd "C-x C-1") #'delete-other-windows)
+     (global-set-key (kbd "C-x C-2") #'split-window-below)
+     (global-set-key (kbd "C-x C-3") #'split-window-right)
+     (global-set-key (kbd "C-x C-0") #'delete-window)
+     ;; back to god mode after inserting
+     (global-set-key (kbd "<escape>") #'god-local-mode)
+     (define-key isearch-mode-map (kbd "<escape>") #'god-mode-isearch-activate)
+     (define-key god-mode-isearch-map (kbd "<escape>") #'god-mode-isearch-disable)
+   #+end_src
 ** IDO
 
 use IDO for completition of some keybindings
