@@ -2328,6 +2328,10 @@ use IDO for completition of some keybindings
           "M-x "
           (all-completions "" obarray 'commandp))))))
 #+end_src
+** Projectile
+#+begin_src emacs-lisp
+(define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
+#+end_src
 ** Development
 *** Comments
 #+begin_src emacs-lisp
