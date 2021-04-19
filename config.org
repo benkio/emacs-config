@@ -2292,9 +2292,10 @@ this files contains the functions that interact with youtube. Mainly using ~yout
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c e w") 'ediff-regions-wordwise)
 #+end_src
-** Silver Searcher
+** Search
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c a") 'projectile-ag)
+(global-set-key (kbd "C-c o") 'occur)
 #+end_src
 ** Indentation
 #+begin_src emacs-lisp
