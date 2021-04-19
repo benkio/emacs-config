@@ -2313,6 +2313,21 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   (global-set-key (kbd "C-c r f") 'crux-recentf-find-file)
   (global-set-key (kbd "C-c y") 'browse-kill-ring)
 #+end_src
+** IDO
+
+use IDO for completition of some keybindings
+
+#+begin_src emacs-lisp
+    (global-set-key
+     "\M-x"
+     (lambda ()
+       (interactive)
+       (call-interactively
+        (intern
+         (ido-completing-read
+          "M-x "
+          (all-completions "" obarray 'commandp))))))
+#+end_src
 ** Development
 *** Comments
 #+begin_src emacs-lisp
