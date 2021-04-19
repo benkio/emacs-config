@@ -1577,7 +1577,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
 
   (defun goto-definition (type typeDefinitionRegexp)
     "Higher order function that just apply the regexp in input to move the cursor at the definition point.
-  eg. \\(.*class  inputType .*\\|.*trait  inputType .*\\|.*object  inputType .*\\|.*type  inputType .*\\) to go to a scala definition
+  eg. \\(.*class  type .*\\|.*trait  type .*\\|.*object  type .*\\|.*type  type .*\\) to go to a scala definition
 
      - type: the type to search for
      - typedefinitionregexp: function that builds the regexp used in the search
@@ -1633,7 +1633,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   Functions used specifically for dealing with scala code.
 
 #+BEGIN_SRC emacs-lisp
-  (setq scalaDefinitionRegex (lambda (type) (concat "\\(.*class " inputType ".*\\|.*trait " inputType ".*\\|.*object " inputType ".*\\|.*type " inputType ".*\\)")))
+  (setq scalaDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*trait " type ".*\\|.*object " type ".*\\|.*type " type ".*\\)")))
   (defun sbt-event-file-navigation (&optional notSplitWindow)
     "Navigate to the file that has a problem. it can navigate using a
     different window."
@@ -1996,7 +1996,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   Functions useful when dealing with typescript.
 
 #+BEGIN_SRC emacs-lisp
-  (setq typescriptDefinitionRegex (lambda (type) (concat "\\(.*class " inputType ".*\\|.*interface " inputType ".*\\|.*type " inputType ".*\\)")))
+  (setq typescriptDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*interface " type ".*\\|.*type " type ".*\\)")))
 
   (defun ts-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
@@ -2151,7 +2151,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   Functions used specifically for dealing with c# code.
 
 #+BEGIN_SRC emacs-lisp
-  (setq csharpDefinitionRegex (lambda (type) (concat "\\(.*class " inputType ".*\\|.*interface " inputType ".*\\|.*enum " inputType ".*\\)")))
+  (setq csharpDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*interface " type ".*\\|.*enum " type ".*\\)")))
 
   (defun dotnet-event-file-navigation (&optional notSplitWindow)
     "Navigate to the file that has a problem. it can navigate using a
