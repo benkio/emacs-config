@@ -204,29 +204,29 @@
 *** Set
     1. Recent-f save list every 5 minutes
     2. Emacs window fullscreen at startup
-    3. Keybindings for scrolling up and down to <M-up> and <M-down> (not natural scrolling)
-    4. Keybindings for comment-or-uncomment-region
-    5. Alwayst load newest byte code first
-    6. Reduce the frequency of garbage collection by making it happen on each 50MB of allocated data (the default is on every 0.76MB)
-    7. Smart Tab Behaviour
-    8. Path executable on windows (git, 7z, curl...)
-    9. Winner-undo after ediff quits, hook
-    10. Set ediff options:
+    3. Recent-f list to higher maximum size
+    4. Keybindings for scrolling up and down to <M-up> and <M-down> (not natural scrolling)
+    5. Keybindings for comment-or-uncomment-region
+    6. Alwayst load newest byte code first
+    7. Reduce the frequency of garbage collection by making it happen on each 50MB of allocated data (the default is on every 0.76MB)
+    8. Smart Tab Behaviour
+    9. Path executable on windows (git, 7z, curl...)
+    10. Winner-undo after ediff quits, hook
+    11. Set ediff options:
         1. Remove separate frame
         2. Split vertical
         3. Ignore whitespaces
-    11. Keybinding for eval-region
-    12. Keybinding for shrink-window and enlarge window
-    13. Cursor as a line
-    14. Ido Fuzzy matching https://www.emacswiki.org/emacs/InteractivelyDoThings#h5o-23
-    15. Ido Vertical Results
+    12. Keybinding for eval-region
+    13. Keybinding for shrink-window and enlarge window
+    14. Cursor as a line
+    15. Ido Fuzzy matching https://www.emacswiki.org/emacs/InteractivelyDoThings#h5o-23
+    16. Ido Vertical Results
 
  #+BEGIN_SRC emacs-lisp
 
    (add-to-list 'default-frame-alist '(fullscreen . maximized))
    (run-at-time nil (* 5 60) 'recentf-save-list)
-
-
+   (setq recentf-max-saved-items 50)
 
    (setq load-prefer-newer t)
    (setq gc-cons-threshold 50000000)
@@ -471,7 +471,6 @@ Highlight the word you are on in case you stop there for some time
 *** The Silver Searcher
 
 Allow you to quickly search into a project via ag.
-It can also work with projectile
 
 #+BEGIN_SRC emacs-lisp
 (use-package ag)
@@ -524,6 +523,7 @@ and into the files like grep
 (use-package projectile
   :defer 5
   :config
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 #+END_SRC
 
@@ -2294,7 +2294,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
 #+end_src
 ** Silver Searcher
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c a") 'ag-project)
+(global-set-key (kbd "C-c a") 'projectile-ag)
 #+end_src
 ** Indentation
 #+begin_src emacs-lisp
@@ -2310,8 +2310,16 @@ this files contains the functions that interact with youtube. Mainly using ~yout
 #+end_src
 ** History
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c r f") 'crux-recentf-find-file)
   (global-set-key (kbd "C-c y") 'browse-kill-ring)
+
+  (global-set-key (kbd "C-c r f") 'ido-recentf-open)
+
+  (defun ido-recentf-open ()
+    "Use `ido-completing-read' to \\[find-file] a recent file"
+    (interactive)
+    (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+        (message "Opening file...")
+      (message "Aborting")))
 #+end_src
 ** IDO
 
@@ -2327,10 +2335,6 @@ use IDO for completition of some keybindings
          (ido-completing-read
           "M-x "
           (all-completions "" obarray 'commandp))))))
-#+end_src
-** Projectile
-#+begin_src emacs-lisp
-(define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
 #+end_src
 ** Development
 *** Comments
