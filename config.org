@@ -411,6 +411,7 @@ This mode add the modal layer to emacs just by removing the modifiers keys, emac
     :config
     (require 'god-mode)
     (god-mode)
+    (add-to-list 'god-exempt-major-modes 'dired-mode)
     (add-to-list 'god-exempt-major-modes 'magit-mode)
     (add-hook 'god-mode-enabled-hook #'my-god-mode-update-modeline)
     (add-hook 'god-mode-disabled-hook #'my-god-mode-update-modeline)
