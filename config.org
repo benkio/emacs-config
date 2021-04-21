@@ -411,7 +411,6 @@ This mode add the modal layer to emacs just by removing the modifiers keys, emac
     :config
     (require 'god-mode)
     (god-mode)
-    (add-to-list 'god-exempt-major-modes 'dired-mode)
     (add-to-list 'god-exempt-major-modes 'magit-mode)
     (add-hook 'god-mode-enabled-hook #'my-god-mode-update-modeline)
     (add-hook 'god-mode-disabled-hook #'my-god-mode-update-modeline)
@@ -539,17 +538,18 @@ Managing git repos
                       nil t))) ; the t is important
 
 #+END_SRC
-*** Projectile
+*** Find File in Project
 
     Inspect the git repository you are in and allow you to search files
-and into the files like grep
+and into the files like find. Using fd
 
 #+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :defer 5
+(use-package find-file-in-project
   :config
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (projectile-mode +1))
+  (require 'find-file-in-project)
+  (setq ffip-prefer-ido-mode t)
+  (setq ffip-use-rust-fd t)
+  )
 #+END_SRC
 
 ** Window Manipulation
@@ -2319,8 +2319,9 @@ this files contains the functions that interact with youtube. Mainly using ~yout
 #+end_src
 ** Search
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c a") 'projectile-ag)
-(global-set-key (kbd "C-c o") 'occur)
+  (global-set-key (kbd "C-c s") 'ag-project-regexp)
+  (global-set-key (kbd "C-c o") 'occur)
+  (global-set-key (kbd "C-c p f") 'find-file-in-project)
 #+end_src
 ** Indentation
 #+begin_src emacs-lisp
@@ -2361,7 +2362,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
      (global-set-key (kbd "C-x C-3") #'split-window-right)
      (global-set-key (kbd "C-x C-0") #'delete-window)
      ;; back to god mode after inserting
-     (global-set-key (kbd "<escape>") #'god-local-mode)
+     (global-set-key (kbd "<escape>") #'god-mode-all)
      (define-key isearch-mode-map (kbd "<escape>") #'god-mode-isearch-activate)
      (define-key god-mode-isearch-map (kbd "<escape>") #'god-mode-isearch-disable)
    #+end_src
