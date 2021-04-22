@@ -490,6 +490,7 @@ Allow you to quickly search into a project via ag.
 #+BEGIN_SRC emacs-lisp
   (use-package ag
     :config (setq ag-reuse-buffers 't)
+            (setq ag-reuse-window 't)
     )
 #+END_SRC
 
