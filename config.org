@@ -531,19 +531,6 @@ Managing git repos
                       nil t))) ; the t is important
 
 #+END_SRC
-*** Find File in Project
-
-    Inspect the git repository you are in and allow you to search files
-and into the files like find. Using fd
-
-#+BEGIN_SRC emacs-lisp
-(use-package find-file-in-project
-  :config
-  (require 'find-file-in-project)
-  (setq ffip-use-rust-fd t)
-  )
-#+END_SRC
-
 ** Window Manipulation
 *** Winmove
 
@@ -2314,8 +2301,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   (global-set-key (kbd "C-c s") 'ag-project-regexp)
   (global-set-key (kbd "C-c o") 'occur)
   (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
-  (global-set-key (kbd "C-x f p") 'find-file-in-project)
-  (global-set-key (kbd "C-x f @") 'find-file-at-point)
+  (global-set-key (kbd "C-x f p") 'ag-project-dired-regexp)
   (global-set-key (kbd "C-x f f") 'find-file)
 #+end_src
 ** Indentation
