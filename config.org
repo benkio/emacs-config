@@ -491,7 +491,9 @@ Allow you to quickly search into a project via ag.
   (use-package ag
     :config (setq ag-reuse-buffers 't)
             (setq ag-reuse-window 't)
-    )
+            )
+
+  (use-package wgrep-ag)
 #+END_SRC
 
 *** Google This
