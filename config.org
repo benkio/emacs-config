@@ -361,6 +361,11 @@
      )
    #+END_SRC
 
+** Ivy
+#+begin_src emacs-lisp 
+(use-package ivy
+  :config (ivy-mode))
+#+end_src
 ** Super Save
 
 Save your files every time you change the window
@@ -2306,7 +2311,10 @@ this files contains the functions that interact with youtube. Mainly using ~yout
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c s") 'ag-project-regexp)
   (global-set-key (kbd "C-c o") 'occur)
-  (global-set-key (kbd "C-c p f") 'find-file-in-project)
+  (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
+  (global-set-key (kbd "C-x f p") 'find-file-in-project)
+  (global-set-key (kbd "C-x f @") 'find-file-at-point)
+  (global-set-key (kbd "C-x f f") 'find-file)
 #+end_src
 ** Indentation
 #+begin_src emacs-lisp
@@ -2322,6 +2330,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
 #+end_src
 ** History
 #+begin_src emacs-lisp
+  (global-set-key (kbd "C-c r f") 'crux-recentf-find-file)
   (global-set-key (kbd "C-c y") 'browse-kill-ring)
 #+end_src
 ** God
