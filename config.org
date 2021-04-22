@@ -488,7 +488,9 @@ Highlight the word you are on in case you stop there for some time
 Allow you to quickly search into a project via ag.
 
 #+BEGIN_SRC emacs-lisp
-(use-package ag)
+  (use-package ag
+    :config (setq ag-reuse-buffers 't)
+    )
 #+END_SRC
 
 *** Google This
