@@ -634,6 +634,15 @@ Add support for the yaml file types
   :mode ("\\.yml$" . yaml-mode))
 #+END_SRC
 
+*** Indent Guide
+
+    Used to highlight different indentation levels.
+    Useful in languages like ML, haskell, elm, scala 3..
+
+    #+begin_src emacs-lisp
+      (use-package indent-guide
+        :config (indent-guide-global-mode))
+    #+end_src
 *** CSV
 
 Mode to handle CSV files
