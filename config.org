@@ -1397,6 +1397,15 @@ Custom Functions regading rectangles
 Functions for manipulate text
 
 #+BEGIN_SRC emacs-lisp
+  (defun copy-line-from-point-as-string (&optional prefix suffix)
+    (unless prefix (setq prefix ""))
+    (unless suffix (setq suffix ""))
+    (setq currentPoint (point))
+    (end-of-line)
+    (setq result (concat prefix (buffer-substring-no-properties currentPoint (point)) suffix))
+    (eval result)
+    )
+
   (defun move-line-up ()
     "Move current line up using `transpose-lines'"
     (interactive)
