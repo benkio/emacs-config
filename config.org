@@ -2322,7 +2322,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   (global-set-key (kbd "C-c s") 'ag-project-regexp)
   (global-set-key (kbd "C-c o") 'occur)
   (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
-  (global-set-key (kbd "C-x f p") 'ag-project-dired-regexp)
+  (global-set-key (kbd "C-x f p") 'project-find-file)
   (global-set-key (kbd "C-x f f") 'find-file)
 #+end_src
 ** Indentation
