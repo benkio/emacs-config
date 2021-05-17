@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: NUnit Writeline
+# key: NUW
+# --
+
+NUnit.Framework.TestContext.Progress.WriteLine($1);$0
