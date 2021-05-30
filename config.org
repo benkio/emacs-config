@@ -1144,7 +1144,7 @@ format.
    (when commandExist
      (let ((fileComplete (expand-file-name file))
            (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-       (async-shell-command (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension))))
+       (call-process-shell-command (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension) nil 0)))
    )
 #+end_src
 ** File Conversion
