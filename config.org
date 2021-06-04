@@ -1676,7 +1676,7 @@ open and unsaved."
   (defun sbt-event-file-navigation (&optional notSplitWindow)
     "Navigate to the file that has a problem. it can navigate using a
     different window."
-    (funcall 'event-file-navigation "] " ":" notSplitWindow))
+    (funcall 'event-file-navigation "] \(-- Error: \)?" ":" notSplitWindow))
 
   (defun scala-build-import-from-existing-import-or-source (type startingBuffer)
     "Considering the cursor is at the beginning of the target import line
