@@ -1822,6 +1822,15 @@ open and unsaved."
                                nil nil (thing-at-point 'word))))
     (goto-definition type scalaDefinitionRegex)
     )
+
+  (defun scala-open-doc (queryType)
+    "Open the scala doc in browser searching for the input queryType"
+    (interactive (list
+                  (read-string (format "type (%s): " (thing-at-point 'word))
+                               nil nil (thing-at-point 'word))))
+    (require 'browse-url)
+    (browse-url (concat "https://www.scala-lang.org/api/current/index.html?search=" queryType))
+    )
 #+END_SRC
 *** Haskell
 
@@ -2390,7 +2399,8 @@ open and unsaved."
   (global-set-key (kbd "C-c c s u") 'scala-remove-unused-import)
   (global-set-key (kbd "C-c c s p") 'scala-import-type-at-point)
   (global-set-key (kbd "C-c c s x") 'scala-extract-code-line-or-region)
-  (global-set-key (kbd "C-c c s d") 'scala-goto-definition)
+  (global-set-key (kbd "C-c c s g") 'scala-goto-definition)
+  (global-set-key (kbd "C-c c s d") 'scala-open-doc)
 #+end_src
 *** Haskell
 #+begin_src emacs-lisp
