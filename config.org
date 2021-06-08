@@ -2355,6 +2355,10 @@ open and unsaved."
 #+begin_src emacs-lisp
    (global-set-key (kbd "C-c i u u") 'insert-random-uuid)
 #+end_src
+** Media
+#+begin_src emacs-lisp
+   (global-set-key (kbd "C-c p s") 'play-sound)
+#+end_src
 ** Selection
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-=") 'er/expand-region)
