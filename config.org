@@ -26,7 +26,6 @@
     Activate some UI built-in features
       * Line Numbers
       * Column Line
-      * Battery
       * Parentesis
       * Size of Current File
       * highlight current line
@@ -35,7 +34,6 @@
 
    (global-linum-mode 1)
    (setq column-number-mode t)
-   (display-battery-mode 1)
    (show-paren-mode 1)
    (size-indication-mode 1)
    (global-hl-line-mode +1)
@@ -188,7 +186,6 @@
      (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
      (defadvice select-window (after select-window-and-do-stuff activate) (save-some-buffers t))
 
-
      (add-hook 'prog-mode-hook #'hs-minor-mode)
 
      (add-hook 'dired-mode-hook
@@ -198,23 +195,20 @@
 #+END_SRC
 
 *** Set
+
     1. Recent-f save list every 5 minutes
     2. Emacs window fullscreen at startup
     3. Recent-f list to higher maximum size
-    4. Keybindings for scrolling up and down to <M-up> and <M-down> (not natural scrolling)
-    5. Keybindings for comment-or-uncomment-region
-    6. Alwayst load newest byte code first
-    7. Reduce the frequency of garbage collection by making it happen on each 50MB of allocated data (the default is on every 0.76MB)
-    8. Smart Tab Behaviour
-    9. Path executable on windows (git, 7z, curl...)
-    10. Winner-undo after ediff quits, hook
-    11. Set ediff options:
-        1. Remove separate frame
-        2. Split vertical
-        3. Ignore whitespaces
-    12. Keybinding for eval-region
-    13. Keybinding for shrink-window and enlarge window
-    14. Cursor as a line
+    4. Always load newest byte code first
+    5. Reduce the frequency of garbage collection by making it happen on each 50MB of allocated data (the default is on every 0.76MB)
+    6. Smart Tab Behaviour
+    7. Path executable on windows (git, 7z, curl...)
+    8. Winner-undo after ediff quits, hook
+    9. Set ediff options:
+       1. Remove separate frame
+       2. Split vertical
+       3. Ignore whitespaces
+    10. Cursor as a line
 
  #+BEGIN_SRC emacs-lisp
 
@@ -362,7 +356,7 @@
    #+END_SRC
 
 ** Ivy
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
 (use-package ivy
   :config (ivy-mode))
 #+end_src
@@ -1169,8 +1163,8 @@ Collect the functions for file conversions, mainly using shell commands
 Functions to get the name of the file and path to clipboard
 
 #+BEGIN_SRC emacs-lisp
-(defun copy-file-name-to-clipboard (filename-manipulate-func)
- "Copy the current buffer file name to the clipboard after the application of the input function."
+(defun copy-file-name-to-kill-ring (filename-manipulate-func)
+ "Copy the current buffer file name to the kill-ring after the application of the input function."
  (interactive)
  (let ((filename (if (equal major-mode 'dired-mode)
                      default-directory
@@ -1180,15 +1174,15 @@ Functions to get the name of the file and path to clipboard
        (when changedFilename
          (kill-new changedFilename))))))
 
-(defun copy-file-name-and-path-to-clipboard ()
- "Copy the current buffer file name and path to clipboard."
+(defun copy-file-name-and-path-to-kill-ring ()
+ "Copy the current buffer file name and path to kill-ring."
  (interactive)
- (copy-file-name-to-clipboard 'identity))
+ (copy-file-name-to-kill-ring 'identity))
 
-(defun copy-just-file-name-to-clipboard ()
- "Copy just the current buffer file name to clipboard."
+(defun copy-just-file-name-to-kill-ring ()
+ "Copy just the current buffer file name to kill-ring."
  (interactive)
- (copy-file-name-to-clipboard 'file-name-nondirectory))
+ (copy-file-name-to-kill-ring 'file-name-nondirectory))
 #+END_SRC
 ** Formatting
 
@@ -2319,8 +2313,8 @@ open and unsaved."
     (global-set-key [(control shift up)] 'move-line-up)
     (global-set-key [(control shift down)] 'move-line-down)
     (global-set-key (kbd "C-k") 'crux-smart-kill-line)
-    (global-set-key (kbd "S-RET") 'crux-smart-open-line)
-    (global-set-key (kbd "C-S-RET") 'crux-smart-open-line-above)
+    (global-set-key (kbd "C-o") 'crux-smart-open-line)
+    (global-set-key (kbd "M-o") 'crux-smart-open-line-above)
     (global-set-key (kbd "C-c d") 'crux-duplicate-current-line-or-region)
     (global-set-key (kbd "C-x C-l") 'crux-downcase-region)
     (global-set-key (kbd "C-x C-u") 'crux-upcase-region)
@@ -2330,10 +2324,17 @@ open and unsaved."
     (global-set-key [(control shift right)] (lambda () (interactive) (transpose-words 1)))
     (global-set-key [(control shift left)] (lambda () (interactive) (transpose-words -1)))
 #+end_src
+*** Whitespace
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c w c") 'whitespace-cleanup)
+  (global-set-key (kbd "C-c w r") 'whitespace-cleanup-region)
+#+end_src
 ** Buffers
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c D") 'crux-delete-file-and-buffer)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "C-c b p") 'copy-file-name-and-path-to-kill-ring)
+  (global-set-key (kbd "C-c b n") 'copy-just-file-name-to-kill-ring)
 #+end_src
 ** Ediff
 #+begin_src emacs-lisp
@@ -2341,6 +2342,7 @@ open and unsaved."
 #+end_src
 ** Search
 #+begin_src emacs-lisp
+  (global-set-key (kbd "M-x") 'counsel-M-x)
   (global-set-key (kbd "C-c s") 'ag-project-regexp)
   (global-set-key (kbd "C-c o") 'occur)
   (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
