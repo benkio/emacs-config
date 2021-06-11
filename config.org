@@ -2353,7 +2353,6 @@ open and unsaved."
 #+end_src
 ** Search
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-x") 'counsel-M-x)
   (global-set-key (kbd "C-c s") 'ag-project-regexp)
   (global-set-key (kbd "C-c o") 'occur)
   (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
