@@ -627,6 +627,17 @@ Add support for the yaml file types
   :mode ("\\.yml$" . yaml-mode))
 #+END_SRC
 
+*** EditorConfig
+
+    Support for editor config. So the formatting rules are shared
+    between developers.
+
+    #+begin_src emacs-lisp
+    (use-package editorconfig
+      :ensure t
+      :config
+      (editorconfig-mode 1))
+    #+end_src
 *** Indent Guide
 
     Used to highlight different indentation levels.
@@ -2352,7 +2363,6 @@ open and unsaved."
 #+end_src
 ** Search
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-x") 'counsel-M-x)
   (global-set-key (kbd "C-c s") 'ag-project-regexp)
   (global-set-key (kbd "C-c o") 'occur)
   (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
