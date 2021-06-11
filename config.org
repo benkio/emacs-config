@@ -1816,13 +1816,23 @@ open and unsaved."
     (goto-definition type scalaDefinitionRegex)
     )
 
-  (defun scala-open-doc (queryType)
+  (defun scala-open-doc (queryType lib)
     "Open the scala doc in browser searching for the input queryType"
     (interactive (list
                   (read-string (format "type (%s): " (thing-at-point 'word))
-                               nil nil (thing-at-point 'word))))
+                               nil nil (thing-at-point 'word))
+                  (completing-read "Library: "
+                            '("Standard Library" "Cats" "Cats-Effect" "Http4s") nil t)
+                  ))
     (require 'browse-url)
-    (browse-url (concat "https://www.scala-lang.org/api/current/index.html?search=" queryType))
+    (message "lib: %s" lib)
+    (setq libUrlPrefix (cond
+                        ((string= lib "Cats")        "https://typelevel.org/cats/api/cats/index.html?search=")
+                        ((string= lib "Cats-Effect") "https://typelevel.org/cats-effect/api/3.x/?search=")
+                        ((string= lib "Http4s")      "https://http4s.org/v0.17/api/org/http4s/?search=")
+                        (t                           "https://www.scala-lang.org/api/current/index.html?search=")
+                        ))
+    (browse-url (concat libUrlPrefix queryType))
     )
 #+END_SRC
 *** Haskell
