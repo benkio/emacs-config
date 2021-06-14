@@ -394,14 +394,14 @@ This mode add the modal layer to emacs just by removing the modifiers keys, emac
   (use-package god-mode
     :config
     (require 'god-mode)
-    (god-mode)
-    (add-to-list 'god-exempt-major-modes 'magit-mode)
     (add-hook 'god-mode-enabled-hook #'my-god-mode-update-modeline)
     (add-hook 'god-mode-disabled-hook #'my-god-mode-update-modeline)
     (setq god-exempt-predicates          ;; https://github.com/emacsorphanage/god-mode/issues/131
           (list #'god-exempt-mode-p
                 #'god-git-commit-mode-p
                 #'god-view-mode-p))
+    (add-to-list 'god-exempt-major-modes 'magit-mode)
+    (god-mode)
     (require 'god-mode-isearch)
     )
 #+end_src
