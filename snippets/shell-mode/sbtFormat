@@ -2,4 +2,4 @@
 # name: sbt format
 # key: sbtFMT
 # --
-sbt --supershell=false scalafmt && sbt --supershell=false test:scalafmt
+sbt --supershell=false scalafmtAll
