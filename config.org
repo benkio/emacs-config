@@ -1837,14 +1837,15 @@ open and unsaved."
                   (read-string (format "type (%s): " (thing-at-point 'word))
                                nil nil (thing-at-point 'word))
                   (completing-read "Library: "
-                            '("Standard Library" "Cats" "Cats-Effect" "Http4s") nil t)
+                            '("Standard Library" "Cats" "Cats-Effect" "Http4s" "fs2 core 3") nil t)
                   ))
     (require 'browse-url)
     (message "lib: %s" lib)
     (setq libUrlPrefix (cond
                         ((string= lib "Cats")        "https://typelevel.org/cats/api/cats/index.html?search=")
                         ((string= lib "Cats-Effect") "https://typelevel.org/cats-effect/api/3.x/?search=")
-                        ((string= lib "Http4s")      "https://http4s.org/v0.17/api/org/http4s/?search=")
+                        ((string= lib "Http4s")      "https://http4s.org/v0.21/api/org/http4s/?search=")
+                        ((string= lib "fs2 core 3")      "https://www.javadoc.io/doc/co.fs2/fs2-core_3/3.0.4/index.html")
                         (t                           "https://www.scala-lang.org/api/current/index.html?search=")
                         ))
     (browse-url (concat libUrlPrefix queryType))
