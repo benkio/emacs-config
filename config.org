@@ -73,10 +73,14 @@
 
   #+BEGIN_SRC emacs-lisp
 
-    (add-to-list 'default-frame-alist '(foreground-color . "white"))
-    (add-to-list 'default-frame-alist '(background-color . "grey5"))
-    (set-face-attribute 'region nil :background "dark slate blue")
-    (set-face-background hl-line-face "gray20")
+    ;; Previous minimalistic Dark Theme
+    ;; 
+    ;; (add-to-list 'default-frame-alist '(foreground-color . "white"))
+    ;; (add-to-list 'default-frame-alist '(background-color . "grey5"))
+    ;; (set-face-attribute 'region nil :background "dark slate blue")
+    ;; (set-face-background hl-line-face "gray20")
+
+    (load-theme 'leuven)
 
   #+END_SRC
 *** Frame Font Size
@@ -364,7 +368,7 @@ Allow to visually go back and forth between undo history
   :config (global-undo-tree-mode))
 #+END_SRC
 ** Keybindings
-*** God
+*** COMMENT God
 
 This mode add the modal layer to emacs just by removing the modifiers keys, emacs bindings remain the same (more or less)
 
@@ -427,9 +431,19 @@ turn grep buffers writable
       (dolist (hook '(prog-mode-hook text-mode-hook))
         (add-hook hook #'whitespace-mode))
       :config
-      (setq whitespace-style '(face tabs spaces empty trailing space-mark tab-mark))
-      (custom-set-faces
-        '(whitespace-space ((t (:background "grey5" :foreground "grey15")))))
+      (progn
+        ;; Make whitespace-mode with very basic background coloring for whitespaces.
+        ;; http://ergoemacs.org/emacs/whitespace-mode.html
+        (setq whitespace-style (quote (face spaces tabs newline space-mark tab-mark newline-mark empty)))
+
+        ;; Make whitespace-mode and whitespace-newline-mode use “¶” for end of line char and “▷” for tab.
+        (setq whitespace-display-mappings
+              ;; all numbers are unicode codepoint in decimal. e.g. (insert-char 182 1)
+              '(
+                (space-mark 32 [183] [46]) ; SPACE 32 「 」, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
+                (newline-mark 10 [182 10]) ; LINE FEED,
+                (tab-mark 9 [9655 9] [92 9]) ; tab
+                )))
       )
   #+END_SRC
 
@@ -2382,7 +2396,7 @@ open and unsaved."
   (global-set-key (kbd "C-c r f") 'crux-recentf-find-file)
   (global-set-key (kbd "C-c y") 'browse-kill-ring)
 #+end_src
-** God
+** COMMENT God
 
    Useful keybindings in god mode
 
