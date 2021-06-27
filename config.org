@@ -95,13 +95,13 @@
       (interactive)
       (message "Set font based on the frame size") ;Adding this will make it run at startup, weird
       (cond ((> (frame-outer-width frame) 1800)
-             (set-face-attribute 'default nil :height 180))
+             (set-face-attribute 'default nil :height 190))
             ((> (frame-outer-width frame) 1600)                   ;; Macbook pro 1680
-             (set-face-attribute 'default nil :height 160))
+             (set-face-attribute 'default nil :height 170))
             ((> (frame-outer-width frame) 1200)                   ;; Asus 15 inch 1269
-             (set-face-attribute 'default nil :height 90))
+             (set-face-attribute 'default nil :height 100))
             (t
-             (set-face-attribute 'default nil :height 50))
+             (set-face-attribute 'default nil :height 60))
             ))
 
     (add-hook 'after-make-frame-functions 'set-font-height-on-frame-width)
