@@ -2325,6 +2325,12 @@ open and unsaved."
 #+begin_src emacs-lisp
    (windmove-default-keybindings)
 #+end_src
+** Visualization
+*** Toggle truncate line
+    Sometimes you need to see the line without breaking it
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c t t") 'toggle-truncate-lines)
+#+end_src
 ** Text Manipulation
 *** IEdit
 #+begin_src emacs-lisp
