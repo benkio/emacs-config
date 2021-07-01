@@ -1639,7 +1639,7 @@ open and unsaved."
     (setq startingBuffer (buffer-name))
     (condition-case nil
         (project-find-regexp (funcall existingImportRegexp inputType))
-      (error (goto-definition inputType 'typeDefinitionRegexp))
+      (error (goto-definition inputType typeDefinitionRegexp))
       )
 
     ;; In linux, if 1 result is found xref is not created, and the focus
