@@ -80,7 +80,7 @@
     ;; (set-face-attribute 'region nil :background "dark slate blue")
     ;; (set-face-background hl-line-face "gray20")
 
-    (load-theme 'adwaita)
+    (load-theme 'leuven)
 
   #+END_SRC
 *** Frame Font Size
