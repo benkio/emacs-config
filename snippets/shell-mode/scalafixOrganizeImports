@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: scalafix OrganizeImports
+# key: sFixOI
+# --
+scalafix OrganizeImports
