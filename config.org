@@ -90,23 +90,16 @@
 
     #+BEGIN_SRC emacs-lisp
 
-    (defun set-font-height-on-frame-width (&optional frame)
-      "Set font based on the frame size. The page in full screen should show 50 lines"
-      (interactive)
-      (message "Set font based on the frame size") ;Adding this will make it run at startup, weird
-      (cond ((> (frame-outer-width frame) 1800)
-             (set-face-attribute 'default nil :height 190))
-            ((> (frame-outer-width frame) 1600)                   ;; Macbook pro 1680
-             (set-face-attribute 'default nil :height 170))
-            ((> (frame-outer-width frame) 1200)                   ;; Asus 15 inch 1269
-             (set-face-attribute 'default nil :height 100))
-            (t
-             (set-face-attribute 'default nil :height 60))
-            ))
+      (defun set-font-height-on-frame-width (&optional frame)
+        "Set font based on the frame size. The page in full screen should show 50 lines"
+        (interactive)
+        (setq frameWidth (frame-outer-width frame))
+        (message "Set font based on the frame size(divided by 10): %d" frameWidth) ;Adding this will make it run at startup, weird
+        (set-face-attribute 'default nil :height (/ frameWidth 10))
+        )
 
-    (add-hook 'after-make-frame-functions 'set-font-height-on-frame-width)
-    (add-hook 'window-setup-hook 'set-font-height-on-frame-width)
-
+      (add-hook 'after-make-frame-functions 'set-font-height-on-frame-width)
+      (add-hook 'window-setup-hook 'set-font-height-on-frame-width)
     #+END_SRC
 ** Behaviours
 *** Disable
@@ -1010,7 +1003,7 @@ Following these instructions: https://lists.gnu.org/archive/html/help-gnu-emacs/
 
   Modes not on Melpa/Elpa. Imported from local folder
 
-** Lilypond
+** COMMENT Lilypond
 
    Modes that are not in melpa and you found on the internet. Put them
    into the lisp folder.
