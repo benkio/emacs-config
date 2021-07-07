@@ -96,11 +96,11 @@
         (let* ((frameWidth (frame-outer-width frame))
                ;; Perfect ratio is 1440 / 10. We need an adjustment (feedback) for the other display
                ;; Based on the distance from 1440
-               (zeroAdjustment (/ (- frameWidth 1440) 2))
-               (divisor (+ (/ frameWidth 10) zeroAdjustment)))
+               (zeroAdjustment (/ (- frameWidth 1480) 2))
+               (height (+ (/ frameWidth 10) zeroAdjustment)))
 
           (message "Set font based on the frame size(divided by 10): %d" frameWidth) ;Adding this will make it run at startup, weird
-          (set-face-attribute 'default nil :height divisor)
+          (set-face-attribute 'default nil :height height)
           )
         )
 
