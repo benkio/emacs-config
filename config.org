@@ -118,6 +118,7 @@
     6. Windows keys
     7. Truncate-lines for minibuffer
     8. Upcase region warning
+    9. popup confirmation windows
 
     #+BEGIN_SRC emacs-lisp
 
@@ -142,6 +143,7 @@
 
          (put 'upcase-region 'disabled nil)
 
+         (setq use-dialog-box nil)
 
        #+END_SRC
 
