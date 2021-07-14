@@ -120,6 +120,7 @@
     6. Windows keys
     7. Truncate-lines for minibuffer
     8. Upcase region warning
+    9. popup confirmation windows
 
     #+BEGIN_SRC emacs-lisp
 
@@ -144,6 +145,7 @@
 
          (put 'upcase-region 'disabled nil)
 
+         (setq use-dialog-box nil)
 
        #+END_SRC
 
@@ -1721,7 +1723,7 @@ open and unsaved."
   (defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
     (interactive)
-    (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" ":" '(lambda () (other-window -1) ) errorMessage backwardSearch isRegexp))
+    (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" ":" '(lambda () (other-window 1) ) errorMessage backwardSearch isRegexp))
 
   (defun scala-import-bounds ()
     "Return the import region bounds"
