@@ -213,7 +213,7 @@
        1. Remove separate frame
        2. Split vertical
        3. Ignore whitespaces
-    10. Bash shell path (NixOs)
+    10. Bash shell path (NixOs - darwin-nix)
 
  #+BEGIN_SRC emacs-lisp
 
