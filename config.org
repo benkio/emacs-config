@@ -10,45 +10,45 @@
     3. Scroolbar
     4. Splash-Screen
 
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-   (menu-bar-mode -1)
-   (tool-bar-mode -1)
-   (scroll-bar-mode -1)
+      (menu-bar-mode -1)
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1)
 
-   (setq inhibit-splash-screen t)
-   (setq inhibit-startup-message t)
+      (setq inhibit-splash-screen t)
+      (setq inhibit-startup-message t)
 
-   #+END_SRC
+    #+END_SRC
 
 *** Show Stuff
 
     Activate some UI built-in features
-      * Line Numbers
-      * Column Line
-      * Parentesis
-      * Size of Current File
-      * highlight current line
+    * Line Numbers
+    * Column Line
+    * Parentesis
+    * Size of Current File
+    * highlight current line
 
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-   (global-linum-mode 1)
-   (setq column-number-mode t)
-   (show-paren-mode 1)
-   (size-indication-mode 1)
-   (global-hl-line-mode +1)
+      (global-linum-mode 1)
+      (setq column-number-mode t)
+      (show-paren-mode 1)
+      (size-indication-mode 1)
+      (global-hl-line-mode +1)
 
-   #+END_SRC
+    #+END_SRC
 *** Frame Title
 
     Set frame title to a short version of it.
 
     #+BEGIN_SRC emacs-lisp
 
-    (setq frame-title-format
-         '((:eval (if (buffer-file-name)
-                      (abbreviate-file-name (buffer-file-name))
-                    "%b"))))
+      (setq frame-title-format
+            '((:eval (if (buffer-file-name)
+                         (abbreviate-file-name (buffer-file-name))
+                       "%b"))))
 
     #+END_SRC
 *** Uniquify
@@ -71,18 +71,18 @@
 
     Minimalistic theme setup. Dark.
 
-  #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-    ;; Previous minimalistic Dark Theme
-    ;;
-    ;; (add-to-list 'default-frame-alist '(foreground-color . "white"))
-    ;; (add-to-list 'default-frame-alist '(background-color . "grey5"))
-    ;; (set-face-attribute 'region nil :background "dark slate blue")
-    ;; (set-face-background hl-line-face "gray20")
+      ;; Previous minimalistic Dark Theme
+      ;;
+      ;; (add-to-list 'default-frame-alist '(foreground-color . "white"))
+      ;; (add-to-list 'default-frame-alist '(background-color . "grey5"))
+      ;; (set-face-attribute 'region nil :background "dark slate blue")
+      ;; (set-face-background hl-line-face "gray20")
 
-    (load-theme 'leuven)
+      (load-theme 'leuven)
 
-  #+END_SRC
+    #+END_SRC
 *** Frame Font Size
 
     Based on the width of the frame it changes the size of the font.
@@ -98,7 +98,7 @@
                ;; Based on the distance from 1440
                (zeroAdjustment (/ (- frameWidth 1480) 2))
                (heightComputed (+ (/ frameWidth 10) zeroAdjustment))
-               (height (if (< heightComputed 0) 1480 heightComputed))
+               (height (if (< heightComputed 0) 148 heightComputed))
                )
 
           (message "Set font based on the frame size(divided by 10): %d" frameWidth) ;Adding this will make it run at startup, weird
@@ -124,30 +124,30 @@
 
     #+BEGIN_SRC emacs-lisp
 
-         (setq make-backup-files nil)
-         (setq auto-save-default nil)
-         (blink-cursor-mode -1)
-         (setq ring-bell-function 'ignore)
-         (setq-default indent-tabs-mode nil)
+      (setq make-backup-files nil)
+      (setq auto-save-default nil)
+      (blink-cursor-mode -1)
+      (setq ring-bell-function 'ignore)
+      (setq-default indent-tabs-mode nil)
 
-         (when (eq system-type 'windows-nt)
-           (setq w32-pass-lwindow-to-system nil)
-           (setq w32-lwindow-modifier 'super) ; Left Windows key
+      (when (eq system-type 'windows-nt)
+        (setq w32-pass-lwindow-to-system nil)
+        (setq w32-lwindow-modifier 'super) ; Left Windows key
 
-           (setq w32-pass-rwindow-to-system nil)
-           (setq w32-rwindow-modifier 'super) ; Right Windows key
+        (setq w32-pass-rwindow-to-system nil)
+        (setq w32-rwindow-modifier 'super) ; Right Windows key
 
-           (setq w32-pass-apps-to-system nil)
-           (setq w32-apps-modifier 'hyper)) ; Menu/App key
+        (setq w32-pass-apps-to-system nil)
+        (setq w32-apps-modifier 'hyper)) ; Menu/App key
 
-         (add-hook 'minibuffer-setup-hook
-               (lambda () (setq truncate-lines nil)))
+      (add-hook 'minibuffer-setup-hook
+                (lambda () (setq truncate-lines nil)))
 
-         (put 'upcase-region 'disabled nil)
+      (put 'upcase-region 'disabled nil)
 
-         (setq use-dialog-box nil)
+      (setq use-dialog-box nil)
 
-       #+END_SRC
+    #+END_SRC
 
 *** Enable
 
@@ -167,39 +167,39 @@
     14. hs-minor-mode when coding
     15. Dired hide details by default
 
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-     (defalias 'yes-or-no-p 'y-or-n-p)
-     (savehist-mode 1)
-     (electric-pair-mode 1)
-     (global-auto-revert-mode 1)
-     (global-visual-line-mode 1)
+      (defalias 'yes-or-no-p 'y-or-n-p)
+      (savehist-mode 1)
+      (electric-pair-mode 1)
+      (global-auto-revert-mode 1)
+      (global-visual-line-mode 1)
 
-     (set-language-environment "UTF-8")
-     (prefer-coding-system 'utf-8)
-     (set-default-coding-systems 'utf-8)
-     (set-terminal-coding-system 'utf-8)
-     (set-keyboard-coding-system 'utf-8)
+      (set-language-environment "UTF-8")
+      (prefer-coding-system 'utf-8)
+      (set-default-coding-systems 'utf-8)
+      (set-terminal-coding-system 'utf-8)
+      (set-keyboard-coding-system 'utf-8)
 
-     (put 'narrow-to-region 'disabled nil)
-     (setq enable-recursive-minibuffers t)
-     (recentf-mode 1)
-     (setq large-file-warning-threshold 100000000)
+      (put 'narrow-to-region 'disabled nil)
+      (setq enable-recursive-minibuffers t)
+      (recentf-mode 1)
+      (setq large-file-warning-threshold 100000000)
 
-     (setq scroll-margin 0
-           scroll-conservatively 100000
-           scroll-preserve-screen-position 1)
-     (winner-mode)
-     (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
-     (defadvice select-window (after select-window-and-do-stuff activate) (save-some-buffers t))
+      (setq scroll-margin 0
+            scroll-conservatively 100000
+            scroll-preserve-screen-position 1)
+      (winner-mode)
+      (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
+      (defadvice select-window (after select-window-and-do-stuff activate) (save-some-buffers t))
 
-     (add-hook 'prog-mode-hook #'hs-minor-mode)
+      (add-hook 'prog-mode-hook #'hs-minor-mode)
 
-     (add-hook 'dired-mode-hook
-           (lambda ()
-             (dired-hide-details-mode)))
+      (add-hook 'dired-mode-hook
+                (lambda ()
+                  (dired-hide-details-mode)))
 
-#+END_SRC
+    #+END_SRC
 
 *** Set
 
@@ -217,83 +217,83 @@
        3. Ignore whitespaces
     10. Bash shell path (NixOs - darwin-nix)
 
- #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-   (add-to-list 'default-frame-alist '(fullscreen . maximized))
-   (run-at-time nil (* 5 60) 'recentf-save-list)
-   (setq recentf-max-saved-items 50)
+      (add-to-list 'default-frame-alist '(fullscreen . maximized))
+      (run-at-time nil (* 5 60) 'recentf-save-list)
+      (setq recentf-max-saved-items 50)
 
-   (setq load-prefer-newer t)
-   (setq gc-cons-threshold 50000000)
-   (setq tab-always-indent 'complete)
-   (when (eq system-type 'windows-nt)
-     (add-to-list 'exec-path "C:/Program Files/Git/bin")
-     (add-to-list 'exec-path "C:/Program Files/Git/mingw64/bin")
-     (setenv "PATH" (concat "C:/Program Files/Git/bin;" "C:/Program Files/Git/mingw64/bin;" (getenv "PATH")))
-     ;; needed for arc-mode
-     (add-to-list 'exec-path "C:/Program Files/7-Zip"))
+      (setq load-prefer-newer t)
+      (setq gc-cons-threshold 50000000)
+      (setq tab-always-indent 'complete)
+      (when (eq system-type 'windows-nt)
+        (add-to-list 'exec-path "C:/Program Files/Git/bin")
+        (add-to-list 'exec-path "C:/Program Files/Git/mingw64/bin")
+        (setenv "PATH" (concat "C:/Program Files/Git/bin;" "C:/Program Files/Git/mingw64/bin;" (getenv "PATH")))
+        ;; needed for arc-mode
+        (add-to-list 'exec-path "C:/Program Files/7-Zip"))
 
-   (defun exit-ediff-hook ()
-     (kill-buffer "*Ediff Registry*")
-     (winner-undo)
-     )
+      (defun exit-ediff-hook ()
+        (kill-buffer "*Ediff Registry*")
+        (winner-undo)
+        )
 
-   (add-hook 'ediff-after-quit-hook-internal 'exit-ediff-hook)
+      (add-hook 'ediff-after-quit-hook-internal 'exit-ediff-hook)
 
-   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-   (setq ediff-split-window-function 'split-window-horizontally)
-   (setq ediff-diff-options "-w")
-   (setq explicit-shell-file-name "/run/current-system/sw/bin/bash")
+      (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+      (setq ediff-split-window-function 'split-window-horizontally)
+      (setq ediff-diff-options "-w")
+      (setq explicit-shell-file-name "/run/current-system/sw/bin/bash")
 
- #+END_SRC
+    #+END_SRC
 
 * Packages
 ** Setup
 *** Package Repositories
 
-  Set up melpa and use package to make things easier
-  https://cestlaz.github.io/posts/using-emacs-1-setup/
+    Set up melpa and use package to make things easier
+    https://cestlaz.github.io/posts/using-emacs-1-setup/
 
-  #+BEGIN_SRC emacs-lisp
-  (require 'package)
-  (setq package-archives
-        '(("gnu" . "https://elpa.gnu.org/packages/")
-          ("melpa-stb" . "https://stable.melpa.org/packages/")
-          ("melpa" . "https://melpa.org/packages/"))
-        tls-checktrust t
-        tls-program '("gnutls-cli --x509cafile %t -p %p %h")
-        gnutls-verify-error t)
+    #+BEGIN_SRC emacs-lisp
+      (require 'package)
+      (setq package-archives
+            '(("gnu" . "https://elpa.gnu.org/packages/")
+              ("melpa-stb" . "https://stable.melpa.org/packages/")
+              ("melpa" . "https://melpa.org/packages/"))
+            tls-checktrust t
+            tls-program '("gnutls-cli --x509cafile %t -p %p %h")
+            gnutls-verify-error t)
 
-  (package-refresh-contents)
+      (package-refresh-contents)
 
-  (when (not package-archive-contents)
-  (package-refresh-contents))
+      (when (not package-archive-contents)
+        (package-refresh-contents))
 
-  (require 'org)
+      (require 'org)
 
-  #+END_SRC
+    #+END_SRC
 
 *** Use-Package
 
     #+BEGIN_SRC emacs-lisp
-         ;; Bootstrap `use-package'
+      ;; Bootstrap `use-package'
       (unless (require 'use-package nil t)
         (if (not (yes-or-no-p (concat "Refresh packages, install use-package and"
                                       " other packages used by init file? ")))
             (error "you need to install use-package first")
           (package-install 'use-package)
           (require 'use-package)
-      ))
+          ))
       (setq use-package-always-ensure t)
     #+END_SRC
 
 *** Local Mode Location
 
-     Modes that are not in melpa and you found on the internet. Put them
-     into the lisp folder.
-  #+begin_src emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/lisp/")
-  #+end_src
+    Modes that are not in melpa and you found on the internet. Put them
+    into the lisp folder.
+    #+begin_src emacs-lisp
+      (add-to-list 'load-path "~/.emacs.d/lisp/")
+    #+end_src
 ** Fonts
 
    Set fonts based of the content of the ~font~ folder
@@ -325,7 +325,7 @@
        ((member "Symbola" (font-family-list)) "Symbola")
        ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji"))
 
-     ;; Apple Color Emoji should be before Symbola, but Richard Stallman skum disabled it.
+      ;; Apple Color Emoji should be before Symbola, but Richard Stallman skum disabled it.
       ;; GNU Emacs Removes Color Emoji Support on the Mac
       ;; http://ergoemacs.org/misc/emacs_macos_emoji.html
       ;;
@@ -348,289 +348,302 @@
    #+END_SRC
 
 ** Ivy
-#+begin_src emacs-lisp
-(use-package ivy
-  :config (ivy-mode))
-#+end_src
+   #+begin_src emacs-lisp
+     (use-package ivy
+       :config (ivy-mode))
+   #+end_src
 ** Super Save
 
-Save your files every time you change the window
-https://github.com/bbatsov/super-save
+   Save your files every time you change the window
+   https://github.com/bbatsov/super-save
 
-#+BEGIN_SRC emacs-lisp
-(use-package super-save
-  :config
-  (super-save-mode +1))
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+     (use-package super-save
+       :config
+       (super-save-mode +1))
+   #+END_SRC
 ** Undo-tree
-Allow to visually go back and forth between undo history
-#+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-  :config (global-undo-tree-mode))
-#+END_SRC
+   Allow to visually go back and forth between undo history
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :config (global-undo-tree-mode))
+   #+END_SRC
 ** Keybindings
 *** COMMENT God
 
-This mode add the modal layer to emacs just by removing the modifiers keys, emacs bindings remain the same (more or less)
+    This mode add the modal layer to emacs just by removing the modifiers keys, emacs bindings remain the same (more or less)
 
-#+begin_src emacs-lisp
-  (defun my-god-mode-update-modeline ()
-    (let ((limited-colors-p (> 257 (length (defined-colors)))))
-      (cond (god-local-mode (progn
-                              (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
-                              (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
-            (t (progn
-                 (set-face-background 'mode-line (if limited-colors-p "light slate blue" "#8470ff"))
-                 (set-face-background 'mode-line-inactive (if limited-colors-p "light slate blue" "#8470ff")))))))
+    #+begin_src emacs-lisp
+      (defun my-god-mode-update-modeline ()
+        (let ((limited-colors-p (> 257 (length (defined-colors)))))
+          (cond (god-local-mode (progn
+                                  (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
+                                  (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
+                (t (progn
+                     (set-face-background 'mode-line (if limited-colors-p "light slate blue" "#8470ff"))
+                     (set-face-background 'mode-line-inactive (if limited-colors-p "light slate blue" "#8470ff")))))))
 
-  (use-package god-mode
-    :config
-    (require 'god-mode)
-    (add-hook 'god-mode-enabled-hook #'my-god-mode-update-modeline)
-    (add-hook 'god-mode-disabled-hook #'my-god-mode-update-modeline)
-    (setq god-exempt-predicates          ;; https://github.com/emacsorphanage/god-mode/issues/131
-          (list #'god-exempt-mode-p
-                #'god-git-commit-mode-p
-                #'god-view-mode-p))
-    (add-to-list 'god-exempt-major-modes 'magit-mode)
-    (god-mode)
-    (require 'god-mode-isearch)
-    )
-#+end_src
+      (use-package god-mode
+        :config
+        (require 'god-mode)
+        (add-hook 'god-mode-enabled-hook #'my-god-mode-update-modeline)
+        (add-hook 'god-mode-disabled-hook #'my-god-mode-update-modeline)
+        (setq god-exempt-predicates          ;; https://github.com/emacsorphanage/god-mode/issues/131
+              (list #'god-exempt-mode-p
+                    #'god-git-commit-mode-p
+                    #'god-view-mode-p))
+        (add-to-list 'god-exempt-major-modes 'magit-mode)
+        (god-mode)
+        (require 'god-mode-isearch)
+        )
+    #+end_src
 *** Which-key
 
-Give you suggestions about the keybindings
+    Give you suggestions about the keybindings
 
-#+BEGIN_SRC emacs-lisp
-(use-package which-key
-  :config
-  (which-key-mode))
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package which-key
+        :config
+        (which-key-mode))
+    #+END_SRC
 
 ** Editing
 *** Iedit
 
-  Editing mulitiple occurrences of the same highlighted word at once.
+    Editing mulitiple occurrences of the same highlighted word at once.
 
-  #+BEGIN_SRC emacs-lisp
-  (use-package iedit)
-  #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package iedit)
+    #+END_SRC
 *** WGrep
 
-turn grep buffers writable
+    turn grep buffers writable
 
-#+begin_src emacs-lisp
-(use-package wgrep)
-#+end_src
+    #+begin_src emacs-lisp
+      (use-package wgrep)
+    #+end_src
 *** Whitespace
 
     Automatically signal and clean whitespaces
 
-  #+BEGIN_SRC emacs-lisp
-    (use-package whitespace
-      :init
-      (dolist (hook '(prog-mode-hook text-mode-hook))
-        (add-hook hook #'whitespace-mode))
-      :config
-      (progn
-        ;; Make whitespace-mode with very basic background coloring for whitespaces.
-        ;; http://ergoemacs.org/emacs/whitespace-mode.html
-        (setq whitespace-style (quote (face tabs newline tab-mark newline-mark empty trailing)))
+    #+BEGIN_SRC emacs-lisp
+      (use-package whitespace
+        :init
+        (dolist (hook '(prog-mode-hook text-mode-hook))
+          (add-hook hook #'whitespace-mode))
+        :config
+        (progn
+          ;; Make whitespace-mode with very basic background coloring for whitespaces.
+          ;; http://ergoemacs.org/emacs/whitespace-mode.html
+          (setq whitespace-style (quote (face tabs newline tab-mark newline-mark empty trailing)))
 
-        ;; Make whitespace-mode and whitespace-newline-mode use “¶” for end of line char and “▷” for tab.
-        (setq whitespace-display-mappings
-              ;; all numbers are unicode codepoint in decimal. e.g. (insert-char 182 1)
-              '(
-                (space-mark 32 [183] [46]) ; SPACE 32 「 」, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
-                (newline-mark 10 [182 10]) ; LINE FEED,
-                (tab-mark 9 [9655 9] [92 9]) ; tab
-                )))
-      )
-  #+END_SRC
+          ;; Make whitespace-mode and whitespace-newline-mode use “¶” for end of line char and “▷” for tab.
+          (setq whitespace-display-mappings
+                ;; all numbers are unicode codepoint in decimal. e.g. (insert-char 182 1)
+                '(
+                  (space-mark 32 [183] [46]) ; SPACE 32 「 」, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
+                  (newline-mark 10 [182 10]) ; LINE FEED,
+                  (tab-mark 9 [9655 9] [92 9]) ; tab
+                  )))
+        )
+    #+END_SRC
 
 *** Crux
 
-https://github.com/bbatsov/crux
+    https://github.com/bbatsov/crux
 
-package containing a lot of useful functions. So you don't need to copy and paste them from Emacs Redux
+    package containing a lot of useful functions. So you don't need to copy and paste them from Emacs Redux
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-(use-package  crux)
+      (use-package  crux)
 
-#+END_SRC
+    #+END_SRC
 *** Expand Region
 
-Select by region, back and forth
+    Select by region, back and forth
 
-#+BEGIN_SRC emacs-lisp
-(use-package expand-region)
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package expand-region)
+    #+END_SRC
 *** Idle Highlight
 
-Highlight the word you are on in case you stop there for some time
+    Highlight the word you are on in case you stop there for some time
 
-#+begin_src emacs-lisp
+    #+begin_src emacs-lisp
 
-(use-package idle-highlight-mode
-  :diminish idle-highlight-mode
-  :config
-    (add-hook 'prog-mode-hook 'idle-highlight-mode)
-)
+      (use-package idle-highlight-mode
+        :diminish idle-highlight-mode
+        :config
+        (add-hook 'prog-mode-hook 'idle-highlight-mode)
+        )
 
-#+end_src
+    #+end_src
 
 ** Search
 *** The Silver Searcher
 
-Allow you to quickly search into a project via ag.
+    Allow you to quickly search into a project via ag.
 
-#+BEGIN_SRC emacs-lisp
-  (use-package ag
-    :config (setq ag-reuse-buffers 't)
-            (setq ag-reuse-window 't)
-            )
+    #+BEGIN_SRC emacs-lisp
+      (use-package ag
+        :config (setq ag-reuse-buffers 't)
+        (setq ag-reuse-window 't)
+        )
 
-  (use-package wgrep-ag)
-#+END_SRC
+      (use-package wgrep-ag)
+    #+END_SRC
 
 *** Google This
 
-Allow you to search the thing under cursor on google
+    Allow you to search the thing under cursor on google
 
-#+begin_src emacs-lisp
-  (use-package google-this)
-#+end_src
+    #+begin_src emacs-lisp
+      (use-package google-this)
+    #+end_src
 ** Project Management
 *** Git & Magit
 
-Managing git repos
+    Managing git repos
 
-#+BEGIN_SRC emacs-lisp
-(use-package magit)
+    #+BEGIN_SRC emacs-lisp
+      (use-package magit)
 
-(use-package git-link ) ;; Get git links to remote
+      (use-package git-link ) ;; Get git links to remote
 
-(defun kill-magit-extra-buffer-in-current-repo (&rest _)
-  "Delete the magit-diff buffer related to the current repo"
-  (let (
-        (magit-diff-buffer-in-current-repo (magit-get-mode-buffer 'magit-diff-mode))
-        (magit-process-buffer-in-current-repo (magit-get-mode-buffer 'magit-process-mode))
+      (defun kill-magit-extra-buffer-in-current-repo (&rest _)
+        "Delete the magit-diff buffer related to the current repo"
+        (let (
+              (magit-diff-buffer-in-current-repo (magit-get-mode-buffer 'magit-diff-mode))
+              (magit-process-buffer-in-current-repo (magit-get-mode-buffer 'magit-process-mode))
+              )
+          (kill-buffer magit-diff-buffer-in-current-repo)
+          (kill-buffer magit-process-buffer-in-current-repo)
+          )
         )
-    (kill-buffer magit-diff-buffer-in-current-repo)
-    (kill-buffer magit-process-buffer-in-current-repo)
-    )
-  )
-;;
-;; When compliting the magit commit,
-;; delete the magit-diff buffer related to the current repo.
-;;
-(add-hook 'git-commit-setup-hook
-          (lambda ()
-            (add-hook 'with-editor-post-finish-hook
-                      #'kill-magit-extra-buffer-in-current-repo
-                      nil t))) ; the t is important
+      ;;
+      ;; When compliting the magit commit,
+      ;; delete the magit-diff buffer related to the current repo.
+      ;;
+      (add-hook 'git-commit-setup-hook
+                (lambda ()
+                  (add-hook 'with-editor-post-finish-hook
+                            #'kill-magit-extra-buffer-in-current-repo
+                            nil t))) ; the t is important
 
-#+END_SRC
+    #+END_SRC
 ** Window Manipulation
 *** Winmove
 
- To move between windows
+    To move between windows
 
- #+BEGIN_SRC emacs-lisp
- (use-package windmove)
- #+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package windmove)
+    #+END_SRC
 *** Golden Ratio
 
-   library that will manage the window size in order to have the window on focus useable and the other windows shrinked but readable
+    library that will manage the window size in order to have the window on focus useable and the other windows shrinked but readable
 
- #+begin_src emacs-lisp
-   (use-package golden-ratio
-     :config
-     (require 'golden-ratio)
-     (golden-ratio-mode 1)
-     (setq golden-ratio-auto-scale t))
- #+end_src
+    #+begin_src emacs-lisp
+      (use-package golden-ratio
+        :config
+        (require 'golden-ratio)
+        (golden-ratio-mode 1)
+        (setq golden-ratio-auto-scale t))
+    #+end_src
 *** IBuffer
 
-Better visualization of open buffers
+    Better visualization of open buffers
 
-#+BEGIN_SRC emacs-lisp
-(use-package ibuffer)
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package ibuffer)
+    #+END_SRC
+*** Dedicated
+
+    This minor mode allows you to toggle a window's "dedicated" flag.
+    When a window is "dedicated", Emacs will not select files into that
+    window. This can be quite handy since many commands will use
+    another window to show results (e.g., compilation mode, starting
+    info, etc.) A dedicated window won't be used for such a purpose.
+
+    Dedicated buffers will have "D" shown in the mode line.
+
+    #+begin_src emacs-lisp
+      (use-package dedicated)
+    #+end_src
 ** Kill Ring
 *** BrowseKillRing
 
-   Allow to visualize the kill ring in another buffer and choose what to insert at point
+    Allow to visualize the kill ring in another buffer and choose what to insert at point
 
- #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-(use-package browse-kill-ring
-  :config (browse-kill-ring-default-keybindings))
+      (use-package browse-kill-ring
+        :config (browse-kill-ring-default-keybindings))
 
- #+END_SRC
+    #+END_SRC
 
 ** Org
 *** Github markdown conversion
 
     Converts org file to github markdown with the command: `M-x org-gfm-export-to-markdown`
 
-  #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-  (use-package ox-gfm
-    :defer t
-    :config
-      (require 'ox-gfm nil t))
+      (use-package ox-gfm
+        :defer t
+        :config
+        (require 'ox-gfm nil t))
 
-  #+END_SRC
+    #+END_SRC
 *** Reveal-js
 
-  Slide generation from org
+    Slide generation from org
 
-  #+BEGIN_SRC emacs-lisp
-  (use-package ox-reveal
-    :defer t
-    :config
-      (require 'ox-reveal)
-      (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-      (setq org-reveal-mathjax t))
+    #+BEGIN_SRC emacs-lisp
+      (use-package ox-reveal
+        :defer t
+        :config
+        (require 'ox-reveal)
+        (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+        (setq org-reveal-mathjax t))
 
-  (use-package htmlize)
-  #+END_SRC
+      (use-package htmlize)
+    #+END_SRC
 *** To Bootstrap HTML Export
 
-  #+begin_src emacs-lisp
-  (use-package ox-twbs)
-  #+end_src
+    #+begin_src emacs-lisp
+      (use-package ox-twbs)
+    #+end_src
 *** Export to Jira/Confluence
 
-  #+begin_src emacs-lisp
-  (use-package ox-jira)
-  #+end_src
+    #+begin_src emacs-lisp
+      (use-package ox-jira)
+    #+end_src
 
 ** Completion
 *** Company
 
-Auto completion framework
+    Auto completion framework
 
-#+begin_src emacs-lisp
-    (use-package company
+    #+begin_src emacs-lisp
+      (use-package company
 
-      :config
-      (setq company-idle-delay 0)
-      (setq company-minimum-prefix-length 3)
+        :config
+        (setq company-idle-delay 0)
+        (setq company-minimum-prefix-length 3)
 
-      (global-company-mode t))
-#+end_src
+        (global-company-mode t))
+    #+end_src
 ** Development
 *** Yaml
 
-Add support for the yaml file types
+    Add support for the yaml file types
 
-#+BEGIN_SRC emacs-lisp
-(use-package yaml-mode
-  :mode ("\\.yml$" . yaml-mode))
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package yaml-mode
+        :mode ("\\.yml$" . yaml-mode))
+    #+END_SRC
 
 *** EditorConfig
 
@@ -638,10 +651,10 @@ Add support for the yaml file types
     between developers.
 
     #+begin_src emacs-lisp
-    (use-package editorconfig
-      :ensure t
-      :config
-      (editorconfig-mode 1))
+      (use-package editorconfig
+        :ensure t
+        :config
+        (editorconfig-mode 1))
     #+end_src
 *** Indent Guide
 
@@ -654,363 +667,363 @@ Add support for the yaml file types
     #+end_src
 *** CSV
 
-Mode to handle CSV files
+    Mode to handle CSV files
 
-#+BEGIN_SRC emacs-lisp
-(use-package csv-mode)
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package csv-mode)
+    #+END_SRC
 *** RestClient
 
-Emacs Rest Client
+    Emacs Rest Client
 
-#+BEGIN_SRC emacs-lisp
-(use-package restclient)
+    #+BEGIN_SRC emacs-lisp
+      (use-package restclient)
 
-#+END_SRC
+    #+END_SRC
 
 *** Yasnippet
 
-snippets for coding and more
+    snippets for coding and more
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-; Collection of snippets
-(use-package yasnippet-snippets
-  :defer t
-  :config (add-to-list 'load-path
-              "~/.emacs.d/plugins/yasnippet"))
+                                              ; Collection of snippets
+      (use-package yasnippet-snippets
+        :defer t
+        :config (add-to-list 'load-path
+                             "~/.emacs.d/plugins/yasnippet"))
 
-(use-package yasnippet
-  :diminish yas-minor-mode
-  :defer t
-  :config
-  (add-to-list 'load-path
-               "~/.emacs.d/snippets"))
+      (use-package yasnippet
+        :diminish yas-minor-mode
+        :defer t
+        :config
+        (add-to-list 'load-path
+                     "~/.emacs.d/snippets"))
 
-(yas-global-mode 1)
-#+END_SRC
+      (yas-global-mode 1)
+    #+END_SRC
 
 *** COMMENT LSP
 
     #+begin_src emacs-lisp
-  (use-package lsp-mode
-    :init
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-           (csharp-mode . lsp)
-           ;; if you want which-key integration
-           (lsp-mode . lsp-enable-which-key-integration))
-    :commands lsp)
+      (use-package lsp-mode
+        :init
+        :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+               (csharp-mode . lsp)
+               ;; if you want which-key integration
+               (lsp-mode . lsp-enable-which-key-integration))
+        :commands lsp)
 
-  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-  (use-package lsp-ui :commands lsp-ui-mode)
+      (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+      (use-package lsp-ui :commands lsp-ui-mode)
     #+end_src
 
 *** Scala
 
-Add all the needed components for scala:
-  * scala mode
-  * sbt mode
+    Add all the needed components for scala:
+    * scala mode
+    * sbt mode
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 
-;; Enable scala-mode and sbt-mode
-(use-package scala-mode
-  :mode "\\.s\\(cala\\|bt\\)$"
-  :config (add-hook 'scala-mode-hook 'hs-minor-mode))
+      ;; Enable scala-mode and sbt-mode
+      (use-package scala-mode
+        :mode "\\.s\\(cala\\|bt\\)$"
+        :config (add-hook 'scala-mode-hook 'hs-minor-mode))
 
-(use-package sbt-mode
-  :commands sbt-start sbt-command
-  :config
-  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
-  ;; allows using SPACE when in the minibuffer
-  (substitute-key-definition
-   'minibuffer-complete-word
-   'self-insert-command
-   minibuffer-local-completion-map))
-#+END_SRC
+      (use-package sbt-mode
+        :commands sbt-start sbt-command
+        :config
+        ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+        ;; allows using SPACE when in the minibuffer
+        (substitute-key-definition
+         'minibuffer-complete-word
+         'self-insert-command
+         minibuffer-local-completion-map))
+    #+END_SRC
 *** Haskell
-#+BEGIN_SRC emacs-lisp
-  (use-package company-ghci)
-  (use-package haskell-mode
-    :mode ("\\.purs$" "\\.hs$") ;;enable the mode for purescript as well
-    :config
-    (defun custom-haskell-mode-hook ()
-      "Hook for `haskell-mode'"
-      (set (make-local-variable 'company-backends)
-           '((company-capf company-dabbrev-code company-yasnippet company-files company-ghci)))
-      (interactive-haskell-mode)
-      (haskell-doc-mode)
-      )
-    (add-hook 'haskell-mode-hook 'custom-haskell-mode-hook)
-    )
+    #+BEGIN_SRC emacs-lisp
+      (use-package company-ghci)
+      (use-package haskell-mode
+        :mode ("\\.purs$" "\\.hs$") ;;enable the mode for purescript as well
+        :config
+        (defun custom-haskell-mode-hook ()
+          "Hook for `haskell-mode'"
+          (set (make-local-variable 'company-backends)
+               '((company-capf company-dabbrev-code company-yasnippet company-files company-ghci)))
+          (interactive-haskell-mode)
+          (haskell-doc-mode)
+          )
+        (add-hook 'haskell-mode-hook 'custom-haskell-mode-hook)
+        )
 
-  ;; hlint extension (requires hlint installed with cabal)
-  (use-package flymake-haskell-multi
-    :config
-    (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
+      ;; hlint extension (requires hlint installed with cabal)
+      (use-package flymake-haskell-multi
+        :config
+        (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
 
-  ;; Displays hlint suggestion in minibuffer
-  (use-package flymake-cursor)
+      ;; Displays hlint suggestion in minibuffer
+      (use-package flymake-cursor)
 
-  ;; ormolu formatter
-  (use-package ormolu)
-#+END_SRC
+      ;; ormolu formatter
+      (use-package ormolu)
+    #+END_SRC
 *** Latex
-#+BEGIN_SRC emacs-lisp
-(use-package tex
-:defer t
- :ensure auctex
- :config
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
+    #+BEGIN_SRC emacs-lisp
+      (use-package tex
+        :defer t
+        :ensure auctex
+        :config
+        (setq TeX-auto-save t)
+        (setq TeX-parse-self t)
+        (setq-default TeX-master nil)
 
-(add-hook 'LaTeX-mode-hook 'visual-line-mode)
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-(add-hook 'LaTeX-mode-hook 'yas-minor-mode)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(setq reftex-plug-into-AUCTeX t)
-(setq TeX-PDF-mode t)
+        (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+        (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+        (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+        (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+        (add-hook 'LaTeX-mode-hook 'yas-minor-mode)
+        (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+        (setq reftex-plug-into-AUCTeX t)
+        (setq TeX-PDF-mode t)
 
-(setq TeX-output-view-style
-    (quote
-     (("^pdf$" "." "evince -f %o")))))
+        (setq TeX-output-view-style
+              (quote
+               (("^pdf$" "." "evince -f %o")))))
 
-(unless (boundp 'org-export-latex-classes)
-  (setq org-export-latex-classes nil))
+      (unless (boundp 'org-export-latex-classes)
+        (setq org-export-latex-classes nil))
 
-;; Org xelatex
-;; 'djcb-org-article' for export org documents to the LaTex 'article', using
-;; XeTeX and some fancy fonts; requires XeTeX (see org-latex-to-pdf-process)
-(add-to-list 'org-export-latex-classes
-	     '("xebeamer"
-	       "\\documentclass[11pt]{beamer}
-\\usepackage[T1]{fontenc}
-\\usepackage{fontspec}
-\\usepackage{graphicx}
-\\usepackage{geometry}
-\\geometry{a4paper, textwidth=6.5in, textheight=10in,
-            marginparsep=7pt, marginparwidth=.6in}
+      ;; Org xelatex
+      ;; 'djcb-org-article' for export org documents to the LaTex 'article', using
+      ;; XeTeX and some fancy fonts; requires XeTeX (see org-latex-to-pdf-process)
+      (add-to-list 'org-export-latex-classes
+                   '("xebeamer"
+                     "\\documentclass[11pt]{beamer}
+      \\usepackage[T1]{fontenc}
+      \\usepackage{fontspec}
+      \\usepackage{graphicx}
+      \\usepackage{geometry}
+      \\geometry{a4paper, textwidth=6.5in, textheight=10in,
+                  marginparsep=7pt, marginparwidth=.6in}
 
-      \\usetheme{{{{beamertheme}}}}\n
-      \\usecolortheme{{{{beamercolortheme}}}}\n
-      \\beamertemplateballitem\n
-      \\setbeameroption{show notes}
-      \\usepackage[utf8]{inputenc}\n
-      \\usepackage[T1]{fontenc}\n
-      \\usepackage{hyperref}\n
-      \\usepackage{color}
-      \\usepackage{listings}
-      \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
-  frame=single,
-  basicstyle=\\small,
-  showspaces=false,showstringspaces=false,
-  showtabs=false,
-  keywordstyle=\\color{blue}\\bfseries,
-  commentstyle=\\color{red},
-  }\n
-      \\usepackage{verbatim}\n
-      \\institute{{{{beamerinstitute}}}}\n
-       \\subject{{{{beamersubject}}}}\n"
+            \\usetheme{{{{beamertheme}}}}\n
+            \\usecolortheme{{{{beamercolortheme}}}}\n
+            \\beamertemplateballitem\n
+            \\setbeameroption{show notes}
+            \\usepackage[utf8]{inputenc}\n
+            \\usepackage[T1]{fontenc}\n
+            \\usepackage{hyperref}\n
+            \\usepackage{color}
+            \\usepackage{listings}
+            \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
+        frame=single,
+        basicstyle=\\small,
+        showspaces=false,showstringspaces=false,
+        showtabs=false,
+        keywordstyle=\\color{blue}\\bfseries,
+        commentstyle=\\color{red},
+        }\n
+            \\usepackage{verbatim}\n
+            \\institute{{{{beamerinstitute}}}}\n
+             \\subject{{{{beamersubject}}}}\n"
 
-		    ("\\section{%s}" . "\\section*{%s}")
+                     ("\\section{%s}" . "\\section*{%s}")
 
-		    ("\\begin{frame}[fragile]\\frametitle{%s}"
-		     "\\end{frame}"
-		     "\\begin{frame}[fragile]\\frametitle{%s}"
-		     "\\end{frame}")))
+                     ("\\begin{frame}[fragile]\\frametitle{%s}"
+                      "\\end{frame}"
+                      "\\begin{frame}[fragile]\\frametitle{%s}"
+                      "\\end{frame}")))
 
-;; allow for export=>beamer
+      ;; allow for export=>beamer
 
-;; #+LaTeX_CLASS: beamer in org files
-(add-to-list 'org-export-latex-classes
-	     ;; beamer class, for presentations
-	     '("beamer"
-	            "\\documentclass[11pt]{beamer}\n
-      \\mode<{{{beamermode}}}>\n
-      \\usetheme{{{{beamertheme}}}}\n
-      \\usecolortheme{{{{beamercolortheme}}}}\n
-      \\beamertemplateballitem\n
-      \\setbeameroption{show notes}
-      \\usepackage[utf8]{inputenc}\n
-      \\usepackage[T1]{fontenc}\n
-      \\usepackage{hyperref}\n
-      \\usepackage{color}
-      \\usepackage{listings}
-      \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
-  frame=single,
-  basicstyle=\\small,
-  showspaces=false,showstringspaces=false,
-  showtabs=false,
-  keywordstyle=\\color{blue}\\bfseries,
-  commentstyle=\\color{red},
-  }\n
-      \\usepackage{verbatim}\n
-      \\institute{{{{beamerinstitute}}}}\n
-       \\subject{{{{beamersubject}}}}\n"
+      ;; #+LaTeX_CLASS: beamer in org files
+      (add-to-list 'org-export-latex-classes
+                   ;; beamer class, for presentations
+                   '("beamer"
+                     "\\documentclass[11pt]{beamer}\n
+            \\mode<{{{beamermode}}}>\n
+            \\usetheme{{{{beamertheme}}}}\n
+            \\usecolortheme{{{{beamercolortheme}}}}\n
+            \\beamertemplateballitem\n
+            \\setbeameroption{show notes}
+            \\usepackage[utf8]{inputenc}\n
+            \\usepackage[T1]{fontenc}\n
+            \\usepackage{hyperref}\n
+            \\usepackage{color}
+            \\usepackage{listings}
+            \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
+        frame=single,
+        basicstyle=\\small,
+        showspaces=false,showstringspaces=false,
+        showtabs=false,
+        keywordstyle=\\color{blue}\\bfseries,
+        commentstyle=\\color{red},
+        }\n
+            \\usepackage{verbatim}\n
+            \\institute{{{{beamerinstitute}}}}\n
+             \\subject{{{{beamersubject}}}}\n"
 
-		    ("\\section{%s}" . "\\section*{%s}")
+                     ("\\section{%s}" . "\\section*{%s}")
 
-		    ("\\begin{frame}[fragile]\\frametitle{%s}"
-		     "\\end{frame}"
-		     "\\begin{frame}[fragile]\\frametitle{%s}"
-		     "\\end{frame}")))
+                     ("\\begin{frame}[fragile]\\frametitle{%s}"
+                      "\\end{frame}"
+                      "\\begin{frame}[fragile]\\frametitle{%s}"
+                      "\\end{frame}")))
 
-;; letter class, for formal letters
-(add-to-list 'org-export-latex-classes
+      ;; letter class, for formal letters
+      (add-to-list 'org-export-latex-classes
 
-	     '("letter"
-	            "\\documentclass[11pt]{letter}\n
-      \\usepackage[utf8]{inputenc}\n
-      \\usepackage[T1]{fontenc}\n
-      \\usepackage{color}"
+                   '("letter"
+                     "\\documentclass[11pt]{letter}\n
+            \\usepackage[utf8]{inputenc}\n
+            \\usepackage[T1]{fontenc}\n
+            \\usepackage{color}"
 
-		    ("\\section{%s}" . "\\section*{%s}")
-		    ("\\subsection{%s}" . "\\subsection*{%s}")
-		    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-		    ("\\paragraph{%s}" . "\\paragraph*{%s}")
-		         ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+                     ("\\section{%s}" . "\\section*{%s}")
+                     ("\\subsection{%s}" . "\\subsection*{%s}")
+                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-;; Uses xelatex, just in case I want to have fancy fonts
-(setq org-latex-pdf-process
-      '("xelatex -interaction nonstopmode %f"))
+      ;; Uses xelatex, just in case I want to have fancy fonts
+      (setq org-latex-pdf-process
+            '("xelatex -interaction nonstopmode %f"))
 
-#+END_SRC
+    #+END_SRC
 *** Web
 
-#+begin_src emacs-lisp
-(use-package lorem-ipsum)
-#+end_src
+    #+begin_src emacs-lisp
+      (use-package lorem-ipsum)
+    #+end_src
 *** Json
 
-#+begin_src emacs-lisp
-(use-package json-mode)
-#+end_src
+    #+begin_src emacs-lisp
+      (use-package json-mode)
+    #+end_src
 *** Typescript
 
-#+begin_src emacs-lisp
-(use-package typescript-mode
-  :defer t
-  :mode "\\.\\(ts\\|tsx\\)\\'")
-#+end_src
+    #+begin_src emacs-lisp
+      (use-package typescript-mode
+        :defer t
+        :mode "\\.\\(ts\\|tsx\\)\\'")
+    #+end_src
 *** Markdown
-#+BEGIN_SRC emacs-lisp
-(use-package markdown-mode
-  :mode (("\\.md\\'" . gfm-mode)
-         ("\\.markdown\\'" . gfm-mode))
-  :config
-  (setq markdown-fontify-code-blocks-natively t)
-  :preface
-  (defun jekyll-insert-image-url ()
-    (interactive)
-    (let* ((files (directory-files "../assets/images"))
-           (selected-file (completing-read "Select image: " files nil t)))
-      (insert (format "![%s](/assets/images/%s)" selected-file selected-file))))
+    #+BEGIN_SRC emacs-lisp
+      (use-package markdown-mode
+        :mode (("\\.md\\'" . gfm-mode)
+               ("\\.markdown\\'" . gfm-mode))
+        :config
+        (setq markdown-fontify-code-blocks-natively t)
+        :preface
+        (defun jekyll-insert-image-url ()
+          (interactive)
+          (let* ((files (directory-files "../assets/images"))
+                 (selected-file (completing-read "Select image: " files nil t)))
+            (insert (format "![%s](/assets/images/%s)" selected-file selected-file))))
 
-  (defun jekyll-insert-post-url ()
-    (interactive)
-    (let* ((files (remove "." (mapcar #'file-name-sans-extension (directory-files "."))))
-           (selected-file (completing-read "Select article: " files nil t)))
-      (insert (format "{%% post_url %s %%}" selected-file)))))
-#+END_SRC
+        (defun jekyll-insert-post-url ()
+          (interactive)
+          (let* ((files (remove "." (mapcar #'file-name-sans-extension (directory-files "."))))
+                 (selected-file (completing-read "Select article: " files nil t)))
+            (insert (format "{%% post_url %s %%}" selected-file)))))
+    #+END_SRC
 *** Elisp
-   #+begin_src emacs-lisp
-(use-package s)
-   #+end_src
+    #+begin_src emacs-lisp
+      (use-package s)
+    #+end_src
 *** Elm
 
-#+begin_src emacs-lisp
-  (use-package elm-mode)
-#+end_src
+    #+begin_src emacs-lisp
+      (use-package elm-mode)
+    #+end_src
 *** Nix
 
-#+begin_src emacs-lisp
-(use-package nix-mode
-  :mode "\\.nix\\'")
-#+end_src
+    #+begin_src emacs-lisp
+      (use-package nix-mode
+        :mode "\\.nix\\'")
+    #+end_src
 *** C#
 
-#+begin_src emacs-lisp
+    #+begin_src emacs-lisp
 
-(use-package dotnet)
-(use-package csharp-mode)
+      (use-package dotnet)
+      (use-package csharp-mode)
 
-#+end_src
+    #+end_src
 
 ** File System
 *** Dired
 
-File system for emacs
+    File system for emacs
 
-#+BEGIN_SRC emacs-lisp
-(use-package dired
-  :ensure nil
-  :config
-  ;; dired - reuse current buffer by pressing 'a'
-  (put 'dired-find-alternate-file 'disabled nil)
+    #+BEGIN_SRC emacs-lisp
+      (use-package dired
+        :ensure nil
+        :config
+        ;; dired - reuse current buffer by pressing 'a'
+        (put 'dired-find-alternate-file 'disabled nil)
 
-  ;; always delete and copy recursively
-  (setq dired-recursive-deletes 'always)
-  (setq dired-recursive-copies 'always)
+        ;; always delete and copy recursively
+        (setq dired-recursive-deletes 'always)
+        (setq dired-recursive-copies 'always)
 
-  ;; if there is a dired buffer displayed in the next window, use its
-  ;; current subdir, instead of the current subdir of this dired buffer
-  (setq dired-dwim-target t)
-  (setq dired-listing-switches "-alh")
-  (require 'dired-x))
+        ;; if there is a dired buffer displayed in the next window, use its
+        ;; current subdir, instead of the current subdir of this dired buffer
+        (setq dired-dwim-target t)
+        (setq dired-listing-switches "-alh")
+        (require 'dired-x))
 
-#+END_SRC
+    #+END_SRC
 
 ** Cross Platform Compatibility
 *** PATH VARIABLE
 
     Ensure the PATH variable is in scope for emacs to use
 
-#+begin_src emacs-lisp
+    #+begin_src emacs-lisp
 
-  (use-package exec-path-from-shell
-    :if (memq window-system '(mac ns x))
-    :config
-    (exec-path-from-shell-initialize))
-#+end_src
+      (use-package exec-path-from-shell
+        :if (memq window-system '(mac ns x))
+        :config
+        (exec-path-from-shell-initialize))
+    #+end_src
 
 ** Error Check
 *** Hunspell
 
-A substitute of Ispell that works on Windows as well. Tool for spellchecking
-Following these instructions: https://lists.gnu.org/archive/html/help-gnu-emacs/2014-04/msg00030.html
+    A substitute of Ispell that works on Windows as well. Tool for spellchecking
+    Following these instructions: https://lists.gnu.org/archive/html/help-gnu-emacs/2014-04/msg00030.html
 
-#+begin_src emacs-lisp
-(cond
-((string-equal system-type "windows-nt")
- (progn
- ;; Add executable
-(add-to-list 'exec-path "~/.emacs.d/hunspell/bin/")
+    #+begin_src emacs-lisp
+      (cond
+       ((string-equal system-type "windows-nt")
+        (progn
+          ;; Add executable
+          (add-to-list 'exec-path "~/.emacs.d/hunspell/bin/")
 
-;; Set dictionary
+          ;; Set dictionary
 
-(setq ispell-program-name (locate-file "hunspell"
-      exec-path exec-suffixes 'file-executable-p))
+          (setq ispell-program-name (locate-file "hunspell"
+                                                 exec-path exec-suffixes 'file-executable-p))
 
- )))
+          )))
 
-(require 'ispell)
-#+end_src
+      (require 'ispell)
+    #+end_src
 
 *** Flycheck
 
     Check for errors, tipically in code
 
-#+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :init
-  (global-flycheck-mode t)
-  :config
-  (setq flycheck-highlighting-mode 'lines)
-)
-#+END_SRC
+    #+BEGIN_SRC emacs-lisp
+      (use-package flycheck
+        :init
+        (global-flycheck-mode t)
+        :config
+        (setq flycheck-highlighting-mode 'lines)
+        )
+    #+END_SRC
 * Local Modes
 
   Modes not on Melpa/Elpa. Imported from local folder
@@ -1019,357 +1032,357 @@ Following these instructions: https://lists.gnu.org/archive/html/help-gnu-emacs/
 
    Modes that are not in melpa and you found on the internet. Put them
    into the lisp folder.
-#+begin_src emacs-lisp
-  (when (executable-find "lilypond")
-    ;; http://web.mit.edu/foley/Dotfiles/emacs.d/elisp/lilypond-mode.el
-    (load "~/.emacs.d/lisp/lilypond-mode")
-    (add-to-list 'auto-mode-alist '("\\.ly\\'" . lilypond-mode)))
-#+end_src
+   #+begin_src emacs-lisp
+     (when (executable-find "lilypond")
+       ;; http://web.mit.edu/foley/Dotfiles/emacs.d/elisp/lilypond-mode.el
+       (load "~/.emacs.d/lisp/lilypond-mode")
+       (add-to-list 'auto-mode-alist '("\\.ly\\'" . lilypond-mode)))
+   #+end_src
 
 * Functions
 ** Indentation
 
-unctions for alignment of text and indentation of buffer
+   unctions for alignment of text and indentation of buffer
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
-(defun indent-buffer-or-region ()
- "indent whole buffer"
- (interactive)
- (delete-trailing-whitespace)
- (setq regionStart (point-min)
-       regionEnd   (point-max))
- (when (use-region-p)
-   (setq regionStart (region-beginning)
-         regionEnd   (region-end)))
- (save-excursion (indent-region regionStart regionEnd nil))
- (untabify regionStart regionEnd))
+     (defun indent-buffer-or-region ()
+       "indent whole buffer"
+       (interactive)
+       (delete-trailing-whitespace)
+       (setq regionStart (point-min)
+             regionEnd   (point-max))
+       (when (use-region-p)
+         (setq regionStart (region-beginning)
+               regionEnd   (region-end)))
+       (save-excursion (indent-region regionStart regionEnd nil))
+       (untabify regionStart regionEnd))
 
-#+END_SRC
+   #+END_SRC
 ** Cursor Movement
 
-Collect all the functions that move the cursor somewhere
+   Collect all the functions that move the cursor somewhere
 
-#+begin_src emacs-lisp
-  (defun goto-column (column)
-   (interactive "nColumn: ")
-   (move-to-column column t))
+   #+begin_src emacs-lisp
+     (defun goto-column (column)
+       (interactive "nColumn: ")
+       (move-to-column column t))
 
-  (defun switch-to-existing-buffer-other-window (part)
-   "Switch to buffer with PART in its name."
-   (interactive
-    (list (read-buffer-to-switch "Switch to buffer in other window: ")))
-   (let ((candidates
-      (cl-remove
-       nil
-       (mapcar (lambda (buf)
-             (let ((pos (string-match part (buffer-name buf))))
-               (when pos
-             (cons pos buf))))
-           (buffer-list)))))
-     (unless candidates
-       (user-error "There is no buffers with %S in its name." part))
-     (setq candidates (cl-sort candidates #'< :key 'car))
-     (switch-to-buffer-other-window (cdr (car candidates)))))
-#+end_src
+     (defun switch-to-existing-buffer-other-window (part)
+       "Switch to buffer with PART in its name."
+       (interactive
+        (list (read-buffer-to-switch "Switch to buffer in other window: ")))
+       (let ((candidates
+              (cl-remove
+               nil
+               (mapcar (lambda (buf)
+                         (let ((pos (string-match part (buffer-name buf))))
+                           (when pos
+                             (cons pos buf))))
+                       (buffer-list)))))
+         (unless candidates
+           (user-error "There is no buffers with %S in its name." part))
+         (setq candidates (cl-sort candidates #'< :key 'car))
+         (switch-to-buffer-other-window (cdr (car candidates)))))
+   #+end_src
 ** FFMPEG
 
-Here you can find the functions to instruct ffmpeg. Very useful when
-you have to cut a specific video, extract audio, convert to a specific
-format.
+   Here you can find the functions to instruct ffmpeg. Very useful when
+   you have to cut a specific video, extract audio, convert to a specific
+   format.
 
-#+begin_src emacs-lisp
+   #+begin_src emacs-lisp
 
- (defun cut-media-file (origin startTime endTime newName)
-   "This function get in input:
- - The path to a specific video
- - The start time of the cut (00:00:00)
- - The end time of the cut (00:00:00)
- - The new name of the output
- Perform a ffmpeg command to cut the input and generate the new output in the same directory
- "
-   (interactive "FFile name to cut from:
- sStart Time (00:00:00):
- sEnd Time (00:00:00):
- sNew Name: ")
+     (defun cut-media-file (origin startTime endTime newName)
+       "This function get in input:
+     - The path to a specific video
+     - The start time of the cut (00:00:00)
+     - The end time of the cut (00:00:00)
+     - The new name of the output
+     Perform a ffmpeg command to cut the input and generate the new output in the same directory
+     "
+       (interactive "FFile name to cut from:
+     sStart Time (00:00:00):
+     sEnd Time (00:00:00):
+     sNew Name: ")
 
-   (setq totalSeconds (+
-                       (-
-                        (string-to-number (substring endTime 6))
-                        (string-to-number (substring startTime 6)))
-                       (*
-                        (-
-                         (string-to-number (substring endTime 3 5))
-                         (string-to-number (substring startTime 3 5)))
-                        60
-                        )
-                       (*
-                        (-
-                         (string-to-number (substring endTime 0 2))
-                         (string-to-number (substring startTime 0 2)))
-                        3600
-                        )
-                       )
-         )
+       (setq totalSeconds (+
+                           (-
+                            (string-to-number (substring endTime 6))
+                            (string-to-number (substring startTime 6)))
+                           (*
+                            (-
+                             (string-to-number (substring endTime 3 5))
+                             (string-to-number (substring startTime 3 5)))
+                            60
+                            )
+                           (*
+                            (-
+                             (string-to-number (substring endTime 0 2))
+                             (string-to-number (substring startTime 0 2)))
+                            3600
+                            )
+                           )
+             )
 
-   (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" origin "\" -t " (number-to-string totalSeconds) " -vcodec copy -acodec copy \"" (concat (file-name-directory origin) newName) "\""))
+       (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" origin "\" -t " (number-to-string totalSeconds) " -vcodec copy -acodec copy \"" (concat (file-name-directory origin) newName) "\""))
 
-   (async-shell-command ffmpegCommand)
-   )
-
- (require 'seq)
-
- (defun concatenate-media-files ()
-   "Concatenate a list of files with the same encoding"
-   (interactive)
-   (setq files (list (read-file-name "The initial file name: ")))
-   (message "%s" files)
-   (while (yes-or-no-p "Another file? ")
-     (progn
-       (setq files (append files (list (read-file-name "Next file name: "))))
+       (async-shell-command ffmpegCommand)
        )
-     )
-   (let* ((newFile (read-string "Insert the new file name: "))
-          (concatContent (seq-drop (seq-reduce (lambda (a b) (concat a "\nfile '" b "'")) files "") 1))
-          (tempFile (make-temp-file "concat" nil nil concatContent))
-          (outputFile (expand-file-name (concat default-directory newFile)))
-          (ffmpegCommand (concat "ffmpeg -f concat -safe 0 -i \"" tempFile "\" -c copy \"" outputFile  "\"")))
-     (async-shell-command ffmpegCommand)
-     )
-   )
 
- (defun play-sound (file)
-   "play the sound using ffplay"
-   (interactive "f")
-   (setq commandExist nil)
-   (condition-case nil
-       (progn
-         (call-process "ffplay")
-         (setq commandExist t)
+     (require 'seq)
+
+     (defun concatenate-media-files ()
+       "Concatenate a list of files with the same encoding"
+       (interactive)
+       (setq files (list (read-file-name "The initial file name: ")))
+       (message "%s" files)
+       (while (yes-or-no-p "Another file? ")
+         (progn
+           (setq files (append files (list (read-file-name "Next file name: "))))
+           )
          )
-     (error (message "Please install ffplay (ffmpeg)"))
-     )
+       (let* ((newFile (read-string "Insert the new file name: "))
+              (concatContent (seq-drop (seq-reduce (lambda (a b) (concat a "\nfile '" b "'")) files "") 1))
+              (tempFile (make-temp-file "concat" nil nil concatContent))
+              (outputFile (expand-file-name (concat default-directory newFile)))
+              (ffmpegCommand (concat "ffmpeg -f concat -safe 0 -i \"" tempFile "\" -c copy \"" outputFile  "\"")))
+         (async-shell-command ffmpegCommand)
+         )
+       )
 
-   (when commandExist
-     (let ((fileComplete (expand-file-name file))
-           (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-       (call-process-shell-command (format "ffplay -nodisp -autoexit \"%s\" &" fileComplete fileCompleteNoExtension) nil 0)))
-   )
-#+end_src
+     (defun play-sound (file)
+       "play the sound using ffplay"
+       (interactive "f")
+       (setq commandExist nil)
+       (condition-case nil
+           (progn
+             (call-process "ffplay")
+             (setq commandExist t)
+             )
+         (error (message "Please install ffplay (ffmpeg)"))
+         )
+
+       (when commandExist
+         (let ((fileComplete (expand-file-name file))
+               (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+           (call-process-shell-command (format "ffplay -nodisp -autoexit \"%s\" &" fileComplete fileCompleteNoExtension) nil 0)))
+       )
+   #+end_src
 ** File Conversion
 
-Collect the functions for file conversions, mainly using shell commands
+   Collect the functions for file conversions, mainly using shell commands
 
-#+BEGIN_SRC emacs-lisp
-(defun convert-to-mp3 (file)
- (interactive "f")
- (let ((fileComplete (expand-file-name file))
-       (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
- (shell-command (format "ffmpeg -i \"%s\" -vn -ar 44100 -ac 2 -b:a 192k \"%s.mp3\"" fileComplete fileCompleteNoExtension))))
+   #+BEGIN_SRC emacs-lisp
+     (defun convert-to-mp3 (file)
+       (interactive "f")
+       (let ((fileComplete (expand-file-name file))
+             (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+         (shell-command (format "ffmpeg -i \"%s\" -vn -ar 44100 -ac 2 -b:a 192k \"%s.mp3\"" fileComplete fileCompleteNoExtension))))
 
-(defun convert-to-gif (file)
- (interactive "f")
- (let ((fileComplete (expand-file-name file))
-       (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
- (shell-command (format "ffmpeg -i %s -vf \"fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse\" -loop 0 %s.gif" fileComplete fileCompleteNoExtension))))
+     (defun convert-to-gif (file)
+       (interactive "f")
+       (let ((fileComplete (expand-file-name file))
+             (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+         (shell-command (format "ffmpeg -i %s -vf \"fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse\" -loop 0 %s.gif" fileComplete fileCompleteNoExtension))))
 
-#+END_SRC
+   #+END_SRC
 ** Filename & Path to clipboard
 
-Functions to get the name of the file and path to clipboard
+   Functions to get the name of the file and path to clipboard
 
-#+BEGIN_SRC emacs-lisp
-(defun copy-file-name-to-kill-ring (filename-manipulate-func)
- "Copy the current buffer file name to the kill-ring after the application of the input function."
- (interactive)
- (let ((filename (if (equal major-mode 'dired-mode)
-                     default-directory
-                   (buffer-file-name))))
-   (when filename
-     (let ((changedFilename (funcall filename-manipulate-func filename)))
-       (when changedFilename
-         (kill-new changedFilename))))))
+   #+BEGIN_SRC emacs-lisp
+     (defun copy-file-name-to-kill-ring (filename-manipulate-func)
+       "Copy the current buffer file name to the kill-ring after the application of the input function."
+       (interactive)
+       (let ((filename (if (equal major-mode 'dired-mode)
+                           default-directory
+                         (buffer-file-name))))
+         (when filename
+           (let ((changedFilename (funcall filename-manipulate-func filename)))
+             (when changedFilename
+               (kill-new changedFilename))))))
 
-(defun copy-file-name-and-path-to-kill-ring ()
- "Copy the current buffer file name and path to kill-ring."
- (interactive)
- (copy-file-name-to-kill-ring 'identity))
+     (defun copy-file-name-and-path-to-kill-ring ()
+       "Copy the current buffer file name and path to kill-ring."
+       (interactive)
+       (copy-file-name-to-kill-ring 'identity))
 
-(defun copy-just-file-name-to-kill-ring ()
- "Copy just the current buffer file name to kill-ring."
- (interactive)
- (copy-file-name-to-kill-ring 'file-name-nondirectory))
-#+END_SRC
+     (defun copy-just-file-name-to-kill-ring ()
+       "Copy just the current buffer file name to kill-ring."
+       (interactive)
+       (copy-file-name-to-kill-ring 'file-name-nondirectory))
+   #+END_SRC
 ** Formatting
 
- Functions for formatting code.
+   Functions for formatting code.
 
-#+BEGIN_SRC emacs-lisp
-(defun xml-format ()
- "indent an xml file using xlint on a region or buffer"
- (interactive)
- (let (pos1 pos2 commandExist)
-   (if (use-region-p)
-       (setq pos1 (region-beginning) pos2 (region-end))
-     (setq pos1 (point-min) pos2 (point-max)))
+   #+BEGIN_SRC emacs-lisp
+     (defun xml-format ()
+       "indent an xml file using xlint on a region or buffer"
+       (interactive)
+       (let (pos1 pos2 commandExist)
+         (if (use-region-p)
+             (setq pos1 (region-beginning) pos2 (region-end))
+           (setq pos1 (point-min) pos2 (point-max)))
 
-   (setq commandExist nil)
-   (condition-case nil
-       (progn
-         (call-process "xmllint")
-         (setq commandExist t)
+         (setq commandExist nil)
+         (condition-case nil
+             (progn
+               (call-process "xmllint")
+               (setq commandExist t)
+               )
+           (error (message "Please install xmllint"))
+           )
+
+         (when commandExist
+           (save-excursion
+             (shell-command-on-region pos1 pos2 "xmllint --format -" (buffer-name) t)
+             )
+           )
          )
-       (error (message "Please install xmllint"))
-     )
-
-   (when commandExist
-     (save-excursion
-       (shell-command-on-region pos1 pos2 "xmllint --format -" (buffer-name) t)
        )
-     )
-   )
- )
 
-(defun js-format ()
- "indent an js file using js-beutifier on a region or buffer"
- (interactive)
- (let (pos1 pos2 commandExist)
-   (if (use-region-p)
-       (setq pos1 (region-beginning) pos2 (region-end))
-     (setq pos1 (point-min) pos2 (point-max)))
-   (setq commandExist nil)
-   (condition-case nil
-       (progn
-         (call-process "js-beautify")
-         (setq commandExist t)
+     (defun js-format ()
+       "indent an js file using js-beutifier on a region or buffer"
+       (interactive)
+       (let (pos1 pos2 commandExist)
+         (if (use-region-p)
+             (setq pos1 (region-beginning) pos2 (region-end))
+           (setq pos1 (point-min) pos2 (point-max)))
+         (setq commandExist nil)
+         (condition-case nil
+             (progn
+               (call-process "js-beautify")
+               (setq commandExist t)
+               )
+           (error (message "Please install js-beautify (npm -g install js-beautify)"))
+           )
+
+         (when commandExist
+           (save-excursion
+             (shell-command-on-region pos1 pos2 "js-beautify " (buffer-name) t)
+             )
+           )
          )
-     (error (message "Please install js-beautify (npm -g install js-beautify)"))
-     )
-
-   (when commandExist
-     (save-excursion
-       (shell-command-on-region pos1 pos2 "js-beautify " (buffer-name) t)
        )
-     )
-   )
- )
 
-(defun apply-case-char (startcol endcol function)
- "apply the function to the char at start position. endcol not used"
- (move-to-column startcol t)
- (let ((c (string (following-char))))
-   (delete-char 1)
-   (insert (funcall function c)))
- )
+     (defun apply-case-char (startcol endcol function)
+       "apply the function to the char at start position. endcol not used"
+       (move-to-column startcol t)
+       (let ((c (string (following-char))))
+         (delete-char 1)
+         (insert (funcall function c)))
+       )
 
-(defun upcase-first-region (begin end)
- "Uppercase the first char of each line of the selected region"
- (interactive "r")
- (apply-on-rectangle 'apply-case-char begin end 'upcase)
- )
+     (defun upcase-first-region (begin end)
+       "Uppercase the first char of each line of the selected region"
+       (interactive "r")
+       (apply-on-rectangle 'apply-case-char begin end 'upcase)
+       )
 
-;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
-(defun unfill-paragraph (&optional region)
- "Takes a multi-line paragraph and makes it into a single line of text."
- (interactive (progn (barf-if-buffer-read-only) '(t)))
- (let ((fill-column (point-max))
-       ;; This would override `fill-column' if it's an integer.
-       (emacs-lisp-docstring-fill-column t))
-   (fill-paragraph nil region)))
+     ;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
+     (defun unfill-paragraph (&optional region)
+       "Takes a multi-line paragraph and makes it into a single line of text."
+       (interactive (progn (barf-if-buffer-read-only) '(t)))
+       (let ((fill-column (point-max))
+             ;; This would override `fill-column' if it's an integer.
+             (emacs-lisp-docstring-fill-column t))
+         (fill-paragraph nil region)))
 
-#+END_SRC
+   #+END_SRC
 ** Numbers (Integer)
 
-Contains function to manage integers, in particular increase and decrease.
-source: https://emacsredux.com/blog/2013/07/25/increment-and-decrement-integer-at-point/
+   Contains function to manage integers, in particular increase and decrease.
+   source: https://emacsredux.com/blog/2013/07/25/increment-and-decrement-integer-at-point/
 
-#+begin_src emacs-lisp
-(require 'thingatpt)
+   #+begin_src emacs-lisp
+     (require 'thingatpt)
 
-(defun thing-at-point-goto-end-of-integer ()
- "Go to end of integer at point."
- (let ((inhibit-changing-match-data t))
-   ;; Skip over optional sign
-   (when (looking-at "[+-]")
-     (forward-char 1))
-   ;; Skip over digits
-   (skip-chars-forward "[[:digit:]]")
-   ;; Check for at least one digit
-   (unless (looking-back "[[:digit:]]")
-     (error "No integer here"))))
-(put 'integer 'beginning-op 'thing-at-point-goto-end-of-integer)
+     (defun thing-at-point-goto-end-of-integer ()
+       "Go to end of integer at point."
+       (let ((inhibit-changing-match-data t))
+         ;; Skip over optional sign
+         (when (looking-at "[+-]")
+           (forward-char 1))
+         ;; Skip over digits
+         (skip-chars-forward "[[:digit:]]")
+         ;; Check for at least one digit
+         (unless (looking-back "[[:digit:]]")
+           (error "No integer here"))))
+     (put 'integer 'beginning-op 'thing-at-point-goto-end-of-integer)
 
-(defun thing-at-point-goto-beginning-of-integer ()
- "Go to end of integer at point."
- (let ((inhibit-changing-match-data t))
-   ;; Skip backward over digits
-   (skip-chars-backward "[[:digit:]]")
-   ;; Check for digits and optional sign
-   (unless (looking-at "[+-]?[[:digit:]]")
-     (error "No integer here"))
-   ;; Skip backward over optional sign
-   (when (looking-back "[+-]")
-       (backward-char 1))))
-(put 'integer 'beginning-op 'thing-at-point-goto-beginning-of-integer)
+     (defun thing-at-point-goto-beginning-of-integer ()
+       "Go to end of integer at point."
+       (let ((inhibit-changing-match-data t))
+         ;; Skip backward over digits
+         (skip-chars-backward "[[:digit:]]")
+         ;; Check for digits and optional sign
+         (unless (looking-at "[+-]?[[:digit:]]")
+           (error "No integer here"))
+         ;; Skip backward over optional sign
+         (when (looking-back "[+-]")
+           (backward-char 1))))
+     (put 'integer 'beginning-op 'thing-at-point-goto-beginning-of-integer)
 
-(defun thing-at-point-bounds-of-integer-at-point ()
- "Get boundaries of integer at point."
- (save-excursion
-   (let (beg end)
-     (thing-at-point-goto-beginning-of-integer)
-     (setq beg (point))
-     (thing-at-point-goto-end-of-integer)
-     (setq end (point))
-     (cons beg end))))
-(put 'integer 'bounds-of-thing-at-point 'thing-at-point-bounds-of-integer-at-point)
+     (defun thing-at-point-bounds-of-integer-at-point ()
+       "Get boundaries of integer at point."
+       (save-excursion
+         (let (beg end)
+           (thing-at-point-goto-beginning-of-integer)
+           (setq beg (point))
+           (thing-at-point-goto-end-of-integer)
+           (setq end (point))
+           (cons beg end))))
+     (put 'integer 'bounds-of-thing-at-point 'thing-at-point-bounds-of-integer-at-point)
 
-(defun thing-at-point-integer-at-point ()
- "Get integer at point."
- (let ((bounds (bounds-of-thing-at-point 'integer)))
-   (string-to-number (buffer-substring (car bounds) (cdr bounds)))))
-(put 'integer 'thing-at-point 'thing-at-point-integer-at-point)
+     (defun thing-at-point-integer-at-point ()
+       "Get integer at point."
+       (let ((bounds (bounds-of-thing-at-point 'integer)))
+         (string-to-number (buffer-substring (car bounds) (cdr bounds)))))
+     (put 'integer 'thing-at-point 'thing-at-point-integer-at-point)
 
-(defun increment-integer-at-point (&optional inc)
- "Increment integer at point by one.
+     (defun increment-integer-at-point (&optional inc)
+       "Increment integer at point by one.
 
-ith numeric prefix arg INC, increment the integer by INC amount."
- (interactive "p")
- (let ((inc (or inc 1))
-       (n (thing-at-point 'integer))
-       (bounds (bounds-of-thing-at-point 'integer)))
-   (delete-region (car bounds) (cdr bounds))
-   (insert (int-to-string (+ n inc)))))
+     ith numeric prefix arg INC, increment the integer by INC amount."
+       (interactive "p")
+       (let ((inc (or inc 1))
+             (n (thing-at-point 'integer))
+             (bounds (bounds-of-thing-at-point 'integer)))
+         (delete-region (car bounds) (cdr bounds))
+         (insert (int-to-string (+ n inc)))))
 
-(defun decrement-integer-at-point (&optional dec)
- "Decrement integer at point by one.
+     (defun decrement-integer-at-point (&optional dec)
+       "Decrement integer at point by one.
 
-ith numeric prefix arg DEC, decrement the integer by DEC amount."
- (interactive "p")
- (increment-integer-at-point (- (or dec 1))))
+     ith numeric prefix arg DEC, decrement the integer by DEC amount."
+       (interactive "p")
+       (increment-integer-at-point (- (or dec 1))))
 
-#+end_src
+   #+end_src
 ** Rectangles
 
-Custom Functions regading rectangles
+   Custom Functions regading rectangles
 
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 
-(defun upcase-rectangle (b e)
- "change chars in rectangle to uppercase"
- (interactive "r")
- (apply-on-rectangle 'apply-fun-rectangle-line b e 'upcase-region))
+     (defun upcase-rectangle (b e)
+       "change chars in rectangle to uppercase"
+       (interactive "r")
+       (apply-on-rectangle 'apply-fun-rectangle-line b e 'upcase-region))
 
-(defun downcase-rectangle (b e)
- "change chars in rectangle to uppercase"
- (interactive "r")
- (apply-on-rectangle 'apply-fun-rectangle-line b e 'downcase-region))
+     (defun downcase-rectangle (b e)
+       "change chars in rectangle to uppercase"
+       (interactive "r")
+       (apply-on-rectangle 'apply-fun-rectangle-line b e 'downcase-region))
 
-(defun apply-fun-rectangle-line (startcol endcol function)
- (when (= (move-to-column startcol) startcol)
-   (funcall function (point)
-                     (progn (move-to-column endcol 'coerce)
-                            (point)))))
-#+END_SRC
+     (defun apply-fun-rectangle-line (startcol endcol function)
+       (when (= (move-to-column startcol) startcol)
+         (funcall function (point)
+                  (progn (move-to-column endcol 'coerce)
+                         (point)))))
+   #+END_SRC
 ** Selection
 
    function regarding the selection of text
@@ -1377,12 +1390,12 @@ Custom Functions regading rectangles
    #+BEGIN_SRC emacs-lisp
 
      (defun reselect-last-region ()
-      (interactive)
-      (let ((start (mark t))
-            (end (point)))
-        (goto-char start)
-        (call-interactively' set-mark-command)
-        (goto-char end)))
+       (interactive)
+       (let ((start (mark t))
+             (end (point)))
+         (goto-char start)
+         (call-interactively' set-mark-command)
+         (goto-char end)))
 
    #+END_SRC
 ** Random
@@ -1391,1017 +1404,1017 @@ Custom Functions regading rectangles
 
    #+BEGIN_SRC emacs-lisp
 
-(defun random-alnum (&optional arg)
-   "Generate a random character"
-   (interactive "p")
-   (insert
-    (mapconcat (lambda (x)
-                 (let* ((alnum "abcdefghijklmnopqrstuvwxyz0123456789")
-                        (i (% (abs (random)) (length alnum))))
-                   (substring alnum i (1+ i))))
-                (number-sequence 1 arg 1)
-                "")
-   ))
+     (defun random-alnum (&optional arg)
+       "Generate a random character"
+       (interactive "p")
+       (insert
+        (mapconcat (lambda (x)
+                     (let* ((alnum "abcdefghijklmnopqrstuvwxyz0123456789")
+                            (i (% (abs (random)) (length alnum))))
+                       (substring alnum i (1+ i))))
+                   (number-sequence 1 arg 1)
+                   "")
+        ))
 
- (defun insert-random-uuid ()
-   (interactive)
-   (insert
-     (replace-regexp-in-string "\n\\'" ""
-       (shell-command-to-string "uuidgen"))))
+     (defun insert-random-uuid ()
+       (interactive)
+       (insert
+        (replace-regexp-in-string "\n\\'" ""
+                                  (shell-command-to-string "uuidgen"))))
 
    #+END_SRC
 ** Text Manipulation
 
-Functions for manipulate text
+   Functions for manipulate text
 
-#+BEGIN_SRC emacs-lisp
-  (defun copy-line-from-point-as-string (&optional prefix suffix)
-    (unless prefix (setq prefix ""))
-    (unless suffix (setq suffix ""))
-    (setq currentPoint (point))
-    (end-of-line)
-    (setq result (concat prefix (buffer-substring-no-properties currentPoint (point)) suffix))
-    (eval result)
-    )
+   #+BEGIN_SRC emacs-lisp
+     (defun copy-line-from-point-as-string (&optional prefix suffix)
+       (unless prefix (setq prefix ""))
+       (unless suffix (setq suffix ""))
+       (setq currentPoint (point))
+       (end-of-line)
+       (setq result (concat prefix (buffer-substring-no-properties currentPoint (point)) suffix))
+       (eval result)
+       )
 
-  (defun move-line-up ()
-    "Move current line up using `transpose-lines'"
-    (interactive)
-    (transpose-lines 1)
-    (previous-line 2))
+     (defun move-line-up ()
+       "Move current line up using `transpose-lines'"
+       (interactive)
+       (transpose-lines 1)
+       (previous-line 2))
 
-  (defun move-line-down ()
-    "Move current line down using `transpose-lines'"
-    (interactive)
-    (next-line)
-    (transpose-lines 1)
-    (previous-line))
+     (defun move-line-down ()
+       "Move current line down using `transpose-lines'"
+       (interactive)
+       (next-line)
+       (transpose-lines 1)
+       (previous-line))
 
 
-#+END_SRC
+   #+END_SRC
 ** Window Manipulation
 
-Functions for manipulating the windows
+   Functions for manipulating the windows
 
-#+BEGIN_SRC emacs-lisp
-(defun set-window-width (n)
-  "Set the selected window's width."
-  (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
+   #+BEGIN_SRC emacs-lisp
+     (defun set-window-width (n)
+       "Set the selected window's width."
+       (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
 
-(defun set-80-columns ()
-  "Set the selected window to 80 columns."
-  (interactive)
-  (set-window-width 80))
-#+END_SRC
+     (defun set-80-columns ()
+       "Set the selected window to 80 columns."
+       (interactive)
+       (set-window-width 80))
+   #+END_SRC
 ** Bash Commands
 *** Youtube-dl
 
-this files contains the functions that interact with youtube. Mainly using ~youtube-dl~.
-#+begin_src emacs-lisp
+    this files contains the functions that interact with youtube. Mainly using ~youtube-dl~.
+    #+begin_src emacs-lisp
 
-(defun youtube-dl (youtubeUrl destinationPath outputFormat)
-  "Function that use youtube-dl to download the video and convert it to the specified output format"
-  (interactive
-   (list
-    (read-string "Youtube URL: ")
-    (read-directory-name "Destination directory: ")
-    (read-string "Output format\n(mp4|flv|ogg|webm|mkv|avi-best|aac|flac|mp3|m4a|opus|vorbis|wav): ")
-    )
-   )
-  (setq commandExist nil
-        youtubeDlCommand nil)
-  (condition-case nil
-      (progn
-        (call-process "youtube-dl")
-        (setq commandExist t)
+      (defun youtube-dl (youtubeUrl destinationPath outputFormat)
+        "Function that use youtube-dl to download the video and convert it to the specified output format"
+        (interactive
+         (list
+          (read-string "Youtube URL: ")
+          (read-directory-name "Destination directory: ")
+          (read-string "Output format\n(mp4|flv|ogg|webm|mkv|avi-best|aac|flac|mp3|m4a|opus|vorbis|wav): ")
+          )
+         )
+        (setq commandExist nil
+              youtubeDlCommand nil)
+        (condition-case nil
+            (progn
+              (call-process "youtube-dl")
+              (setq commandExist t)
+              )
+          (error (message "Please install youtube-dl"))
+          )
+        (setq supportedAudioFormats (list "best" "aac" "flac" "mp3" "m4a" "opus" "vorbis" "wav"))
+        (setq supportedVideoFormats (list "mp4" "flv" "ogg" "webm" "mkv" "avi"))
+        (cond
+         ((member outputFormat supportedAudioFormats) (setq youtubeDlCommand (format "youtube-dl -x --audio-format %s %s" outputFormat youtubeUrl)))
+         ((member outputFormat supportedVideoFormats) (setq youtubeDlCommand (format "youtube-dl --recode-video %s %s" outputFormat youtubeUrl)))
+         (t (error (message "Please insert a valid output format: %s" outputFormat)))
+         )
+        (when commandExist
+          (progn
+            (setq command (format "cd %s && %s" destinationPath youtubeDlCommand))
+            (async-shell-command command)
+            )
+          )
         )
-    (error (message "Please install youtube-dl"))
-    )
-  (setq supportedAudioFormats (list "best" "aac" "flac" "mp3" "m4a" "opus" "vorbis" "wav"))
-  (setq supportedVideoFormats (list "mp4" "flv" "ogg" "webm" "mkv" "avi"))
-  (cond
-   ((member outputFormat supportedAudioFormats) (setq youtubeDlCommand (format "youtube-dl -x --audio-format %s %s" outputFormat youtubeUrl)))
-   ((member outputFormat supportedVideoFormats) (setq youtubeDlCommand (format "youtube-dl --recode-video %s %s" outputFormat youtubeUrl)))
-   (t (error (message "Please insert a valid output format: %s" outputFormat)))
-   )
-  (when commandExist
-    (progn
-      (setq command (format "cd %s && %s" destinationPath youtubeDlCommand))
-      (async-shell-command command)
-      )
-    )
-  )
 
-#+end_src
+    #+end_src
 ** Dired
 
-#+begin_src emacs-lisp
-(defun dired-do-command (command)
-  "Run COMMAND on marked files. Any files not already open will be opened.
-After this command has been run, any buffers it's modified will remain
-open and unsaved."
-  (interactive "CRun on marked files M-x ")
-  (save-window-excursion
-    (mapc (lambda (filename)
-            (find-file filename)
-            (call-interactively command))
-          (dired-get-marked-files))))
-#+end_src
+   #+begin_src emacs-lisp
+     (defun dired-do-command (command)
+       "Run COMMAND on marked files. Any files not already open will be opened.
+     After this command has been run, any buffers it's modified will remain
+     open and unsaved."
+       (interactive "CRun on marked files M-x ")
+       (save-window-excursion
+         (mapc (lambda (filename)
+                 (find-file filename)
+                 (call-interactively command))
+               (dired-get-marked-files))))
+   #+end_src
 ** Development
 *** Higher Order
 
     Functions used by following sections to implement some IDE features
 
-#+begin_src emacs-lisp
-  (defun line-contains-string (args)
-    "Check if the current line contains the input string"
-    (save-excursion
-      (beginning-of-line)
-      (when (search-forward args (line-end-position) t) t)
-      ))
+    #+begin_src emacs-lisp
+      (defun line-contains-string (args)
+        "Check if the current line contains the input string"
+        (save-excursion
+          (beginning-of-line)
+          (when (search-forward args (line-end-position) t) t)
+          ))
 
-  (defun searchFunction (backwardDrection)
-    "Return the regexp search function based on input direction:
-     - t: backward
-     - nil: forward
-    "
-    (if backwardDrection
-        're-search-backward
-      're-search-forward
-      ))
+      (defun searchFunction (backwardDrection)
+        "Return the regexp search function based on input direction:
+         - t: backward
+         - nil: forward
+        "
+        (if backwardDrection
+            're-search-backward
+          're-search-forward
+          ))
 
-  (defun shell-clean-old-output (startingPhrase)
-    "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation). based on the input value"
-    (end-of-buffer)
-    (re-search-backward startingPhrase)
-    (delete-region (point) (goto-char (point-min)))
-    (end-of-buffer))
+      (defun shell-clean-old-output (startingPhrase)
+        "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation). based on the input value"
+        (end-of-buffer)
+        (re-search-backward startingPhrase)
+        (delete-region (point) (goto-char (point-min)))
+        (end-of-buffer))
 
-  (defun event-file-navigation (startingFilePath endingFilePath &optional notSplitWindow)
-    "Starting from an output buffer this function:
-     - Search for the starting file path in the output from current buffer
-     - Parse the line for the target source file
-     - move to the file: it creates a windows if the count-windows is = 1 and the parameter is false
-    "
-    (beginning-of-line)
-    (search-forward-regexp startingFilePath)
-    (setq filenamePathPos (point))
-    (search-forward-regexp endingFilePath)
-    (left-char)
-    (setq filePath (buffer-substring filenamePathPos (point)))
-    (when (and notSplitWindow (= (count-windows) 1)) (split-window-right))
-    (other-window 1)
-    (find-file (string-trim filePath)))
+      (defun event-file-navigation (startingFilePath endingFilePath &optional notSplitWindow)
+        "Starting from an output buffer this function:
+         - Search for the starting file path in the output from current buffer
+         - Parse the line for the target source file
+         - move to the file: it creates a windows if the count-windows is = 1 and the parameter is false
+        "
+        (beginning-of-line)
+        (search-forward-regexp startingFilePath)
+        (setq filenamePathPos (point))
+        (search-forward-regexp endingFilePath)
+        (left-char)
+        (setq filePath (buffer-substring filenamePathPos (point)))
+        (when (and notSplitWindow (= (count-windows) 1)) (split-window-right))
+        (other-window 1)
+        (find-file (string-trim filePath)))
 
-  (defun goto-next-warn-error (eventFileNavigationF searchPattern lineDelimiter columnDelimiter postF &optional errorMessage backwardSearch isRegexp)
-    "Template for the goto-next-warn-error function used to navigate to the specific error.
-     Usually it is used with a customized version of the above event-file-navigation function.
-    "
-    (unless errorMessage (setq errorMessage ""))
-    (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
-    (setq searchRegexp (concat searchPattern errorMessage))
-    (condition-case
-        nil
-        (funcall (searchFunction backwardSearch) searchRegexp)
-      (error (user-error "no match found for %s" errorMessage))
-      )
-    (funcall eventFileNavigationF t)
-    (other-window -1)
+      (defun goto-next-warn-error (eventFileNavigationF searchPattern lineDelimiter columnDelimiter postF &optional errorMessage backwardSearch isRegexp)
+        "Template for the goto-next-warn-error function used to navigate to the specific error.
+         Usually it is used with a customized version of the above event-file-navigation function.
+        "
+        (unless errorMessage (setq errorMessage ""))
+        (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
+        (setq searchRegexp (concat searchPattern errorMessage))
+        (condition-case
+            nil
+            (funcall (searchFunction backwardSearch) searchRegexp)
+          (error (user-error "no match found for %s" errorMessage))
+          )
+        (funcall eventFileNavigationF t)
+        (other-window -1)
 
-    (parse-go-to-line-or-column lineDelimiter 'goto-line)
-    (other-window -1)
+        (parse-go-to-line-or-column lineDelimiter 'goto-line)
+        (other-window -1)
 
-    (parse-go-to-line-or-column columnDelimiter 'right-char)
-    (recenter-top-bottom)
-    (other-window -1)
-    (funcall postF))
+        (parse-go-to-line-or-column columnDelimiter 'right-char)
+        (recenter-top-bottom)
+        (other-window -1)
+        (funcall postF))
 
-  (defun parse-go-to-line-or-column (separator gotoFunction)
-    "Higher order function: applies the input function to the number parsed from current position based on the input separator
-     eg. filePath:100:10
-         filePath(100,10)
+      (defun parse-go-to-line-or-column (separator gotoFunction)
+        "Higher order function: applies the input function to the number parsed from current position based on the input separator
+         eg. filePath:100:10
+             filePath(100,10)
 
-     applied most of the time with goto-line or right-char
-  "
-    (right-char)
-    (setq filenamePathPos (point))
-    (search-forward-regexp separator)
-    (left-char)
-    (setq fileLineOrColumn (buffer-substring filenamePathPos (point)))
-    (other-window 1)
-    (funcall gotoFunction (string-to-number fileLineOrColumn))
-    fileLineOrColumn)
+         applied most of the time with goto-line or right-char
+      "
+        (right-char)
+        (setq filenamePathPos (point))
+        (search-forward-regexp separator)
+        (left-char)
+        (setq fileLineOrColumn (buffer-substring filenamePathPos (point)))
+        (other-window 1)
+        (funcall gotoFunction (string-to-number fileLineOrColumn))
+        fileLineOrColumn)
 
-  (defun extract-code-line-or-region-template (value function postDefinitionSyntaxValue postDefinitionSyntaxFunc EndSyntaxValue EndSyntaxFunc name parameters from to)
-    "Template for extracting code to value or function:
-     Based on the input it this extract the selected code to the closest empty line above.
-     - Value: syntax for values in target laguage
-     - function: syntax for function in target laguage
-     - postDefinitionSyntaxValue: what you put between the name of the value and its actual value. eg (= in scala)
-     - postDefinitionSyntaxFunc: what you put between the name + parameters and the body of the function. eg (= in scala)
-     - EndSyntaxValue: what to put at the end of the definition of value body. Eg in js it's ';'
-     - EndSyntaxFunc: what to put at the end of the definition of function body. Eg in js it's '}' for functions
-     - name: name of the extracted value/function
-     - parameters: parameters of the extracted function
-     - from: start of the region
-     - to: end of the region
-    "
-    ;; extract code, cut if region or cut from point to end of the line
-    (setq code (buffer-substring from to))
-    (delete-region from to)
+      (defun extract-code-line-or-region-template (value function postDefinitionSyntaxValue postDefinitionSyntaxFunc EndSyntaxValue EndSyntaxFunc name parameters from to)
+        "Template for extracting code to value or function:
+         Based on the input it this extract the selected code to the closest empty line above.
+         - Value: syntax for values in target laguage
+         - function: syntax for function in target laguage
+         - postDefinitionSyntaxValue: what you put between the name of the value and its actual value. eg (= in scala)
+         - postDefinitionSyntaxFunc: what you put between the name + parameters and the body of the function. eg (= in scala)
+         - EndSyntaxValue: what to put at the end of the definition of value body. Eg in js it's ';'
+         - EndSyntaxFunc: what to put at the end of the definition of function body. Eg in js it's '}' for functions
+         - name: name of the extracted value/function
+         - parameters: parameters of the extracted function
+         - from: start of the region
+         - to: end of the region
+        "
+        ;; extract code, cut if region or cut from point to end of the line
+        (setq code (buffer-substring from to))
+        (delete-region from to)
 
-    ;; Generate code
-    (setq resultDefinition (if (string-blank-p parameters)
-                               (concat value name postDefinitionSyntaxValue code EndSyntaxValue)
-                             (concat function name parameters postDefinitionSyntaxFunc code EndSyntaxFunc)))
-    (setq resultReference (if (string-blank-p parameters)
-                              name
-                            (concat name parameters)))
-    ;; Put the resultReference at point
-    (insert resultReference)
-    ;; Move to the closest ^$ line and insert the resultDefinition
-    (re-search-backward "^$")
-    (insert resultDefinition))
+        ;; Generate code
+        (setq resultDefinition (if (string-blank-p parameters)
+                                   (concat value name postDefinitionSyntaxValue code EndSyntaxValue)
+                                 (concat function name parameters postDefinitionSyntaxFunc code EndSyntaxFunc)))
+        (setq resultReference (if (string-blank-p parameters)
+                                  name
+                                (concat name parameters)))
+        ;; Put the resultReference at point
+        (insert resultReference)
+        ;; Move to the closest ^$ line and insert the resultDefinition
+        (re-search-backward "^$")
+        (insert resultDefinition))
 
-  (defun goto-definition (type typeDefinitionRegexp)
-    "Higher order function that just apply the regexp in input to move the cursor at the definition point.
-  eg. \\(.*class  type .*\\|.*trait  type .*\\|.*object  type .*\\|.*type  type .*\\) to go to a scala definition
+      (defun goto-definition (type typeDefinitionRegexp)
+        "Higher order function that just apply the regexp in input to move the cursor at the definition point.
+      eg. \\(.*class  type .*\\|.*trait  type .*\\|.*object  type .*\\|.*type  type .*\\) to go to a scala definition
 
-     - type: the type to search for
-     - typedefinitionregexp: function that builds the regexp used in the search
-  "
-    (project-find-regexp (funcall typeDefinitionRegexp type))
-    )
+         - type: the type to search for
+         - typedefinitionregexp: function that builds the regexp used in the search
+      "
+        (project-find-regexp (funcall typeDefinitionRegexp type))
+        )
 
-  (defun build-import (inputType existingImportRegexp typeDefinitionRegexp build-import-from-existing-import-or-source importInsertionFunc)
-    "Template function to import a specific type:
-     - type: target type
-     - existingImportRegexp: lambda that computes the regexp, used to search for exisiting type imports.
-     - typeDefinitionRegexp: lambda that computes the regexp, used to search for exisiting type definition.
-     - build-import-from-existing-import-or-source: computes the import to insert. Very context dependent(cursor's position)
-     - importInsertionFunc: executed into the origin buffer, this decides how/where to insert the import.
-  "
-    (setq startingBuffer (buffer-name))
-    (condition-case nil
-        (project-find-regexp (funcall existingImportRegexp inputType))
-      (error (goto-definition inputType typeDefinitionRegexp))
-      )
+      (defun build-import (inputType existingImportRegexp typeDefinitionRegexp build-import-from-existing-import-or-source importInsertionFunc)
+        "Template function to import a specific type:
+         - type: target type
+         - existingImportRegexp: lambda that computes the regexp, used to search for exisiting type imports.
+         - typeDefinitionRegexp: lambda that computes the regexp, used to search for exisiting type definition.
+         - build-import-from-existing-import-or-source: computes the import to insert. Very context dependent(cursor's position)
+         - importInsertionFunc: executed into the origin buffer, this decides how/where to insert the import.
+      "
+        (setq startingBuffer (buffer-name))
+        (condition-case nil
+            (project-find-regexp (funcall existingImportRegexp inputType))
+          (error (goto-definition inputType typeDefinitionRegexp))
+          )
 
-    ;; In linux, if 1 result is found xref is not created, and the focus
-    ;; goes directly to the match
-    (when (get-buffer "*xref*")
-      (switch-to-buffer "*xref*")
-      (xref-next-line)
-      (xref-goto-xref t)
-      )
+        ;; In linux, if 1 result is found xref is not created, and the focus
+        ;; goes directly to the match
+        (when (get-buffer "*xref*")
+          (switch-to-buffer "*xref*")
+          (xref-next-line)
+          (xref-goto-xref t)
+          )
 
-    (setq result (funcall build-import-from-existing-import-or-source inputType startingBuffer))
-    (switch-to-buffer startingBuffer)
-    (funcall importInsertionFunc result))
+        (setq result (funcall build-import-from-existing-import-or-source inputType startingBuffer))
+        (switch-to-buffer startingBuffer)
+        (funcall importInsertionFunc result))
 
-  (defun remove-unused-import (unusedImportSearch gotoUnusedImport importBoundFunc narrowImportFix)
-    "Template function that clean the unused import applying the input functions"
-    (funcall gotoUnusedImport unusedImportSearch t t)
-    (setq importBounds (funcall importBoundFunc)
-          startImport (car importBounds)
-          endImport    (cadr importBounds)
-          targetType    (point))
+      (defun remove-unused-import (unusedImportSearch gotoUnusedImport importBoundFunc narrowImportFix)
+        "Template function that clean the unused import applying the input functions"
+        (funcall gotoUnusedImport unusedImportSearch t t)
+        (setq importBounds (funcall importBoundFunc)
+              startImport (car importBounds)
+              endImport    (cadr importBounds)
+              targetType    (point))
 
-    (save-restriction
-      (narrow-to-region startImport endImport)
-      (beginning-of-buffer)
-      (funcall narrowImportFix targetType)
-      )
-    (other-window -1)
-    )
-#+end_src
+        (save-restriction
+          (narrow-to-region startImport endImport)
+          (beginning-of-buffer)
+          (funcall narrowImportFix targetType)
+          )
+        (other-window -1)
+        )
+    #+end_src
 
 *** Scala
 
-  Functions used specifically for dealing with scala code.
+    Functions used specifically for dealing with scala code.
 
-#+BEGIN_SRC emacs-lisp
-  (setq scalaDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*trait " type ".*\\|.*object " type ".*\\|.*type " type ".*\\)")))
-  (defun sbt-event-file-navigation (&optional notSplitWindow)
-    "Navigate to the file that has a problem. it can navigate using a
-    different window."
-    (funcall 'event-file-navigation "] \\(-- .*: \\)?" ":" notSplitWindow))
+    #+BEGIN_SRC emacs-lisp
+      (setq scalaDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*trait " type ".*\\|.*object " type ".*\\|.*type " type ".*\\)")))
+      (defun sbt-event-file-navigation (&optional notSplitWindow)
+        "Navigate to the file that has a problem. it can navigate using a
+        different window."
+        (funcall 'event-file-navigation "] \\(-- .*: \\)?" ":" notSplitWindow))
 
-  (defun scala-build-import-from-existing-import-or-source (type startingBuffer)
-    "Considering the cursor is at the beginning of the target import line
-     or into the scala source file containing the definition of the
-    target file. This functions return the import to insert into the
-    dependent scala source file."
-    (if (string= (current-word) "import")
-        (copy-line-from-point-as-string) ;; copy import line
-      (concat "import " (path-to-package (buffer-file-name)) "." type) ;; copy package and make it an import
-      ))
+      (defun scala-build-import-from-existing-import-or-source (type startingBuffer)
+        "Considering the cursor is at the beginning of the target import line
+         or into the scala source file containing the definition of the
+        target file. This functions return the import to insert into the
+        dependent scala source file."
+        (if (string= (current-word) "import")
+            (copy-line-from-point-as-string) ;; copy import line
+          (concat "import " (path-to-package (buffer-file-name)) "." type) ;; copy package and make it an import
+          ))
 
-  (defun path-to-package (path)
-    "transform a path to a package"
-    (string-join
-     (butlast
-      (s-split "/"
-               (nth 1
-                    (split-string path "scala/")
-                    )
-               )
-      ) ".")
-    )
+      (defun path-to-package (path)
+        "transform a path to a package"
+        (string-join
+         (butlast
+          (s-split "/"
+                   (nth 1
+                        (split-string path "scala/")
+                        )
+                   )
+          ) ".")
+        )
 
-  (defun scala-path-to-package ()
-    "transform a path to a package, current buffer"
-    (interactive)
-    (setq package (path-to-package (buffer-file-name)))
-    (insert package)
-    )
+      (defun scala-path-to-package ()
+        "transform a path to a package, current buffer"
+        (interactive)
+        (setq package (path-to-package (buffer-file-name)))
+        (insert package)
+        )
 
-  ; keybinded functions ;;;;;;;;;;;;;;;;;
-  (defun sbt-shell-clean-old-output ()
-    "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
-    (interactive)
-    (funcall 'shell-clean-old-output "\\[info\\] Compiling"))
+                                              ; keybinded functions ;;;;;;;;;;;;;;;;;
+      (defun sbt-shell-clean-old-output ()
+        "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
+        (interactive)
+        (funcall 'shell-clean-old-output "\\[info\\] Compiling"))
 
-  (defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
-    "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
-    (interactive)
-    (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" ":" '(lambda () (other-window 1) ) errorMessage backwardSearch isRegexp))
+      (defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
+        "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
+        (interactive)
+        (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" ":" '(lambda () (other-window 1) ) errorMessage backwardSearch isRegexp))
 
-  (defun scala-import-bounds ()
-    "Return the import region bounds"
-    (save-excursion
-      (search-backward-regexp "\\({\\|import\\)")
-      (if (string= (current-word) "import")
-          (progn
-            (setq startOfImport (point)
-                  endOfImport (if (char-equal (char-before (line-end-position)) ?{)
-                                  (progn
-                                    (end-of-line)
-                                    (cdr (bounds-of-thing-at-point 'sexp)))
-                                (line-end-position)
-                                ))
-            (list startOfImport endOfImport)
-            )
-        (progn
-          (setq endOfImport (cdr (bounds-of-thing-at-point 'sexp)))
+      (defun scala-import-bounds ()
+        "Return the import region bounds"
+        (save-excursion
           (search-backward-regexp "\\({\\|import\\)")
-          (list (point) endOfImport)
-          )
-        )))
+          (if (string= (current-word) "import")
+              (progn
+                (setq startOfImport (point)
+                      endOfImport (if (char-equal (char-before (line-end-position)) ?{)
+                                      (progn
+                                        (end-of-line)
+                                        (cdr (bounds-of-thing-at-point 'sexp)))
+                                    (line-end-position)
+                                    ))
+                (list startOfImport endOfImport)
+                )
+            (progn
+              (setq endOfImport (cdr (bounds-of-thing-at-point 'sexp)))
+              (search-backward-regexp "\\({\\|import\\)")
+              (list (point) endOfImport)
+              )
+            )))
 
-  (defun scala-remove-unused-import ()
-    "Parse a shell/sbt output in search of the first unused import and remove it"
-    (interactive)
-    (funcall 'remove-unused-import
-             "Unused Import"
-             'scala-goto-next-warn-error
-             'scala-import-bounds
-             (lambda (targetType)
-               (if (search-forward "," nil t)
-                   (progn ;; multi import
-                     (goto-char targetType)
-                     (setq targetTypeBounds (bounds-of-thing-at-point 'word))
-                     (setq startKillTypeTarget (car targetTypeBounds))
-                     (setq endKillTypeTarget (cdr targetTypeBounds))
-                     (kill-region startKillTypeTarget endKillTypeTarget)
-                     (if (search-backward "," nil t)
-                         (progn
-                           (search-forward ",")
-                           (delete-backward-char 1)
+      (defun scala-remove-unused-import ()
+        "Parse a shell/sbt output in search of the first unused import and remove it"
+        (interactive)
+        (funcall 'remove-unused-import
+                 "Unused Import"
+                 'scala-goto-next-warn-error
+                 'scala-import-bounds
+                 (lambda (targetType)
+                   (if (search-forward "," nil t)
+                       (progn ;; multi import
+                         (goto-char targetType)
+                         (setq targetTypeBounds (bounds-of-thing-at-point 'word))
+                         (setq startKillTypeTarget (car targetTypeBounds))
+                         (setq endKillTypeTarget (cdr targetTypeBounds))
+                         (kill-region startKillTypeTarget endKillTypeTarget)
+                         (if (search-backward "," nil t)
+                             (progn
+                               (search-forward ",")
+                               (delete-backward-char 1)
+                               )
+                           (delete-forward-char 1)
                            )
-                       (delete-forward-char 1)
-                       )
+                         )
+                     (delete-region (point-min) (point-max))           ;; single import
                      )
-                 (delete-region (point-min) (point-max))           ;; single import
-                 )
-               )
-             ))
+                   )
+                 ))
 
-  (defun scala-import-type-at-point (type)
-    "Try to import into the current file the type at point"
-    (interactive (list
-                  (read-string (format "type (%s): " (thing-at-point 'word))
-                               nil nil (thing-at-point 'word))))
-    (funcall 'build-import
-             type
-             (lambda (type) (concat "import.*" type "$"))
-             scalaDefinitionRegex
-             'scala-build-import-from-existing-import-or-source
-             (lambda (result) (save-excursion
-                                (beginning-of-buffer)
-                                (end-of-line)
-                                (next-line)
-                                (newline)
-                                (insert result)
-                                ))
-             ))
+      (defun scala-import-type-at-point (type)
+        "Try to import into the current file the type at point"
+        (interactive (list
+                      (read-string (format "type (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))))
+        (funcall 'build-import
+                 type
+                 (lambda (type) (concat "import.*" type "$"))
+                 scalaDefinitionRegex
+                 'scala-build-import-from-existing-import-or-source
+                 (lambda (result) (save-excursion
+                                    (beginning-of-buffer)
+                                    (end-of-line)
+                                    (next-line)
+                                    (newline)
+                                    (insert result)
+                                    ))
+                 ))
 
-  (defun scala-extract-code-line-or-region (name &optional parameters from to)
-    "Extract the code to val or def:
-     Require:
-       - Name of the val/def
-       - Optional list of parameters (if empty it will be a val)
+      (defun scala-extract-code-line-or-region (name &optional parameters from to)
+        "Extract the code to val or def:
+         Require:
+           - Name of the val/def
+           - Optional list of parameters (if empty it will be a val)
 
-     if no code region is selected then it extracts the rest of the line from current position
-     Return type not specified.
-    "
-    (interactive (list
-                  (read-string "value/function name: " )
-                  (progn
-                    (setq
-                     param (read-string "param name (RET to finish): ")
-                     params nil
-                     )
-                    (while (not (equal "" (s-trim param)))
-                      (push (s-trim param) params)
-                      (setq param (read-string "param name (RET to finish): "))
-                      )
-                      (mapconcat 'identity (reverse params) ", ")
-                    )
-                  (if (use-region-p) (region-beginning) (point))
-                  (if (use-region-p) (region-end) (line-end-position))
-                  ))
-    (funcall 'extract-code-line-or-region-template "val " "def " " = " " = " nil nil name parameters from to)
-    )
+         if no code region is selected then it extracts the rest of the line from current position
+         Return type not specified.
+        "
+        (interactive (list
+                      (read-string "value/function name: " )
+                      (progn
+                        (setq
+                         param (read-string "param name (RET to finish): ")
+                         params nil
+                         )
+                        (while (not (equal "" (s-trim param)))
+                          (push (s-trim param) params)
+                          (setq param (read-string "param name (RET to finish): "))
+                          )
+                        (mapconcat 'identity (reverse params) ", ")
+                        )
+                      (if (use-region-p) (region-beginning) (point))
+                      (if (use-region-p) (region-end) (line-end-position))
+                      ))
+        (funcall 'extract-code-line-or-region-template "val " "def " " = " " = " nil nil name parameters from to)
+        )
 
-  (defun scala-goto-definition (type)
-    "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type"
-    (interactive (list
-                  (read-string (format "type (%s): " (thing-at-point 'word))
-                               nil nil (thing-at-point 'word))))
-    (goto-definition type scalaDefinitionRegex)
-    )
+      (defun scala-goto-definition (type)
+        "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type"
+        (interactive (list
+                      (read-string (format "type (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))))
+        (goto-definition type scalaDefinitionRegex)
+        )
 
-  (defun scala-open-doc (queryType lib)
-    "Open the scala doc in browser searching for the input queryType"
-    (interactive (list
-                  (read-string (format "type (%s): " (thing-at-point 'word))
-                               nil nil (thing-at-point 'word))
-                  (completing-read "Library: "
-                            '("Standard Library" "Cats" "Cats-Effect" "Http4s" "fs2 core 3") nil t)
-                  ))
-    (require 'browse-url)
-    (message "lib: %s" lib)
-    (setq libUrlPrefix (cond
-                        ((string= lib "Cats")        "https://typelevel.org/cats/api/cats/index.html?search=")
-                        ((string= lib "Cats-Effect") "https://typelevel.org/cats-effect/api/3.x/?search=")
-                        ((string= lib "Http4s")      "https://http4s.org/v0.21/api/org/http4s/?search=")
-                        ((string= lib "fs2 core 3")  "https://oss.sonatype.org/service/local/repositories/releases/archive/co/fs2/fs2-core_2.12/3.0.4/fs2-core_2.12-3.0.4-javadoc.jar/!/fs2/index.html?search=")
-                        (t                           "https://www.scala-lang.org/api/current/index.html?search=")
-                        ))
-    (browse-url (concat libUrlPrefix queryType))
-    )
-#+END_SRC
+      (defun scala-open-doc (queryType lib)
+        "Open the scala doc in browser searching for the input queryType"
+        (interactive (list
+                      (read-string (format "type (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))
+                      (completing-read "Library: "
+                                       '("Standard Library" "Cats" "Cats-Effect" "Http4s" "fs2 core 3") nil t)
+                      ))
+        (require 'browse-url)
+        (message "lib: %s" lib)
+        (setq libUrlPrefix (cond
+                            ((string= lib "Cats")        "https://typelevel.org/cats/api/cats/index.html?search=")
+                            ((string= lib "Cats-Effect") "https://typelevel.org/cats-effect/api/3.x/?search=")
+                            ((string= lib "Http4s")      "https://http4s.org/v0.21/api/org/http4s/?search=")
+                            ((string= lib "fs2 core 3")  "https://oss.sonatype.org/service/local/repositories/releases/archive/co/fs2/fs2-core_2.12/3.0.4/fs2-core_2.12-3.0.4-javadoc.jar/!/fs2/index.html?search=")
+                            (t                           "https://www.scala-lang.org/api/current/index.html?search=")
+                            ))
+        (browse-url (concat libUrlPrefix queryType))
+        )
+    #+END_SRC
 *** Haskell
 
-  Functions useful when dealing with Haskell.
+    Functions useful when dealing with Haskell.
 
-#+begin_src emacs-lisp
+    #+begin_src emacs-lisp
 
-  (setq haskellDefinitionRegex (lambda (type) (concat "\\(.*data " type ".*\\|.*type " type ".*\\|.*newtype " type ".*\\|" type " ::.*\\)")))
+      (setq haskellDefinitionRegex (lambda (type) (concat "\\(.*data " type ".*\\|.*type " type ".*\\|.*newtype " type ".*\\|" type " ::.*\\)")))
 
-  (defun hs-shell-clean-old-output ()
-    "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
-    (interactive)
-    (funcall 'shell-clean-old-output "\\(Building library for \\|\n\n\n\\)"))
+      (defun hs-shell-clean-old-output ()
+        "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
+        (interactive)
+        (funcall 'shell-clean-old-output "\\(Building library for \\|\n\n\n\\)"))
 
-  (defun hs-event-file-navigation (&optional notSplitWindow)
-    "Navigate to the file that has a problem. it can navigate using a
-     different window."
-    (beginning-of-line) ;; Often called from the end of the line of the file path targeted
-    (funcall 'event-file-navigation "" ":" notSplitWindow))
+      (defun hs-event-file-navigation (&optional notSplitWindow)
+        "Navigate to the file that has a problem. it can navigate using a
+         different window."
+        (beginning-of-line) ;; Often called from the end of the line of the file path targeted
+        (funcall 'event-file-navigation "" ":" notSplitWindow))
 
-  (defun hs-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
-    "Search into an haskell output for the first warning/error, starting from cursor position, and move to it"
-    (interactive)
-    (goto-next-warn-error 'hs-event-file-navigation ".*\\.hs:.*" ":" "[:-]" '(lambda () () ) errorMessage backwardSearch isRegexp))
+      (defun hs-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
+        "Search into an haskell output for the first warning/error, starting from cursor position, and move to it"
+        (interactive)
+        (goto-next-warn-error 'hs-event-file-navigation ".*\\.hs:.*" ":" "[:-]" '(lambda () () ) errorMessage backwardSearch isRegexp))
 
-  (defun hs-extract-code-line-or-region (name &optional parameters from to)
-    "Extract the code to val or def:
-      Require:
-        - Name of the val/def
-        - Optional list of parameters (if empty it will be a val)
+      (defun hs-extract-code-line-or-region (name &optional parameters from to)
+        "Extract the code to val or def:
+          Require:
+            - Name of the val/def
+            - Optional list of parameters (if empty it will be a val)
 
-      if no code region is selected then it extracts the rest of the line from current position
-      Return type not specified.
-     "
-    (interactive (list
-                  (read-string "value/function name: " )
-                  (progn
-                    (setq
-                     param (read-string "param name (RET to finish): ")
-                     params nil
-                     )
-                    (while (not (equal "" (s-trim param)))
-                      (push (s-trim param) params)
-                      (setq param (read-string "param name (RET to finish): "))
-                      )
-                    (concat " " (mapconcat 'identity (reverse params) " "))
-                    )
-                  (if (use-region-p) (region-beginning) (point))
-                  (if (use-region-p) (region-end) (line-end-position))
-                  ))
-    (funcall 'extract-code-line-or-region-template "" "" " = " " = " "" "" name parameters from to))
+          if no code region is selected then it extracts the rest of the line from current position
+          Return type not specified.
+         "
+        (interactive (list
+                      (read-string "value/function name: " )
+                      (progn
+                        (setq
+                         param (read-string "param name (RET to finish): ")
+                         params nil
+                         )
+                        (while (not (equal "" (s-trim param)))
+                          (push (s-trim param) params)
+                          (setq param (read-string "param name (RET to finish): "))
+                          )
+                        (concat " " (mapconcat 'identity (reverse params) " "))
+                        )
+                      (if (use-region-p) (region-beginning) (point))
+                      (if (use-region-p) (region-end) (line-end-position))
+                      ))
+        (funcall 'extract-code-line-or-region-template "" "" " = " " = " "" "" name parameters from to))
 
-  (defun hs-goto-next-unused-import (&optional errorMessage backwardSearch isRegexp)
-    "Search into an haskell output for the unused import, and move to it.
-      Special case of hs-goto-next-warn-error since the output doesn't provide
-      the correct column position"
-    (interactive)
-    (unless errorMessage (setq errorMessage ""))
-    (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
-    (setq searchRegexp (concat (getenv "HOME") ".*\\.hs.*" errorMessage))
-    (condition-case
-        nil
-        (funcall (searchFunction backwardSearch) searchRegexp)
-      (error (user-error "no match found for %s" errorMessage))
-      )
-    (hs-event-file-navigation t)
-    (other-window -1)
-
-    (parse-go-to-line-or-column ":" 'goto-line)
-    (other-window -1)
-
-    (save-excursion
-      (search-forward "The import of ‘")
-      (setq p1 (point))
-      (search-forward "’")
-      (left-char)
-      (setq targetImport (buffer-substring-no-properties p1 (point)))
-      )
-    (other-window 1)
-    (search-forward targetImport)
-    (search-backward targetImport) ;;to move at the start of the match
-    )
-
-  (defun hs-import-bounds ()
-    "Return the import region bounds"
-    (save-excursion
-      (search-backward-regexp "\\((\\|import\\)")
-      (if (char-equal (char-after (point)) ?\( )
-          (progn
-            (setq startBracketPoint (point))
-            (search-backward-regexp "\\((\\|import\\)")
-            (setq startOfImport (point))
-            (goto-char startBracketPoint)
-            (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
-            (list startOfImport (line-end-position))
-            )
-        (progn
-
-          (setq startOfImport (point)
-                endOfImport (if (char-equal (char-before (line-end-position)) ?\( )
-                                (progn
-                                  (end-of-line)
-                                  (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
-                                  (line-end-position)
-                                  )
-                              (line-end-position)
-                              ))
-          (list startOfImport endOfImport)
+      (defun hs-goto-next-unused-import (&optional errorMessage backwardSearch isRegexp)
+        "Search into an haskell output for the unused import, and move to it.
+          Special case of hs-goto-next-warn-error since the output doesn't provide
+          the correct column position"
+        (interactive)
+        (unless errorMessage (setq errorMessage ""))
+        (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
+        (setq searchRegexp (concat (getenv "HOME") ".*\\.hs.*" errorMessage))
+        (condition-case
+            nil
+            (funcall (searchFunction backwardSearch) searchRegexp)
+          (error (user-error "no match found for %s" errorMessage))
           )
-        )))
+        (hs-event-file-navigation t)
+        (other-window -1)
 
-  (defun hs-remove-unused-import ()
-    "Parse a shell output (stack) in search of the first unused import and remove it"
-    (interactive)
-    (funcall 'remove-unused-import
-             ".*Wunused-imports.*$"
-             'hs-goto-next-unused-import
-             'hs-import-bounds
-             (lambda (targetType)
-               (if (search-forward "," nil t)
-                   (progn ;; multi import
-                     (goto-char targetType)
-                     (setq targetTypeBounds (bounds-of-thing-at-point 'word))
-                     (setq startKillTypeTarget (car targetTypeBounds))
-                     (setq endKillTypeTarget (cdr targetTypeBounds))
-                     (kill-region startKillTypeTarget endKillTypeTarget)
-                     (if (search-backward "," nil t)
-                         (progn
-                           (search-forward ",")
-                           (delete-backward-char 1)
-                           )
-                       (delete-forward-char 1)
-                       )
-                     )
-                 (delete-region (point-min) (point-max))           ;; single import
-                 )
-               )
-             ))
+        (parse-go-to-line-or-column ":" 'goto-line)
+        (other-window -1)
 
-  (defun hs-build-import-from-existing-import-or-source (type startingBuffer)
-    "Considering the cursor is at the beginning of the target import line
-      or into the haskell source file containing the definition of the
-     target file. This functions return the import to insert into the
-     dependent haskell source file."
-    (if (string= (current-word) "import")
-        (copy-line-from-point-as-string) ;; copy import line
-      (progn
-        (beginning-of-buffer)
-        (search-forward "module ")
-        (setq moduleStartPoint (point))
-        (search-forward-regexp " \\|$")
-        (setq moduleName (s-trim (buffer-substring-no-properties moduleStartPoint (point))))
-        (concat "import " moduleName " (" type ")")
+        (save-excursion
+          (search-forward "The import of ‘")
+          (setq p1 (point))
+          (search-forward "’")
+          (left-char)
+          (setq targetImport (buffer-substring-no-properties p1 (point)))
+          )
+        (other-window 1)
+        (search-forward targetImport)
+        (search-backward targetImport) ;;to move at the start of the match
         )
-      ))
 
-  (defun hs-import-type-at-point (type)
-    "Try to import into the current file the type at point"
-    (interactive (list
-                  (read-string (format "type (%s): " (thing-at-point 'word))
-                               nil nil (thing-at-point 'word))))
-    (funcall 'build-import
-             type
-             (lambda (type) (concat "^import .*" type "[ ,]?.*)$"))
-             haskellDefinitionRegex
-             'hs-build-import-from-existing-import-or-source
-             (lambda (result) (save-excursion
-                                (beginning-of-buffer)
-                                (search-forward "where")
-                                (next-line)
-                                (newline 2)
-                                (previous-line)
-                                (insert result)
-                                ))
-             ))
+      (defun hs-import-bounds ()
+        "Return the import region bounds"
+        (save-excursion
+          (search-backward-regexp "\\((\\|import\\)")
+          (if (char-equal (char-after (point)) ?\( )
+              (progn
+                (setq startBracketPoint (point))
+                (search-backward-regexp "\\((\\|import\\)")
+                (setq startOfImport (point))
+                (goto-char startBracketPoint)
+                (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
+                (list startOfImport (line-end-position))
+                )
+            (progn
 
-  (defun hs-string-to-multiline-string (&optional $from $to)
-    "Escape the string selected as haskell multiline string"
-    (interactive
-     (if (use-region-p)
-         (list (region-beginning) (region-end))
-       (let ((bds (bounds-of-thing-at-point 'paragraph)) )
-         (list (car bds) (cdr bds)) ) ) )
-    (let (inputStr outputStr)
-      (setq inputStr (buffer-substring-no-properties $from $to))
-      (setq outputStr
-            (let* (
-                   (case-fold-search t)
-                   (first-replace (replace-regexp-in-string "$" (regexp-quote "\\n\\") inputStr))
-                   (second-replace (replace-regexp-in-string "^" (regexp-quote "\\") first-replace))
-                   (remove-starting-backslash (substring second-replace 1 (length second-replace)))
+              (setq startOfImport (point)
+                    endOfImport (if (char-equal (char-before (line-end-position)) ?\( )
+                                    (progn
+                                      (end-of-line)
+                                      (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
+                                      (line-end-position)
+                                      )
+                                  (line-end-position)
+                                  ))
+              (list startOfImport endOfImport)
+              )
+            )))
+
+      (defun hs-remove-unused-import ()
+        "Parse a shell output (stack) in search of the first unused import and remove it"
+        (interactive)
+        (funcall 'remove-unused-import
+                 ".*Wunused-imports.*$"
+                 'hs-goto-next-unused-import
+                 'hs-import-bounds
+                 (lambda (targetType)
+                   (if (search-forward "," nil t)
+                       (progn ;; multi import
+                         (goto-char targetType)
+                         (setq targetTypeBounds (bounds-of-thing-at-point 'word))
+                         (setq startKillTypeTarget (car targetTypeBounds))
+                         (setq endKillTypeTarget (cdr targetTypeBounds))
+                         (kill-region startKillTypeTarget endKillTypeTarget)
+                         (if (search-backward "," nil t)
+                             (progn
+                               (search-forward ",")
+                               (delete-backward-char 1)
+                               )
+                           (delete-forward-char 1)
+                           )
+                         )
+                     (delete-region (point-min) (point-max))           ;; single import
+                     )
                    )
-              (substring remove-starting-backslash 0 (- (length remove-starting-backslash) 3))
-              ))
+                 ))
 
-      (save-excursion
-        (delete-region $from $to)
-        (goto-char $from)
-        (insert outputStr))))
+      (defun hs-build-import-from-existing-import-or-source (type startingBuffer)
+        "Considering the cursor is at the beginning of the target import line
+          or into the haskell source file containing the definition of the
+         target file. This functions return the import to insert into the
+         dependent haskell source file."
+        (if (string= (current-word) "import")
+            (copy-line-from-point-as-string) ;; copy import line
+          (progn
+            (beginning-of-buffer)
+            (search-forward "module ")
+            (setq moduleStartPoint (point))
+            (search-forward-regexp " \\|$")
+            (setq moduleName (s-trim (buffer-substring-no-properties moduleStartPoint (point))))
+            (concat "import " moduleName " (" type ")")
+            )
+          ))
 
-  (defun hs-goto-definition (type)
-    "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type"
-    (interactive (list
-                  (read-string (format "type (%s): " (thing-at-point 'word))
-                               nil nil (thing-at-point 'word))))
-    (goto-definition type haskellDefinitionRegex)
-    )
-#+end_src
+      (defun hs-import-type-at-point (type)
+        "Try to import into the current file the type at point"
+        (interactive (list
+                      (read-string (format "type (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))))
+        (funcall 'build-import
+                 type
+                 (lambda (type) (concat "^import .*" type "[ ,]?.*)$"))
+                 haskellDefinitionRegex
+                 'hs-build-import-from-existing-import-or-source
+                 (lambda (result) (save-excursion
+                                    (beginning-of-buffer)
+                                    (search-forward "where")
+                                    (next-line)
+                                    (newline 2)
+                                    (previous-line)
+                                    (insert result)
+                                    ))
+                 ))
+
+      (defun hs-string-to-multiline-string (&optional $from $to)
+        "Escape the string selected as haskell multiline string"
+        (interactive
+         (if (use-region-p)
+             (list (region-beginning) (region-end))
+           (let ((bds (bounds-of-thing-at-point 'paragraph)) )
+             (list (car bds) (cdr bds)) ) ) )
+        (let (inputStr outputStr)
+          (setq inputStr (buffer-substring-no-properties $from $to))
+          (setq outputStr
+                (let* (
+                       (case-fold-search t)
+                       (first-replace (replace-regexp-in-string "$" (regexp-quote "\\n\\") inputStr))
+                       (second-replace (replace-regexp-in-string "^" (regexp-quote "\\") first-replace))
+                       (remove-starting-backslash (substring second-replace 1 (length second-replace)))
+                       )
+                  (substring remove-starting-backslash 0 (- (length remove-starting-backslash) 3))
+                  ))
+
+          (save-excursion
+            (delete-region $from $to)
+            (goto-char $from)
+            (insert outputStr))))
+
+      (defun hs-goto-definition (type)
+        "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type"
+        (interactive (list
+                      (read-string (format "type (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))))
+        (goto-definition type haskellDefinitionRegex)
+        )
+    #+end_src
 *** Typescript
 
-  Functions useful when dealing with typescript.
+    Functions useful when dealing with typescript.
 
-#+BEGIN_SRC emacs-lisp
-  (setq typescriptDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*interface " type ".*\\|.*type " type ".*\\)")))
+    #+BEGIN_SRC emacs-lisp
+      (setq typescriptDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*interface " type ".*\\|.*type " type ".*\\)")))
 
-  (defun ts-shell-clean-old-output ()
-    "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
-    (interactive)
-    (funcall 'shell-clean-old-output "\\(<s> \\[webpack\\.Progress\\] 100% \\|📦  Building\\)")
-    )
+      (defun ts-shell-clean-old-output ()
+        "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
+        (interactive)
+        (funcall 'shell-clean-old-output "\\(<s> \\[webpack\\.Progress\\] 100% \\|📦  Building\\)")
+        )
 
-  (defun ts-event-file-navigation (&optional notSplitWindow)
-    "Navigate to the file that has a problem. it can navigate using a
-    different window."
-    (previous-line) ;; Often called from the line AFTER the actual file path targeted
-    (funcall 'event-file-navigation (regexp-quote "[tsl] ERROR in ") "(" notSplitWindow)
-    )
+      (defun ts-event-file-navigation (&optional notSplitWindow)
+        "Navigate to the file that has a problem. it can navigate using a
+        different window."
+        (previous-line) ;; Often called from the line AFTER the actual file path targeted
+        (funcall 'event-file-navigation (regexp-quote "[tsl] ERROR in ") "(" notSplitWindow)
+        )
 
-  (defun ts-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
-    "Search into an typescript output for the first warning/error, starting from cursor position, and move to it"
-    (interactive)
+      (defun ts-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
+        "Search into an typescript output for the first warning/error, starting from cursor position, and move to it"
+        (interactive)
 
-    (goto-next-warn-error 'ts-event-file-navigation ".*TS.*: " "," ")" '(lambda () (progn
-                                                                                     (other-window -1)
-                                                                                     (next-line)
-                                                                                     (end-of-line)
-                                                                                     (other-window 1)) ) errorMessage backwardSearch isRegexp)
-    )
+        (goto-next-warn-error 'ts-event-file-navigation ".*TS.*: " "," ")" '(lambda () (progn
+                                                                                         (other-window -1)
+                                                                                         (next-line)
+                                                                                         (end-of-line)
+                                                                                         (other-window 1)) ) errorMessage backwardSearch isRegexp)
+        )
 
-  (defun ts-extract-code-line-or-region (name &optional parameters from to)
-    "Extract the code to val or def:
-     Require:
-       - Name of the val/def
-       - Optional list of parameters (if empty it will be a val)
+      (defun ts-extract-code-line-or-region (name &optional parameters from to)
+        "Extract the code to val or def:
+         Require:
+           - Name of the val/def
+           - Optional list of parameters (if empty it will be a val)
 
-     if no code region is selected then it extracts the rest of the line from current position
-     Return type not specified.
-    "
-    (interactive (list
-                  (read-string "value/function name: " )
-                  (progn
-                    (setq
-                     separator (read-string "insert separartor(,): " nil nil ",")
-                     param (read-string "param name (RET to finish): ")
-                     params nil
-                     )
-                    (while (not (equal "" (s-trim param)))
-                      (push (s-trim param) params)
-                      (setq param (read-string "param name (RET to finish): "))
-                      )
-                    (reverse (cons (car params) (mapcar (lambda (x) (concat x separator)) (cdr params))))
-                    )
-                  (if (use-region-p) (region-beginning) (point))
-                  (if (use-region-p) (region-end) (line-end-position))
-                  ))
-    (funcall 'extract-code-line-or-region-template "var " "function " " = " " { \n return " ";" ";\n }" name parameters from to)
-    )
+         if no code region is selected then it extracts the rest of the line from current position
+         Return type not specified.
+        "
+        (interactive (list
+                      (read-string "value/function name: " )
+                      (progn
+                        (setq
+                         separator (read-string "insert separartor(,): " nil nil ",")
+                         param (read-string "param name (RET to finish): ")
+                         params nil
+                         )
+                        (while (not (equal "" (s-trim param)))
+                          (push (s-trim param) params)
+                          (setq param (read-string "param name (RET to finish): "))
+                          )
+                        (reverse (cons (car params) (mapcar (lambda (x) (concat x separator)) (cdr params))))
+                        )
+                      (if (use-region-p) (region-beginning) (point))
+                      (if (use-region-p) (region-end) (line-end-position))
+                      ))
+        (funcall 'extract-code-line-or-region-template "var " "function " " = " " { \n return " ";" ";\n }" name parameters from to)
+        )
 
-  (defun ts-build-import-from-existing-import-or-source (type startingBuffer)
-    "Considering the cursor is at the beginning of the target import line
-     or into the typescript source file containing the definition of the
-    target file. This functions return the import to insert into the
-    dependent typescript source file."
-    (if (string= (current-word) "import")
-        (copy-line-from-point-as-string) ;; copy import line
-      (concat "import { " type " } from '" (s-chop-suffixes '(".ts" ".tsx" ".ts.html") (file-relative-name (buffer-file-name) startingBuffer))  "';")
-      )
-    )
-
-  (defun ts-import-type-at-point (type)
-    "Try to import into the current file the type at point"
-    (interactive (list
-                  (read-string (format "type (%s): " (thing-at-point 'word))
-                               nil nil (thing-at-point 'word))))
-    (funcall 'build-import
-             type
-             (lambda (type) (concat "^import .*" " " type "[ ,]" ".*} from '.*';$"))
-             typescriptDefinitionRegex
-             'ts-build-import-from-existing-import-or-source
-             (lambda (result) (save-excursion
-                                (beginning-of-buffer)
-                                (newline)
-                                (previous-line)
-                                (insert result)
-                                ))
-             )
-    )
-
-  (defun ts-import-bounds ()
-    "Return the import region bounds"
-    (save-excursion
-      (search-backward-regexp "\\({\\|import\\)")
-      (if (char-equal (char-after (point)) ?{)
-          (progn
-            (setq startBracketPoint (point))
-            (search-backward-regexp "\\({\\|import\\)")
-            (setq startOfImport (point))
-            (goto-char startBracketPoint)
-            (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
-            (list startOfImport (line-end-position))
-            )
-        (progn
-
-          (setq startOfImport (point)
-                endOfImport (if (char-equal (char-before (line-end-position)) ?{)
-                                (progn
-                                  (end-of-line)
-                                  (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
-                                  (line-end-position)
-                                  )
-                              (line-end-position)
-                              ))
-          (list startOfImport endOfImport)
+      (defun ts-build-import-from-existing-import-or-source (type startingBuffer)
+        "Considering the cursor is at the beginning of the target import line
+         or into the typescript source file containing the definition of the
+        target file. This functions return the import to insert into the
+        dependent typescript source file."
+        (if (string= (current-word) "import")
+            (copy-line-from-point-as-string) ;; copy import line
+          (concat "import { " type " } from '" (s-chop-suffixes '(".ts" ".tsx" ".ts.html") (file-relative-name (buffer-file-name) startingBuffer))  "';")
           )
-        ))
-    )
+        )
 
-  (defun ts-remove-unused-import ()
-    "Parse a shell output in search of the first unused import and remove it"
-    (interactive)
-    (funcall 'remove-unused-import
-             ".*is declared but.*$"
-             'ts-goto-next-warn-error
-             'ts-import-bounds
-             (lambda (targetType)
-               (if (search-forward "," nil t)
-                   (progn ;; multi import
-                     (goto-char targetType)
-                     (setq targetTypeBounds (bounds-of-thing-at-point 'word))
-                     (setq startKillTypeTarget (car targetTypeBounds))
-                     (setq endKillTypeTarget (cdr targetTypeBounds))
-                     (kill-region startKillTypeTarget endKillTypeTarget)
-                     (if (search-backward "," nil t)
-                         (progn
-                           (search-forward ",")
-                           (delete-backward-char 1)
-                           )
-                       (delete-forward-char 1)
-                       )
-                     )
-                 (delete-region (point-min) (point-max))           ;; single import
+      (defun ts-import-type-at-point (type)
+        "Try to import into the current file the type at point"
+        (interactive (list
+                      (read-string (format "type (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))))
+        (funcall 'build-import
+                 type
+                 (lambda (type) (concat "^import .*" " " type "[ ,]" ".*} from '.*';$"))
+                 typescriptDefinitionRegex
+                 'ts-build-import-from-existing-import-or-source
+                 (lambda (result) (save-excursion
+                                    (beginning-of-buffer)
+                                    (newline)
+                                    (previous-line)
+                                    (insert result)
+                                    ))
                  )
-               )
-             )
-    )
-    (defun ts-goto-definition (type)
-      "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type"
-      (interactive (list
-                    (read-string (format "type (%s): " (thing-at-point 'word))
-                                 nil nil (thing-at-point 'word))))
-      (goto-definition type typescriptDefinitionRegex)
-      )
-#+END_SRC
+        )
+
+      (defun ts-import-bounds ()
+        "Return the import region bounds"
+        (save-excursion
+          (search-backward-regexp "\\({\\|import\\)")
+          (if (char-equal (char-after (point)) ?{)
+              (progn
+                (setq startBracketPoint (point))
+                (search-backward-regexp "\\({\\|import\\)")
+                (setq startOfImport (point))
+                (goto-char startBracketPoint)
+                (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
+                (list startOfImport (line-end-position))
+                )
+            (progn
+
+              (setq startOfImport (point)
+                    endOfImport (if (char-equal (char-before (line-end-position)) ?{)
+                                    (progn
+                                      (end-of-line)
+                                      (goto-char (cdr (bounds-of-thing-at-point 'sexp)))
+                                      (line-end-position)
+                                      )
+                                  (line-end-position)
+                                  ))
+              (list startOfImport endOfImport)
+              )
+            ))
+        )
+
+      (defun ts-remove-unused-import ()
+        "Parse a shell output in search of the first unused import and remove it"
+        (interactive)
+        (funcall 'remove-unused-import
+                 ".*is declared but.*$"
+                 'ts-goto-next-warn-error
+                 'ts-import-bounds
+                 (lambda (targetType)
+                   (if (search-forward "," nil t)
+                       (progn ;; multi import
+                         (goto-char targetType)
+                         (setq targetTypeBounds (bounds-of-thing-at-point 'word))
+                         (setq startKillTypeTarget (car targetTypeBounds))
+                         (setq endKillTypeTarget (cdr targetTypeBounds))
+                         (kill-region startKillTypeTarget endKillTypeTarget)
+                         (if (search-backward "," nil t)
+                             (progn
+                               (search-forward ",")
+                               (delete-backward-char 1)
+                               )
+                           (delete-forward-char 1)
+                           )
+                         )
+                     (delete-region (point-min) (point-max))           ;; single import
+                     )
+                   )
+                 )
+        )
+      (defun ts-goto-definition (type)
+        "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type"
+        (interactive (list
+                      (read-string (format "type (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))))
+        (goto-definition type typescriptDefinitionRegex)
+        )
+    #+END_SRC
 *** C#
 
-  Functions used specifically for dealing with c# code.
+    Functions used specifically for dealing with c# code.
 
-#+BEGIN_SRC emacs-lisp
-  (setq csharpDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*interface " type ".*\\|.*enum " type ".*\\)")))
+    #+BEGIN_SRC emacs-lisp
+      (setq csharpDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*interface " type ".*\\|.*enum " type ".*\\)")))
 
-  (defun dotnet-event-file-navigation (&optional notSplitWindow)
-    "Navigate to the file that has a problem. it can navigate using a
-    different window."
-    (funcall 'event-file-navigation "^" "(" notSplitWindow))
+      (defun dotnet-event-file-navigation (&optional notSplitWindow)
+        "Navigate to the file that has a problem. it can navigate using a
+        different window."
+        (funcall 'event-file-navigation "^" "(" notSplitWindow))
 
-  (defun dotnet-build-import-from-existing-import-or-source (type startingBuffer)
-    "Considering the cursor is at the beginning of the target import line
-     or into the .net source file containing the definition of the
-    target file. This functions return the import to insert into the
-    dependent .net source file."
-    (message "test")
-    (if (string= (current-word) "using")
-        (copy-line-from-point-as-string) ;; copy import line
-      (concat "using " (type-namespace) ";") ;; copy namespace and make it an import
-      ))
+      (defun dotnet-build-import-from-existing-import-or-source (type startingBuffer)
+        "Considering the cursor is at the beginning of the target import line
+         or into the .net source file containing the definition of the
+        target file. This functions return the import to insert into the
+        dependent .net source file."
+        (message "test")
+        (if (string= (current-word) "using")
+            (copy-line-from-point-as-string) ;; copy import line
+          (concat "using " (type-namespace) ";") ;; copy namespace and make it an import
+          ))
 
-  (defun type-namespace ()
-    "return the namespace of the current file"
-    (save-excursion
-      (beginning-of-buffer)
-      (search-forward "namespace ")
-      (buffer-substring-no-properties (point) (line-end-position))
-      )
-    )
+      (defun type-namespace ()
+        "return the namespace of the current file"
+        (save-excursion
+          (beginning-of-buffer)
+          (search-forward "namespace ")
+          (buffer-substring-no-properties (point) (line-end-position))
+          )
+        )
 
-  ; keybinded functions ;;;;;;;;;;;;;;;;;
-  (defun csharp-shell-clean-old-output ()
-    "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
-    (interactive)
-    (funcall 'shell-clean-old-output "^Build .*$"))
+                                              ; keybinded functions ;;;;;;;;;;;;;;;;;
+      (defun csharp-shell-clean-old-output ()
+        "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
+        (interactive)
+        (funcall 'shell-clean-old-output "^Build .*$"))
 
-  (defun csharp-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
-    "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
-    (interactive)
-    (forward-line)
-    (goto-next-warn-error 'dotnet-event-file-navigation ".*\\.cs.*" "," ")" '(lambda () (progn
-                                                                                          (other-window -1)
-                                                                                          (left-char)) ) errorMessage backwardSearch isRegexp))
+      (defun csharp-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
+        "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
+        (interactive)
+        (forward-line)
+        (goto-next-warn-error 'dotnet-event-file-navigation ".*\\.cs.*" "," ")" '(lambda () (progn
+                                                                                              (other-window -1)
+                                                                                              (left-char)) ) errorMessage backwardSearch isRegexp))
 
-  (defun csharp-import-type-at-point (type)
-    "Try to import into the current file the type at point"
-    (interactive (list
-                  (read-string (format "type (%s): " (thing-at-point 'word))
-                               nil nil (thing-at-point 'word))))
-    (funcall 'build-import
-             type
-             (lambda (type) (concat "using.*" type "$"))
-             csharpDefinitionRegex
-             'dotnet-build-import-from-existing-import-or-source
-             (lambda (result) (save-excursion
-                                (beginning-of-buffer)
-                                (newline)
-                                (previous-line)
-                                (insert result)
-                                ))
-             ))
+      (defun csharp-import-type-at-point (type)
+        "Try to import into the current file the type at point"
+        (interactive (list
+                      (read-string (format "type (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))))
+        (funcall 'build-import
+                 type
+                 (lambda (type) (concat "using.*" type "$"))
+                 csharpDefinitionRegex
+                 'dotnet-build-import-from-existing-import-or-source
+                 (lambda (result) (save-excursion
+                                    (beginning-of-buffer)
+                                    (newline)
+                                    (previous-line)
+                                    (insert result)
+                                    ))
+                 ))
 
-  (defun csharp-extract-code-line-or-region (name &optional parameters from to)
-    "Extract the code to val or def:
-     Require:
-       - Name of the val/def
-       - Optional list of parameters (if empty it will be a val)
+      (defun csharp-extract-code-line-or-region (name &optional parameters from to)
+        "Extract the code to val or def:
+         Require:
+           - Name of the val/def
+           - Optional list of parameters (if empty it will be a val)
 
-     if no code region is selected then it extracts the rest of the line from current position
-     Return type not specified.
-    "
-    (interactive (list
-                  (read-string "value/function name: " )
-                  (progn
-                    (setq
-                     param (read-string "param name (RET to finish): ")
-                     params nil
-                     )
-                    (while (not (equal "" (s-trim param)))
-                      (push (s-trim param) params)
-                      (setq param (read-string "param name (RET to finish): "))
-                      )
-                    (concat "(" (mapconcat 'identity (reverse params) ", ") ")")
-                    )
-                  (if (use-region-p) (region-beginning) (point))
-                  (if (use-region-p) (region-end) (line-end-position))
-                  ))
-    (funcall 'extract-code-line-or-region-template "var " "public void " " = " " { " nil "}" name parameters from to)
-    )
+         if no code region is selected then it extracts the rest of the line from current position
+         Return type not specified.
+        "
+        (interactive (list
+                      (read-string "value/function name: " )
+                      (progn
+                        (setq
+                         param (read-string "param name (RET to finish): ")
+                         params nil
+                         )
+                        (while (not (equal "" (s-trim param)))
+                          (push (s-trim param) params)
+                          (setq param (read-string "param name (RET to finish): "))
+                          )
+                        (concat "(" (mapconcat 'identity (reverse params) ", ") ")")
+                        )
+                      (if (use-region-p) (region-beginning) (point))
+                      (if (use-region-p) (region-end) (line-end-position))
+                      ))
+        (funcall 'extract-code-line-or-region-template "var " "public void " " = " " { " nil "}" name parameters from to)
+        )
 
-    (defun csharp-goto-definition (type)
-      "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type"
-      (interactive (list
-                    (read-string (format "type (%s): " (thing-at-point 'word))
-                                 nil nil (thing-at-point 'word))))
-      (goto-definition type csharpDefinitionRegex)
-      )
-#+END_SRC
+      (defun csharp-goto-definition (type)
+        "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type"
+        (interactive (list
+                      (read-string (format "type (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))))
+        (goto-definition type csharpDefinitionRegex)
+        )
+    #+END_SRC
 * Keybindings
 ** COMMENT Window Sizing
 
    Not needed since there's golden ratio. Commented.
-#+begin_src emacs-lisp
+   #+begin_src emacs-lisp
      (global-set-key (kbd "C-x M-{") 'enlarge-window)
      (global-set-key (kbd "C-x M-}") 'shrink-window)
-#+end_src
+   #+end_src
 
 
 ** Cursor Movement
 *** Move to Window
     Use shift + arrow keys to switch between visible buffers
-#+begin_src emacs-lisp
-   (windmove-default-keybindings)
-#+end_src
+    #+begin_src emacs-lisp
+      (windmove-default-keybindings)
+    #+end_src
 ** Visualization
 *** Toggle truncate line
     Sometimes you need to see the line without breaking it
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c t t") 'toggle-truncate-lines)
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-c t t") 'toggle-truncate-lines)
+    #+end_src
 ** Text Manipulation
 *** IEdit
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-c ;") 'iedit-mode)
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-c ;") 'iedit-mode)
+    #+end_src
 *** Line or Region
-#+begin_src emacs-lisp
-    (global-set-key [(control shift up)] 'move-line-up)
-    (global-set-key [(control shift down)] 'move-line-down)
-    (global-set-key (kbd "C-k") 'crux-smart-kill-line)
-    (global-set-key (kbd "C-o") 'crux-smart-open-line)
-    (global-set-key (kbd "M-o") 'crux-smart-open-line-above)
-    (global-set-key (kbd "C-c d") 'crux-duplicate-current-line-or-region)
-    (global-set-key (kbd "C-x C-l") 'crux-downcase-region)
-    (global-set-key (kbd "C-x C-u") 'crux-upcase-region)
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key [(control shift up)] 'move-line-up)
+      (global-set-key [(control shift down)] 'move-line-down)
+      (global-set-key (kbd "C-k") 'crux-smart-kill-line)
+      (global-set-key (kbd "C-o") 'crux-smart-open-line)
+      (global-set-key (kbd "M-o") 'crux-smart-open-line-above)
+      (global-set-key (kbd "C-c d") 'crux-duplicate-current-line-or-region)
+      (global-set-key (kbd "C-x C-l") 'crux-downcase-region)
+      (global-set-key (kbd "C-x C-u") 'crux-upcase-region)
+    #+end_src
 *** Transpose Words
-#+begin_src emacs-lisp
-    (global-set-key [(control shift right)] (lambda () (interactive) (transpose-words 1)))
-    (global-set-key [(control shift left)] (lambda () (interactive) (transpose-words -1)))
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key [(control shift right)] (lambda () (interactive) (transpose-words 1)))
+      (global-set-key [(control shift left)] (lambda () (interactive) (transpose-words -1)))
+    #+end_src
 *** Whitespace
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c w c") 'whitespace-cleanup)
-  (global-set-key (kbd "C-c w r") 'whitespace-cleanup-region)
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-c w c") 'whitespace-cleanup)
+      (global-set-key (kbd "C-c w r") 'whitespace-cleanup-region)
+    #+end_src
 ** Buffers
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c D") 'crux-delete-file-and-buffer)
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (global-set-key (kbd "C-c b p") 'copy-file-name-and-path-to-kill-ring)
-  (global-set-key (kbd "C-c b n") 'copy-just-file-name-to-kill-ring)
-#+end_src
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "C-c D") 'crux-delete-file-and-buffer)
+     (global-set-key (kbd "C-x C-b") 'ibuffer)
+     (global-set-key (kbd "C-c b p") 'copy-file-name-and-path-to-kill-ring)
+     (global-set-key (kbd "C-c b n") 'copy-just-file-name-to-kill-ring)
+   #+end_src
 ** Ediff
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-c e w") 'ediff-regions-wordwise)
-#+end_src
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "C-c e w") 'ediff-regions-wordwise)
+   #+end_src
 ** Search
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c s") 'ag-project-regexp)
-  (global-set-key (kbd "C-c o") 'occur)
-  (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
-  (global-set-key (kbd "C-x f p") 'project-find-file)
-  (global-set-key (kbd "C-x f f") 'find-file)
-#+end_src
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "C-c s") 'ag-project-regexp)
+     (global-set-key (kbd "C-c o") 'occur)
+     (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
+     (global-set-key (kbd "C-x f p") 'project-find-file)
+     (global-set-key (kbd "C-x f f") 'find-file)
+   #+end_src
 ** Indentation
-#+begin_src emacs-lisp
- (global-set-key (kbd "C-c f") 'indent-buffer-or-region)
-#+end_src
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "C-c f") 'indent-buffer-or-region)
+   #+end_src
 ** Random
-#+begin_src emacs-lisp
-   (global-set-key (kbd "C-c i u u") 'insert-random-uuid)
-#+end_src
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "C-c i u u") 'insert-random-uuid)
+   #+end_src
 ** Media
-#+begin_src emacs-lisp
-   (global-set-key (kbd "C-c p s") 'play-sound)
-#+end_src
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "C-c p s") 'play-sound)
+   #+end_src
 ** Selection
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-=") 'er/expand-region)
-#+end_src
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "C-=") 'er/expand-region)
+   #+end_src
 ** History
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c r f") 'crux-recentf-find-file)
-  (global-set-key (kbd "C-c y") 'browse-kill-ring)
-#+end_src
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "C-c r f") 'crux-recentf-find-file)
+     (global-set-key (kbd "C-c y") 'browse-kill-ring)
+   #+end_src
 ** COMMENT God
 
    Useful keybindings in god mode
@@ -2422,58 +2435,58 @@ open and unsaved."
    #+end_src
 ** Development
 *** Comments
-#+begin_src emacs-lisp
-     (global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
+    #+end_src
 *** COMMENT LSP
-#+begin_src emacs-lisp
-(setq lsp-keymap-prefix "C-c l")
-#+end_src
+    #+begin_src emacs-lisp
+      (setq lsp-keymap-prefix "C-c l")
+    #+end_src
 *** Scala
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)
-  (global-set-key (kbd "C-c c s e") 'scala-goto-next-warn-error)
-  (global-set-key (kbd "C-c c s u") 'scala-remove-unused-import)
-  (global-set-key (kbd "C-c c s p") 'scala-import-type-at-point)
-  (global-set-key (kbd "C-c c s x") 'scala-extract-code-line-or-region)
-  (global-set-key (kbd "C-c c s g") 'scala-goto-definition)
-  (global-set-key (kbd "C-c c s d") 'scala-open-doc)
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)
+      (global-set-key (kbd "C-c c s e") 'scala-goto-next-warn-error)
+      (global-set-key (kbd "C-c c s u") 'scala-remove-unused-import)
+      (global-set-key (kbd "C-c c s p") 'scala-import-type-at-point)
+      (global-set-key (kbd "C-c c s x") 'scala-extract-code-line-or-region)
+      (global-set-key (kbd "C-c c s g") 'scala-goto-definition)
+      (global-set-key (kbd "C-c c s d") 'scala-open-doc)
+    #+end_src
 *** Haskell
-#+begin_src emacs-lisp
-    (global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
-    (global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
-    (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)
-    (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
-    (global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
-    (global-set-key (kbd "C-c c h s") 'hs-string-to-multiline-string)
-    (global-set-key (kbd "C-c c h i") 'ormolu-format-buffer)
-    (global-set-key (kbd "C-c c h d") 'hs-goto-definition)
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-c c h c") 'hs-shell-clean-old-output)
+      (global-set-key (kbd "C-c c h e") 'hs-goto-next-warn-error)
+      (global-set-key (kbd "C-c c h u") 'hs-remove-unused-import)
+      (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
+      (global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
+      (global-set-key (kbd "C-c c h s") 'hs-string-to-multiline-string)
+      (global-set-key (kbd "C-c c h i") 'ormolu-format-buffer)
+      (global-set-key (kbd "C-c c h d") 'hs-goto-definition)
+    #+end_src
 *** Typescript
-#+begin_src emacs-lisp
+    #+begin_src emacs-lisp
       (global-set-key (kbd "C-c c t c") 'ts-shell-clean-old-output)
       (global-set-key (kbd "C-c c t e") 'ts-goto-next-warn-error)
       (global-set-key (kbd "C-c c t u") 'ts-remove-unused-import)
       (global-set-key (kbd "C-c c t p") 'ts-import-type-at-point)
       (global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
       (global-set-key (kbd "C-c c t d") 'ts-goto-definition)
-#+end_src
+    #+end_src
 *** CSharp
-#+begin_src emacs-lisp
-    (global-set-key (kbd "C-c c d c") 'csharp-shell-clean-old-output)
-    (global-set-key (kbd "C-c c d e") 'csharp-goto-next-warn-error)
-    (global-set-key (kbd "C-c c d p") 'csharp-import-type-at-point)
-    (global-set-key (kbd "C-c c d x") 'csharp-extract-code-line-or-region)
-    (global-set-key (kbd "C-c c d d") 'csharp-goto-definition)
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-c c d c") 'csharp-shell-clean-old-output)
+      (global-set-key (kbd "C-c c d e") 'csharp-goto-next-warn-error)
+      (global-set-key (kbd "C-c c d p") 'csharp-import-type-at-point)
+      (global-set-key (kbd "C-c c d x") 'csharp-extract-code-line-or-region)
+      (global-set-key (kbd "C-c c d d") 'csharp-goto-definition)
+    #+end_src
 *** Elisp
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-c c l e") 'eval-region)
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-c c l e") 'eval-region)
+    #+end_src
 *** Magit
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c g s") 'magit-status)
-  (global-set-key (kbd "C-c g i") 'magit-init)
-  (global-set-key (kbd "C-c g c") 'magit-clone)
-#+end_src
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-c g s") 'magit-status)
+      (global-set-key (kbd "C-c g i") 'magit-init)
+      (global-set-key (kbd "C-c g c") 'magit-clone)
+    #+end_src
