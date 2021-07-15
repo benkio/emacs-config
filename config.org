@@ -213,6 +213,7 @@
        1. Remove separate frame
        2. Split vertical
        3. Ignore whitespaces
+    10. Bash shell path (NixOs)
 
  #+BEGIN_SRC emacs-lisp
 
@@ -240,6 +241,7 @@
    (setq ediff-window-setup-function 'ediff-setup-windows-plain)
    (setq ediff-split-window-function 'split-window-horizontally)
    (setq ediff-diff-options "-w")
+   (setq explicit-shell-file-name "/run/current-system/sw/bin/bash")
 
  #+END_SRC
 
