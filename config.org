@@ -94,10 +94,12 @@
         "Set font based on the frame size. The page in full screen should show 50 lines"
         (interactive)
         (let* ((frameWidth (frame-outer-width frame))
-               ;; Perfect ratio is 1440 / 10. We need an adjustment (feedback) for the other display
+               ;; Perfect ratio is 1480 / 10. We need an adjustment (feedback) for the other display
                ;; Based on the distance from 1440
                (zeroAdjustment (/ (- frameWidth 1480) 2))
-               (height (+ (/ frameWidth 10) zeroAdjustment)))
+               (heightComputed (+ (/ frameWidth 10) zeroAdjustment))
+               (height (if (< heightComputed 0) 1480 heightComputed))
+               )
 
           (message "Set font based on the frame size(divided by 10): %d" frameWidth) ;Adding this will make it run at startup, weird
           (set-face-attribute 'default nil :height height)
