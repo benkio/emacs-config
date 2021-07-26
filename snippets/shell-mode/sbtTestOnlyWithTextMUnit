@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sbt testOnly with text MUnit
+# key: sbtTOM
+# --
+sbt --supershell=false "test:testOnly *.$1 -- \\"--tests=$2\\""$0

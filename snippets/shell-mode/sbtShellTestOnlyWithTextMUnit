@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: sbt Shell testOnly with text MUnit
+# key: sbtSTOM
+# --
+
+~ ${1:$$(when (and yas-moving-away-p (not (string= "" yas-text))) (concat yas-text "/"))}testOnly *.$2 -- \"--tests=$3\"$0
