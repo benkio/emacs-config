@@ -2361,7 +2361,6 @@
       (global-set-key [(control shift up)] 'move-line-up)
       (global-set-key [(control shift down)] 'move-line-down)
       (global-set-key (kbd "C-k") 'crux-smart-kill-line)
-      (global-set-key (kbd "C-o") 'crux-smart-open-line)
       (global-set-key (kbd "M-o") 'crux-smart-open-line-above)
       (global-set-key (kbd "C-c d") 'crux-duplicate-current-line-or-region)
       (global-set-key (kbd "C-x C-l") 'crux-downcase-region)
