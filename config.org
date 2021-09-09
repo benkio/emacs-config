@@ -2416,6 +2416,12 @@
      (global-set-key (kbd "C-c r f") 'crux-recentf-find-file)
      (global-set-key (kbd "C-c y") 'browse-kill-ring)
    #+end_src
+** Git-Link
+   Add git-link keybidings
+
+      #+begin_src emacs-lisp
+     (global-set-key (kbd "C-c g l") 'git-link)
+   #+end_src
 ** COMMENT God
 
    Useful keybindings in god mode
