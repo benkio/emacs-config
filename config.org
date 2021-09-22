@@ -28,15 +28,12 @@
     * Column Line
     * Parentesis
     * Size of Current File
-    * highlight current line
 
     #+BEGIN_SRC emacs-lisp
-
       (global-linum-mode 1)
       (setq column-number-mode t)
       (show-paren-mode 1)
       (size-indication-mode 1)
-      (global-hl-line-mode +1)
 
     #+END_SRC
 *** Frame Title
@@ -2074,6 +2071,15 @@
                                    nil nil (thing-at-point 'word))))
         (goto-definition type haskellDefinitionRegex)
         )
+
+      (defun hs-hoogle (hoogleSearch)
+        "Oper a Browser tab and search the term in hoogle"
+        (interactive (list
+                      (read-string (format "hoogle search (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))))
+        (require 'browse-url)
+        (browse-url (concat "https://hoogle.haskell.org/?hoogle=" hoogleSearch))
+        )
     #+end_src
 *** Typescript
 
@@ -2470,6 +2476,7 @@
       (global-set-key (kbd "C-c c h s") 'hs-string-to-multiline-string)
       (global-set-key (kbd "C-c c h i") 'ormolu-format-buffer)
       (global-set-key (kbd "C-c c h d") 'hs-goto-definition)
+      (global-set-key (kbd "C-c c h h") 'hs-hoogle)
     #+end_src
 *** Typescript
     #+begin_src emacs-lisp
