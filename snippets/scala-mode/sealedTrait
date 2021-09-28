@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: sealed trait
+# key: str
+# --
+
+sealed trait $1
