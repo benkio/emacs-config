@@ -1850,7 +1850,7 @@
                       (read-string (format "type (%s): " (thing-at-point 'word))
                                    nil nil (thing-at-point 'word))
                       (completing-read "Library: "
-                                       '("Standard Library" "Cats" "Cats-Effect" "Http4s 0.21" "fs2 core 3" "Circe" "Monocle core 2.13") nil t)
+                                       '("Standard Library" "Cats" "Cats-Effect" "Http4s 0.21" "fs2 core 3" "Circe" "Skunk core 2.13" "Monocle core 2.13") nil t)
                       ))
         (require 'browse-url)
         (setq libUrlPrefix (cond
@@ -1860,6 +1860,7 @@
                             ((string= lib "fs2 core 3")        "https://oss.sonatype.org/service/local/repositories/releases/archive/co/fs2/fs2-core_2.12/3.0.4/fs2-core_2.12-3.0.4-javadoc.jar/!/fs2/index.html?search=")
                             ((string= lib "Circe")             "https://circe.github.io/circe/api/index.html?search=")
                             ((string= lib "Monocle core 2.13") "https://javadoc.io/doc/com.github.julien-truffaut/monocle-core_2.13/latest/index.html?search=")
+                            ((string= lib "Skunk core 2.13") "https://www.javadoc.io/doc/org.tpolecat/skunk-core_2.13/latest/index.html?search=")
                             (t                                 "https://www.scala-lang.org/api/current/index.html?search=")
                             ))
         (browse-url (concat libUrlPrefix queryType))
