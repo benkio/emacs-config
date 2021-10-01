@@ -2512,5 +2512,5 @@
 *** Shell
 
     #+begin_src emacs-lisp
-      (global-set-key (kbd "C-c g s") 'shell)
+      (global-set-key (kbd "C-c C-s") 'shell)
     #+end_src
