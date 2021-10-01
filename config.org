@@ -66,18 +66,12 @@
 
 *** Theme
 
-    Minimalistic theme setup. Dark.
+    Minimalistic theme setup.
 
     #+BEGIN_SRC emacs-lisp
-
-      ;; Previous minimalistic Dark Theme
-      ;;
-      ;; (add-to-list 'default-frame-alist '(foreground-color . "white"))
-      ;; (add-to-list 'default-frame-alist '(background-color . "grey5"))
-      ;; (set-face-attribute 'region nil :background "dark slate blue")
-      ;; (set-face-background hl-line-face "gray20")
-
-      (load-theme 'leuven)
+      (add-to-list 'default-frame-alist '(foreground-color . "white"))
+      (add-to-list 'default-frame-alist '(background-color . "grey15"))
+      (set-face-attribute 'region nil :background "dark slate blue")
 
     #+END_SRC
 *** Frame Font Size
@@ -93,9 +87,10 @@
         (let* ((frameWidth (frame-outer-width frame))
                ;; Perfect ratio is 1480 / 10. We need an adjustment (feedback) for the other display
                ;; Based on the distance from 1440
-               (zeroAdjustment (/ (- frameWidth 1480) 2))
+               (perfectRatio (/ 1440 10))
+               (zeroAdjustment (/ (- frameWidth (* perfectRatio 10)) 2))
                (heightComputed (+ (/ frameWidth 10) zeroAdjustment))
-               (height (if (< heightComputed 0) 148 heightComputed))
+               (height (if (< heightComputed 0) perfectRatio heightComputed))
                )
 
           (message "Set font based on the frame size(divided by 10): %d" frameWidth) ;Adding this will make it run at startup, weird
