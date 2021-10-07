@@ -2,4 +2,4 @@
 # name: sbt Warnings
 # key: sbtW
 # --
-sbt --supershell=false printWarnings && sbt --supershell=false test:printWarnings
+sbt --supershell=false printWarnings && sbt --supershell=false Test/printWarnings

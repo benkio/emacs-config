@@ -3,4 +3,4 @@
 # key: sbtTO
 # --
 
-sbt --supershell=false "test:testOnly *.$1" $0
+sbt --supershell=false "Test/testOnly *.$1" $0

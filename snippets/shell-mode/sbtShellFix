@@ -2,4 +2,4 @@
 # name: scalafix
 # key: sbtSFix
 # --
-scalafix RemoveUnused; test:scalafix RemoveUnused
+scalafix RemoveUnused; Test/scalafix RemoveUnused

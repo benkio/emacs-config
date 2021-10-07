@@ -3,4 +3,4 @@
 # key: sbtSW
 # --
 
-;printWarnings; test:printWarnings
+;printWarnings; Test/printWarnings

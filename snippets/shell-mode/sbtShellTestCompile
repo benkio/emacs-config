@@ -2,4 +2,4 @@
 # name: sbt Shell test compile
 # key: sbtSTC
 # --
-~ ${1:$$(when (and yas-moving-away-p (not (string= "" yas-text))) (concat yas-text "/"))}test:compile$0
+~ ${1:$$(when (and yas-moving-away-p (not (string= "" yas-text))) (concat yas-text "/"))}Test/compile$0

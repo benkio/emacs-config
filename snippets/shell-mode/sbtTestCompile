@@ -2,4 +2,4 @@
 # name: sbt test compile
 # key: sbtTC
 # --
-sbt --supershell=false test:compile$0
+sbt --supershell=false Test/compile$0
