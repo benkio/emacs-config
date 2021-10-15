@@ -1721,7 +1721,7 @@
         "transform a path to a package, current buffer"
         (interactive)
         (setq package (path-to-package (buffer-file-name)))
-        (insert (concat "package" package))
+        (insert (concat "package " package))
         )
 
                                               ; keybinded functions ;;;;;;;;;;;;;;;;;
