@@ -1600,13 +1600,16 @@
         (funcall gotoFunction (string-to-number fileLineOrColumn))
         fileLineOrColumn)
 
-      (defun extract-code-line-or-region-template (value function postDefinitionSyntaxValue postDefinitionSyntaxFunc EndSyntaxValue EndSyntaxFunc name parameters from to)
+      (defun extract-code-line-or-region-template (value function postDefinitionSyntaxValue postDefinitionSyntaxFunc parameterPrefix parameterSeparator parameterPostfix EndSyntaxValue EndSyntaxFunc name parameters from to)
         "Template for extracting code to value or function:
          Based on the input it this extract the selected code to the closest empty line above.
          - Value: syntax for values in target laguage
          - function: syntax for function in target laguage
          - postDefinitionSyntaxValue: what you put between the name of the value and its actual value. eg (= in scala)
          - postDefinitionSyntaxFunc: what you put between the name + parameters and the body of the function. eg (= in scala)
+         - ParameterPrefix: Between the name of the reference and the parameters in some
+         - ParameterSeparator: Between each parameter
+         - ParameterPostfix: at the end of parameter list
          - EndSyntaxValue: what to put at the end of the definition of value body. Eg in js it's ';'
          - EndSyntaxFunc: what to put at the end of the definition of function body. Eg in js it's '}' for functions
          - name: name of the extracted value/function
@@ -1621,7 +1624,7 @@
         ;; Generate code
         (setq resultDefinition (if (string-blank-p parameters)
                                    (concat value name postDefinitionSyntaxValue code EndSyntaxValue)
-                                 (concat function name parameters postDefinitionSyntaxFunc code EndSyntaxFunc)))
+                                 (concat function name parameterPrefix (mapconcat 'identity parameters parameterSeparator) parameterPostfix postDefinitionSyntaxFunc code EndSyntaxFunc)))
         (setq resultReference (if (string-blank-p parameters)
                                   name
                                 (concat name parameters)))
@@ -1829,7 +1832,7 @@
                       (if (use-region-p) (region-beginning) (point))
                       (if (use-region-p) (region-end) (line-end-position))
                       ))
-        (funcall 'extract-code-line-or-region-template "val " "def " " = " " = " nil nil name parameters from to)
+        (funcall 'extract-code-line-or-region-template "val " "def " " = {" " = " "(" "," ")" nil "}" name parameters from to)
         )
 
       (defun scala-goto-definition (type)
@@ -1912,7 +1915,7 @@
                       (if (use-region-p) (region-beginning) (point))
                       (if (use-region-p) (region-end) (line-end-position))
                       ))
-        (funcall 'extract-code-line-or-region-template "" "" " = " " = " "" "" name parameters from to))
+        (funcall 'extract-code-line-or-region-template "" "" " = " " = " "" "" " " " " nil name parameters from to))
 
       (defun hs-goto-next-unused-import (&optional errorMessage backwardSearch isRegexp)
         "Search into an haskell output for the unused import, and move to it.
@@ -2136,7 +2139,7 @@
                       (if (use-region-p) (region-beginning) (point))
                       (if (use-region-p) (region-end) (line-end-position))
                       ))
-        (funcall 'extract-code-line-or-region-template "var " "function " " = " " { \n return " ";" ";\n }" name parameters from to)
+        (funcall 'extract-code-line-or-region-template "var " "function " " = " " { \n return " "(" "," ")" ";" ";\n }" name parameters from to)
         )
 
       (defun ts-build-import-from-existing-import-or-source (type startingBuffer)
@@ -2323,7 +2326,7 @@
                       (if (use-region-p) (region-beginning) (point))
                       (if (use-region-p) (region-end) (line-end-position))
                       ))
-        (funcall 'extract-code-line-or-region-template "var " "public void " " = " " { " nil "}" name parameters from to)
+        (funcall 'extract-code-line-or-region-template "var " "public void " " = " " { " "(" "," ")" nil "}" name parameters from to)
         )
 
       (defun csharp-goto-definition (type)
