@@ -2,4 +2,4 @@
 # name: case object T
 # key: co
 # --
-case object ${1:name} $0
+case object ${1:name} extends $2 $0

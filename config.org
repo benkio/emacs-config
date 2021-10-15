@@ -1721,7 +1721,7 @@
         "transform a path to a package, current buffer"
         (interactive)
         (setq package (path-to-package (buffer-file-name)))
-        (insert package)
+        (insert (concat "package" package))
         )
 
                                               ; keybinded functions ;;;;;;;;;;;;;;;;;
@@ -2460,6 +2460,7 @@
       (global-set-key (kbd "C-c c s e") 'scala-goto-next-warn-error)
       (global-set-key (kbd "C-c c s u") 'scala-remove-unused-import)
       (global-set-key (kbd "C-c c s p") 'scala-import-type-at-point)
+      (global-set-key (kbd "C-c c s P") 'scala-path-to-package)
       (global-set-key (kbd "C-c c s x") 'scala-extract-code-line-or-region)
       (global-set-key (kbd "C-c c s g") 'scala-goto-definition)
       (global-set-key (kbd "C-c c s d") 'scala-open-doc)
