@@ -208,35 +208,55 @@
        2. Split vertical
        3. Ignore whitespaces
     10. Bash shell path (NixOs - darwin-nix)
+    11. Add more parens to the list of available
 
     #+BEGIN_SRC emacs-lisp
+   (add-to-list 'default-frame-alist '(fullscreen . maximized))
+   (run-at-time nil (* 5 60) 'recentf-save-list)
+   (setq recentf-max-saved-items 50)
 
-      (add-to-list 'default-frame-alist '(fullscreen . maximized))
-      (run-at-time nil (* 5 60) 'recentf-save-list)
-      (setq recentf-max-saved-items 50)
+   (setq load-prefer-newer t)
+   (setq gc-cons-threshold 50000000)
+   (setq tab-always-indent 'complete)
+   (when (eq system-type 'windows-nt)
+     (add-to-list 'exec-path "C:/Program Files/Git/bin")
+     (add-to-list 'exec-path "C:/Program Files/Git/mingw64/bin")
+     (setenv "PATH" (concat "C:/Program Files/Git/bin;" "C:/Program Files/Git/mingw64/bin;" (getenv "PATH")))
+     ;; needed for arc-mode
+     (add-to-list 'exec-path "C:/Program Files/7-Zip"))
 
-      (setq load-prefer-newer t)
-      (setq gc-cons-threshold 50000000)
-      (setq tab-always-indent 'complete)
-      (when (eq system-type 'windows-nt)
-        (add-to-list 'exec-path "C:/Program Files/Git/bin")
-        (add-to-list 'exec-path "C:/Program Files/Git/mingw64/bin")
-        (setenv "PATH" (concat "C:/Program Files/Git/bin;" "C:/Program Files/Git/mingw64/bin;" (getenv "PATH")))
-        ;; needed for arc-mode
-        (add-to-list 'exec-path "C:/Program Files/7-Zip"))
+   (defun exit-ediff-hook ()
+     (kill-buffer "*Ediff Registry*")
+     (winner-undo)
+     )
 
-      (defun exit-ediff-hook ()
-        (kill-buffer "*Ediff Registry*")
-        (winner-undo)
-        )
+   (add-hook 'ediff-after-quit-hook-internal 'exit-ediff-hook)
 
-      (add-hook 'ediff-after-quit-hook-internal 'exit-ediff-hook)
+   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+   (setq ediff-split-window-function 'split-window-horizontally)
+   (setq ediff-diff-options "-w")
+   (setq explicit-shell-file-name "/run/current-system/sw/bin/bash")
 
-      (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-      (setq ediff-split-window-function 'split-window-horizontally)
-      (setq ediff-diff-options "-w")
-      (setq explicit-shell-file-name "/run/current-system/sw/bin/bash")
+   ;; make electric-pair-mode work on more brackets
+   (setq electric-pair-pairs
+         '(
+           (?\" . ?\")
+           (?\' . ?\')
+           (?\` . ?\`)
+           (?\{ . ?\})))
 
+   (defvar org-electric-pairs '(
+                          (?/ . ?/)
+                          (?_ . ?_)
+                          (?~ . ?~)
+                          (?+ . ?+)
+                          (?= . ?=)) "Electric pairs for org-mode.")
+
+   (defun org-add-electric-pairs ()
+     (setq-local electric-pair-pairs (append electric-pair-pairs org-electric-pairs))
+     (setq-local electric-pair-text-pairs electric-pair-pairs))
+
+   (add-hook 'org-mode-hook 'org-add-electric-pairs)
     #+END_SRC
 
 * Packages
