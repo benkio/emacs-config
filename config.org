@@ -1122,6 +1122,7 @@
 
        (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" origin "\" -t " (number-to-string totalSeconds) " -vcodec copy -acodec copy \"" (concat (file-name-directory origin) newName) "\""))
 
+       (message "ffmpegCommand: %s" ffmpegCommand)
        (async-shell-command ffmpegCommand)
        )
 
@@ -1516,7 +1517,7 @@
                (dired-get-marked-files))))
    #+end_src
 ** Development
-*** Higher Order
+*** Higher Order & Cross Language Functions
 
     Functions used by following sections to implement some IDE features
 
@@ -1683,6 +1684,27 @@
           (funcall narrowImportFix targetType)
           )
         (other-window -1)
+        )
+
+      (defun github-search-open-repo (searchString repo)
+        "search in the github repo if there's a file containing the searchString, prompt a selection to the user to choose from and then open a new buffer with the content of that file. repo formatted as org/repo (typelevel/cats)"
+        (setq searchQueryParameter (concat searchString "+in:file+repo:" repo)
+              searchUrl (concat "https://api.github.com/search/code?q=" searchQueryParameter)
+              searchJsonFull (with-current-buffer (url-retrieve-synchronously searchUrl) (json-parse-string (seq-drop-while (lambda (c) (not (char-equal c (string-to-char "{"))))(buffer-string))))
+              matchingFilesJson (gethash "items" searchJsonFull)
+              selectedFile (completing-read "select target file: " (mapcar (lambda (x) (gethash "name" x)) matchingFilesJson))
+              selectedElemJson (elt (remove-if-not (lambda (x) (string-equal (gethash "name" x) selectedFile)) matchingFilesJson) 0)
+              selectedElemPath (gethash "path" selectedElemJson)
+              repositoryContentUrl (seq-take-while (lambda (c) (not (char-equal c (string-to-char "{")))) (gethash "contents_url" (gethash "repository" selectedElemJson)))
+              selectedElementContentUrl (concat repositoryContentUrl selectedElemPath)
+              )
+
+        (with-current-buffer (url-retrieve-synchronously selectedElementContentUrl)
+          (progn
+            (browse-url-emacs
+             (gethash "download_url" (json-parse-string (seq-drop-while (lambda (c) (not (char-equal c (string-to-char "{")))) (buffer-string)))))
+            (search-forward searchString)
+            ))
         )
     #+end_src
 
@@ -1863,6 +1885,17 @@
                             (t                                 "https://www.scala-lang.org/api/current/index.html?search=")
                             ))
         (browse-url (concat libUrlPrefix queryType))
+        )
+
+      (defun scala-github-search-open-repo (queryType repo)
+        "Search on github for the querytype in the given repo and open the selected file in a separate buffer"
+        (interactive (list
+                      (read-string (format "searchTerm (%s): " (thing-at-point 'word))
+                                   nil nil (thing-at-point 'word))
+                      (completing-read "repository: "
+                                       '("typelevel/cats" "typelevel/cats-effect" "http4s/http4s" "typelevel/fs2" "circe/circe" "scalameta/munit" "tpolecat/skunk" "optics-dev/Monocle") nil t)
+                      ))
+        (github-search-open-repo queryType repo)
         )
     #+END_SRC
 *** Haskell
@@ -2465,6 +2498,7 @@
       (global-set-key (kbd "C-c c s P") 'scala-path-to-package)
       (global-set-key (kbd "C-c c s x") 'scala-extract-code-line-or-region)
       (global-set-key (kbd "C-c c s g") 'scala-goto-definition)
+      (global-set-key (kbd "C-c c s G") 'scala-github-search-open-repo)
       (global-set-key (kbd "C-c c s d") 'scala-open-doc)
     #+end_src
 *** Haskell
