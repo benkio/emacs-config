@@ -1706,26 +1706,56 @@
         (other-window -1)
         )
 
+      (setq githubApiCache (make-hash-table :test 'equal))
+
       (defun github-search-open-repo (searchString repo)
         "search in the github repo if there's a file containing the searchString, prompt a selection to the user to choose from and then open a new buffer with the content of that file. repo formatted as org/repo (typelevel/cats)"
-        (setq searchQueryParameter (concat searchString "+in:file+repo:" repo)
-              searchUrl (concat "https://api.github.com/search/code?q=" searchQueryParameter)
-              searchJsonFull (with-current-buffer (url-retrieve-synchronously searchUrl) (json-parse-string (seq-drop-while (lambda (c) (not (char-equal c (string-to-char "{"))))(buffer-string))))
-              matchingFilesJson (gethash "items" searchJsonFull)
-              selectedFile (completing-read "select target file: " (mapcar (lambda (x) (gethash "name" x)) matchingFilesJson))
-              selectedElemJson (elt (remove-if-not (lambda (x) (string-equal (gethash "name" x) selectedFile)) matchingFilesJson) 0)
-              selectedElemPath (gethash "path" selectedElemJson)
-              repositoryContentUrl (seq-take-while (lambda (c) (not (char-equal c (string-to-char "{")))) (gethash "contents_url" (gethash "repository" selectedElemJson)))
-              selectedElementContentUrl (concat repositoryContentUrl selectedElemPath)
-              )
+        (setq cacheKeySelectedFiles (concat repo "/" searchString)
+              cacheSelectedFilesJson (gethash cacheKeySelectedFiles githubApiCache)
+              matchingFilesJson (if cacheSelectedFilesJson
+                                    cacheSelectedFilesJson
+                                  (prog1
+                                      (setq searchQueryParameter (concat searchString "+in:file+repo:" repo)
+                                            searchUrl (concat "https://api.github.com/search/code?q=" searchQueryParameter)
+                                            searchJsonFull (with-current-buffer (url-retrieve-synchronously searchUrl) (json-parse-string (seq-drop-while (lambda (c) (not (char-equal c (string-to-char "{"))))(buffer-string))))
+                                            matchingFiles (gethash "items" searchJsonFull)
+                                            )
+                                    (puthash cacheKeySelectedFiles matchingFiles githubApiCache)
+                                    )))
+        (message "key %s" cacheKeySelectedFiles)
+        (message "value %s" cacheSelectedFilesJson)
+        (setq
+              matchingFilesNames (mapcar (lambda (x) (gethash "name" x)) matchingFilesJson)
+              selectedFile (completing-read "select target file: " matchingFilesNames)
+              cacheKeyRawContent (concat repo "/" searchString "/" selectedFile)
+              cacheRawContent (gethash cacheKeyRawContent githubApiCache))
 
-        (with-current-buffer (url-retrieve-synchronously selectedElementContentUrl)
+        (message "raw: %s" cacheRawContent)
+        (if cacheRawContent
+            (progn
+              (setq newBuff (generate-new-buffer selectedFile))
+              (switch-to-buffer-other-window newBuff)
+              (insert cacheRawContent)
+              (beginning-of-buffer)
+              (search-forward searchString)
+              )
           (progn
-            (browse-url-emacs
-             (gethash "download_url" (json-parse-string (seq-drop-while (lambda (c) (not (char-equal c (string-to-char "{")))) (buffer-string)))))
-            (search-forward searchString)
-            ))
+            (setq selectedElemJson (elt (remove-if-not (lambda (x) (string-equal (gethash "name" x) selectedFile)) matchingFilesJson) 0)
+                  selectedElemPath (gethash "path" selectedElemJson)
+                  repositoryContentUrl (seq-take-while (lambda (c) (not (char-equal c (string-to-char "{")))) (gethash "contents_url" (gethash "repository" selectedElemJson)))
+                  selectedElementContentUrl (concat repositoryContentUrl selectedElemPath)
+                  )
+
+            (with-current-buffer (url-retrieve-synchronously selectedElementContentUrl)
+              (progn
+                (browse-url-emacs
+                 (gethash "download_url" (json-parse-string (seq-drop-while (lambda (c) (not (char-equal c (string-to-char "{")))) (buffer-string)))))
+                (puthash cacheKeyRawContent (buffer-string) githubApiCache)
+                (search-forward searchString)
+                ))
+          )
         )
+      )
     #+end_src
 
 *** Scala
