@@ -1721,16 +1721,12 @@
                                             matchingFiles (gethash "items" searchJsonFull)
                                             )
                                     (puthash cacheKeySelectedFiles matchingFiles githubApiCache)
-                                    )))
-        (message "key %s" cacheKeySelectedFiles)
-        (message "value %s" cacheSelectedFilesJson)
-        (setq
+                                    ))
               matchingFilesNames (mapcar (lambda (x) (gethash "name" x)) matchingFilesJson)
               selectedFile (completing-read "select target file: " matchingFilesNames)
               cacheKeyRawContent (concat repo "/" searchString "/" selectedFile)
               cacheRawContent (gethash cacheKeyRawContent githubApiCache))
 
-        (message "raw: %s" cacheRawContent)
         (if cacheRawContent
             (progn
               (setq newBuff (generate-new-buffer selectedFile))
@@ -1740,7 +1736,7 @@
               (search-forward searchString)
               )
           (progn
-            (setq selectedElemJson (elt (remove-if-not (lambda (x) (string-equal (gethash "name" x) selectedFile)) matchingFilesJson) 0)
+            (setq selectedElemJson (elt (seq-filter (lambda (x) (string-equal (gethash "name" x) selectedFile)) matchingFilesJson) 0)
                   selectedElemPath (gethash "path" selectedElemJson)
                   repositoryContentUrl (seq-take-while (lambda (c) (not (char-equal c (string-to-char "{")))) (gethash "contents_url" (gethash "repository" selectedElemJson)))
                   selectedElementContentUrl (concat repositoryContentUrl selectedElemPath)
@@ -1753,9 +1749,9 @@
                 (puthash cacheKeyRawContent (buffer-string) githubApiCache)
                 (search-forward searchString)
                 ))
+            )
           )
         )
-      )
     #+end_src
 
 *** Scala
