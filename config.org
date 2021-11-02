@@ -1944,7 +1944,7 @@
                       (read-string (format "searchTerm (%s): " (thing-at-point 'word))
                                    nil nil (thing-at-point 'word))
                       (completing-read "repository: "
-                                       '("typelevel/cats" "typelevel/cats-effect" "http4s/http4s" "typelevel/fs2" "circe/circe" "scalameta/munit" "tpolecat/skunk" "optics-dev/Monocle") nil nil)
+                                       '("typelevel/cats" "typelevel/cats-effect" "http4s/http4s" "typelevel/fs2" "circe/circe" "scalameta/munit" "tpolecat/skunk" "optics-dev/Monocle" "softwaremill/tapir") nil nil)
                       ))
         (github-search-open-repo queryType repo)
         )
