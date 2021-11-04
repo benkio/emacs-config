@@ -689,7 +689,9 @@
     Emacs Rest Client
 
     #+BEGIN_SRC emacs-lisp
-      (use-package restclient)
+      (use-package restclient
+        :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
+        )
 
     #+END_SRC
 
