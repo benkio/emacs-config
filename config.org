@@ -1153,7 +1153,12 @@
      (defun concatenate-media-files ()
        "Concatenate a list of files with the same encoding"
        (interactive)
-       (setq files (list (read-file-name "The initial file name: ")))
+       (setq
+        diredFiles (dired-get-marked-files)
+        files (if ((not (null diredFiles)))
+                  diredFiles
+                (list (read-file-name "The initial file name: ")))
+        )
        (message "%s" files)
        (while (yes-or-no-p "Another file? ")
          (progn
