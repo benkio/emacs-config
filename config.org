@@ -2506,6 +2506,12 @@
    #+begin_src emacs-lisp
      (global-set-key (kbd "C-c e w") 'ediff-regions-wordwise)
    #+end_src
+** Org-mode
+
+   #+begin_src emacs-lisp
+     (global-set-key (kbd "C-c l") #'org-store-link)
+     (global-set-key (kbd "C-c a") #'org-agenda)
+   #+end_src
 ** Search
    #+begin_src emacs-lisp
      (global-set-key (kbd "C-c s") 'ag-project-regexp)
