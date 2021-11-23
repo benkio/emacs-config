@@ -1123,7 +1123,25 @@
      sEnd Time (00:00:00):
      sNew Name: ")
 
-       (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" origin "\" -to " endTime " -c:v copy -c:a copy \"" (concat (file-name-directory origin) newName) "\""))
+       (setq totalSeconds (+
+                           (-
+                            (string-to-number (substring endTime 6))
+                            (string-to-number (substring startTime 6)))
+                           (*
+                            (-
+                             (string-to-number (substring endTime 3 5))
+                             (string-to-number (substring startTime 3 5)))
+                            60
+                            )
+                           (*
+                            (-
+                             (string-to-number (substring endTime 0 2))
+                             (string-to-number (substring startTime 0 2)))
+                            3600
+                            )
+                           )
+             )
+       (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" origin "\" -t " (number-to-string totalSeconds) " -c:v copy -c:a copy \"" (concat (file-name-directory origin) newName) "\""))
 
        (message "ffmpegCommand: %s" ffmpegCommand)
        (async-shell-command ffmpegCommand)
