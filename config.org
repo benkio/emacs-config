@@ -521,7 +521,14 @@
     Managing git repos
 
     #+BEGIN_SRC emacs-lisp
-      (use-package magit)
+      (use-package magit
+        :config
+
+        (setq git-commit-summary-max-length 160)
+        (defun set-commit-fill-column ()
+          (setq fill-column 160)) ;; I want longer lines
+        (add-hook 'git-commit-mode-hook 'set-commit-fill-column)
+        )
 
       (use-package git-link ) ;; Get git links to remote
 
@@ -544,7 +551,6 @@
                   (add-hook 'with-editor-post-finish-hook
                             #'kill-magit-extra-buffer-in-current-repo
                             nil t))) ; the t is important
-
     #+END_SRC
 ** Window Manipulation
 *** Winmove
