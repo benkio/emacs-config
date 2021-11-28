@@ -3,6 +3,7 @@
 ;;;; just comment it out by adding a semicolon to the start of the line.
 ;;;; You may delete these explanatory comments.
 (package-initialize)
-(server-start)
+(unless (server-running-p)
+    (server-start))
 
 (org-babel-load-file "~/.emacs.d/config.org")

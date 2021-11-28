@@ -359,10 +359,40 @@
          ((member "Symbola" (font-family-list)) "Symbola")))))
    #+END_SRC
 
-** Ivy
+** Selectrum
+
+   [[https://github.com/raxod502/selectrum#usage][Selectrum]] is a completition framework for the commands ~find-file~, ~M-x~ etc
+
    #+begin_src emacs-lisp
-     (use-package ivy
-       :config (ivy-mode))
+     (use-package selectrum
+       :config (selectrum-mode +1)
+       )
+
+     (use-package selectrum-prescient
+       :config
+       ;; to make sorting and filtering more intelligent
+       (selectrum-prescient-mode +1)
+
+       ;; to save your command history on disk, so the sorting gets more
+       ;; intelligent over time
+       (prescient-persist-mode +1)
+       )
+   #+end_src
+** Marginalla
+   Enable richer annotations using the [[https://github.com/minad/marginalia][Marginalia]] package
+   #+begin_src emacs-lisp
+     (use-package marginalia
+       ;; Either bind `marginalia-cycle` globally or only in the minibuffer
+       :bind (("M-A" . marginalia-cycle)
+              :map minibuffer-local-map
+              ("M-A" . marginalia-cycle))
+
+       ;; The :init configuration is always executed (Not lazy!)
+       :init
+
+       ;; Must be in the :init section of use-package such that the mode gets
+       ;; enabled right away. Note that this forces loading the package.
+       (marginalia-mode))
    #+end_src
 ** Super Save
 
@@ -381,34 +411,6 @@
        :config (global-undo-tree-mode))
    #+END_SRC
 ** Keybindings
-*** COMMENT God
-
-    This mode add the modal layer to emacs just by removing the modifiers keys, emacs bindings remain the same (more or less)
-
-    #+begin_src emacs-lisp
-      (defun my-god-mode-update-modeline ()
-        (let ((limited-colors-p (> 257 (length (defined-colors)))))
-          (cond (god-local-mode (progn
-                                  (set-face-background 'mode-line (if limited-colors-p "white" "#e9e2cb"))
-                                  (set-face-background 'mode-line-inactive (if limited-colors-p "white" "#e9e2cb"))))
-                (t (progn
-                     (set-face-background 'mode-line (if limited-colors-p "light slate blue" "#8470ff"))
-                     (set-face-background 'mode-line-inactive (if limited-colors-p "light slate blue" "#8470ff")))))))
-
-      (use-package god-mode
-        :config
-        (require 'god-mode)
-        (add-hook 'god-mode-enabled-hook #'my-god-mode-update-modeline)
-        (add-hook 'god-mode-disabled-hook #'my-god-mode-update-modeline)
-        (setq god-exempt-predicates          ;; https://github.com/emacsorphanage/god-mode/issues/131
-              (list #'god-exempt-mode-p
-                    #'god-git-commit-mode-p
-                    #'god-view-mode-p))
-        (add-to-list 'god-exempt-major-modes 'magit-mode)
-        (god-mode)
-        (require 'god-mode-isearch)
-        )
-    #+end_src
 *** Which-key
 
     Give you suggestions about the keybindings
@@ -716,21 +718,6 @@
 
       (yas-global-mode 1)
     #+END_SRC
-
-*** COMMENT LSP
-
-    #+begin_src emacs-lisp
-      (use-package lsp-mode
-        :init
-        :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-               (csharp-mode . lsp)
-               ;; if you want which-key integration
-               (lsp-mode . lsp-enable-which-key-integration))
-        :commands lsp)
-
-      (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-      (use-package lsp-ui :commands lsp-ui-mode)
-    #+end_src
 
 *** Scala
 
@@ -2553,32 +2540,10 @@
    #+begin_src emacs-lisp
      (global-set-key (kbd "C-c g l") 'git-link)
    #+end_src
-** COMMENT God
-
-   Useful keybindings in god mode
-
-   #+begin_src emacs-lisp
-     (define-key god-local-mode-map (kbd "z") #'repeat)
-     (define-key god-local-mode-map (kbd "i") #'god-local-mode)
-     (define-key god-local-mode-map (kbd ".") #'repeat)
-     ;; x1 x2 x3 x0
-     (global-set-key (kbd "C-x C-1") #'delete-other-windows)
-     (global-set-key (kbd "C-x C-2") #'split-window-below)
-     (global-set-key (kbd "C-x C-3") #'split-window-right)
-     (global-set-key (kbd "C-x C-0") #'delete-window)
-     ;; back to god mode after inserting
-     (global-set-key (kbd "<escape>") #'god-mode-all)
-     (define-key isearch-mode-map (kbd "<escape>") #'god-mode-isearch-activate)
-     (define-key god-mode-isearch-map (kbd "<escape>") #'god-mode-isearch-disable)
-   #+end_src
 ** Development
 *** Comments
     #+begin_src emacs-lisp
       (global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
-    #+end_src
-*** COMMENT LSP
-    #+begin_src emacs-lisp
-      (setq lsp-keymap-prefix "C-c l")
     #+end_src
 *** Scala
     #+begin_src emacs-lisp
