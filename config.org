@@ -209,7 +209,6 @@
        3. Ignore whitespaces
     10. Bash shell path (NixOs - darwin-nix)
     11. Add more parens to the list of available
-    12. Substitute ~kill-buffer~ with ~kill-buffer-and-window~
 
     #+BEGIN_SRC emacs-lisp
       (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -258,8 +257,6 @@
         (setq-local electric-pair-text-pairs electric-pair-pairs))
 
       (add-hook 'org-mode-hook 'org-add-electric-pairs)
-
-      (substitute-key-definition 'kill-buffer 'kill-buffer-and-window global-map)
     #+END_SRC
 
 * Packages
@@ -2509,6 +2506,7 @@
      (global-set-key (kbd "C-x C-b") 'ibuffer)
      (global-set-key (kbd "C-c b p") 'copy-file-name-and-path-to-kill-ring)
      (global-set-key (kbd "C-c b n") 'copy-just-file-name-to-kill-ring)
+     (global-set-key (kbd "C-x M-k") 'kill-buffer-and-window)
    #+end_src
 ** Ediff
    #+begin_src emacs-lisp
