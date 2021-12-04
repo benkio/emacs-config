@@ -495,19 +495,15 @@
     #+end_src
 
 ** Search
-*** The Silver Searcher
+*** Ripgrep
 
-    Allow you to quickly search into a project via ag.
+    Fast search, grep alternative
 
-    #+BEGIN_SRC emacs-lisp
-      (use-package ag
-        :config (setq ag-reuse-buffers 't)
-        (setq ag-reuse-window 't)
-        )
+    #+begin_src emacs-lisp
 
-      (use-package wgrep-ag)
-    #+END_SRC
-
+      (use-package rg)
+    #+end_src
+    
 *** Google This
 
     Allow you to search the thing under cursor on google
@@ -2512,7 +2508,7 @@
    #+end_src
 ** Search
    #+begin_src emacs-lisp
-     (global-set-key (kbd "C-c s") 'ag-project-regexp)
+     (global-set-key (kbd "C-c s") 'rg-project)
      (global-set-key (kbd "C-c o") 'occur)
      (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
      (global-set-key (kbd "C-x f p") 'project-find-file)
