@@ -1509,14 +1509,13 @@
         (setq supportedAudioFormats (list "best" "aac" "flac" "mp3" "m4a" "opus" "vorbis" "wav"))
         (setq supportedVideoFormats (list "mp4" "flv" "ogg" "webm" "mkv" "avi"))
         (cond
-         ((member outputFormat supportedAudioFormats) (setq youtubeDlCommand (format "youtube-dl -x --audio-format %s %s" outputFormat youtubeUrl)))
-         ((member outputFormat supportedVideoFormats) (setq youtubeDlCommand (format "youtube-dl --recode-video %s %s" outputFormat youtubeUrl)))
+         ((member outputFormat supportedAudioFormats) (setq youtubeDlCommand (format "youtube-dl -x --audio-format %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
+         ((member outputFormat supportedVideoFormats) (setq youtubeDlCommand (format "youtube-dl --recode-video %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
          (t (error (message "Please insert a valid output format: %s" outputFormat)))
          )
         (when commandExist
           (progn
-            (setq command (format "cd %s && %s" destinationPath youtubeDlCommand))
-            (async-shell-command command)
+            (async-shell-command youtubeDlCommand)
             )
           )
         )
