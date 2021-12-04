@@ -1146,9 +1146,8 @@
        "Concatenate a list of files with the same encoding"
        (interactive)
        (setq
-        diredFiles (dired-get-marked-files)
-        files (if ((not (null diredFiles)))
-                  diredFiles
+        files (if (not (null (dired-get-marked-files)))
+                  (dired-get-marked-files)
                 (list (read-file-name "The initial file name: ")))
         )
        (message "%s" files)
