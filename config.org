@@ -2013,7 +2013,7 @@
                           (push (s-trim param) params)
                           (setq param (read-string "param name (RET to finish): "))
                           )
-                        (mapconcat 'identity (reverse params))
+                        (mapconcat 'identity (reverse params) " ")
                         )
                       (if (use-region-p) (region-beginning) (point))
                       (if (use-region-p) (region-end) (line-end-position))
