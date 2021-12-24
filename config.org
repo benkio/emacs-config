@@ -359,6 +359,19 @@
          ((member "Symbola" (font-family-list)) "Symbola")))))
    #+END_SRC
 
+** Cross Platform Compatibility
+*** PATH VARIABLE
+
+    Ensure the PATH variable is in scope for emacs to use
+
+    #+begin_src emacs-lisp
+
+      (use-package exec-path-from-shell
+        :if (memq window-system '(mac ns x))
+        :config
+        (exec-path-from-shell-initialize))
+    #+end_src
+   
 ** Selectrum
 
    [[https://github.com/raxod502/selectrum#usage][Selectrum]] is a completition framework for the commands ~find-file~, ~M-x~ etc
@@ -728,11 +741,12 @@
     * sbt mode
 
     #+BEGIN_SRC emacs-lisp
-
       ;; Enable scala-mode and sbt-mode
       (use-package scala-mode
         :mode "\\.s\\(cala\\|bt\\)$"
-        :config (add-hook 'scala-mode-hook 'hs-minor-mode))
+        :config (add-hook 'scala-mode-hook 'hs-minor-mode)
+        (add-to-list 'auto-mode-alist '("\\.sc\\'" . scala-mode))
+        )
 
       (use-package sbt-mode
         :commands sbt-start sbt-command
@@ -981,19 +995,6 @@
         (require 'dired-x))
 
     #+END_SRC
-
-** Cross Platform Compatibility
-*** PATH VARIABLE
-
-    Ensure the PATH variable is in scope for emacs to use
-
-    #+begin_src emacs-lisp
-
-      (use-package exec-path-from-shell
-        :if (memq window-system '(mac ns x))
-        :config
-        (exec-path-from-shell-initialize))
-    #+end_src
 
 ** Error Check
 *** Hunspell
