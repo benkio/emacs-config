@@ -1030,13 +1030,6 @@
         (setq flycheck-highlighting-mode 'lines)
         )
     #+END_SRC
-** Highlight
-
-   Sometimes you want to highlight stuff in a buffer.
-
-   #+begin_src emacs-lisp :tangle yes
-     (use-package highlight)
-   #+end_src
    
 * Local Modes
 
