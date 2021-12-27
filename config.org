@@ -502,6 +502,7 @@
         :diminish idle-highlight-mode
         :config
         (add-hook 'prog-mode-hook 'idle-highlight-mode)
+        (set-face-attribute 'idle-highlight nil :background "forest green")
         )
 
     #+end_src
