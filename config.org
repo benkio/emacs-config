@@ -316,13 +316,19 @@
      ;; set default font
      (set-frame-font
       (cond
-       ((string-equal system-type "windows-nt")
-        (if (member "Consolas" (font-family-list)) "Consolas-12" nil ))
-       ((string-equal system-type "darwin")
-        (if (member "Menlo" (font-family-list)) "Menlo-16" nil ))
-       ((string-equal system-type "gnu/linux")
-        (if (member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono" nil ))
-       (t nil))
+       ((member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono")
+       ((member "Inconsolata" (font-family-list)) "Inconsolata")
+       ((member "Noto Mono" (font-family-list)) "Noto Mono")
+       ((member "Consolas" (font-family-list)) "Consolas-12")
+       ((member "Menlo" (font-family-list)) "Menlo-16"))
+      ;; (cond
+      ;;  ((string-equal system-type "windows-nt")
+      ;;   (if (member "Consolas" (font-family-list)) "Consolas-12" nil ))
+      ;;  ((string-equal system-type "darwin")
+      ;;   (if (member "Menlo" (font-family-list)) "Menlo-16" nil ))
+      ;;  ((string-equal system-type "gnu/linux")
+      ;;   (if (member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono" nil ))
+      ;;  (t nil))
       t t)
 
      ;; set font for emoji
