@@ -1138,7 +1138,7 @@
                             )
                            )
              )
-       (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" origin "\" -t " (number-to-string totalSeconds) " -c:v copy -c:a copy \"" (concat (file-name-directory origin) newName) "\""))
+       (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" (concat (expand-file-name (file-name-directory origin)) (file-name-nondirectory origin)) "\" -t " (number-to-string totalSeconds) " -c:v copy -c:a copy \"" (concat (expand-file-name (file-name-directory origin)) newName) "\""))
 
        (message "ffmpegCommand: %s" ffmpegCommand)
        (async-shell-command ffmpegCommand)
