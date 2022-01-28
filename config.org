@@ -1314,6 +1314,12 @@
              (emacs-lisp-docstring-fill-column t))
          (fill-paragraph nil region)))
 
+     (defun upcase-initial-word()
+       (interactive)
+       (let ((bounds (bounds-of-thing-at-point 'word)))
+         (upcase-initials-region (point) (cdr bounds)))
+       (forward-word)
+       )
    #+END_SRC
 ** Numbers (Integer)
 
@@ -1491,13 +1497,13 @@
        (set-window-width 80))
    #+END_SRC
 ** Bash Commands
-*** Youtube-dl
+*** Youtube-dl - yt-dlp
 
     this files contains the functions that interact with youtube. Mainly using ~youtube-dl~.
     #+begin_src emacs-lisp
 
-      (defun youtube-dl (youtubeUrl destinationPath outputFormat)
-        "Function that use youtube-dl to download the video and convert it to the specified output format"
+      (defun yt-dlp (youtubeUrl destinationPath outputFormat)
+        "Function that use yt-dlp to download the video and convert it to the specified output format"
         (interactive
          (list
           (read-string "Youtube URL: ")
@@ -1506,24 +1512,24 @@
           )
          )
         (setq commandExist nil
-              youtubeDlCommand nil)
+              youtubeDlPCommand nil)
         (condition-case nil
             (progn
-              (call-process "youtube-dl")
+              (call-process "yt-dlp")
               (setq commandExist t)
               )
-          (error (message "Please install youtube-dl"))
+          (error (message "Please install yt-dlp"))
           )
         (setq supportedAudioFormats (list "best" "aac" "flac" "mp3" "m4a" "opus" "vorbis" "wav"))
         (setq supportedVideoFormats (list "mp4" "flv" "ogg" "webm" "mkv" "avi"))
         (cond
-         ((member outputFormat supportedAudioFormats) (setq youtubeDlCommand (format "youtube-dl -x --audio-format %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
-         ((member outputFormat supportedVideoFormats) (setq youtubeDlCommand (format "youtube-dl --recode-video %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
+         ((member outputFormat supportedAudioFormats) (setq youtubeDlPCommand (format "yt-dlp -x --audio-format %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
+         ((member outputFormat supportedVideoFormats) (setq youtubeDlPCommand (format "yt-dlp --recode-video %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
          (t (error (message "Please insert a valid output format: %s" outputFormat)))
          )
         (when commandExist
           (progn
-            (async-shell-command youtubeDlCommand)
+            (async-shell-command youtubeDlPCommand)
             )
           )
         )
@@ -2484,6 +2490,7 @@
       (global-set-key (kbd "C-c d") 'crux-duplicate-current-line-or-region)
       (global-set-key (kbd "C-x C-l") 'crux-downcase-region)
       (global-set-key (kbd "C-x C-u") 'crux-upcase-region)
+      (global-set-key (kbd "M-c") 'upcase-initial-word)
     #+end_src
 *** Transpose Words
     #+begin_src emacs-lisp
