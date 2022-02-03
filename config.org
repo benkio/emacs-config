@@ -1610,9 +1610,10 @@
         (setq filenamePathPos (point))
         (search-forward-regexp endingFilePath)
         (left-char)
-        (setq filePath (buffer-substring filenamePathPos (point)))
+        (setq filePath (expand-file-name (string-trim (buffer-substring filenamePathPos (point)))))
         (when (and notSplitWindow (= (count-windows) 1)) (split-window-right))
         (other-window 1)
+        (message "find file: %s" filePath)
         (find-file (string-trim filePath)))
 
       (defun goto-next-warn-error (eventFileNavigationF searchPattern lineDelimiter columnDelimiter postF &optional errorMessage backwardSearch isRegexp)
@@ -2216,19 +2217,29 @@
       (defun ts-event-file-navigation (&optional notSplitWindow)
         "Navigate to the file that has a problem. it can navigate using a
         different window."
-        (previous-line) ;; Often called from the line AFTER the actual file path targeted
-        (funcall 'event-file-navigation (regexp-quote "[tsl] ERROR in ") "(" notSplitWindow)
+        (unless (equal (point) (point-min))
+          (previous-line) ;; Often called from the line AFTER the actual file path targeted
+          )
+        (condition-case nil
+            (funcall 'event-file-navigation (regexp-quote "[tsl] ERROR in ") "(" notSplitWindow)
+          (error (progn
+                   (search-forward-regexp "src")
+                   (beginning-of-line)
+                   (funcall 'event-file-navigation "" ":" notSplitWindow)
+                   )
+                 )
+          )
         )
 
       (defun ts-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
         "Search into an typescript output for the first warning/error, starting from cursor position, and move to it"
         (interactive)
 
-        (goto-next-warn-error 'ts-event-file-navigation ".*TS.*: " "," ")" '(lambda () (progn
-                                                                                         (other-window -1)
-                                                                                         (next-line)
-                                                                                         (end-of-line)
-                                                                                         (other-window 1)) ) errorMessage backwardSearch isRegexp)
+        (goto-next-warn-error 'ts-event-file-navigation ".*TS.*: " "\\(,\\|:\\)" "\\()\\| \\)" '(lambda () (progn
+                                                                                                             (other-window -1)
+                                                                                                             (next-line)
+                                                                                                             (end-of-line)
+                                                                                                             (other-window 1)) ) errorMessage backwardSearch isRegexp)
         )
 
       (defun ts-extract-code-line-or-region (name &optional parameters from to)
