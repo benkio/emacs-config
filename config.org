@@ -2211,7 +2211,7 @@
       (defun ts-shell-clean-old-output ()
         "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
         (interactive)
-        (funcall 'shell-clean-old-output "\\(<s> \\[webpack\\.Progress\\] 100% \\|📦  Building\\|> nest build\\|.*Starting incremental compilation.*\\)")
+        (funcall 'shell-clean-old-output "\\(<s> \\[webpack\\.Progress\\] 100% \\|📦  Building\\|.*\\bnest\\b.*\\|.*Starting incremental compilation.*\\)")
         )
 
       (defun ts-event-file-navigation (&optional notSplitWindow)
