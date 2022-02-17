@@ -1316,6 +1316,7 @@
 
      (defun upcase-initial-word()
        (interactive)
+       (search-forward-regexp "[ ]*")
        (let ((bounds (bounds-of-thing-at-point 'word)))
          (upcase-initials-region (point) (cdr bounds)))
        (forward-word)
