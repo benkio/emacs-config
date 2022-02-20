@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: munit funsuite
+# key: mfs
+# --
+package ${1:`(path-to-package (buffer-file-name))`}
+
+import munit._
+
+class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends FunSuite {
+  test("hello") {
+    val obtained = 42
+    val expected = 43
+    assertEquals(obtained, expected)
+  }
+}

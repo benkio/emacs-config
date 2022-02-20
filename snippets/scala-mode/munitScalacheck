@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: munit scalacheck
+# key: msc
+# --
+package ${1:`(path-to-package (buffer-file-name))`}
+
+import munit.ScalaCheckSuite
+import org.scalacheck.Prop._
+
+class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends ScalaCheckSuite {
+
+  property("boolean is boolean") {
+    forAll { (b: Boolean) =>
+      b == b
+    }
+  }
+}
