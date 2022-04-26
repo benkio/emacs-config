@@ -2381,11 +2381,7 @@
         "Search into an typescript output for the first warning/error, starting from cursor position, and move to it"
         (interactive)
 
-        (goto-next-warn-error 'ts-event-file-navigation ".*TS.*: " "\\(,\\|:\\)" "\\()\\| \\)" '(lambda () (progn
-                                                                                                             (other-window -1)
-                                                                                                             (next-line)
-                                                                                                             (end-of-line)
-                                                                                                             (other-window 1)) ) errorMessage backwardSearch isRegexp)
+        (goto-next-warn-error 'ts-event-file-navigation ".*TS.*: " "\\(,\\|:\\)" "\\()\\| \\)" '(lambda () () ) errorMessage backwardSearch isRegexp)
         )
 
       (defun ts-extract-code-line-or-region (name &optional parameters from to)
