@@ -2721,6 +2721,7 @@
      (global-set-key (kbd "C-c b p") 'copy-file-name-and-path-to-kill-ring)
      (global-set-key (kbd "C-c b n") 'copy-just-file-name-to-kill-ring)
      (global-set-key (kbd "C-x M-k") 'kill-buffer-and-window)
+     (global-set-key (kbd "C-x M-DEL") 'kill-current-buffer)
    #+end_src
 ** Ediff
    #+begin_src emacs-lisp
