@@ -376,7 +376,7 @@
         :config
         (exec-path-from-shell-initialize))
     #+end_src
-   
+
 ** Selectrum
 
    [[https://github.com/raxod502/selectrum#usage][Selectrum]] is a completition framework for the commands ~find-file~, ~M-x~ etc
@@ -522,7 +522,7 @@
 
       (use-package rg)
     #+end_src
-    
+
 *** Google This
 
     Allow you to search the thing under cursor on google
@@ -764,6 +764,15 @@
          'self-insert-command
          minibuffer-local-completion-map))
     #+END_SRC
+*** SQL
+
+    Packages for dealing with SQL
+
+    #+begin_src emacs-lisp
+      (use-package sqlformat
+        :config (setq sqlformat-command 'sqlfluff)
+      )
+    #+end_src
 *** Haskell
     #+BEGIN_SRC emacs-lisp
       (use-package company-ghci)
@@ -1037,7 +1046,7 @@
         (setq flycheck-highlighting-mode 'lines)
         )
     #+END_SRC
-   
+
 * Local Modes
 
   Modes not on Melpa/Elpa. Imported from local folder
