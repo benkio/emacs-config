@@ -377,41 +377,40 @@
         (exec-path-from-shell-initialize))
     #+end_src
 
-** Selectrum
+** IComplete + FIDO
 
-   [[https://github.com/raxod502/selectrum#usage][Selectrum]] is a completition framework for the commands ~find-file~, ~M-x~ etc
+http://xahlee.info/emacs/emacs/emacs_icomplete_mode.html
+Set up ~IComplete~ and ~fido~ for completion on the minibuffer
 
-   #+begin_src emacs-lisp
-     (use-package selectrum
-       :config (selectrum-mode +1)
-       )
+#+begin_src emacs-lisp
+  (if (version< emacs-version "28.1")
+      (progn
+        (progn
+          ;; make buffer switch command do suggestions, also for find-file command
+          (require 'ido)
+          (ido-mode 1)
+          ;; show choices vertically
+          (setf (nth 2 ido-decorations) "\n")
+          ;; show any name that has the chars you typed
+          (setq ido-enable-flex-matching t)
+          ;; use current pane for newly opened file
+          (setq ido-default-file-method 'selected-window)
+          ;; use current pane for newly switched buffer
+          (setq ido-default-buffer-method 'selected-window)
+          )
+        (progn
+          ;; minibuffer enhanced completion icomplete
+          (require 'icomplete)
+          (icomplete-mode 1)
+          ;; show choices vertically
+          (setq icomplete-separator "\n")
+          (setq icomplete-hide-common-prefix nil)
+          (setq icomplete-in-buffer t)
+          (define-key icomplete-minibuffer-map (kbd "<right>") 'icomplete-forward-completions)
+          (define-key icomplete-minibuffer-map (kbd "<left>") 'icomplete-backward-completions)))
+    (fido-vertical-mode 1))
+#+end_src
 
-     (use-package selectrum-prescient
-       :config
-       ;; to make sorting and filtering more intelligent
-       (selectrum-prescient-mode +1)
-
-       ;; to save your command history on disk, so the sorting gets more
-       ;; intelligent over time
-       (prescient-persist-mode +1)
-       )
-   #+end_src
-** Marginalla
-   Enable richer annotations using the [[https://github.com/minad/marginalia][Marginalia]] package
-   #+begin_src emacs-lisp
-     (use-package marginalia
-       ;; Either bind `marginalia-cycle` globally or only in the minibuffer
-       :bind (("M-A" . marginalia-cycle)
-              :map minibuffer-local-map
-              ("M-A" . marginalia-cycle))
-
-       ;; The :init configuration is always executed (Not lazy!)
-       :init
-
-       ;; Must be in the :init section of use-package such that the mode gets
-       ;; enabled right away. Note that this forces loading the package.
-       (marginalia-mode))
-   #+end_src
 ** Super Save
 
    Save your files every time you change the window
@@ -789,14 +788,6 @@
         (add-hook 'haskell-mode-hook 'custom-haskell-mode-hook)
         )
 
-      ;; hlint extension (requires hlint installed with cabal)
-      (use-package flymake-haskell-multi
-        :config
-        (add-hook 'haskell-mode-hook 'flymake-haskell-multi-load))
-
-      ;; Displays hlint suggestion in minibuffer
-      (use-package flymake-cursor)
-
       ;; ormolu formatter
       (use-package ormolu)
     #+END_SRC
@@ -1033,19 +1024,6 @@
 
       (require 'ispell)
     #+end_src
-
-*** Flycheck
-
-    Check for errors, tipically in code
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package flycheck
-        :init
-        (global-flycheck-mode t)
-        :config
-        (setq flycheck-highlighting-mode 'lines)
-        )
-    #+END_SRC
 
 * Local Modes
 
