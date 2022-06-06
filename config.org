@@ -425,7 +425,9 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
    Allow to visually go back and forth between undo history
    #+BEGIN_SRC emacs-lisp
      (use-package undo-tree
-       :config (global-undo-tree-mode))
+       :config (global-undo-tree-mode)
+       (setq undo-tree-auto-save-history nil)
+     )
    #+END_SRC
 ** Keybindings
 *** Which-key
