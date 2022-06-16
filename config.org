@@ -1890,7 +1890,9 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
         (insert resultReference)
         ;; Move to the closest ^$ line and insert the resultDefinition
         (re-search-backward "^$")
-        (insert resultDefinition))
+        (insert resultDefinition)
+        (newline)
+        )
 
       (defun goto-definition (type typeDefinitionRegexp)
         "Higher order function that just apply the regexp in input to move the cursor at the definition point.
