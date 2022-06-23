@@ -553,6 +553,7 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
         (let (
               (magit-diff-buffer-in-current-repo (magit-get-mode-buffer 'magit-diff-mode))
               (magit-process-buffer-in-current-repo (magit-get-mode-buffer 'magit-process-mode))
+              (kill-buffer-query-functions nil)
               )
           (kill-buffer magit-diff-buffer-in-current-repo)
           (kill-buffer magit-process-buffer-in-current-repo)
