@@ -1,14 +1,14 @@
 # -*- mode: snippet -*-
-# name: ScalaTest WordSpec
+# name: ScalaTest AnyWordSpec
 # key: ScalaTest
 # --
 package ${1:`(path-to-package (buffer-file-name))`}
 
 import org.scalatest._
 
-class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends WordSpec with Matchers {
+class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends AnyWordSpec with Matchers {
 
-  "$2" should {
+  "${3:`(s-chop-suffix "Spec" (nth 0 (s-slice-at "[.]"(buffer-name))))`}" should {
     "behave like" when {
       "input X" in {
         $0
