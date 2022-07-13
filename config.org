@@ -748,9 +748,8 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
     #+BEGIN_SRC emacs-lisp
       ;; Enable scala-mode and sbt-mode
       (use-package scala-mode
-        :mode "\\.s\\(cala\\|bt\\)$"
+        :mode "\\.s\\(cala\\|bt\\|c\\)$"
         :config (add-hook 'scala-mode-hook 'hs-minor-mode)
-        (add-to-list 'auto-mode-alist '("\\.sc\\'" . scala-mode))
         )
 
       (use-package sbt-mode

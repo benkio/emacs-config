@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Scala Test Describe
-# key: describe
-# --
-describe("$1") {
-  $0
-}

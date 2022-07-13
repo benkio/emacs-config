@@ -1,7 +1,7 @@
 # Author: Anders Bach Nielsen <andersbach.nielsen@epfl.ch>
-# name: object name extends Application
+# name: object Main extends App
 # key: app
 # --
-object ${1:name} extends Application {
+object ${1:Main} extends App {
   $0
 }
