@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: implicitly
-# key: impy
+# key: impli
 # --
 val implicitValue$1 = implicitly[$2]$0

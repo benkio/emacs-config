@@ -1,0 +1,5 @@
+# Author: benkio <benkio89@gmail.com>
+# name: val m = Map[K, V](..)
+# key: map
+# --
+val ${1:m} = Map[${2:key}, ${3:value}]($0)

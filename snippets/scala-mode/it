@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Add "it" test block
-# key: it
-# --
-it("$1") {
-  $0
-}
