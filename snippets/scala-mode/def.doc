@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: methodDoc
-# key: mthdoc
+# name: def with doc
+# key: def
 # --
 /**
 * $2

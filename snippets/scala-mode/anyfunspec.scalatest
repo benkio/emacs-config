@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: ScalaTest AnyFunSpec
+# key: scalatest
+# --
+package ${1:`(path-to-package (buffer-file-name))`}
+
+import org.scalatest._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.funspec.AnyFunSpec
+
+class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends AnyFunSpec with Matchers {
+
+  describe("${3:`(s-chop-suffix "Spec" (nth 0 (s-slice-at "[.]"(buffer-name))))`}") {
+    describe("behave like") {
+      it("input X") {
+        $0
+      }
+    }
+  }
+}
