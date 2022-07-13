@@ -10,7 +10,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends AnyFunSuite with Matchers {
 
-  test("${3:`(s-chop-suffix "Spec" (nth 0 (s-slice-at "[.]"(buffer-name))))`} should ${4}"){
+  test("${3:`(s-chop-suffix "Spec" (nth 0 (s-slice-at "[.]"(buffer-name))))`} should behave like"){
     $0
   }
 }

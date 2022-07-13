@@ -10,7 +10,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 
 class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends AnyFlatSpec with Matchers {
 
-  "${3:`(s-chop-suffix "Spec" (nth 0 (s-slice-at "[.]"(buffer-name))))`}" should "${4}" in {
+  "${3:`(s-chop-suffix "Spec" (nth 0 (s-slice-at "[.]"(buffer-name))))`}" should "behave like" in {
     $0
   }
 }
