@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: ScalaTest AnyFunSuite
+# key: scalatest
+# --
+package ${1:`(path-to-package (buffer-file-name))`}
+
+import org.scalatest._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.funsuite.AnyFunSuite
+
+class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends AnyFunSuite with Matchers {
+
+  test("${3:`(s-chop-suffix "Spec" (nth 0 (s-slice-at "[.]"(buffer-name))))`} should ${4}"){
+    $0
+  }
+}

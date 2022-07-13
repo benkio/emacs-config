@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: ScalaTest AnyFlatSpec
+# key: scalatest
+# --
+package ${1:`(path-to-package (buffer-file-name))`}
+
+import org.scalatest._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.flatspec.AnyFlatSpec
+
+class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends AnyFlatSpec with Matchers {
+
+  "${3:`(s-chop-suffix "Spec" (nth 0 (s-slice-at "[.]"(buffer-name))))`}" should "${4}" in {
+    $0
+  }
+}
