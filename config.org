@@ -1423,25 +1423,74 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
    Generate random things to insert in the buffer
 
    #+BEGIN_SRC emacs-lisp
+     (defun xah-insert-random-number (NUM)
+       "Insert NUM random digits.
+     NUM default to 5.
+     Call `universal-argument' before for different count.
+     URL `http://xahlee.info/emacs/emacs/elisp_insert_random_number_string.html'
+     Version 2017-05-24"
+       (interactive "P")
+       (let (($charset "1234567890" )
+             ($baseCount 10))
+         (dotimes (_ (if (numberp NUM) (abs NUM) 5 ))
+           (insert (elt $charset (random $baseCount))))))
 
-     (defun random-alnum (&optional arg)
-       "Generate a random character"
-       (interactive "p")
-       (insert
-        (mapconcat (lambda (x)
-                     (let* ((alnum "abcdefghijklmnopqrstuvwxyz0123456789")
-                            (i (% (abs (random)) (length alnum))))
-                       (substring alnum i (1+ i))))
-                   (number-sequence 1 arg 1)
-                   "")
-        ))
+     (defun xah-insert-random-hex (NUM)
+       "Insert NUM random hexadecimal digits.
+     NUM default to 5.
+     Call `universal-argument' before for different count.
+     URL `http://xahlee.info/emacs/emacs/elisp_insert_random_number_string.html'
+     Version 2017-08-03"
+       (interactive "P")
+       (let (($n (if (numberp NUM) (abs NUM) 5 )))
+         (insert (format  (concat "%0" (number-to-string $n) "x" ) (random (1- (expt 16 $n)))))))
 
-     (defun insert-random-uuid ()
+     (defun xah-insert-random-string (NUM)
+       "Insert a random alphanumerics string of length 5.
+     The possible chars are: A to Z, a to z, 0 to 9.
+     Call `universal-argument' before for different count.
+     URL `http://xahlee.info/emacs/emacs/elisp_insert_random_number_string.html'
+     Version 2018-08-03"
+       (interactive "P")
+       (let* (($charset "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
+              ($baseCount (length $charset)))
+         (dotimes (_ (if (numberp NUM) (abs NUM) 5))
+           (insert (elt $charset (random $baseCount))))))
+
+     (defun xah-insert-random-uuid ()
+       "Insert a UUID.
+     This commands calls “uuidgen” on MacOS, Linux, and calls PowelShell on Microsoft Windows.
+     URL `http://xahlee.info/emacs/emacs/elisp_generate_uuid.html'
+     Version 2020-06-04"
        (interactive)
-       (insert
-        (replace-regexp-in-string "\n\\'" ""
-                                  (shell-command-to-string "uuidgen"))))
-
+       (cond
+        ((string-equal system-type "windows-nt")
+         (shell-command "pwsh.exe -Command [guid]::NewGuid().toString()" t))
+        ((string-equal system-type "darwin") ; Mac
+         (shell-command "uuidgen" t))
+        ((string-equal system-type "gnu/linux")
+         (shell-command "uuidgen" t))
+        (t
+         ;; code here by Christopher Wellons, 2011-11-18.
+         ;; and editted Hideki Saito further to generate all valid variants for "N" in xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx format.
+         (let ((myStr (md5 (format "%s%s%s%s%s%s%s%s%s%s"
+                                   (user-uid)
+                                   (emacs-pid)
+                                   (system-name)
+                                   (user-full-name)
+                                   (current-time)
+                                   (emacs-uptime)
+                                   (garbage-collect)
+                                   (buffer-string)
+                                   (random)
+                                   (recent-keys)))))
+           (insert (format "%s-%s-4%s-%s%s-%s"
+                           (substring myStr 0 8)
+                           (substring myStr 8 12)
+                           (substring myStr 13 16)
+                           (format "%x" (+ 8 (random 4)))
+                           (substring myStr 17 20)
+                           (substring myStr 20 32)))))))
    #+END_SRC
 ** Text Manipulation
 
@@ -2750,7 +2799,10 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
    #+end_src
 ** Random
    #+begin_src emacs-lisp
-     (global-set-key (kbd "C-c i u u") 'insert-random-uuid)
+     (global-set-key (kbd "C-c i u") 'xah-insert-random-uuid)
+     (global-set-key (kbd "C-c i n") 'xah-insert-random-number)
+     (global-set-key (kbd "C-c i h") 'xah-insert-random-hex)
+     (global-set-key (kbd "C-c i s") 'xah-insert-random-string)
    #+end_src
 ** Media
    #+begin_src emacs-lisp
