@@ -1004,6 +1004,17 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
 
     #+END_SRC
 
+*** Dirvish
+
+  Improvement over Dired
+
+#+begin_src emacs-lisp
+(use-package dirvish
+  :ensure t
+  :init
+  ;; Let Dirvish take over Dired globally
+  (dirvish-override-dired-mode))
+#+end_src
 ** Error Check
 *** Hunspell
 
