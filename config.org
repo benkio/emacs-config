@@ -158,9 +158,9 @@
     13. Save on frame focus out: https://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
     14. hs-minor-mode when coding
     15. Dired hide details by default
+    16. ~term-line-mode~ on ~ansi-term~ to enable normal ~C-x~, ~M-x~ and editing
 
     #+BEGIN_SRC emacs-lisp
-
       (defalias 'yes-or-no-p 'y-or-n-p)
       (savehist-mode 1)
       (electric-pair-mode 1)
@@ -191,6 +191,7 @@
                 (lambda ()
                   (dired-hide-details-mode)))
 
+      (defadvice ansi-term (after advice-term-line-mode activate) (term-line-mode))
     #+END_SRC
 
 *** Set
@@ -2884,5 +2885,5 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
 *** Shell
 
     #+begin_src emacs-lisp
-      (global-set-key (kbd "C-c C-s") 'shell)
+      (global-set-key (kbd "C-c C-s") 'ansi-term)
     #+end_src
