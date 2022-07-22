@@ -521,7 +521,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
     Fast search, grep alternative
 
     #+begin_src emacs-lisp
-
       (use-package rg)
     #+end_src
 
@@ -1049,7 +1048,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
    unctions for alignment of text and indentation of buffer
 
    #+BEGIN_SRC emacs-lisp
-
      (defun indent-buffer-or-region ()
        "indent whole buffer"
        (interactive)
@@ -2885,5 +2883,5 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
 *** Shell
 
     #+begin_src emacs-lisp
-      (global-set-key (kbd "C-c C-s") 'ansi-term)
+      (global-set-key (kbd "C-c C-s") 'shell)
     #+end_src
