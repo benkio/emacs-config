@@ -11,7 +11,6 @@
     4. Splash-Screen
 
     #+BEGIN_SRC emacs-lisp
-
       (menu-bar-mode -1)
       (tool-bar-mode -1)
       (scroll-bar-mode -1)
@@ -41,7 +40,6 @@
     Set frame title to a short version of it.
 
     #+BEGIN_SRC emacs-lisp
-
       (setq frame-title-format
             '((:eval (if (buffer-file-name)
                          (abbreviate-file-name (buffer-file-name))
@@ -53,7 +51,6 @@
     Set a better default when the buffers goes in conflicts for some reason
 
     #+BEGIN_SRC emacs-lisp
-
       (require 'uniquify)
       (setq uniquify-buffer-name-style 'forward)
       (setq uniquify-separator "/")
@@ -80,7 +77,6 @@
     It could be called after the startup as well.
 
     #+BEGIN_SRC emacs-lisp
-
       (defun set-font-height-on-frame-width (&optional frame)
         "Set font based on the frame size. The page in full screen should show 50 lines"
         (interactive)
@@ -115,7 +111,6 @@
     9. popup confirmation windows
 
     #+BEGIN_SRC emacs-lisp
-
       (setq make-backup-files nil)
       (setq auto-save-default nil)
       (blink-cursor-mode -1)
@@ -489,7 +484,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
     package containing a lot of useful functions. So you don't need to copy and paste them from Emacs Redux
 
     #+BEGIN_SRC emacs-lisp
-
       (use-package  crux)
 
     #+END_SRC
@@ -614,7 +608,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
     Allow to visualize the kill ring in another buffer and choose what to insert at point
 
     #+BEGIN_SRC emacs-lisp
-
       (use-package browse-kill-ring
         :config (browse-kill-ring-default-keybindings))
 
@@ -626,7 +619,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
     Converts org file to github markdown with the command: `M-x org-gfm-export-to-markdown`
 
     #+BEGIN_SRC emacs-lisp
-
       (use-package ox-gfm
         :defer t
         :config
@@ -725,7 +717,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
     snippets for coding and more
 
     #+BEGIN_SRC emacs-lisp
-
                                               ; Collection of snippets
       (use-package yasnippet-snippets
         :defer t
