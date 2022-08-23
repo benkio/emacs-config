@@ -2755,6 +2755,10 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
       (global-set-key (kbd "C-c w c") 'whitespace-cleanup)
       (global-set-key (kbd "C-c w r") 'whitespace-cleanup-region)
     #+end_src
+*** Insert Char
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x 8") 'insert-char)
+#+end_src
 ** Buffers
    #+begin_src emacs-lisp
      (global-set-key (kbd "C-c D") 'crux-delete-file-and-buffer)

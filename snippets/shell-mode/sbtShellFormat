@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: sbt shell format
-# key: sbtSFMT
-# --
-scalafmtAll
