@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: sbt test compile
+# name: sbt integration test compile
 # key: sbtITC
 # --
 sbt --supershell=false IntegrationTest/compile$0
