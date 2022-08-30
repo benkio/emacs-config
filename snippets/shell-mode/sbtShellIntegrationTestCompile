@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sbt Shell test compile
+# key: sbtSITC
+# --
+~ ${1:$$(when (and yas-moving-away-p (not (string= "" yas-text))) (concat yas-text "/"))}IntegrationTest/compile$0
