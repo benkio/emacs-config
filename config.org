@@ -1033,6 +1033,16 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
        (add-to-list 'auto-mode-alist '("\\.ly\\'" . lilypond-mode)))
    #+end_src
 
+** Tidy
+
+  Mode for interacting with ~tidy~
+
+  #+begin_src emacs-lisp
+     (when (executable-find "tidy")
+       ;; https://www.emacswiki.org/emacs/tidy.el
+       (load "~/.emacs.d/lisp/tidy"))
+  #+end_src
+
 * Functions
 ** Indentation
 

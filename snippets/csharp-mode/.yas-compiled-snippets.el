@@ -5,4 +5,4 @@
                      '(("NUW" "NUnit.Framework.TestContext.Progress.WriteLine($1);$0" "NUnit Writeline" nil nil nil "/Users/benkio/.emacs.d/snippets/csharp-mode/NUnitWriteline" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Aug 24 12:27:38 2022
+;;; Do not edit! File generated at Tue Aug 30 12:50:55 2022

@@ -58,4 +58,4 @@
                        ("ano" "($1) => ${2:body} $0" "(args) => ..." nil nil nil "/Users/benkio/.emacs.d/snippets/scala-mode/ano" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Aug 24 12:27:39 2022
+;;; Do not edit! File generated at Tue Aug 30 12:50:55 2022

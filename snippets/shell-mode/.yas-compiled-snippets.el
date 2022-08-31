@@ -16,8 +16,10 @@
                        ("sbtSTO" "~ ${1:$$(when (and yas-moving-away-p (not (string= \"\" yas-text))) (concat yas-text \"/\"))}testOnly *.$2 $0\n" "sbt Shell testOnly" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/sbtShellTestOnly" nil nil)
                        ("sbtSTC" "~ ${1:$$(when (and yas-moving-away-p (not (string= \"\" yas-text))) (concat yas-text \"/\"))}Test/compile$0" "sbt Shell test compile" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/sbtShellTestCompile" nil nil)
                        ("sbtST" "~ ${1:$$(when (and yas-moving-away-p (not (string= \"\" yas-text))) (concat yas-text \"/\"))}test$0" "sbt Shell test" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/sbtShellTest" nil nil)
+                       ("sbtSITC" "~ ${1:$$(when (and yas-moving-away-p (not (string= \"\" yas-text))) (concat yas-text \"/\"))}IntegrationTest/compile$0" "sbt Shell integration test compile" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/sbtShellIntegrationTestCompile" nil nil)
                        ("sbtSFix" "scalafixAll; scalafmtAll" "scalafix & scalafmt" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/sbtShellFix" nil nil)
                        ("sbtSC" "~ ${1:$$(when (and yas-moving-away-p (not (string= \"\" yas-text))) (concat yas-text \"/\"))}compile$0" "sbt Shell Compile" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/sbtShellCompile" nil nil)
+                       ("sbtITC" "sbt --supershell=false IntegrationTest/compile$0" "sbt integration test compile" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/sbtIntegrationTestCompile" nil nil)
                        ("sbtFix" "sbt --supershell=false \"scalafixAll; scalafmtAll\"" "sbt fix & format" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/sbtFormat" nil nil)
                        ("sbtC" "sbt --supershell=false compile$0" "sbt Compile" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/sbtCompile" nil nil)
                        (".nt" "dotnet test" "dotnet test" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/dotnetTest" nil nil)
@@ -25,4 +27,4 @@
                        (".nb" "dotnet build" "dotnet build" nil nil nil "/Users/benkio/.emacs.d/snippets/shell-mode/dotnetBuild" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Aug 24 12:27:39 2022
+;;; Do not edit! File generated at Tue Aug 30 12:50:55 2022
