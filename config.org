@@ -2237,7 +2237,7 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
                             ((string= lib "Cats-Effect")       "https://typelevel.org/cats-effect/api/3.x/?search=")
                             ((string= lib "Circe")             "https://circe.github.io/circe/api/index.html?search=")
                             ((string= lib "Doobie")             "https://javadoc.io/doc/org.tpolecat/doobie-core_2.12/latest/index.html")
-                            ((string= lib "Http4s 0.21")       "https://http4s.org/v0.23/api/org/http4s/?search=")
+                            ((string= lib "Http4s 0.23")       "https://http4s.org/v0.23/api/org/http4s/?search=")
                             ((string= lib "Monocle core 2.13") "https://javadoc.io/doc/com.github.julien-truffaut/monocle-core_2.13/latest/index.html?search=")
                             ((string= lib "Munit core 2.13")   "https://www.javadoc.io/doc/org.scalameta/munit_2.13/latest/index.html?search=")
                             ((string= lib "Skunk core 2.13")   "https://www.javadoc.io/doc/org.tpolecat/skunk-core_2.13/latest/index.html?search=")
