@@ -1266,6 +1266,10 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
          (when commandExist
            (save-excursion
              (shell-command-on-region pos1 pos2 "tidy -i -q " (buffer-name) t)
+             (beginning-of-buffer)
+             (search-forward "DOCTYPE")
+             (beginning-of-line)
+             (delete-region (point-min) (point))
              )
            )
          )
