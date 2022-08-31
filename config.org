@@ -1033,16 +1033,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
        (add-to-list 'auto-mode-alist '("\\.ly\\'" . lilypond-mode)))
    #+end_src
 
-** Tidy
-
-  Mode for interacting with ~tidy~
-
-  #+begin_src emacs-lisp
-     (when (executable-find "tidy")
-       ;; https://www.emacswiki.org/emacs/tidy.el
-       (load "~/.emacs.d/lisp/tidy"))
-  #+end_src
-
 * Functions
 ** Indentation
 
@@ -1231,7 +1221,7 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
    Functions for formatting code.
 
    #+BEGIN_SRC emacs-lisp
-     (defun xml-format ()
+     (defun xml-format-xmllint ()
        "indent an xml file using xlint on a region or buffer"
        (interactive)
        (let (pos1 pos2 commandExist)
@@ -1256,7 +1246,32 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
          )
        )
 
-     (defun js-format ()
+     (defun html-format-tidy ()
+       "indent an html file using tidy on a region or buffer"
+       (interactive)
+       (let (pos1 pos2 commandExist)
+         (if (use-region-p)
+             (setq pos1 (region-beginning) pos2 (region-end))
+           (setq pos1 (point-min) pos2 (point-max)))
+
+         (setq commandExist nil)
+         (condition-case nil
+             (progn
+               (call-process "tidy")
+               (setq commandExist t)
+               )
+           (error (message "Please install tidy"))
+           )
+
+         (when commandExist
+           (save-excursion
+             (shell-command-on-region pos1 pos2 "tidy -i -q " (buffer-name) t)
+             )
+           )
+         )
+       )
+
+     (defun js-format-jsbeautify ()
        "indent an js file using js-beutifier on a region or buffer"
        (interactive)
        (let (pos1 pos2 commandExist)
