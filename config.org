@@ -979,6 +979,11 @@ Add ~graphql-mode~
   (use-package graphql-mode)
 #+end_src
 
+*** Rust
+
+#+begin_src emacs-lisp
+  (use-package rust-mode)
+#+end_src
 ** File System
 *** Dired
 
