@@ -971,6 +971,14 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
 
     #+end_src
 
+*** GraphQl
+
+Add ~graphql-mode~
+
+#+begin_src emacs-lisp
+  (use-package graphql-mode)
+#+end_src
+
 ** File System
 *** Dired
 
