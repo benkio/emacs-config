@@ -1031,6 +1031,14 @@ Add ~graphql-mode~
       (require 'ispell)
     #+end_src
 
+** String Inflection
+
+  Package to cycle and change between different cases: camel, underscore, lower...
+
+  #+begin_src emacs-lisp
+    (use-package string-inflection)
+  #+end_src
+
 * Local Modes
 
   Modes not on Melpa/Elpa. Imported from local folder
