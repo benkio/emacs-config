@@ -1833,14 +1833,30 @@ Add ~graphql-mode~
    #+begin_src emacs-lisp
      (defun dired-do-command (command)
        "Run COMMAND on marked files. Any files not already open will be opened.
-     After this command has been run, any buffers it's modified will remain
-     open and unsaved."
+          After this command has been run, any buffers it's modified will remain
+          open and unsaved."
        (interactive "CRun on marked files M-x ")
        (save-window-excursion
          (mapc (lambda (filename)
                  (find-file filename)
                  (call-interactively command))
                (dired-get-marked-files))))
+
+     (defun xah-dired-sort ()
+       "Sort dired dir listing in different ways.
+     Prompt for a choice.
+     URL `http://ergoemacs.org/emacs/dired_sort.html'
+     Version 2015-07-30"
+       (interactive)
+       (let (-sort-by -arg)
+         (setq -sort-by (ido-completing-read "Sort by:" '( "date" "size" "name" "dir")))
+         (cond
+          ((equal -sort-by "name") (setq -arg "-Al --si --time-style long-iso "))
+          ((equal -sort-by "date") (setq -arg "-Al --si --time-style long-iso -t"))
+          ((equal -sort-by "size") (setq -arg "-Al --si --time-style long-iso -S"))
+          ((equal -sort-by "dir") (setq -arg "-Al --si --time-style long-iso --group-directories-first"))
+          (t (error "logic error 09535" )))
+         (dired-sort-other -arg )))
    #+end_src
 ** Magit
 
