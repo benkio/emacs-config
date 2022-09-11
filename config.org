@@ -1039,6 +1039,11 @@ Add ~graphql-mode~
     (use-package string-inflection)
   #+end_src
 
+*** Go
+
+#+begin_src emacs-lisp
+  (use-package go-mode)
+#+end_src
 * Local Modes
 
   Modes not on Melpa/Elpa. Imported from local folder
