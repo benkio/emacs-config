@@ -508,6 +508,13 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
         )
 
     #+end_src
+*** String Inflection
+
+  Package to cycle and change between different cases: camel, underscore, lower...
+
+  #+begin_src emacs-lisp
+    (use-package string-inflection)
+  #+end_src
 
 ** Search
 *** Ripgrep
@@ -525,44 +532,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
     #+begin_src emacs-lisp
       (use-package google-this)
     #+end_src
-** Project Management
-*** Git & Magit
-
-    Managing git repos
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package magit
-        :config
-
-        (setq git-commit-summary-max-length 160)
-        (defun set-commit-fill-column ()
-          (setq fill-column 160)) ;; I want longer lines
-        (add-hook 'git-commit-mode-hook 'set-commit-fill-column)
-        )
-
-      (use-package git-link ) ;; Get git links to remote
-
-      (defun kill-magit-extra-buffer-in-current-repo (&rest _)
-        "Delete the magit-diff buffer related to the current repo"
-        (let (
-              (magit-diff-buffer-in-current-repo (magit-get-mode-buffer 'magit-diff-mode))
-              (magit-process-buffer-in-current-repo (magit-get-mode-buffer 'magit-process-mode))
-              (kill-buffer-query-functions nil)
-              )
-          (kill-buffer magit-diff-buffer-in-current-repo)
-          (kill-buffer magit-process-buffer-in-current-repo)
-          )
-        )
-      ;;
-      ;; When compliting the magit commit,
-      ;; delete the magit-diff buffer related to the current repo.
-      ;;
-      (add-hook 'git-commit-setup-hook
-                (lambda ()
-                  (add-hook 'with-editor-post-finish-hook
-                            #'kill-magit-extra-buffer-in-current-repo
-                            nil t))) ; the t is important
-    #+END_SRC
 ** Window Manipulation
 *** Winmove
 
@@ -665,15 +634,22 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
         (global-company-mode t))
     #+end_src
 ** Development
-*** Yaml
+*** C#
 
-    Add support for the yaml file types
+    #+begin_src emacs-lisp
+
+      (use-package dotnet)
+      (use-package csharp-mode)
+
+    #+end_src
+
+*** CSV
+
+    Mode to handle CSV files
 
     #+BEGIN_SRC emacs-lisp
-      (use-package yaml-mode
-        :mode ("\\.yml$" . yaml-mode))
+      (use-package csv-mode)
     #+END_SRC
-
 *** EditorConfig
 
     Support for editor config. So the formatting rules are shared
@@ -685,86 +661,64 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
         :config
         (editorconfig-mode 1))
     #+end_src
-*** Indent Guide
-
-    Used to highlight different indentation levels.
-    Useful in languages like ML, haskell, elm, scala 3..
+*** Elisp
+    #+begin_src emacs-lisp
+      (use-package s)
+    #+end_src
+*** Elm
 
     #+begin_src emacs-lisp
-      (use-package indent-guide
-        :config (indent-guide-global-mode))
+      (use-package elm-mode)
     #+end_src
-*** CSV
+*** Git & Magit
 
-    Mode to handle CSV files
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package csv-mode)
-    #+END_SRC
-*** RestClient
-
-    Emacs Rest Client
+    Managing git repos
 
     #+BEGIN_SRC emacs-lisp
-      (use-package restclient
-        :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
+      (use-package magit
+        :config
+
+        (setq git-commit-summary-max-length 160)
+        (defun set-commit-fill-column ()
+          (setq fill-column 160)) ;; I want longer lines
+        (add-hook 'git-commit-mode-hook 'set-commit-fill-column)
         )
 
-    #+END_SRC
+      (use-package git-link ) ;; Get git links to remote
 
-*** Yasnippet
-
-    snippets for coding and more
-
-    #+BEGIN_SRC emacs-lisp
-                                              ; Collection of snippets
-      (use-package yasnippet-snippets
-        :defer t
-        :config (add-to-list 'load-path
-                             "~/.emacs.d/plugins/yasnippet"))
-
-      (use-package yasnippet
-        :diminish yas-minor-mode
-        :defer t
-        :config
-        (add-to-list 'load-path
-                     "~/.emacs.d/snippets"))
-
-      (yas-global-mode 1)
-    #+END_SRC
-
-*** Scala
-
-    Add all the needed components for scala:
-    * scala mode
-    * sbt mode
-
-    #+BEGIN_SRC emacs-lisp
-      ;; Enable scala-mode and sbt-mode
-      (use-package scala-mode
-        :mode "\\.s\\(cala\\|bt\\|c\\)$"
-        :config (add-hook 'scala-mode-hook 'hs-minor-mode)
+      (defun kill-magit-extra-buffer-in-current-repo (&rest _)
+        "Delete the magit-diff buffer related to the current repo"
+        (let (
+              (magit-diff-buffer-in-current-repo (magit-get-mode-buffer 'magit-diff-mode))
+              (magit-process-buffer-in-current-repo (magit-get-mode-buffer 'magit-process-mode))
+              (kill-buffer-query-functions nil)
+              )
+          (kill-buffer magit-diff-buffer-in-current-repo)
+          (kill-buffer magit-process-buffer-in-current-repo)
+          )
         )
-
-      (use-package sbt-mode
-        :commands sbt-start sbt-command
-        :config
-        ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
-        ;; allows using SPACE when in the minibuffer
-        (substitute-key-definition
-         'minibuffer-complete-word
-         'self-insert-command
-         minibuffer-local-completion-map))
+      ;;
+      ;; When compliting the magit commit,
+      ;; delete the magit-diff buffer related to the current repo.
+      ;;
+      (add-hook 'git-commit-setup-hook
+                (lambda ()
+                  (add-hook 'with-editor-post-finish-hook
+                            #'kill-magit-extra-buffer-in-current-repo
+                            nil t))) ; the t is important
     #+END_SRC
-*** SQL
+*** Go
 
-    Packages for dealing with SQL
+#+begin_src emacs-lisp
+  (use-package go-mode)
+#+end_src*** GraphQl
 
-    #+begin_src emacs-lisp
-      (use-package sqlformat
-        :config (setq sqlformat-command 'sqlfluff)
-      )
-    #+end_src
+Add ~graphql-mode~
+
+#+begin_src emacs-lisp
+  (use-package graphql-mode)
+#+end_src
+
 *** Haskell
     #+BEGIN_SRC emacs-lisp
       (use-package company-ghci)
@@ -784,6 +738,20 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
       ;; ormolu formatter
       (use-package ormolu)
     #+END_SRC
+*** Indent Guide
+
+    Used to highlight different indentation levels.
+    Useful in languages like ML, haskell, elm, scala 3..
+
+    #+begin_src emacs-lisp
+      (use-package indent-guide
+        :config (indent-guide-global-mode))
+    #+end_src
+*** Json
+
+    #+begin_src emacs-lisp
+      (use-package json-mode)
+    #+end_src
 *** Latex
     #+BEGIN_SRC emacs-lisp
       (use-package tex
@@ -907,24 +875,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
             '("xelatex -interaction nonstopmode %f"))
 
     #+END_SRC
-*** Web
-
-    #+begin_src emacs-lisp
-      (use-package lorem-ipsum)
-      (use-package simple-httpd)
-    #+end_src
-*** Json
-
-    #+begin_src emacs-lisp
-      (use-package json-mode)
-    #+end_src
-*** Typescript
-
-    #+begin_src emacs-lisp
-      (use-package typescript-mode
-        :defer t
-        :mode "\\.\\(ts\\|tsx\\)\\'")
-    #+end_src
 *** Markdown
     #+BEGIN_SRC emacs-lisp
       (use-package markdown-mode
@@ -947,43 +897,104 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
 
       (use-package markdown-toc)
     #+END_SRC
-*** Elisp
-    #+begin_src emacs-lisp
-      (use-package s)
-    #+end_src
-*** Elm
-
-    #+begin_src emacs-lisp
-      (use-package elm-mode)
-    #+end_src
 *** Nix
 
     #+begin_src emacs-lisp
       (use-package nix-mode
         :mode "\\.nix\\'")
     #+end_src
-*** C#
+*** RestClient
 
-    #+begin_src emacs-lisp
+    Emacs Rest Client
 
-      (use-package dotnet)
-      (use-package csharp-mode)
+    #+BEGIN_SRC emacs-lisp
+      (use-package restclient
+        :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
+        )
 
-    #+end_src
-
-*** GraphQl
-
-Add ~graphql-mode~
-
-#+begin_src emacs-lisp
-  (use-package graphql-mode)
-#+end_src
+    #+END_SRC
 
 *** Rust
 
 #+begin_src emacs-lisp
   (use-package rust-mode)
 #+end_src
+*** Scala
+
+    Add all the needed components for scala:
+    * scala mode
+    * sbt mode
+
+    #+BEGIN_SRC emacs-lisp
+      ;; Enable scala-mode and sbt-mode
+      (use-package scala-mode
+        :mode "\\.s\\(cala\\|bt\\|c\\)$"
+        :config (add-hook 'scala-mode-hook 'hs-minor-mode)
+        )
+
+      (use-package sbt-mode
+        :commands sbt-start sbt-command
+        :config
+        ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+        ;; allows using SPACE when in the minibuffer
+        (substitute-key-definition
+         'minibuffer-complete-word
+         'self-insert-command
+         minibuffer-local-completion-map))
+    #+END_SRC
+*** SQL
+
+    Packages for dealing with SQL
+
+    #+begin_src emacs-lisp
+      (use-package sqlformat
+        :config (setq sqlformat-command 'sqlfluff)
+      )
+    #+end_src
+*** Typescript
+
+    #+begin_src emacs-lisp
+      (use-package typescript-mode
+        :defer t
+        :mode "\\.\\(ts\\|tsx\\)\\'")
+    #+end_src
+*** Web
+
+    #+begin_src emacs-lisp
+      (use-package lorem-ipsum)
+      (use-package simple-httpd)
+    #+end_src
+*** Yaml
+
+    Add support for the yaml file types
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package yaml-mode
+        :mode ("\\.yml$" . yaml-mode))
+    #+END_SRC
+
+*** Yasnippet
+
+    snippets for coding and more
+
+    #+BEGIN_SRC emacs-lisp
+                                              ; Collection of snippets
+      (use-package yasnippet-snippets
+        :defer t
+        :config (add-to-list 'load-path
+                             "~/.emacs.d/plugins/yasnippet"))
+
+      (use-package yasnippet
+        :diminish yas-minor-mode
+        :defer t
+        :config
+        (add-to-list 'load-path
+                     "~/.emacs.d/snippets"))
+
+      (yas-global-mode 1)
+    #+END_SRC
+
+
 ** File System
 *** Dired
 
@@ -1031,18 +1042,8 @@ Add ~graphql-mode~
       (require 'ispell)
     #+end_src
 
-** String Inflection
-
-  Package to cycle and change between different cases: camel, underscore, lower...
-
-  #+begin_src emacs-lisp
-    (use-package string-inflection)
-  #+end_src
-
-*** Go
 
 #+begin_src emacs-lisp
-  (use-package go-mode)
 #+end_src
 * Local Modes
 
