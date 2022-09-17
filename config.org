@@ -712,7 +712,8 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
 
 #+begin_src emacs-lisp
   (use-package go-mode)
-#+end_src*** GraphQl
+#+end_src
+*** GraphQl
 
 Add ~graphql-mode~
 
@@ -944,6 +945,7 @@ Add ~graphql-mode~
          minibuffer-local-completion-map)
         ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
         (setq sbt:program-options '("-Dsbt.supershell=false"))
+        )
     #+END_SRC
 *** SQL
 
