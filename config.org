@@ -158,6 +158,7 @@
     15. Dired hide details by default
     16. ~term-line-mode~ on ~ansi-term~ to enable normal ~C-x~, ~M-x~ and editing
     17. ~org-agenda~ task files
+    18. ~org-capture~ default file and template
 
     #+BEGIN_SRC emacs-lisp
       (defalias 'yes-or-no-p 'y-or-n-p)
@@ -192,6 +193,13 @@
 
       (defadvice ansi-term (after advice-term-line-mode activate) (term-line-mode))
       (setq org-agenda-files '("~/Dropbox/notes/TODO.org"))
+      (setq org-default-notes-file (concat org-directory "~/Dropbox/notes/TODO.org"))
+      (setq org-capture-templates
+            '(("t" "Todo" entry (file+headline "~/Dropbox/notes/TODO.org" "TODOs")
+               "* TODO %?\n  %i\n  %a")
+              ;; ("j" "Journal" entry (file+datetree "~/org/journal.org")
+              ;;  "* %?\nEntered on %U\n  %i\n  %a")
+              ))
     #+END_SRC
 
 *** Set
@@ -588,7 +596,7 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
 
     #+END_SRC
 
-** Org
+** Org-mode
 *** Github markdown conversion
 
     Converts org file to github markdown with the command: `M-x org-gfm-export-to-markdown`
@@ -1004,7 +1012,6 @@ Add ~graphql-mode~
       (yas-global-mode 1)
     #+END_SRC
 
-
 ** File System
 *** Dired
 
@@ -1052,9 +1059,6 @@ Add ~graphql-mode~
       (require 'ispell)
     #+end_src
 
-
-#+begin_src emacs-lisp
-#+end_src
 * Local Modes
 
   Modes not on Melpa/Elpa. Imported from local folder
@@ -2860,6 +2864,7 @@ Add ~graphql-mode~
    #+begin_src emacs-lisp
      (global-set-key (kbd "C-c l") #'org-store-link)
      (global-set-key (kbd "C-c a") #'org-agenda)
+     (global-set-key (kbd "C-S-o") #'org-capture)
    #+end_src
 ** Search
    #+begin_src emacs-lisp
