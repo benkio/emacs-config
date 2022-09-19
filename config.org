@@ -107,8 +107,9 @@
     5. Using Tabs
     6. Windows keys
     7. Truncate-lines for minibuffer
-    8. Upcase region warning
-    9. popup confirmation windows
+    8. Truncate-lines for Calendar
+    9. Upcase region warning
+    10. popup confirmation windows
 
     #+BEGIN_SRC emacs-lisp
       (setq make-backup-files nil)
@@ -128,6 +129,8 @@
         (setq w32-apps-modifier 'hyper)) ; Menu/App key
 
       (add-hook 'minibuffer-setup-hook
+                (lambda () (setq truncate-lines nil)))
+      (add-hook 'calendar-initial-window-hook
                 (lambda () (setq truncate-lines nil)))
 
       (put 'upcase-region 'disabled nil)
@@ -154,6 +157,7 @@
     14. hs-minor-mode when coding
     15. Dired hide details by default
     16. ~term-line-mode~ on ~ansi-term~ to enable normal ~C-x~, ~M-x~ and editing
+    17. ~org-agenda~ task files
 
     #+BEGIN_SRC emacs-lisp
       (defalias 'yes-or-no-p 'y-or-n-p)
@@ -187,6 +191,7 @@
                   (dired-hide-details-mode)))
 
       (defadvice ansi-term (after advice-term-line-mode activate) (term-line-mode))
+      (setq org-agenda-files '("~/Dropbox/notes/TODO.org"))
     #+END_SRC
 
 *** Set
