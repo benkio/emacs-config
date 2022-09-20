@@ -189,6 +189,7 @@
     16. ~term-line-mode~ on ~ansi-term~ to enable normal ~C-x~, ~M-x~ and editing
     17. ~org-agenda~ task files
     18. ~org-capture~ default file and template
+    19. ~abbrev-mode~ always on
 
     #+BEGIN_SRC emacs-lisp
       (defalias 'yes-or-no-p 'y-or-n-p)
@@ -230,6 +231,7 @@
               ;; ("j" "Journal" entry (file+datetree "~/org/journal.org")
               ;;  "* %?\nEntered on %U\n  %i\n  %a")
               ))
+      (setq-default abbrev-mode t)
     #+END_SRC
 
 *** Set
@@ -1039,6 +1041,15 @@ Add ~graphql-mode~
       (yas-global-mode 1)
     #+END_SRC
 
+** Unicode Emoticon Mode
+Add some abbrevs for unicode emoticons
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package unicode-emoticons
+    :config
+    (require 'unicode-emoticons)
+    )
+#+end_src
 ** File System
 *** Dired
 
