@@ -71,20 +71,35 @@
         (interactive)
         (set-foreground-color "white")
         (set-background-color "grey15")
-        (set-face-attribute 'region nil :background "dark slate blue")
-        (set-face-attribute 'idle-highlight nil :background "SlateBlue4")
+        (set-face-attribute 'region nil :background "SlateBlue4")
+        (set-face-attribute 'idle-highlight nil :background "DarkOrange3")
         )
 
       (defun benkio-light-theme ()
         "Load Simple Light Benkio Theme"
         (interactive)
         (set-foreground-color "black")
-        (set-background-color "grey85")
-        (set-face-attribute 'region nil :background "light slate blue")
-        (set-face-attribute 'idle-highlight nil :background "snow4")
+        (set-background-color "grey95")
+        (set-face-attribute 'region nil :background "LightSkyBlue1")
+        (set-face-attribute 'idle-highlight nil :background "plum1")
         )
 
-      (benkio-dark-theme)
+      ;; <Color theme initialization code>
+      (setq current-theme '(benkio-light-theme))
+
+      (defun synchronize-theme ()
+          (setq hour
+              (string-to-number
+                  (substring (current-time-string) 11 13)))
+          (if (member hour (number-sequence 6 17))
+              (setq now '(benkio-light-theme))
+              (setq now '(benkio-dark-theme)))
+          (if (equal now current-theme)
+              nil
+              (setq current-theme now)
+              (eval now) ) ) ;; end of (defun ...
+
+      (run-with-timer 0 3600 'synchronize-theme)
     #+END_SRC
 *** Frame Font Size
 
