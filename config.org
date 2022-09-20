@@ -72,14 +72,16 @@
         (set-foreground-color "white")
         (set-background-color "grey15")
         (set-face-attribute 'region nil :background "dark slate blue")
+        (set-face-attribute 'idle-highlight nil :background "SlateBlue4")
         )
 
       (defun benkio-light-theme ()
         "Load Simple Light Benkio Theme"
         (interactive)
         (set-foreground-color "black")
-        (set-background-color "floral white")
-        (set-face-attribute 'region nil :background "LightBlue1")
+        (set-background-color "grey85")
+        (set-face-attribute 'region nil :background "light slate blue")
+        (set-face-attribute 'idle-highlight nil :background "snow4")
         )
 
       (benkio-dark-theme)
@@ -530,7 +532,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
         :diminish idle-highlight-mode
         :config
         (add-hook 'prog-mode-hook 'idle-highlight-mode)
-        (set-face-attribute 'idle-highlight nil :background "forest green")
         )
 
     #+end_src
