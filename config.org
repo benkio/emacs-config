@@ -2276,7 +2276,7 @@ Add some abbrevs for unicode emoticons
                  (lambda (result) (save-excursion
                                     (beginning-of-buffer)
                                     (end-of-line)
-                                    (next-line)
+                                    (search-forward-regexp "^$")
                                     (newline)
                                     (insert result)
                                     ))
