@@ -79,7 +79,7 @@
         "Load Simple Light Benkio Theme"
         (interactive)
         (set-foreground-color "black")
-        (set-background-color "grey95")
+        (set-background-color "old lace")
         (set-face-attribute 'region nil :background "LightSkyBlue1")
         (set-face-attribute 'idle-highlight nil :background "plum1")
         )
