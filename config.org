@@ -1042,14 +1042,14 @@ Add ~graphql-mode~
     #+END_SRC
 
 ** Unicode Emoticon Mode
-Add some abbrevs for unicode emoticons
+ Add some abbrevs for unicode emoticons
 
-#+begin_src emacs-lisp :tangle yes
+  #+BEGIN_SRC emacs-lisp
   (use-package unicode-emoticons
     :config
     (require 'unicode-emoticons)
     )
-#+end_src
+  #+END_SRC
 ** File System
 *** Dired
 
