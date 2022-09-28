@@ -2,4 +2,4 @@
 # name: scalafix & scalafmt
 # key: sbtSFix
 # --
-scalafixAll; scalafmtAll
+scalafixAll; scalafmtAll; scalafmtSbt
