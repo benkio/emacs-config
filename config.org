@@ -1893,8 +1893,8 @@ Add ~graphql-mode~
 ** Dired
 
    #+begin_src emacs-lisp
-     (defun dired-do-command (command)
-       "Run COMMAND on marked files. Any files not already open will be opened.
+     (defun dired-do-command-interactive (command)
+       "Run COMMAND on marked files interactively. Any files not already open will be opened.
           After this command has been run, any buffers it's modified will remain
           open and unsaved."
        (interactive "CRun on marked files M-x ")
@@ -1904,11 +1904,19 @@ Add ~graphql-mode~
                  (call-interactively command))
                (dired-get-marked-files))))
 
+     (defun dired-do-command (command)
+       "Run COMMAND on marked files. Passing each file in input of the command, called not iteractively"
+       (interactive "CRun on marked files M-x ")
+       (save-window-excursion
+         (mapc (lambda (filename)
+                 (funcall command filename))
+               (dired-get-marked-files))))
+
      (defun xah-dired-sort ()
        "Sort dired dir listing in different ways.
-     Prompt for a choice.
-     URL `http://ergoemacs.org/emacs/dired_sort.html'
-     Version 2015-07-30"
+          Prompt for a choice.
+          URL `http://ergoemacs.org/emacs/dired_sort.html'
+          Version 2015-07-30"
        (interactive)
        (let (-sort-by -arg)
          (setq -sort-by (ido-completing-read "Sort by:" '( "date" "size" "name" "dir")))
