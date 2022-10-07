@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Scala enum
+# key: enum
+# --
+enum $1:
+  case $2 extends ${1}
+  case $3 extends ${1}
+$0
