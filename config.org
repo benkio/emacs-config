@@ -1248,6 +1248,72 @@ Add ~graphql-mode~
                (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
            (call-process-shell-command (format "ffplay -nodisp -autoexit \"%s\" &" fileComplete fileCompleteNoExtension) nil 0)))
        )
+
+     (defun preview-crop-media-file (file &optional height width topX topY)
+       "Preview using ffplay the crop of a mediafile.
+        file input crop to preview@
+        height of the output rectangle. if 0 or invalid, input file height will be used
+        width of the output rectangle. if 0 or invalid, input file width will be used
+        topX cordinate of the top left corner. Default 0
+        topY cordinate of the top left corner. Default 0"
+       (interactive (list
+                     (read-file-name (format "File to preview: "))
+                     (read-string (format "Height (default \"in_h\"): "))
+                     (read-string (format "Width (default \"in_w\"): "))
+                     (read-number (format "Top Left Corner X: ") 0)
+                     (read-number (format "Top Left Corner Y: ") 0)
+                     ))
+       (setq commandExist nil)
+       (condition-case nil
+           (progn
+             (call-process "ffplay")
+             (setq commandExist t)
+             )
+         (error (message "Please install ffplay (ffmpeg)"))
+         )
+       (when (eq (string-to-number height) 0) (setq height "in_h"))
+       (when (eq (string-to-number width) 0) (setq width "in_w"))
+       (setq command (format "ffplay -i %s -vf \"crop=%s:%s:%d:%d\"" fileComplete width height topX topY))
+       (message command)
+       (when commandExist
+         (let ((fileComplete (expand-file-name file))
+               (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+           (call-process-shell-command command nil 0)))
+       )
+
+     (defun crop-media-file (file newFile &optional height width topX topY)
+       "Preview using ffplay the crop of a mediafile.
+        file to crop
+        newFile result file cropped
+        height of the output rectangle. if 0 or invalid, input file height will be used
+        width of the output rectangle. if 0 or invalid, input file width will be used
+        topX cordinate of the top left corner. Default 0
+        topY cordinate of the top left corner. Default 0"
+       (interactive (list
+                     (read-file-name (format "File to crop: "))
+                     (read-file-name (format "New File: "))
+                     (read-string (format "Height (default \"in_h\"): "))
+                     (read-string (format "Width (default \"in_w\"): "))
+                     (read-number (format "Top Left Corner X: ") 0)
+                     (read-number (format "Top Left Corner Y: ") 0)
+                     ))
+       (setq commandExist nil)
+       (condition-case nil
+           (progn
+             (call-process "ffmpeg")
+             (setq commandExist t)
+             )
+         (error (message "Please install ffmpeg"))
+         )
+       (when (eq (string-to-number height) 0) (setq height "in_h"))
+       (when (eq (string-to-number width) 0) (setq width "in_w"))
+       (setq command (format "ffmpeg -i %s -vf \"crop=%s:%s:%d:%d\" %s" fileComplete width height topX topY newFile))
+       (message command)
+       (when commandExist
+         (let ((fileComplete (expand-file-name file))
+               (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+           (call-process-shell-command command nil 0)))
+       )
    #+end_src
 ** File Conversion
 
