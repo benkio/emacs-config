@@ -1,5 +1,5 @@
 # Author: Jonas Bonèr <jonas@jonasboner.com>
-# name: println("..")
+# name: println(s"..")
 # key: pr
 # --
 println(s"${1:msg}") $0

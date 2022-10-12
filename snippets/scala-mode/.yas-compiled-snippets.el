@@ -36,6 +36,7 @@
                        ("for" "for {\n  ${1:x} <- ${2:xs}\n} yield $0" "for {x <- xs } yield" nil nil nil "/Users/benkio/.emacs.d/snippets/scala-mode/for.monadic" nil nil)
                        ("for" "for (${1:x} <- ${2:xs}) {\n  $0\n}" "for (x <- xs) { ... }" nil nil nil "/Users/benkio/.emacs.d/snippets/scala-mode/for.loop" nil nil)
                        ("for" "for (${1:x} <- ${2:xs} if ${3:guard}) {\n  $0\n}" "for (x <- xs if guard) { ... }" nil nil nil "/Users/benkio/.emacs.d/snippets/scala-mode/for.if" nil nil)
+                       ("enum" "enum $1:\n    case $2 extends  $1\n    case $3 extends  $1\n$0" "Scala enum" nil nil nil "/Users/benkio/.emacs.d/snippets/scala-mode/enum" nil nil)
                        ("doc" "/**\n * ${1:description}\n * $0\n */" "/** ... */" nil nil nil "/Users/benkio/.emacs.d/snippets/scala-mode/doc.scaladoc" nil nil)
                        ("doc" "/**\n * ${1:`(file-name-base buffer-file-name)`}\n *\n * @description       :   $1\n * @project           :   $2\n * @version           :   $3\n * @date              :   `(format-time-string \"%d %B %Y\")`\n * @author (original) :   Enrico Benini (enricobenini@$4)\n **/$0" "/** file-name description project author .. **/" nil nil nil "/Users/benkio/.emacs.d/snippets/scala-mode/doc.file" nil nil)
                        ("doc" "/** \n * `(scala-mode-find-clstrtobj-name-doc)`\n * ${1:description}\n * $0  \n */" "/** cls/trt/obj name */" nil nil nil "/Users/benkio/.emacs.d/snippets/scala-mode/doc.class" nil nil)
@@ -58,4 +59,4 @@
                        ("ano" "($1) => ${2:body} $0" "(args) => ..." nil nil nil "/Users/benkio/.emacs.d/snippets/scala-mode/ano" nil nil)))
 
 
-;;; Do not edit! File generated at Tue Aug 30 12:50:55 2022
+;;; Do not edit! File generated at Fri Oct  7 09:15:28 2022
