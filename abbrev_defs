@@ -61,6 +61,7 @@
     ("nyan0" "~=[,,_,,]:3" nil :count 0)
     ("ok0" "👌" nil :count 0)
     ("party0" "🥳" nil :count 0)
+    ("partypopper0" "🎉" nil :count 1)
     ("pig0" "🐷" nil :count 0)
     ("plane0" "✈️" nil :count 0)
     ("pleased0" "(─‿‿─)" nil :count 0)
@@ -101,5 +102,6 @@
     ("wink0" "😉" nil :count 9)
     ("yay0" "٩(⁎❛ᴗ❛⁎)۶" nil :count 0)
     ("yummy0" "😋" "zzz0" :count 0)
+    ("zzz0" "💤" nil :count 0)
    ))
 
