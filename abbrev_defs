@@ -1,4 +1,9 @@
 ;;-*-coding: utf-8;-*-
+(define-abbrev-table 'fundamental-mode-abbrev-table
+  '(
+    ("BTW" "By the way" nil :count 0)
+   ))
+
 (define-abbrev-table 'unicode-emoticons-mode-abbrev-table
   '(
     ("IT0" "🇮🇹" nil :count 0)
