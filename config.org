@@ -564,6 +564,15 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
     (use-package string-inflection)
   #+end_src
 
+*** Move Text
+   https://github.com/emacsfodder/move-text
+   Improvement on moving single line or region up and down
+   #+begin_src emacs-lisp
+     (use-package move-text
+       :config (move-text-default-bindings)
+       :ensure t
+       )
+   #+end_src
 ** Search
 *** Ripgrep
 
@@ -1673,21 +1682,7 @@ Add ~graphql-mode~
        (eval result)
        )
 
-     (defun move-line-up ()
-       "Move current line up using `transpose-lines'"
-       (interactive)
-       (transpose-lines 1)
-       (previous-line 2))
-
-     (defun move-line-down ()
-       "Move current line down using `transpose-lines'"
-       (interactive)
-       (next-line)
-       (transpose-lines 1)
-       (previous-line))
-
      ;; FROM http://xahlee.info/emacs/emacs/elisp_change_brackets.html
-     (require 'ido)
      (defun xah-change-bracket-pairs ( @from-chars @to-chars)
        "Change bracket pairs from one type to another.
 
@@ -1894,10 +1889,10 @@ Add ~graphql-mode~
      (defun sort-words (reverse beg end)
            "Sort words in region alphabetically, in REVERSE if negative.
          Prefixed with negative \\[universal-argument], sorts in reverse.
-  
+
          The variable `sort-fold-case' determines whether alphabetic case
          affects the sort order.
-  
+
          See `sort-regexp-fields'."
            (interactive "*P\nr")
            (sort-regexp-fields reverse "\\w+" "\\&" beg end))
@@ -2937,8 +2932,6 @@ Add ~graphql-mode~
     #+end_src
 *** Line or Region
     #+begin_src emacs-lisp
-      (global-set-key [(control shift up)] 'move-line-up)
-      (global-set-key [(control shift down)] 'move-line-down)
       (global-set-key (kbd "C-k") 'crux-smart-kill-line)
       (global-set-key (kbd "M-o") 'crux-smart-open-line-above)
       (global-set-key (kbd "C-c d") 'crux-duplicate-current-line-or-region)
@@ -3082,3 +3075,4 @@ Add ~graphql-mode~
     #+begin_src emacs-lisp
       (global-set-key (kbd "C-c C-s") 'shell)
     #+end_src
+
