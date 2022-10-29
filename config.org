@@ -691,6 +691,11 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
         (global-company-mode t))
     #+end_src
 ** Development
+*** APL
+
+#+begin_src emacs-lisp
+  (use-package gnu-apl-mode)
+#+end_src
 *** C#
 
     #+begin_src emacs-lisp
