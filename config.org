@@ -1486,7 +1486,7 @@ Add ~graphql-mode~
 
      (defun upcase-initial-word()
        (interactive)
-       (search-forward-regexp "[ ]*")
+       (search-forward-regexp "[[:space:]]*")
        (let ((bounds (bounds-of-thing-at-point 'word)))
          (upcase-initials-region (point) (cdr bounds)))
        (forward-word)
