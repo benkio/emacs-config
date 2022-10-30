@@ -1110,7 +1110,9 @@ Add ~graphql-mode~
           (setq ispell-program-name (locate-file "hunspell"
                                                  exec-path exec-suffixes 'file-executable-p))
 
-          )))
+          ))
+        (t (setq ispell-program-name "~/.nix-profile/bin/aspell"))
+       )
 
       (require 'ispell)
     #+end_src
