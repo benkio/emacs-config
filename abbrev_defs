@@ -1,13 +1,15 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'fundamental-mode-abbrev-table
   '(
+    ("ASAP0" "as soon as possible" nil :count 1)
     ("BTW0" "By the way" nil :count 1)
+    ("TBH0" "to be honest" nil :count 1)
    ))
 
 (define-abbrev-table 'unicode-emoticons-mode-abbrev-table
   '(
     ("BR0" "🇧🇷" nil :count 0)
-    ("IT0" "🇮🇹" nil :count 0)
+    ("IT0" "🇮🇹" nil :count 1)
     ("UK0" "🇬🇧" nil :count 0)
     ("US0" "🇺🇸" nil :count 0)
     ("angry0" "ლ(ಠ益ಠ)ლ" nil :count 0)
