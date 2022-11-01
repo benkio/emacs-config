@@ -29,7 +29,7 @@
     * Size of Current File
 
     #+BEGIN_SRC emacs-lisp
-      (global-linum-mode 1)
+      (global-display-line-numbers-mode 1)
       (setq column-number-mode t)
       (show-paren-mode 1)
       (size-indication-mode 1)
@@ -61,18 +61,39 @@
 
     #+END_SRC
 
+*** Idle Highlight
+
+    Note: forced to put this here for theme dependecy reasons!!!
+    Highlight the word you are on in case you stop there for some time
+
+    #+begin_src emacs-lisp
+
+      (use-package idle-highlight-mode
+        :diminish idle-highlight-mode
+        :config
+        (add-hook 'prog-mode-hook 'idle-highlight-mode)
+        )
+
+    #+end_src
 *** Theme
 
     Minimalistic theme setup.
 
     #+BEGIN_SRC emacs-lisp
+
+      ;; <Color theme initialization code>
+      (setq current-theme nil)
+
+
       (defun benkio-dark-theme ()
         "Load Simple Dark Benkio Theme"
         (interactive)
         (set-foreground-color "white")
         (set-background-color "grey15")
         (set-face-attribute 'region nil :background "SlateBlue4")
+        (set-face-attribute 'line-number-current-line nil :background "SlateBlue4")
         (set-face-attribute 'idle-highlight nil :background "DarkOrange3")
+        (setq current-theme '(benkio-dark-theme))
         )
 
       (defun benkio-light-theme ()
@@ -81,23 +102,22 @@
         (set-foreground-color "black")
         (set-background-color "old lace")
         (set-face-attribute 'region nil :background "LightSkyBlue1")
+        (set-face-attribute 'line-number-current-line nil :background "LightSkyBlue1")
         (set-face-attribute 'idle-highlight nil :background "plum1")
+        (setq current-theme '(benkio-light-theme))
         )
 
-      ;; <Color theme initialization code>
-      (setq current-theme '(benkio-light-theme))
-
       (defun synchronize-theme ()
-          (setq hour
+        (setq hour
               (string-to-number
-                  (substring (current-time-string) 11 13)))
-          (if (member hour (number-sequence 6 17))
-              (setq now '(benkio-light-theme))
-              (setq now '(benkio-dark-theme)))
-          (if (equal now current-theme)
-              nil
-              (setq current-theme now)
-              (eval now) ) ) ;; end of (defun ...
+               (substring (current-time-string) 11 13)))
+        (if (member hour (number-sequence 6 17))
+            (setq now '(benkio-light-theme))
+          (setq now '(benkio-dark-theme)))
+        (if (equal now current-theme)
+            nil
+          (setq current-theme now)
+          (eval now) ) )
 
       (run-with-timer 0 3600 'synchronize-theme)
     #+END_SRC
@@ -543,19 +563,6 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
     #+BEGIN_SRC emacs-lisp
       (use-package expand-region)
     #+END_SRC
-*** Idle Highlight
-
-    Highlight the word you are on in case you stop there for some time
-
-    #+begin_src emacs-lisp
-
-      (use-package idle-highlight-mode
-        :diminish idle-highlight-mode
-        :config
-        (add-hook 'prog-mode-hook 'idle-highlight-mode)
-        )
-
-    #+end_src
 *** String Inflection
 
   Package to cycle and change between different cases: camel, underscore, lower...
@@ -3082,4 +3089,3 @@ Add ~graphql-mode~
     #+begin_src emacs-lisp
       (global-set-key (kbd "C-c C-s") 'shell)
     #+end_src
-
