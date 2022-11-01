@@ -1,3 +1,4 @@
+#+OPTIONS: toc:2
 * Emacs Basic Config
 
   Contains all the configuration of emacs out of the box, no packages installed in here
