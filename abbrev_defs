@@ -93,6 +93,7 @@
     ("smile0" "(◕‿◕)" nil :count 2)
     ("smilesweat0" "😅" nil :count 19)
     ("smiley0" "(◕ل͜◕)" nil :count 0)
+    ("smirk0" "😏" nil :count 0)
     ("snow0" "❅" nil :count 0)
     ("snowman0" "☃" nil :count 0)
     ("sorry0" "🙇" nil :count 0)
