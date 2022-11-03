@@ -1574,7 +1574,7 @@ Add ~graphql-mode~
    #+end_src
 ** Date
   Use ~date~ unix command to insert date
-  #+begin_src emacs-lisp :tangle yes
+  #+begin_src emacs-lisp
     (defun insert-current-date-iso-8601 ()
       "Call the `date' unix command to insert the current date"
       (interactive)
