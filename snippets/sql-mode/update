@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: update
+# key: update
+# --
+UPDATE $1 SET $2 = $3 WHERE $4; $0
