@@ -1923,6 +1923,17 @@ Add ~graphql-mode~
          See `sort-regexp-fields'."
            (interactive "*P\nr")
            (sort-regexp-fields reverse "\\w+" "\\&" beg end))
+
+     (defun xah-insert-alphabets-az (&optional *use-uppercase-p)
+       "Insert letters a to z vertically.
+     If `universal-argument' is called first, use CAPITAL letters.
+
+     URL `http://ergoemacs.org/emacs/emacs_insert-alphabets.html'
+     Version 2015-11-06"
+       (interactive "P")
+       (let ((startChar (if *use-uppercase-p 65 97 )))
+         (dotimes (-i 26)
+           (insert (format "%c\n" (+ startChar -i))))))
    #+END_SRC
 ** Window Manipulation
 
