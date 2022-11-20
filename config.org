@@ -2971,7 +2971,7 @@ Add ~graphql-mode~
 *** Line or Region
     #+begin_src emacs-lisp
       (global-set-key (kbd "C-k") 'crux-smart-kill-line)
-      (global-set-key (kbd "M-o") 'crux-smart-open-line-above)
+      (global-set-key (kbd "C-o") 'crux-smart-open-line-above)
       (global-set-key (kbd "C-c d") 'crux-duplicate-current-line-or-region)
       (global-set-key (kbd "C-x C-l") 'crux-downcase-region)
       (global-set-key (kbd "C-x C-u") 'crux-upcase-region)
