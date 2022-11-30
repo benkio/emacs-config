@@ -1178,6 +1178,15 @@ Add ~graphql-mode~
          (setq candidates (cl-sort candidates #'< :key 'car))
          (switch-to-buffer-other-window (cdr (car candidates)))))
    #+end_src
+** Buffers
+  Functions over buffers
+
+  #+begin_src emacs-lisp
+    (defun kill-all-buffers ()
+      (interactive)
+      (mapcar 'kill-buffer (buffer-list))
+      (delete-other-windows))
+  #+end_src
 ** FFMPEG
 
    Here you can find the functions to instruct ffmpeg. Very useful when
