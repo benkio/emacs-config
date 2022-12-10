@@ -808,7 +808,9 @@ Add ~graphql-mode~
         )
 
       ;; ormolu formatter
-      (use-package ormolu)
+      (use-package ormolu
+        :config (setq ormolu-process-path "fourmolu")
+        )
     #+END_SRC
 *** Indent Guide
 
