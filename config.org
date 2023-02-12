@@ -121,6 +121,14 @@
           (eval now) ) )
 
       (run-with-timer 0 3600 'synchronize-theme)
+
+      (add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (select-frame frame)
+            (when (display-graphic-p frame)
+              (synchronize-theme)
+              (eval current-theme))))
+
     #+END_SRC
 *** Frame Font Size
 
