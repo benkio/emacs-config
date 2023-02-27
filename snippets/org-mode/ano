@@ -1,0 +1,22 @@
+# Author: benkio <benkio89@gmail.com>
+# name: Org Reveal Init Template
+# key: orgrevealinit
+# --
+#+Title: My Presentation
+#+Author: Enrico Benini
+#+Email: benkio89@gmail.com
+#+REVEAL_INIT_OPTIONS: width:1200, height:800, margin: 0.1, minScale:0.2, maxScale:2.5, transition:'cube'
+#+OPTIONS: toc:nil timestamp:nil email:t
+#+REVEAL_THEME: blood
+#+REVEAL_HLEVEL: 2
+#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="My Presentation">
+#+REVEAL_POSTAMBLE: <p> Created by benkio. </p>
+#+REVEAL_PLUGINS: (markdown notes)
+
+* Slide 1
+
+  Some content for slide 1.
+
+* Slide 2
+
+  Some content for slide 2.
