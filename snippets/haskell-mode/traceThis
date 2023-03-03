@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: traceThis
+# key: tr
+# --
+trace (printf "debug: %s" (show $1 $0)) $
