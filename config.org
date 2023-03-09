@@ -1027,6 +1027,11 @@ Add ~graphql-mode~
         (setq sbt:program-options '("-Dsbt.supershell=false"))
         )
     #+END_SRC
+*** Smithy
+#+begin_src emacs-lisp
+  (use-package smithy-mode)
+#+end_src
+
 *** SQL
 
     Packages for dealing with SQL
