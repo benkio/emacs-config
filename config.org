@@ -1309,12 +1309,12 @@ Add ~graphql-mode~
          )
        (when (eq (string-to-number height) 0) (setq height "in_h"))
        (when (eq (string-to-number width) 0) (setq width "in_w"))
+       (setq fileComplete (expand-file-name file))
+       ;; (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
        (setq command (format "ffplay -i %s -vf \"crop=%s:%s:%d:%d\"" fileComplete width height topX topY))
        (message command)
        (when commandExist
-         (let ((fileComplete (expand-file-name file))
-               (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-           (call-process-shell-command command nil 0)))
+           (call-process-shell-command command nil 0))
        )
 
      (defun crop-media-file (file newFile &optional height width topX topY)
@@ -1343,12 +1343,12 @@ Add ~graphql-mode~
          )
        (when (eq (string-to-number height) 0) (setq height "in_h"))
        (when (eq (string-to-number width) 0) (setq width "in_w"))
+       (setq fileComplete (expand-file-name file))
+       ;;(fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
        (setq command (format "ffmpeg -i %s -vf \"crop=%s:%s:%d:%d\" %s" fileComplete width height topX topY newFile))
        (message command)
        (when commandExist
-         (let ((fileComplete (expand-file-name file))
-               (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-           (call-process-shell-command command nil 0)))
+           (call-process-shell-command command nil 0))
        )
    #+end_src
 ** File Conversion
