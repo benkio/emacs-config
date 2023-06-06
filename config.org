@@ -94,6 +94,7 @@
         (set-face-attribute 'region nil :background "SlateBlue4")
         (set-face-attribute 'line-number-current-line nil :background "SlateBlue4")
         (set-face-attribute 'idle-highlight nil :background "DarkOrange3")
+        (set-face-attribute 'mode-line nil :background "PaleGreen")
         (setq current-theme '(benkio-dark-theme))
         )
 
@@ -105,6 +106,7 @@
         (set-face-attribute 'region nil :background "LightSkyBlue1")
         (set-face-attribute 'line-number-current-line nil :background "LightSkyBlue1")
         (set-face-attribute 'idle-highlight nil :background "plum1")
+        (set-face-attribute 'mode-line nil :background "PaleGreen")
         (setq current-theme '(benkio-light-theme))
         )
 
