@@ -1248,7 +1248,7 @@ Add ~graphql-mode~
      (require 'seq)
 
      (defun concatenate-media-files ()
-       "Concatenate a list of files with the same encoding"
+       "Concatenate a list of files with the same encoding in the same directory"
        (interactive)
        (setq
         files (if (not (null (dired-get-marked-files)))
@@ -1262,10 +1262,13 @@ Add ~graphql-mode~
            )
          )
        (let* ((newFile (read-string "Insert the new file name: "))
-              (concatContent (seq-drop (seq-reduce (lambda (a b) (concat a "|" (replace-regexp-in-string "'" "\'"(file-name-nondirectory b)))) files "") 1))
+              (concatContent (seq-drop (seq-reduce (lambda (a b) (concat a "\nfile './" (replace-regexp-in-string "'" "\'" (file-name-nondirectory b)) "'")) files "") 1))
+              (unused (write-region concatContent nil "./concatFile.txt"))
               (outputFile (expand-file-name (concat default-directory newFile)))
-              (ffmpegCommand (concat "ffmpeg -i concat:\"" concatContent "\" -c copy \"" outputFile  "\"")))
-         (async-shell-command ffmpegCommand)
+              (ffmpegCommand (concat "ffmpeg -f concat -safe 0 -i ./concatFile.txt -c copy \"" outputFile  "\"")))
+         ;; (message "concatContent: %s - outputFile: %s - ffmpegCommand: %s" concatContent outputFile ffmpegCommand)
+         (shell-command ffmpegCommand)
+         (delete-file "./concatFile.txt")
          )
        )
 
