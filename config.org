@@ -2501,7 +2501,7 @@ Add ~graphql-mode~
       (defun hs-shell-clean-old-output ()
         "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
         (interactive)
-        (funcall 'shell-clean-old-output "\\(Building library for \\|error[s]? -\\|All good\\)"))
+        (funcall 'shell-clean-old-output "\\(Building library for \\|errors\\|All good\\)"))
 
       (defun hs-event-file-navigation (&optional notSplitWindow)
         "Navigate to the file that has a problem. it can navigate using a
