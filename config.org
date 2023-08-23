@@ -2754,7 +2754,7 @@ Add ~graphql-mode~
         (condition-case nil
             (funcall 'event-file-navigation (regexp-quote "[tsl] ERROR in ") "(" notSplitWindow)
           (error (progn
-                   (search-forward-regexp "src")
+                   (search-forward-regexp "^[:alpha:]")
                    (beginning-of-line)
                    (funcall 'event-file-navigation "" ":" notSplitWindow)
                    )
