@@ -1211,6 +1211,22 @@ Add ~graphql-mode~
    format.
 
    #+begin_src emacs-lisp
+     (defun files-from-dired-current-directory ()
+       "Ask the user for a list of files from the current directory showing the files in dired"
+       (setq
+        files (if (not (null (dired-get-marked-files)))
+                  (dired-get-marked-files)
+                (list (read-file-name "The initial file name: ")))
+        )
+       (message "%s" files)
+       (while (yes-or-no-p "Another file? ")
+         (progn
+           (setq files (append files (list (read-file-name "Next file name: "))))
+           )
+         )
+       files
+       )
+
      (defun timeToSeconds (time)
        "get as input the time in format 00:00:00 and return the total seconds"
        (+ (string-to-number (substring time 6))
@@ -1272,9 +1288,10 @@ Add ~graphql-mode~
          )
        )
 
-     (defun play-sound (file)
+     (defun play-sound ()
        "play the sound using ffplay"
-       (interactive "f")
+       (interactive)
+       (setq files (funcall 'files-from-dired-current-directory))
        (setq commandExist nil)
        (condition-case nil
            (progn
@@ -1285,9 +1302,16 @@ Add ~graphql-mode~
          )
 
        (when commandExist
-         (let ((fileComplete (expand-file-name file))
-               (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-           (call-process-shell-command (format "ffplay -nodisp -autoexit \"%s\" &" fileComplete fileCompleteNoExtension) nil 0)))
+         (setq command
+               (mapconcat (lambda (file)
+                            (let ((fileComplete (expand-file-name file))
+                                  (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+                              (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension)))
+                          files " && ")
+               )
+         (message "play sound command %s" command)
+         (call-process-shell-command command)
+         )
        )
 
      (defun preview-crop-media-file (file &optional height width topX topY)
@@ -1319,7 +1343,7 @@ Add ~graphql-mode~
        (setq command (format "ffplay -i %s -vf \"crop=%s:%s:%d:%d\"" fileComplete width height topX topY))
        (message command)
        (when commandExist
-           (call-process-shell-command command nil 0))
+         (call-process-shell-command command nil 0))
        )
 
      (defun crop-media-file (file newFile &optional height width topX topY)
@@ -1353,7 +1377,7 @@ Add ~graphql-mode~
        (setq command (format "ffmpeg -i %s -vf \"crop=%s:%s:%d:%d\" %s" fileComplete width height topX topY newFile))
        (message command)
        (when commandExist
-           (call-process-shell-command command nil 0))
+         (call-process-shell-command command nil 0))
        )
    #+end_src
 ** File Conversion
@@ -2374,7 +2398,9 @@ Add ~graphql-mode~
         "Parse a shell/sbt output in search of the first unused import and remove it"
         (interactive)
         (funcall 'remove-unused-import
-                 "Unused Import"
+                 "\\(Unused Import\\|\\(
+.*\\)\\{2\\}
+.*unused import$\\)"
                  'scala-goto-next-warn-error
                  'scala-import-bounds
                  (lambda (targetType)
