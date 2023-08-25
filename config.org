@@ -2154,6 +2154,7 @@ Add ~graphql-mode~
             (funcall (searchFunction backwardSearch) searchRegexp)
           (error (user-error "no match found for %s" errorMessage))
           )
+        (when backwardSearch (goto-char (match-beginning 0)))
         (funcall eventFileNavigationF t)
         (other-window -1)
 
@@ -2370,7 +2371,7 @@ Add ~graphql-mode~
       (defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
         "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
         (interactive)
-        (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" ":" '(lambda () (other-window 1) ) errorMessage backwardSearch isRegexp))
+        (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" "\\(:\\|$\\)" '(lambda () (other-window 1) ) errorMessage backwardSearch isRegexp))
 
       (defun scala-import-bounds ()
         "Return the import region bounds"
