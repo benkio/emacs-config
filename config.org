@@ -1135,6 +1135,15 @@ Add ~graphql-mode~
       (require 'ispell)
     #+end_src
 
+** ytdious
+
+  Allow you to search and do stuff for youtube videos, using the insidious api
+
+  #+begin_src emacs-lisp
+    (use-package ytdious)
+  #+end_src
+
+
 * Local Modes
 
   Modes not on Melpa/Elpa. Imported from local folder
@@ -2993,7 +3002,7 @@ Add ~graphql-mode~
                                    nil nil (thing-at-point 'word))))
         (goto-definition type csharpDefinitionRegex)
         )
-    #+END_SRC
+        #+END_SRC
 * Keybindings
 ** COMMENT Window Sizing
 
