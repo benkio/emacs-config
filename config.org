@@ -3,6 +3,53 @@
 
   Contains all the configuration of emacs out of the box, no packages installed in here
 
+** Setup
+*** Package Repositories
+
+    Set up melpa and use package to make things easier
+    https://cestlaz.github.io/posts/using-emacs-1-setup/
+
+    #+BEGIN_SRC emacs-lisp
+      (require 'package)
+      (setq package-archives
+            '(("gnu" . "https://elpa.gnu.org/packages/")
+              ("melpa-stb" . "https://stable.melpa.org/packages/")
+              ("melpa" . "https://melpa.org/packages/"))
+            tls-checktrust t
+            tls-program '("gnutls-cli --x509cafile %t -p %p %h")
+            gnutls-verify-error t)
+
+      (package-refresh-contents)
+
+      (when (not package-archive-contents)
+        (package-refresh-contents))
+
+      (require 'org)
+
+    #+END_SRC
+
+*** Use-Package
+
+    #+BEGIN_SRC emacs-lisp
+      ;; Bootstrap `use-package'
+      (unless (require 'use-package nil t)
+        (if (not (yes-or-no-p (concat "Refresh packages, install use-package and"
+                                      " other packages used by init file? ")))
+            (error "you need to install use-package first")
+          (package-install 'use-package)
+          (require 'use-package)
+          ))
+      (setq use-package-always-ensure t)
+    #+END_SRC
+
+*** Local Mode Location
+
+    Modes that are not in melpa and you found on the internet. Put them
+    into the lisp folder.
+    #+begin_src emacs-lisp
+      (add-to-list 'load-path "~/.emacs.d/lisp/")
+    #+end_src
+  
 ** UI
 *** Hide Stuff
 
@@ -337,52 +384,6 @@
     #+END_SRC
 
 * Packages
-** Setup
-*** Package Repositories
-
-    Set up melpa and use package to make things easier
-    https://cestlaz.github.io/posts/using-emacs-1-setup/
-
-    #+BEGIN_SRC emacs-lisp
-      (require 'package)
-      (setq package-archives
-            '(("gnu" . "https://elpa.gnu.org/packages/")
-              ("melpa-stb" . "https://stable.melpa.org/packages/")
-              ("melpa" . "https://melpa.org/packages/"))
-            tls-checktrust t
-            tls-program '("gnutls-cli --x509cafile %t -p %p %h")
-            gnutls-verify-error t)
-
-      (package-refresh-contents)
-
-      (when (not package-archive-contents)
-        (package-refresh-contents))
-
-      (require 'org)
-
-    #+END_SRC
-
-*** Use-Package
-
-    #+BEGIN_SRC emacs-lisp
-      ;; Bootstrap `use-package'
-      (unless (require 'use-package nil t)
-        (if (not (yes-or-no-p (concat "Refresh packages, install use-package and"
-                                      " other packages used by init file? ")))
-            (error "you need to install use-package first")
-          (package-install 'use-package)
-          (require 'use-package)
-          ))
-      (setq use-package-always-ensure t)
-    #+END_SRC
-
-*** Local Mode Location
-
-    Modes that are not in melpa and you found on the internet. Put them
-    into the lisp folder.
-    #+begin_src emacs-lisp
-      (add-to-list 'load-path "~/.emacs.d/lisp/")
-    #+end_src
 ** Fonts
 
    Set fonts based of the content of the ~font~ folder
@@ -1142,7 +1143,6 @@ Add ~graphql-mode~
   #+begin_src emacs-lisp
     (use-package ytdious)
   #+end_src
-
 
 * Local Modes
 
