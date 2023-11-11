@@ -307,12 +307,8 @@
       (setq org-capture-templates
             '(("t" "Todo" entry (file+headline "~/Dropbox/notes/TODO.org" "TODOs")
                "* TODO %?\n  %i\n  %a")
-              ("i" "Incoming Stuff" entry (file+headline "~/Dropbox/notes/TODO.org" "Incoming Stuff")
+              ("s" "Film & Tv Series to Download" entry (file+headline "~/Dropbox/notes/TODO.org" "Download")
                "* %?\n  %i\n  %a")
-              ("s" "Film & Tv Series to Download" entry (file+headline "~/Dropbox/notes/TODO.org" "Film & Tv Series to Download")
-               "* %?\n  %i\n  %a")
-              ;; ("j" "Journal" entry (file+datetree "~/org/journal.org")
-              ;;  "* %?\nEntered on %U\n  %i\n  %a")
               ))
       (setq-default abbrev-mode t)
       (setq save-abbrevs 'silently)
