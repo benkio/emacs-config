@@ -309,7 +309,7 @@
                "* TODO %?\n  %i\n  %a")
               ("d" "Download" entry (file+headline "~/Dropbox/notes/TODO.org" "Download")
                "* %?\n  %i\n  %a")
-              ("g" "Gigs" entry (file+headline "~/Dropbox/notes/TODO.org" "Gigsa")
+              ("g" "Gigs" entry (file+headline "~/Dropbox/notes/TODO.org" "Gigs")
                "* %?\n  %i\n  %a")
               ))
       (setq-default abbrev-mode t)
