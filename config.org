@@ -1990,6 +1990,15 @@ Add ~graphql-mode~
        (let ((startChar (if *use-uppercase-p 65 97 )))
          (dotimes (-i 26)
            (insert (format "%c\n" (+ startChar -i))))))
+
+     (defun string-to-register (value registerName)
+       "Add the input string to a specific register"
+       (interactive
+        (list
+         (read-string "Enter value:")
+         (read-char "Enter register name:")))
+       (set-register registerName value)
+       )
    #+END_SRC
 ** Window Manipulation
 
