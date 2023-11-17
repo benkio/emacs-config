@@ -1851,5 +1851,10 @@
     ("zombiewoman0" "🧟‍♀️" nil :count 0)
     ("zzz0" "💤" nil :count 0)
     ("checkmark0" "✓" nil :count 0)
+    ("e'0" "è" nil :count 0)
+    ("a'0" "à" nil :count 0)
+    ("i'0" "ì" nil :count 0)
+    ("o'0" "ò" nil :count 0)
+    ("u'0" "ù" nil :count 0)
    ))
 
