@@ -2343,7 +2343,7 @@ Add ~graphql-mode~
     Functions used specifically for dealing with scala code.
 
     #+BEGIN_SRC emacs-lisp
-      (setq scalaDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*trait " type ".*\\|.*object " type ".*\\|.*type " type ".*\\)")))
+      (setq scalaDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*trait " type ".*\\|.*object " type ".*\\|.*type " type ".*\\|.*enum " type ".*\\)")))
       (defun sbt-event-file-navigation (&optional notSplitWindow)
         "Navigate to the file that has a problem. it can navigate using a
         different window."
