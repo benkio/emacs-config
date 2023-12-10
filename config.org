@@ -710,6 +710,19 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
         (global-company-mode t))
     #+end_src
 ** Development
+*** General
+**** format-all
+
+Package that will format your code based on extenal programs and the mode/language you are in
+
+#+begin_src emacs-lisp
+  (use-package format-all
+    :commands format-all-mode
+    :hook (prog-mode . format-all-mode)
+    (setq-default format-all-formatters '(("Haskell" fourmolu)))
+    )
+#+end_src
+
 *** APL
 
 #+begin_src emacs-lisp
@@ -814,11 +827,6 @@ Add ~graphql-mode~
           (haskell-doc-mode)
           )
         (add-hook 'haskell-mode-hook 'custom-haskell-mode-hook)
-        )
-
-      ;; ormolu formatter
-      (use-package ormolu
-        :config (setq ormolu-process-path "fourmolu")
         )
     #+END_SRC
 *** Indent Guide
@@ -1033,15 +1041,6 @@ Add ~graphql-mode~
   (use-package smithy-mode)
 #+end_src
 
-*** SQL
-
-    Packages for dealing with SQL
-
-    #+begin_src emacs-lisp
-      (use-package sqlformat
-        :config (setq sqlformat-command 'sqlfluff)
-      )
-    #+end_src
 *** Typescript
 
     #+begin_src emacs-lisp
@@ -1442,84 +1441,6 @@ Add ~graphql-mode~
    Functions for formatting code.
 
    #+BEGIN_SRC emacs-lisp
-     (defun xml-format-xmllint ()
-       "indent an xml file using xlint on a region or buffer"
-       (interactive)
-       (let (pos1 pos2 commandExist)
-         (if (use-region-p)
-             (setq pos1 (region-beginning) pos2 (region-end))
-           (setq pos1 (point-min) pos2 (point-max)))
-
-         (setq commandExist nil)
-         (condition-case nil
-             (progn
-               (call-process "xmllint")
-               (setq commandExist t)
-               )
-           (error (message "Please install xmllint"))
-           )
-
-         (when commandExist
-           (save-excursion
-             (shell-command-on-region pos1 pos2 "xmllint --format -" (buffer-name) t)
-             )
-           )
-         )
-       )
-
-     (defun html-format-tidy ()
-       "indent an html file using tidy on a region or buffer"
-       (interactive)
-       (let (pos1 pos2 commandExist)
-         (if (use-region-p)
-             (setq pos1 (region-beginning) pos2 (region-end))
-           (setq pos1 (point-min) pos2 (point-max)))
-
-         (setq commandExist nil)
-         (condition-case nil
-             (progn
-               (call-process "tidy")
-               (setq commandExist t)
-               )
-           (error (message "Please install tidy"))
-           )
-
-         (when commandExist
-           (save-excursion
-             (shell-command-on-region pos1 pos2 "tidy -i -q " (buffer-name) t)
-             (beginning-of-buffer)
-             (search-forward "DOCTYPE html")
-             (beginning-of-line)
-             (delete-region (point-min) (point))
-             )
-           )
-         )
-       )
-
-     (defun js-format-jsbeautify ()
-       "indent an js file using js-beutifier on a region or buffer"
-       (interactive)
-       (let (pos1 pos2 commandExist)
-         (if (use-region-p)
-             (setq pos1 (region-beginning) pos2 (region-end))
-           (setq pos1 (point-min) pos2 (point-max)))
-         (setq commandExist nil)
-         (condition-case nil
-             (progn
-               (call-process "js-beautify")
-               (setq commandExist t)
-               )
-           (error (message "Please install js-beautify (npm -g install js-beautify)"))
-           )
-
-         (when commandExist
-           (save-excursion
-             (shell-command-on-region pos1 pos2 "js-beautify " (buffer-name) t)
-             )
-           )
-         )
-       )
-
      (defun apply-case-char (startcol endcol function)
        "apply the function to the char at start position. endcol not used"
        (move-to-column startcol t)
@@ -3124,6 +3045,10 @@ Add ~graphql-mode~
     #+begin_src emacs-lisp
       (global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
     #+end_src
+*** General
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-c c f") 'format-all-region-or-buffer)
+    #+end_src
 *** Scala
     #+begin_src emacs-lisp
       (global-set-key (kbd "C-c c s c") 'sbt-shell-clean-old-output)
@@ -3144,7 +3069,6 @@ Add ~graphql-mode~
       (global-set-key (kbd "C-c c h p") 'hs-import-type-at-point)
       (global-set-key (kbd "C-c c h x") 'hs-extract-code-line-or-region)
       (global-set-key (kbd "C-c c h s") 'hs-string-to-multiline-string)
-      (global-set-key (kbd "C-c c h i") 'ormolu-format-buffer)
       (global-set-key (kbd "C-c c h d") 'hs-goto-definition)
       (global-set-key (kbd "C-c c h h") 'hs-hoogle)
     #+end_src
