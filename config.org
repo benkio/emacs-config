@@ -161,7 +161,7 @@
         (setq hour
               (string-to-number
                (substring (current-time-string) 11 13)))
-        (if (member hour (number-sequence 6 17))
+        (if (member hour (number-sequence 6 16))
             (setq now '(benkio-light-theme))
           (setq now '(benkio-dark-theme)))
         (if (equal now current-theme)
