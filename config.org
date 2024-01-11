@@ -718,7 +718,6 @@ Package that will format your code based on extenal programs and the mode/langua
 #+begin_src emacs-lisp
   (use-package format-all
     :commands format-all-mode
-    :hook (prog-mode . format-all-mode)
     :config
     (setq-default format-all-formatters '(("Haskell" fourmolu)))
     )
