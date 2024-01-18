@@ -382,6 +382,12 @@
     #+END_SRC
 
 * Packages
+** Aria 2
+  Major mode to control Aria 2 from emacs. A command line download utility to download stuff (torrent, FTP ...)
+
+  #+begin_src emacs-lisp
+    (use-package aria2)
+  #+end_src
 ** Fonts
 
    Set fonts based of the content of the ~font~ folder
@@ -733,7 +739,6 @@ Package that will format your code based on extenal programs and the mode/langua
     #+begin_src emacs-lisp
 
       (use-package dotnet)
-      (use-package csharp-mode)
 
     #+end_src
 
@@ -2465,7 +2470,7 @@ Add ~graphql-mode~
       (defun hs-shell-clean-old-output ()
         "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
         (interactive)
-        (funcall 'shell-clean-old-output "\\(Building library for \\|[1-9][0-9]? error[s]?\\|[1-9]+ warning[s]?\\|All good\\)"))
+        (funcall 'shell-clean-old-output "\\(Building library for \\|[1-9][0-9]? error[s]?\\|[1-9]+ warning[s]?\\|All good\\|λ> \\)"))
 
       (defun hs-event-file-navigation (&optional notSplitWindow)
         "Navigate to the file that has a problem. it can navigate using a
