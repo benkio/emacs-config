@@ -729,19 +729,22 @@ Package that will format your code based on extenal programs and the mode/langua
     )
 #+end_src
 
+**** treesit-auto
+Add treesit-auto to integrate tree sitter without too much struggle
+#+begin_src emacs-lisp
+  (use-package treesit-auto
+    :custom
+    (treesit-auto-install 'prompt)
+    :config
+    (treesit-auto-add-to-auto-mode-alist 'all)
+    (global-tree-sitter-mode)
+    (treesit-auto-install-all))
+#+end_src_
 *** APL
 
 #+begin_src emacs-lisp
   (use-package gnu-apl-mode)
 #+end_src
-*** C#
-
-    #+begin_src emacs-lisp
-
-      (use-package dotnet)
-
-    #+end_src
-
 *** CSV
 
     Mode to handle CSV files
@@ -805,11 +808,6 @@ Package that will format your code based on extenal programs and the mode/langua
                             #'kill-magit-extra-buffer-in-current-repo
                             nil t))) ; the t is important
     #+END_SRC
-*** Go
-
-#+begin_src emacs-lisp
-  (use-package go-mode)
-#+end_src
 *** GraphQl
 
 Add ~graphql-mode~
@@ -1010,11 +1008,6 @@ Add ~graphql-mode~
 
     #+END_SRC
 
-*** Rust
-
-#+begin_src emacs-lisp
-  (use-package rust-mode)
-#+end_src
 *** Scala
 
     Add all the needed components for scala:
@@ -1022,11 +1015,13 @@ Add ~graphql-mode~
     * sbt mode
 
     #+BEGIN_SRC emacs-lisp
-      ;; Enable scala-mode and sbt-mode
-      (use-package scala-mode
-        :mode "\\.s\\(cala\\|bt\\|c\\)$"
-        :config (add-hook 'scala-mode-hook 'hs-minor-mode)
-        )
+      ;; ;; Enable scala-mode and sbt-mode
+      ;; (use-package scala-mode
+      ;;   :mode "\\.s\\(cala\\|bt\\|c\\)$"
+      ;;   :config (add-hook 'scala-mode-hook 'hs-minor-mode)
+      ;;   )
+      (use-package scala-ts-mode)
+      (add-to-list 'treesit-language-source-alist '(scala "https://github.com/tree-sitter/tree-sitter-scala"))
 
       (use-package sbt-mode
         :commands sbt-start sbt-command
@@ -1046,27 +1041,12 @@ Add ~graphql-mode~
   (use-package smithy-mode)
 #+end_src
 
-*** Typescript
-
-    #+begin_src emacs-lisp
-      (use-package typescript-mode
-        :defer t
-        :mode "\\.\\(ts\\|tsx\\)\\'")
-    #+end_src
 *** Web
 
     #+begin_src emacs-lisp
       (use-package lorem-ipsum)
       (use-package simple-httpd)
     #+end_src
-*** Yaml
-
-    Add support for the yaml file types
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package yaml-mode
-        :mode ("\\.yml$" . yaml-mode))
-    #+END_SRC
 
 *** Yasnippet
 
@@ -2685,7 +2665,7 @@ Add ~graphql-mode~
       (defun ts-shell-clean-old-output ()
         "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
         (interactive)
-        (funcall 'shell-clean-old-output "\\(<s> \\[webpack\\.Progress\\] 100% \\|📦  Building\\|.*\\bnest\\b.*\\|.*Starting incremental compilation.*\\|.*jest.*\\)")
+        (funcall 'shell-clean-old-output "\\(<s> \\[webpack\\.Progress\\] 100% \\|📦  Building\\|.*\\bnest\\b.*\\|.*Starting incremental compilation.*\\|.*jest.*\\|^> \\)")
         )
 
       (defun ts-event-file-navigation (&optional notSplitWindow)
