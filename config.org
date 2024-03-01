@@ -869,7 +869,13 @@ Add ~graphql-mode~
 *** Json
 
     #+begin_src emacs-lisp
-      (use-package json-mode)
+      (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
+    #+end_src
+
+*** Typescript
+
+    #+begin_src emacs-lisp
+      (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
     #+end_src
 *** Latex
     #+BEGIN_SRC emacs-lisp
