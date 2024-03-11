@@ -701,6 +701,17 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
       (use-package ox-jira)
     #+end_src
 
+*** Org-modern
+
+Prettify org
+
+#+begin_src emacs-lisp
+  (use-package org-modern
+    :config
+    (with-eval-after-load 'org (global-org-modern-mode))
+  )
+#+end_src
+
 ** Completion
 *** Company
 
