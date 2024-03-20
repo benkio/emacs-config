@@ -2294,14 +2294,14 @@ Add ~graphql-mode~
       (setq scalaDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*trait " type ".*\\|.*object " type ".*\\|.*type " type ".*\\|.*enum " type ".*\\)")))
       (defun sbt-event-file-navigation (&optional notSplitWindow)
         "Navigate to the file that has a problem. it can navigate using a
-        different window."
+              different window."
         (funcall 'event-file-navigation "] \\(-- .*: \\)?" ":" notSplitWindow))
 
       (defun scala-build-import-from-existing-import-or-source (type startingBuffer)
         "Considering the cursor is at the beginning of the target import line
-         or into the scala source file containing the definition of the
-        target file. This functions return the import to insert into the
-        dependent scala source file."
+               or into the scala source file containing the definition of the
+              target file. This functions return the import to insert into the
+              dependent scala source file."
         (if (string= (current-word) "import")
             (copy-line-from-point-as-string) ;; copy import line
           (concat "import " (path-to-package (buffer-file-name)) "." type) ;; copy package and make it an import
@@ -2364,8 +2364,8 @@ Add ~graphql-mode~
         (interactive)
         (funcall 'remove-unused-import
                  "\\(Unused Import\\|\\(
-.*\\)\\{2\\}
-.*unused import$\\)"
+      .*\\)\\{2\\}
+      .*unused import$\\)"
                  'scala-goto-next-warn-error
                  'scala-import-bounds
                  (lambda (targetType)
@@ -2410,13 +2410,13 @@ Add ~graphql-mode~
 
       (defun scala-extract-code-line-or-region (name &optional parameters from to)
         "Extract the code to val or def:
-         Require:
-           - Name of the val/def
-           - Optional list of parameters (if empty it will be a val)
+               Require:
+                 - Name of the val/def
+                 - Optional list of parameters (if empty it will be a val)
 
-         if no code region is selected then it extracts the rest of the line from current position
-         Return type not specified.
-        "
+               if no code region is selected then it extracts the rest of the line from current position
+               Return type not specified.
+              "
         (interactive (list
                       (read-string "value/function name: " )
                       (progn
@@ -2450,7 +2450,7 @@ Add ~graphql-mode~
                       (read-string (format "type (%s): " (thing-at-point 'word))
                                    nil nil (thing-at-point 'word))
                       (completing-read "Library: "
-                                       '("Standard Library" "Cats" "Doobie" "Cats-Effect" "Http4s 0.23" "fs2 core 3" "Circe" "Munit core 2.13" "Skunk core 2.13" "Monocle core 2.13" "Scalacheck" "Spark") nil t)
+                                       '("Cats" "Cats-Effect" "Circe" "Doobie" "Http4s 0.23" "Monocle core 2.13" "Munit core 2.13" "Natchez Core" "Scalacheck" "Skunk core 2.13" "Spark" "Standard Library" "fs2 core 3") nil t)
                       ))
         (require 'browse-url)
         (setq libUrlPrefix (cond
@@ -2461,7 +2461,7 @@ Add ~graphql-mode~
                             ((string= lib "Http4s 0.23")       "https://http4s.org/v0.23/api/org/http4s/?search=")
                             ((string= lib "Monocle core 2.13") "https://javadoc.io/doc/com.github.julien-truffaut/monocle-core_2.13/latest/index.html?search=")
                             ((string= lib "Munit core 2.13")   "https://www.javadoc.io/doc/org.scalameta/munit_2.13/latest/index.html?search=")
-                            ((string= lib "Natchez Core")      "https://www.javadoc.io/static/org.tpolecat/natchez-core_3/0.2.0/natchez.html")
+                            ((string= lib "Natchez Core")      "https://www.javadoc.io/static/org.tpolecat/natchez-core_3/0.2.0/natchez.html?search=")
                             ((string= lib "Skunk core 2.13")   "https://www.javadoc.io/doc/org.tpolecat/skunk-core_2.13/latest/index.html?search=")
                             ((string= lib "fs2 core 3")        "https://oss.sonatype.org/service/local/repositories/releases/archive/co/fs2/fs2-core_2.12/3.0.4/fs2-core_2.12-3.0.4-javadoc.jar/!/fs2/index.html?search=")
                             ((string= lib "Scalacheck")        "https://www.javadoc.io/doc/org.scalacheck/scalacheck_2.13/latest/index.html")
