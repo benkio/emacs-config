@@ -740,6 +740,8 @@ Package that will format your code based on extenal programs and the mode/langua
                                           ("Haskell" fourmolu)
                                           ("Scala" scalafmt)
                                           ))
+    ;; Workaround till next release to recognize treesitter mode
+    (add-to-list 'language-id--definitions ("Scala" scala-mode scala-ts-mode))
     )
 #+end_src
 
@@ -1501,6 +1503,24 @@ Add ~graphql-mode~
          (upcase-initials-region (point) (cdr bounds)))
        (forward-word)
        )
+
+     (defun tidy-html ()
+       "Tidies the HTML content in the buffer using `tidy'"
+       (interactive)
+       (shell-command-on-region
+        ;; beginning and end of buffer
+        (point-min)
+        (point-max)
+        ;; command and parameters
+        "tidy -indent -wrap 150 -xml -utf8 -quiet"
+        ;; output buffer
+        (current-buffer)
+        ;; replace?
+        t
+        ;; name of the error buffer
+        "*Tidy Error Buffer*"
+        ;; show error buffer?
+        t))
    #+END_SRC
 ** Numbers (Integer)
 
