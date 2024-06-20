@@ -741,7 +741,7 @@ Package that will format your code based on extenal programs and the mode/langua
                                           ("Scala" scalafmt)
                                           ))
     ;; Workaround till next release to recognize treesitter mode
-    (add-to-list 'language-id--definitions ("Scala" scala-mode scala-ts-mode))
+    (add-to-list 'language-id--definitions '("Scala" scala-mode scala-ts-mode))
     )
 #+end_src
 
