@@ -269,6 +269,7 @@
     18. ~org-capture~ default file and template
     19. ~abbrev-mode~ always on
     20. Save abbrev silently
+    21. Automatically add final newline on file save and visiting
 
     #+BEGIN_SRC emacs-lisp
       (defalias 'yes-or-no-p 'y-or-n-p)
@@ -314,6 +315,7 @@
               ))
       (setq-default abbrev-mode t)
       (setq save-abbrevs 'silently)
+      (setq require-final-newline 'visit-save)
     #+END_SRC
 
 *** Set
