@@ -1472,6 +1472,15 @@ Add ~graphql-mode~
              (emacs-lisp-docstring-fill-column t))
          (fill-paragraph nil region)))
 
+     ;https://www.emacswiki.org/emacs/UnfillRegion
+     (defun unfill-region (beg end)
+       "Unfill the region, joining text paragraphs into a single
+         logical line.  This is useful, e.g., for use with
+         `visual-line-mode'."
+       (interactive "*r")
+       (let ((fill-column (point-max)))
+         (fill-region beg end)))
+
      (defun upcase-initial-word()
        (interactive)
        (search-forward-regexp "[[:space:]]*")
@@ -1990,7 +1999,7 @@ Add ~graphql-mode~
        ; input validation ;;;;;;;;;;;;;;;;;;;;
       (setq urls (or
                   opt-urls
-                  (when (use-region-p) (buffer-substring-no-properties (region-beginning) (region-end)))
+                  (when (use-region-p) (replace-regexp-in-string "\n" " " (buffer-substring-no-properties (region-beginning) (region-end))))
                   )
             )
       (when (equal urls nil)
@@ -1998,8 +2007,9 @@ Add ~graphql-mode~
           (setq urls (concat urls " " (read-string "Next aria2 input: ")))
           ))
       (setq
-       urls (s-trim urls)
-       aria2Command (concat "aria2c -Z " urls)
+       urls (mapconcat (lambda (s) (concat "\"" s "\"")) (split-string (s-trim urls)) " ")
+       directory (read-directory-name "Select output directory: ")
+       aria2Command (concat "aria2c -d " directory "-Z " urls)
        )
 
       (print aria2Command)
