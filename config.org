@@ -1185,6 +1185,41 @@ Add ~graphql-mode~
    #+end_src
 
 * Functions
+** Elisp
+
+  Functions used throughout the elisp code to generate other functionalities
+#+begin_src emacs-lisp
+
+  (defun command-exists-p (command)
+    "check if the given input command actually exists"
+    (setq commandExist nil)
+    (condition-case nil
+        (progn
+          (call-process command nil 0)
+          (setq commandExist t)
+          )
+      (error nil)
+      )
+    commandExist
+    )
+
+  (defun files-from-dired-current-directory ()
+    "Ask the user for a list of files from the current directory showing the files in dired"
+    (setq
+     files (if (not (null (dired-get-marked-files)))
+               (dired-get-marked-files)
+             (list (read-file-name "The initial file name: ")))
+     )
+    (message "%s" files)
+    (while (yes-or-no-p "Another file? ")
+      (progn
+        (setq files (append files (list (read-file-name "Next file name: "))))
+        )
+      )
+    files
+    )
+#+end_src
+
 ** Indentation
 
    unctions for alignment of text and indentation of buffer
@@ -1203,6 +1238,7 @@ Add ~graphql-mode~
        (untabify regionStart regionEnd))
 
    #+END_SRC
+
 ** Cursor Movement
 
    Collect all the functions that move the cursor somewhere
@@ -1245,22 +1281,6 @@ Add ~graphql-mode~
    format.
 
    #+begin_src emacs-lisp
-     (defun files-from-dired-current-directory ()
-       "Ask the user for a list of files from the current directory showing the files in dired"
-       (setq
-        files (if (not (null (dired-get-marked-files)))
-                  (dired-get-marked-files)
-                (list (read-file-name "The initial file name: ")))
-        )
-       (message "%s" files)
-       (while (yes-or-no-p "Another file? ")
-         (progn
-           (setq files (append files (list (read-file-name "Next file name: "))))
-           )
-         )
-       files
-       )
-
      (defun timeToSeconds (time)
        "get as input the time in format 00:00:00 and return the total seconds"
        (+ (string-to-number (substring time 6))
@@ -1316,27 +1336,17 @@ Add ~graphql-mode~
      (defun play-sound ()
        "play the sound using ffplay"
        (interactive)
+       (unless (command-exists-p "ffplay") (error "Please install ffplay (ffmpeg)"))
        (setq files (funcall 'files-from-dired-current-directory))
-       (setq commandExist nil)
-       (condition-case nil
-           (progn
-             (call-process "ffplay")
-             (setq commandExist t)
+       (setq command
+             (mapconcat (lambda (file)
+                          (let ((fileComplete (expand-file-name file))
+                                (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+                            (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension)))
+                        files " && ")
              )
-         (error (message "Please install ffplay (ffmpeg)"))
-         )
-
-       (when commandExist
-         (setq command
-               (mapconcat (lambda (file)
-                            (let ((fileComplete (expand-file-name file))
-                                  (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-                              (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension)))
-                          files " && ")
-               )
-         (message "play sound command %s" command)
-         (call-process-shell-command command)
-         )
+       (message "play sound command %s" command)
+       (call-process-shell-command command)
        )
 
      (defun preview-crop-media-file (file &optional height width topX topY)
@@ -1353,22 +1363,14 @@ Add ~graphql-mode~
                      (read-number (format "Top Left Corner X: ") 0)
                      (read-number (format "Top Left Corner Y: ") 0)
                      ))
-       (setq commandExist nil)
-       (condition-case nil
-           (progn
-             (call-process "ffplay")
-             (setq commandExist t)
-             )
-         (error (message "Please install ffplay (ffmpeg)"))
-         )
+       (unless (command-exists-p "ffplay") (error "Please install ffplay (ffmpeg)"))
        (when (eq (string-to-number height) 0) (setq height "in_h"))
        (when (eq (string-to-number width) 0) (setq width "in_w"))
        (setq fileComplete (expand-file-name file))
        ;; (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
        (setq command (format "ffplay -i %s -vf \"crop=%s:%s:%d:%d\"" fileComplete width height topX topY))
        (message command)
-       (when commandExist
-         (call-process-shell-command command nil 0))
+       (call-process-shell-command command nil 0)
        )
 
      (defun crop-media-file (file newFile &optional height width topX topY)
@@ -1387,22 +1389,14 @@ Add ~graphql-mode~
                      (read-number (format "Top Left Corner X: ") 0)
                      (read-number (format "Top Left Corner Y: ") 0)
                      ))
-       (setq commandExist nil)
-       (condition-case nil
-           (progn
-             (call-process "ffmpeg")
-             (setq commandExist t)
-             )
-         (error (message "Please install ffmpeg"))
-         )
+       (unless (command-exists-p "ffmpeg") (error "Please install ffmpeg"))
        (when (eq (string-to-number height) 0) (setq height "in_h"))
        (when (eq (string-to-number width) 0) (setq width "in_w"))
        (setq fileComplete (expand-file-name file))
        ;;(fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
        (setq command (format "ffmpeg -i %s -vf \"crop=%s:%s:%d:%d\" %s" fileComplete width height topX topY newFile))
        (message command)
-       (when commandExist
-         (call-process-shell-command command nil 0))
+       (call-process-shell-command command nil 0)
        )
    #+end_src
 ** File Conversion
@@ -1412,12 +1406,7 @@ Add ~graphql-mode~
    #+BEGIN_SRC emacs-lisp
      (defun convert-to-mp3 ()
        (interactive)
-       (setq
-        diredFiles (dired-get-marked-files)
-        files (if (not (null diredFiles))
-                  (mapcar 'expand-file-name diredFiles)
-                (mapcar 'expand-file-name (list (read-file-name "file name: "))))
-        )
+       (setq files (mapcar 'expand-file-name (apply 'files-from-dired-current-directory '())))
        (mapcar (lambda (f) (shell-command
                             (format "ffmpeg -i \"%s\" -vn -ar 44100 -ac 2 -b:a 192k \"%s.mp3\"" f (file-name-sans-extension f)))) files)
        )
@@ -1585,17 +1574,9 @@ Add ~graphql-mode~
     (defun insert-current-date-iso-8601 ()
       "Call the `date' unix command to insert the current date"
       (interactive)
-      (setq commandExist nil)
-      (condition-case nil
-          (progn
-            (call-process "ffplay")
-            (setq commandExist t)
-            )
-        (error (message "Please install ffplay (ffmpeg)"))
-        )
-      (when commandExist
-        (insert (s-trim (shell-command-to-string "date -u +\"%Y-%m-%dT%H:%M:%SZ\"")))
-        )
+      (if (command-exists-p "ffplay")
+          (insert (s-trim (shell-command-to-string "date -u +\"%Y-%m-%dT%H:%M:%SZ\"")))
+        (error "Please install ffplay (ffmpeg)"))
       )
   #+end_src
 ** Rectangles
@@ -1987,15 +1968,7 @@ Add ~graphql-mode~
           (read-string "Output format\n(mp4|flv|ogg|webm|mkv|avi-best|aac|flac|mp3|m4a|opus|vorbis|wav): ")
           )
          )
-        (setq commandExist nil
-              youtubeDlPCommand nil)
-        (condition-case nil
-            (progn
-              (call-process "yt-dlp")
-              (setq commandExist t)
-              )
-          (error (message "Please install yt-dlp"))
-          )
+        (unless (command-exists-p "yt-dlp") (error "Please install yt-dlp"))
         (setq supportedAudioFormats (list "best" "aac" "flac" "mp3" "m4a" "opus" "vorbis" "wav"))
         (setq supportedVideoFormats (list "mp4" "flv" "ogg" "webm" "mkv" "avi"))
         (cond
@@ -2003,36 +1976,35 @@ Add ~graphql-mode~
          ((member outputFormat supportedVideoFormats) (setq youtubeDlPCommand (format "yt-dlp --recode-video %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
          (t (error (message "Please insert a valid output format: %s" outputFormat)))
          )
-        (when commandExist
-          (progn
-            (async-shell-command youtubeDlPCommand)
-            )
-          )
+        (async-shell-command youtubeDlPCommand)
         )
-
     #+end_src
-*** Aria2c
+*** Aria 2
 
   #+begin_src emacs-lisp
-(defun download-files-aria2 (&optional opt-urls)
-  "Select a region containing aria2c inputs. This will call aria2c asynchronously and dowload them in the current dir or in the specified one. if the region is empty it will ask for urls one by one"
-  (interactive)
-  ;; (setq urls (if (equal urls nil)
-  ;;     (buffer-substring-no-properties (region-beginning) (region-end))
-  ;;   urls))
-  ;;(buffer-substring-no-properties (region-beginning) (region-end))
-  (setq urls (or
-              opt-urls
-              (when (use-region-p) (buffer-substring-no-properties (region-beginning) (region-end)))
-              )
-        )
-  (when (equal urls nil)
-    (while (yes-or-no-p "Another aria2 input? ")
-    (setq urls (concat urls (read-string "Next aria2 input: ")))
-    ))
-  (message urls)
-  )
+    (defun download-urls-or-region (&optional opt-urls)
+      "Select a region containing aria2c inputs. This will call aria2c asynchronously and dowload them in the current dir or in the specified one. if the region is empty it will ask for urls one by one"
+      (interactive)
+      ; Requirements check: aria2c ;;;;;;;;;;;;
+      (unless (command-exists-p "aria2c") (error "Please install aria2"))
+       ; input validation ;;;;;;;;;;;;;;;;;;;;
+      (setq urls (or
+                  opt-urls
+                  (when (use-region-p) (buffer-substring-no-properties (region-beginning) (region-end)))
+                  )
+            )
+      (when (equal urls nil)
+        (while (yes-or-no-p "Another aria2 input? ")
+          (setq urls (concat urls " " (read-string "Next aria2 input: ")))
+          ))
+      (setq
+       urls (s-trim urls)
+       aria2Command (concat "aria2c -Z " urls)
+       )
 
+      (print aria2Command)
+      (async-shell-command aria2Command)
+      )
   #+end_src
 
 ** Dired
