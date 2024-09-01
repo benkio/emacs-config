@@ -2009,7 +2009,7 @@ Add ~graphql-mode~
       (setq
        urls (mapconcat (lambda (s) (concat "\"" s "\"")) (split-string (s-trim urls)) " ")
        directory (read-directory-name "Select output directory: ")
-       aria2Command (concat "aria2c -d " directory "-Z " urls)
+       aria2Command (concat "aria2c -d " directory " -Z " urls)
        )
 
       (print aria2Command)
