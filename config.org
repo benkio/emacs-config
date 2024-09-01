@@ -384,12 +384,6 @@
     #+END_SRC
 
 * Packages
-** Aria 2
-  Major mode to control Aria 2 from emacs. A command line download utility to download stuff (torrent, FTP ...)
-
-  #+begin_src emacs-lisp
-    (use-package aria2)
-  #+end_src
 ** Fonts
 
    Set fonts based of the content of the ~font~ folder
@@ -1174,7 +1168,7 @@ Add ~graphql-mode~
   #+begin_src emacs-lisp
     (use-package ytdious)
   #+end_src
-
+  
 * Local Modes
 
   Modes not on Melpa/Elpa. Imported from local folder
@@ -1307,16 +1301,7 @@ Add ~graphql-mode~
        "Concatenate a list of files with the same encoding in the same directory"
        (interactive)
        (setq
-        files (if (not (null (dired-get-marked-files)))
-                  (dired-get-marked-files)
-                (list (read-file-name "The initial file name: ")))
-        )
-       (message "%s" files)
-       (while (yes-or-no-p "Another file? ")
-         (progn
-           (setq files (append files (list (read-file-name "Next file name: "))))
-           )
-         )
+        files (apply 'files-from-dired-current-directory '()))
        (let* ((newFile (read-string "Insert the new file name: "))
               (concatContent (seq-drop (seq-reduce (lambda (a b) (concat a "\nfile './" (replace-regexp-in-string "'" "\'" (file-name-nondirectory b)) "'")) files "") 1))
               (unused (write-region concatContent nil "./concatFile.txt"))
@@ -2026,6 +2011,30 @@ Add ~graphql-mode~
         )
 
     #+end_src
+*** Aria2c
+
+  #+begin_src emacs-lisp
+(defun download-files-aria2 (&optional opt-urls)
+  "Select a region containing aria2c inputs. This will call aria2c asynchronously and dowload them in the current dir or in the specified one. if the region is empty it will ask for urls one by one"
+  (interactive)
+  ;; (setq urls (if (equal urls nil)
+  ;;     (buffer-substring-no-properties (region-beginning) (region-end))
+  ;;   urls))
+  ;;(buffer-substring-no-properties (region-beginning) (region-end))
+  (setq urls (or
+              opt-urls
+              (when (use-region-p) (buffer-substring-no-properties (region-beginning) (region-end)))
+              )
+        )
+  (when (equal urls nil)
+    (while (yes-or-no-p "Another aria2 input? ")
+    (setq urls (concat urls (read-string "Next aria2 input: ")))
+    ))
+  (message urls)
+  )
+
+  #+end_src
+
 ** Dired
 
    #+begin_src emacs-lisp
