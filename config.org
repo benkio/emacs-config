@@ -270,6 +270,7 @@
     19. ~abbrev-mode~ always on
     20. Save abbrev silently
     21. Automatically add final newline on file save and visiting
+    22. When you delete files they got into the thrash instead of permanently deleted
 
     #+BEGIN_SRC emacs-lisp
       (defalias 'yes-or-no-p 'y-or-n-p)
@@ -316,6 +317,7 @@
       (setq-default abbrev-mode t)
       (setq save-abbrevs 'silently)
       (setq require-final-newline 'visit-save)
+      (setq delete-by-moving-to-trash t)
     #+END_SRC
 
 *** Set
