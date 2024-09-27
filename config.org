@@ -1676,9 +1676,9 @@ Add ~graphql-mode~
         ((string-equal system-type "windows-nt")
          (shell-command "pwsh.exe -Command [guid]::NewGuid().toString()" t))
         ((string-equal system-type "darwin") ; Mac
-         (shell-command "uuidgen" t))
+         (shell-command "uuidgen | tr A-Z a-z | tr -d '\n'" t))
         ((string-equal system-type "gnu/linux")
-         (shell-command "uuidgen" t))
+         (shell-command "uuidgen | tr A-Z a-z | tr -d '\n'" t))
         (t
          ;; code here by Christopher Wellons, 2011-11-18.
          ;; and editted Hideki Saito further to generate all valid variants for "N" in xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx format.

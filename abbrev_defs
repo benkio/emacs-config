@@ -1124,6 +1124,7 @@
     ("nosmoking0" "🚭" nil :count 0)
     ("notebook0" "📓" nil :count 0)
     ("notebookwithdecorativecover0" "📔" nil :count 0)
+    ("notequal0" "≠" nil :count 0)
     ("notes0" "🎶" nil :count 0)
     ("nutandbolt0" "🔩" nil :count 0)
     ("o0" "ò" nil :count 0)
