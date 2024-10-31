@@ -710,6 +710,21 @@ Prettify org
   )
 #+end_src
 
+*** Org-calendar Cursor Show
+
+For some reason the cursor doesn't show in org-calendar.
+With this code it should
+Reference: https://emacs.stackexchange.com/questions/78420/use-keyboard-in-org-calendar
+
+#+begin_src emacs-lisp
+  (defun my-func (orig-fun &rest args)
+    (when (equal (car args) '(setq cursor-type nil))
+      (setcar args '(setq cursor-type 'box)))
+    (apply orig-fun args))
+
+  (advice-add 'org-eval-in-calendar :around #'my-func)
+#+end_src
+
 ** Completion
 *** Company
 
