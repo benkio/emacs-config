@@ -2517,6 +2517,32 @@ Add ~graphql-mode~
                       ))
         (github-search-open-repo queryType repo)
         )
+
+      (defun scala-string-to-strip-margin-string (&optional $from $to)
+        "Escape the string selected as scala multiline string with strip margin |.
+         Reference: https://www.oreilly.com/library/view/scala-cookbook/9781449340292/ch01s03.html"
+        (interactive
+         (if (use-region-p)
+             (list (region-beginning) (region-end))
+           (let ((bds (bounds-of-thing-at-point 'paragraph)) )
+             (list (car bds) (cdr bds)) ) ) )
+        (let (inputStr outputStr)
+          (setq inputStr (buffer-substring-no-properties $from $to))
+          (setq outputStr
+                (let* (
+                       (case-fold-search t)
+                       (first-replace (replace-regexp-in-string "^" "|" inputStr))
+                       )
+                  (substring first-replace 1 (length first-replace))
+                  ))
+
+          (save-excursion
+            (delete-region $from $to)
+            (goto-char $from)
+            (insert outputStr)
+            (unless (eq ?\N{QUOTATION MARK} (char-before)) (end-of-line))
+            (insert ".stripMargin")
+            )))
     #+END_SRC
 *** Haskell
 
@@ -3124,6 +3150,7 @@ Add ~graphql-mode~
       (global-set-key (kbd "C-c c s g") 'scala-goto-definition)
       (global-set-key (kbd "C-c c s G") 'scala-github-search-open-repo)
       (global-set-key (kbd "C-c c s d") 'scala-open-doc)
+      (global-set-key (kbd "C-c c s s") 'scala-string-to-strip-margin-string)
     #+end_src
 *** Haskell
     #+begin_src emacs-lisp
