@@ -1312,6 +1312,36 @@ Add ~graphql-mode~
           )
        )
 
+     (defun semitone-coefficient (semitones)
+       "Calculate the frequency coefficient for a given number of SEMITONES.
+     The coefficient represents the ratio of the frequency to the base frequency.
+     SEMITONES should be an integer between -12 and 12."
+       (if (and (integerp semitones) (<= -12 semitones 12))
+           (let ((semitone-ratio (expt 2 (/ 1.0 12))))
+             (expt semitone-ratio semitones))
+         (error "SEMITONES must be an integer between -12 and 12")))
+
+     (defun transpose-mp3 (input-file semitones output-file)
+       "Asynchronously transpose an MP3 file by a given number of SEMITONES using ffmpeg.
+     Prompts interactively for INPUT-FILE, SEMITONES, and OUTPUT-FILE if called interactively.
+     INPUT-FILE is the path to the original MP3 file.
+     SEMITONES is the number of semitones to transpose up (positive) or down (negative).
+     OUTPUT-FILE is the path to save the transposed MP3 file."
+       (interactive
+        (list
+         (read-file-name "Input MP3 file: " nil nil t nil 'file-readable-p)
+         (read-number "Semitones to transpose (e.g., 1 for up, -1 for down): ")
+         (read-file-name "Output MP3 file: " nil nil nil)))
+       (let* ((coefficient (semitone-coefficient semitones))
+              (pitch-filter (format "rubberband=pitch=%.12f" coefficient))
+              (command (format "ffmpeg -i \"%s\" -filter:a \"%s\" -acodec libmp3lame \"%s\""
+                               (concat (expand-file-name (file-name-directory input-file)) (file-name-nondirectory input-file))
+                               pitch-filter
+                               (concat (expand-file-name (file-name-directory output-file)) (file-name-nondirectory output-file)))))
+         (message "Running: %s" command)
+         (async-shell-command command)))
+
+
      (defun cut-media-file (origin startTime endTime newName)
        "This function get in input:
      - The path to a specific video
