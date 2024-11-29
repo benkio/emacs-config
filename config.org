@@ -397,6 +397,7 @@
      ;; set default font
      (set-frame-font
       (cond
+       ((member "JetBrainsMono Nerd Font Mono" (font-family-list)) "JetBrainsMono Nerd Font Mono")
        ((member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono")
        ((member "Inconsolata" (font-family-list)) "Inconsolata")
        ((member "Noto Mono" (font-family-list)) "Noto Mono")
