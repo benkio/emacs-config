@@ -185,19 +185,22 @@
     It could be called after the startup as well.
 
     #+BEGIN_SRC emacs-lisp
-      (defun set-font-height-on-frame-width (&optional frame)
+      (defun set-font-height-on-frame-width (&optional frame ratio)
         "Set font based on the frame size. The page in full screen should show 50 lines"
-        (interactive)
+        (interactive (list
+                        (selected-frame)
+                        (read-number "Ratio (140, less bigger, more smaller):" 140)
+                      )
+                     )
         (let* ((frameWidth (frame-outer-width frame))
                ;; Perfect ratio is 1400 / 10. We need an adjustment (feedback) for the other display
                ;; Based on the distance from 1400
-               (perfectRatio (/ 1400 10)) ;; Less is bigger, more is smaller
-               (zeroAdjustment (/ (- frameWidth (* perfectRatio 10)) 2))
+               (zeroAdjustment (/ (- frameWidth (* ratio 10)) 2))
                (heightComputed (+ (/ frameWidth 10) zeroAdjustment))
-               (height (if (< heightComputed 0) perfectRatio heightComputed))
+               (height (if (< heightComputed 0) ratio heightComputed))
                )
 
-          (message "Set font based on the frame size(divided by 10): %d" frameWidth) ;Adding this will make it run at startup, weird
+          (message "Set font based on the frame size(divided by 10): %d height: %d" frameWidth height) ;Adding this will make it run at startup, weird
           (set-face-attribute 'default nil :height height)
           )
         )
