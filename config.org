@@ -389,347 +389,6 @@
     #+END_SRC
 
 * Packages
-** Fonts
-
-   Set fonts based of the content of the ~font~ folder
-   Add the support of the emoji, based on Xah Lee code.
-
-   #+BEGIN_SRC emacs-lisp
-     ;; Emacs: Font Setup http://ergoemacs.org/emacs/emacs_list_and_set_font.html
-
-     ;; set default font
-     (set-frame-font
-      (cond
-       ((member "ProggyClean Nerd Font Mono" (font-family-list)) "ProggyClean Nerd Font Mono")
-       ((member "JetBrainsMono Nerd Font Mono" (font-family-list)) "JetBrainsMono Nerd Font Mono")
-       ((member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono")
-       ((member "Inconsolata" (font-family-list)) "Inconsolata")
-       ((member "Noto Mono" (font-family-list)) "Noto Mono")
-       ((member "Consolas" (font-family-list)) "Consolas-12")
-       ((member "Menlo" (font-family-list)) "Menlo-16"))
-      ;; (cond
-      ;;  ((string-equal system-type "windows-nt")
-      ;;   (if (member "Consolas" (font-family-list)) "Consolas-12" nil ))
-      ;;  ((string-equal system-type "darwin")
-      ;;   (if (member "Menlo" (font-family-list)) "Menlo-16" nil ))
-      ;;  ((string-equal system-type "gnu/linux")
-      ;;   (if (member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono" nil ))
-      ;;  (t nil))
-      t t)
-
-     ;; set font for emoji
-     (set-fontset-font
-      t
-      '(#x1f300 . #x1fad0)
-      (cond
-       ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
-       ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
-       ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
-       ((member "Symbola" (font-family-list)) "Symbola")
-       ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji"))
-
-      ;; Apple Color Emoji should be before Symbola, but Richard Stallman skum disabled it.
-      ;; GNU Emacs Removes Color Emoji Support on the Mac
-      ;; http://ergoemacs.org/misc/emacs_macos_emoji.html
-      ;;
-      )
-
-     ;; set font for symbols
-     (set-fontset-font
-      t
-      'symbol
-      (cond
-       ((string-equal system-type "windows-nt")
-        (cond
-         ((member "Segoe UI Symbol" (font-family-list)) "Segoe UI Symbol")))
-       ((string-equal system-type "darwin")
-        (cond
-         ((member "Apple Symbols" (font-family-list)) "Apple Symbols")))
-       ((string-equal system-type "gnu/linux")
-        (cond
-         ((member "Symbola" (font-family-list)) "Symbola")))))
-   #+END_SRC
-
-** Cross Platform Compatibility
-*** PATH VARIABLE
-
-    Ensure the PATH variable is in scope for emacs to use
-
-    #+begin_src emacs-lisp
-
-      (use-package exec-path-from-shell
-        :if (memq window-system '(mac ns x))
-        :config
-        (exec-path-from-shell-initialize))
-    #+end_src
-
-** IComplete + FIDO
-
-http://xahlee.info/emacs/emacs/emacs_icomplete_mode.html
-Set up ~IComplete~ and ~fido~ for completion on the minibuffer
-
-#+begin_src emacs-lisp
-  (if (version< emacs-version "28.1")
-      (progn
-        (progn
-          ;; make buffer switch command do suggestions, also for find-file command
-          (require 'ido)
-          (ido-mode 1)
-          ;; show choices vertically
-          (setf (nth 2 ido-decorations) "\n")
-          ;; show any name that has the chars you typed
-          (setq ido-enable-flex-matching t)
-          ;; use current pane for newly opened file
-          (setq ido-default-file-method 'selected-window)
-          ;; use current pane for newly switched buffer
-          (setq ido-default-buffer-method 'selected-window)
-          )
-        (progn
-          ;; minibuffer enhanced completion icomplete
-          (require 'icomplete)
-          (icomplete-mode 1)
-          ;; show choices vertically
-          (setq icomplete-separator "\n")
-          (setq icomplete-hide-common-prefix nil)
-          (setq icomplete-in-buffer t)
-          (define-key icomplete-minibuffer-map (kbd "<right>") 'icomplete-forward-completions)
-          (define-key icomplete-minibuffer-map (kbd "<left>") 'icomplete-backward-completions)))
-    (fido-vertical-mode 1))
-#+end_src
-
-** Super Save
-
-   Save your files every time you change the window
-   https://github.com/bbatsov/super-save
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package super-save
-       :config
-       (super-save-mode +1))
-   #+END_SRC
-** Undo-tree
-   Allow to visually go back and forth between undo history
-   #+BEGIN_SRC emacs-lisp
-     (use-package undo-tree
-       :config (global-undo-tree-mode)
-       (setq undo-tree-auto-save-history nil)
-     )
-   #+END_SRC
-** Keybindings
-*** Which-key
-
-    Give you suggestions about the keybindings
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package which-key
-        :config
-        (which-key-mode))
-    #+END_SRC
-
-** Editing
-*** Iedit
-
-    Editing mulitiple occurrences of the same highlighted word at once.
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package iedit)
-    #+END_SRC
-*** WGrep
-
-    turn grep buffers writable
-
-    #+begin_src emacs-lisp
-      (use-package wgrep)
-    #+end_src
-*** Whitespace
-
-    Automatically signal and clean whitespaces
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package whitespace
-        :init
-        (dolist (hook '(prog-mode-hook text-mode-hook))
-          (add-hook hook #'whitespace-mode))
-        :config
-        (progn
-          ;; Make whitespace-mode with very basic background coloring for whitespaces.
-          ;; http://ergoemacs.org/emacs/whitespace-mode.html
-          (setq whitespace-style (quote (face tabs newline tab-mark newline-mark empty trailing)))
-
-          ;; Make whitespace-mode and whitespace-newline-mode use “¶” for end of line char and “▷” for tab.
-          (setq whitespace-display-mappings
-                ;; all numbers are unicode codepoint in decimal. e.g. (insert-char 182 1)
-                '(
-                  (space-mark 32 [183] [46]) ; SPACE 32 「 」, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
-                  (newline-mark 10 [182 10]) ; LINE FEED,
-                  (tab-mark 9 [9655 9] [92 9]) ; tab
-                  )))
-        )
-    #+END_SRC
-
-*** Crux
-
-    https://github.com/bbatsov/crux
-
-    package containing a lot of useful functions. So you don't need to copy and paste them from Emacs Redux
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package  crux)
-
-    #+END_SRC
-*** Expand Region
-
-    Select by region, back and forth
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package expand-region)
-    #+END_SRC
-*** String Inflection
-
-  Package to cycle and change between different cases: camel, underscore, lower...
-
-  #+begin_src emacs-lisp
-    (use-package string-inflection)
-  #+end_src
-
-*** Move Text
-   https://github.com/emacsfodder/move-text
-   Improvement on moving single line or region up and down
-   #+begin_src emacs-lisp
-     (use-package move-text
-       :config (move-text-default-bindings)
-       :ensure t
-       )
-   #+end_src
-** Search
-*** Ripgrep
-
-    Fast search, grep alternative
-
-    #+begin_src emacs-lisp
-      (use-package rg)
-    #+end_src
-
-*** Google This
-
-    Allow you to search the thing under cursor on google
-
-    #+begin_src emacs-lisp
-      (use-package google-this)
-    #+end_src
-** Window Manipulation
-*** Winmove
-
-    To move between windows
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package windmove)
-    #+END_SRC
-*** Golden Ratio
-
-    library that will manage the window size in order to have the window on focus useable and the other windows shrinked but readable
-
-    #+begin_src emacs-lisp
-      (use-package golden-ratio
-        :config
-        (require 'golden-ratio)
-        (golden-ratio-mode 1)
-        (setq golden-ratio-auto-scale t))
-    #+end_src
-*** IBuffer
-
-    Better visualization of open buffers
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package ibuffer)
-    #+END_SRC
-*** Dedicated
-
-    This minor mode allows you to toggle a window's "dedicated" flag.
-    When a window is "dedicated", Emacs will not select files into that
-    window. This can be quite handy since many commands will use
-    another window to show results (e.g., compilation mode, starting
-    info, etc.) A dedicated window won't be used for such a purpose.
-
-    Dedicated buffers will have "D" shown in the mode line.
-
-    #+begin_src emacs-lisp
-      (use-package dedicated)
-    #+end_src
-** Kill Ring
-*** BrowseKillRing
-
-    Allow to visualize the kill ring in another buffer and choose what to insert at point
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package browse-kill-ring
-        :config (browse-kill-ring-default-keybindings))
-
-    #+END_SRC
-
-** Org-mode
-*** Github markdown conversion
-
-    Converts org file to github markdown with the command: `M-x org-gfm-export-to-markdown`
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package ox-gfm
-        :defer t
-        :config
-        (require 'ox-gfm nil t))
-
-    #+END_SRC
-*** Reveal-js
-
-    Slide generation from org
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package ox-reveal
-        :defer t
-        :config
-        (require 'ox-reveal)
-        (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0")
-        (setq org-reveal-mathjax t))
-
-      (use-package htmlize)
-    #+END_SRC
-*** To Bootstrap HTML Export
-
-    #+begin_src emacs-lisp
-      (use-package ox-twbs)
-    #+end_src
-*** Export to Jira/Confluence
-
-    #+begin_src emacs-lisp
-      (use-package ox-jira)
-    #+end_src
-
-*** Org-modern
-
-Prettify org
-
-#+begin_src emacs-lisp
-  (use-package org-modern
-    :config
-    (with-eval-after-load 'org (global-org-modern-mode))
-  )
-#+end_src
-
-*** Org-calendar Cursor Show
-
-For some reason the cursor doesn't show in org-calendar.
-With this code it should
-Reference: https://emacs.stackexchange.com/questions/78420/use-keyboard-in-org-calendar
-
-#+begin_src emacs-lisp
-  (defun my-func (orig-fun &rest args)
-    (when (equal (car args) '(setq cursor-type nil))
-      (setcar args '(setq cursor-type 'box)))
-    (apply orig-fun args))
-
-  (advice-add 'org-eval-in-calendar :around #'my-func)
-#+end_src
-
 ** Completion
 *** Company
 
@@ -744,6 +403,19 @@ Reference: https://emacs.stackexchange.com/questions/78420/use-keyboard-in-org-c
         (setq company-dabbrev-downcase nil)
         (global-company-mode t))
     #+end_src
+** Cross Platform Compatibility
+*** PATH VARIABLE
+
+    Ensure the PATH variable is in scope for emacs to use
+
+    #+begin_src emacs-lisp
+
+      (use-package exec-path-from-shell
+        :if (memq window-system '(mac ns x))
+        :config
+        (exec-path-from-shell-initialize))
+    #+end_src
+
 ** Development
 *** General
 **** format-all
@@ -1134,30 +806,81 @@ Add ~graphql-mode~
       (yas-global-mode 1)
     #+END_SRC
 
-** File System
-*** Dired
+** Editing
+*** Iedit
 
-    File system for emacs
+    Editing mulitiple occurrences of the same highlighted word at once.
 
     #+BEGIN_SRC emacs-lisp
-      (use-package dired
-        :ensure nil
+      (use-package iedit)
+    #+END_SRC
+*** WGrep
+
+    turn grep buffers writable
+
+    #+begin_src emacs-lisp
+      (use-package wgrep)
+    #+end_src
+*** Whitespace
+
+    Automatically signal and clean whitespaces
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package whitespace
+        :init
+        (dolist (hook '(prog-mode-hook text-mode-hook))
+          (add-hook hook #'whitespace-mode))
         :config
-        ;; dired - reuse current buffer by pressing 'a'
-        (put 'dired-find-alternate-file 'disabled nil)
+        (progn
+          ;; Make whitespace-mode with very basic background coloring for whitespaces.
+          ;; http://ergoemacs.org/emacs/whitespace-mode.html
+          (setq whitespace-style (quote (face tabs newline tab-mark newline-mark empty trailing)))
 
-        ;; always delete and copy recursively
-        (setq dired-recursive-deletes 'always)
-        (setq dired-recursive-copies 'always)
-
-        ;; if there is a dired buffer displayed in the next window, use its
-        ;; current subdir, instead of the current subdir of this dired buffer
-        (setq dired-dwim-target t)
-        (setq dired-listing-switches "-alh")
-        (require 'dired-x))
-
+          ;; Make whitespace-mode and whitespace-newline-mode use “¶” for end of line char and “▷” for tab.
+          (setq whitespace-display-mappings
+                ;; all numbers are unicode codepoint in decimal. e.g. (insert-char 182 1)
+                '(
+                  (space-mark 32 [183] [46]) ; SPACE 32 「 」, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
+                  (newline-mark 10 [182 10]) ; LINE FEED,
+                  (tab-mark 9 [9655 9] [92 9]) ; tab
+                  )))
+        )
     #+END_SRC
 
+*** Crux
+
+    https://github.com/bbatsov/crux
+
+    package containing a lot of useful functions. So you don't need to copy and paste them from Emacs Redux
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package  crux)
+
+    #+END_SRC
+*** Expand Region
+
+    Select by region, back and forth
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package expand-region)
+    #+END_SRC
+*** String Inflection
+
+  Package to cycle and change between different cases: camel, underscore, lower...
+
+  #+begin_src emacs-lisp
+    (use-package string-inflection)
+  #+end_src
+
+*** Move Text
+   https://github.com/emacsfodder/move-text
+   Improvement on moving single line or region up and down
+   #+begin_src emacs-lisp
+     (use-package move-text
+       :config (move-text-default-bindings)
+       :ensure t
+       )
+   #+end_src
 ** Error Check
 *** Hunspell
 
@@ -1183,6 +906,268 @@ Add ~graphql-mode~
       (require 'ispell)
     #+end_src
 
+** File System
+*** Dired
+
+    File system for emacs
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package dired
+        :ensure nil
+        :config
+        ;; dired - reuse current buffer by pressing 'a'
+        (put 'dired-find-alternate-file 'disabled nil)
+
+        ;; always delete and copy recursively
+        (setq dired-recursive-deletes 'always)
+        (setq dired-recursive-copies 'always)
+
+        ;; if there is a dired buffer displayed in the next window, use its
+        ;; current subdir, instead of the current subdir of this dired buffer
+        (setq dired-dwim-target t)
+        (setq dired-listing-switches "-alh")
+        (require 'dired-x))
+
+    #+END_SRC
+
+** Fonts
+
+   Set fonts based of the content of the ~font~ folder
+   Add the support of the emoji, based on Xah Lee code.
+
+   #+BEGIN_SRC emacs-lisp
+     ;; Emacs: Font Setup http://ergoemacs.org/emacs/emacs_list_and_set_font.html
+
+     ;; set default font
+     (set-frame-font
+      (cond
+       ((member "ProggyClean Nerd Font Mono" (font-family-list)) "ProggyClean Nerd Font Mono")
+       ((member "JetBrainsMono Nerd Font Mono" (font-family-list)) "JetBrainsMono Nerd Font Mono")
+       ((member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono")
+       ((member "Inconsolata" (font-family-list)) "Inconsolata")
+       ((member "Noto Mono" (font-family-list)) "Noto Mono")
+       ((member "Consolas" (font-family-list)) "Consolas-12")
+       ((member "Menlo" (font-family-list)) "Menlo-16"))
+      ;; (cond
+      ;;  ((string-equal system-type "windows-nt")
+      ;;   (if (member "Consolas" (font-family-list)) "Consolas-12" nil ))
+      ;;  ((string-equal system-type "darwin")
+      ;;   (if (member "Menlo" (font-family-list)) "Menlo-16" nil ))
+      ;;  ((string-equal system-type "gnu/linux")
+      ;;   (if (member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono" nil ))
+      ;;  (t nil))
+      t t)
+
+     ;; set font for emoji
+     (set-fontset-font
+      t
+      '(#x1f300 . #x1fad0)
+      (cond
+       ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+       ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+       ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+       ((member "Symbola" (font-family-list)) "Symbola")
+       ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji"))
+
+      ;; Apple Color Emoji should be before Symbola, but Richard Stallman skum disabled it.
+      ;; GNU Emacs Removes Color Emoji Support on the Mac
+      ;; http://ergoemacs.org/misc/emacs_macos_emoji.html
+      ;;
+      )
+
+     ;; set font for symbols
+     (set-fontset-font
+      t
+      'symbol
+      (cond
+       ((string-equal system-type "windows-nt")
+        (cond
+         ((member "Segoe UI Symbol" (font-family-list)) "Segoe UI Symbol")))
+       ((string-equal system-type "darwin")
+        (cond
+         ((member "Apple Symbols" (font-family-list)) "Apple Symbols")))
+       ((string-equal system-type "gnu/linux")
+        (cond
+         ((member "Symbola" (font-family-list)) "Symbola")))))
+   #+END_SRC
+
+** IComplete + FIDO
+
+http://xahlee.info/emacs/emacs/emacs_icomplete_mode.html
+Set up ~IComplete~ and ~fido~ for completion on the minibuffer
+
+#+begin_src emacs-lisp
+  (if (version< emacs-version "28.1")
+      (progn
+        (progn
+          ;; make buffer switch command do suggestions, also for find-file command
+          (require 'ido)
+          (ido-mode 1)
+          ;; show choices vertically
+          (setf (nth 2 ido-decorations) "\n")
+          ;; show any name that has the chars you typed
+          (setq ido-enable-flex-matching t)
+          ;; use current pane for newly opened file
+          (setq ido-default-file-method 'selected-window)
+          ;; use current pane for newly switched buffer
+          (setq ido-default-buffer-method 'selected-window)
+          )
+        (progn
+          ;; minibuffer enhanced completion icomplete
+          (require 'icomplete)
+          (icomplete-mode 1)
+          ;; show choices vertically
+          (setq icomplete-separator "\n")
+          (setq icomplete-hide-common-prefix nil)
+          (setq icomplete-in-buffer t)
+          (define-key icomplete-minibuffer-map (kbd "<right>") 'icomplete-forward-completions)
+          (define-key icomplete-minibuffer-map (kbd "<left>") 'icomplete-backward-completions)))
+    (fido-vertical-mode 1))
+#+end_src
+
+** Keybindings
+*** Which-key
+
+    Give you suggestions about the keybindings
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package which-key
+        :config
+        (which-key-mode))
+    #+END_SRC
+
+** Kill Ring
+*** BrowseKillRing
+
+    Allow to visualize the kill ring in another buffer and choose what to insert at point
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package browse-kill-ring
+        :config (browse-kill-ring-default-keybindings))
+
+    #+END_SRC
+
+** Org-mode
+*** Github markdown conversion
+
+    Converts org file to github markdown with the command: `M-x org-gfm-export-to-markdown`
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package ox-gfm
+        :defer t
+        :config
+        (require 'ox-gfm nil t))
+
+    #+END_SRC
+*** Reveal-js
+
+    Slide generation from org
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package ox-reveal
+        :defer t
+        :config
+        (require 'ox-reveal)
+        (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0")
+        (setq org-reveal-mathjax t))
+
+      (use-package htmlize)
+    #+END_SRC
+*** To Bootstrap HTML Export
+
+    #+begin_src emacs-lisp
+      (use-package ox-twbs)
+    #+end_src
+*** Export to Jira/Confluence
+
+    #+begin_src emacs-lisp
+      (use-package ox-jira)
+    #+end_src
+
+*** Org-modern
+
+Prettify org
+
+#+begin_src emacs-lisp
+  (use-package org-modern
+    :config
+    (with-eval-after-load 'org (global-org-modern-mode))
+  )
+#+end_src
+
+** Search
+*** Ripgrep
+
+    Fast search, grep alternative
+
+    #+begin_src emacs-lisp
+      (use-package rg)
+    #+end_src
+
+*** Google This
+
+    Allow you to search the thing under cursor on google
+
+    #+begin_src emacs-lisp
+      (use-package google-this)
+    #+end_src
+** Super Save
+
+   Save your files every time you change the window
+   https://github.com/bbatsov/super-save
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package super-save
+       :config
+       (super-save-mode +1))
+   #+END_SRC
+** Undo-tree
+   Allow to visually go back and forth between undo history
+   #+BEGIN_SRC emacs-lisp
+     (use-package undo-tree
+       :config (global-undo-tree-mode)
+       (setq undo-tree-auto-save-history nil)
+     )
+   #+END_SRC
+** Window Manipulation
+*** Winmove
+
+    To move between windows
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package windmove)
+    #+END_SRC
+*** Golden Ratio
+
+    library that will manage the window size in order to have the window on focus useable and the other windows shrinked but readable
+
+    #+begin_src emacs-lisp
+      (use-package golden-ratio
+        :config
+        (require 'golden-ratio)
+        (golden-ratio-mode 1)
+        (setq golden-ratio-auto-scale t))
+    #+end_src
+*** IBuffer
+
+    Better visualization of open buffers
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package ibuffer)
+    #+END_SRC
+*** Dedicated
+
+    This minor mode allows you to toggle a window's "dedicated" flag.
+    When a window is "dedicated", Emacs will not select files into that
+    window. This can be quite handy since many commands will use
+    another window to show results (e.g., compilation mode, starting
+    info, etc.) A dedicated window won't be used for such a purpose.
+
+    Dedicated buffers will have "D" shown in the mode line.
+
+    #+begin_src emacs-lisp
+      (use-package dedicated)
+    #+end_src
 ** ytdious
 
   Allow you to search and do stuff for youtube videos, using the insidious api
@@ -1207,813 +1192,6 @@ Add ~graphql-mode~
    #+end_src
 
 * Functions
-** Elisp
-
-  Functions used throughout the elisp code to generate other functionalities
-#+begin_src emacs-lisp
-
-  (defun command-exists-p (command)
-    "check if the given input command actually exists"
-    (setq commandExist nil)
-    (condition-case nil
-        (progn
-          (call-process command nil 0)
-          (setq commandExist t)
-          )
-      (error nil)
-      )
-    commandExist
-    )
-
-  (defun files-from-dired-current-directory ()
-    "Ask the user for a list of files from the current directory showing the files in dired"
-    (setq
-     files (if (not (null (dired-get-marked-files)))
-               (dired-get-marked-files)
-             (list (read-file-name "The initial file name: ")))
-     )
-    (message "%s" files)
-    (while (yes-or-no-p "Another file? ")
-      (progn
-        (setq files (append files (list (read-file-name "Next file name: "))))
-        )
-      )
-    files
-    )
-#+end_src
-
-** Indentation
-
-   unctions for alignment of text and indentation of buffer
-
-   #+BEGIN_SRC emacs-lisp
-     (defun indent-buffer-or-region ()
-       "indent whole buffer"
-       (interactive)
-       (delete-trailing-whitespace)
-       (setq regionStart (point-min)
-             regionEnd   (point-max))
-       (when (use-region-p)
-         (setq regionStart (region-beginning)
-               regionEnd   (region-end)))
-       (save-excursion (indent-region regionStart regionEnd nil))
-       (untabify regionStart regionEnd))
-
-   #+END_SRC
-
-** Cursor Movement
-
-   Collect all the functions that move the cursor somewhere
-
-   #+begin_src emacs-lisp
-     (defun goto-column (column)
-       (interactive "nColumn: ")
-       (move-to-column column t))
-
-     (defun switch-to-existing-buffer-other-window (part)
-       "Switch to buffer with PART in its name."
-       (interactive
-        (list (read-buffer-to-switch "Switch to buffer in other window: ")))
-       (let ((candidates
-              (cl-remove
-               nil
-               (mapcar (lambda (buf)
-                         (let ((pos (string-match part (buffer-name buf))))
-                           (when pos
-                             (cons pos buf))))
-                       (buffer-list)))))
-         (unless candidates
-           (user-error "There is no buffers with %S in its name." part))
-         (setq candidates (cl-sort candidates #'< :key 'car))
-         (switch-to-buffer-other-window (cdr (car candidates)))))
-   #+end_src
-** Buffers
-  Functions over buffers
-
-  #+begin_src emacs-lisp
-    (defun kill-all-buffers ()
-      (interactive)
-      (mapcar 'kill-buffer (buffer-list))
-      (delete-other-windows))
-  #+end_src
-** FFMPEG
-
-   Here you can find the functions to instruct ffmpeg. Very useful when
-   you have to cut a specific video, extract audio, convert to a specific
-   format.
-
-   #+begin_src emacs-lisp
-     (defun timeToSeconds (time)
-       "get as input the time in format 00:00:00 and return the total seconds"
-       (+ (string-to-number (substring time 6))
-          (*
-           (string-to-number (substring time 3 5))
-           60
-           )
-          (*
-           (string-to-number (substring time 0 2))
-           3600
-           )
-          )
-       )
-
-     (defun semitone-coefficient (semitones)
-       "Calculate the frequency coefficient for a given number of SEMITONES.
-     The coefficient represents the ratio of the frequency to the base frequency.
-     SEMITONES should be an integer between -12 and 12."
-       (if (and (integerp semitones) (<= -12 semitones 12))
-           (let ((semitone-ratio (expt 2 (/ 1.0 12))))
-             (expt semitone-ratio semitones))
-         (error "SEMITONES must be an integer between -12 and 12")))
-
-     (defun transpose-mp3 (input-file semitones output-file)
-       "Asynchronously transpose an MP3 file by a given number of SEMITONES using ffmpeg.
-     Prompts interactively for INPUT-FILE, SEMITONES, and OUTPUT-FILE if called interactively.
-     INPUT-FILE is the path to the original MP3 file.
-     SEMITONES is the number of semitones to transpose up (positive) or down (negative).
-     OUTPUT-FILE is the path to save the transposed MP3 file."
-       (interactive
-        (list
-         (read-file-name "Input MP3 file: " nil nil t nil 'file-readable-p)
-         (read-number "Semitones to transpose (e.g., 1 for up, -1 for down): ")
-         (read-file-name "Output MP3 file: " nil nil nil)))
-       (let* ((coefficient (semitone-coefficient semitones))
-              (pitch-filter (format "rubberband=pitch=%.12f" coefficient))
-              (command (format "ffmpeg -i \"%s\" -filter:a \"%s\" -acodec libmp3lame \"%s\""
-                               (concat (expand-file-name (file-name-directory input-file)) (file-name-nondirectory input-file))
-                               pitch-filter
-                               (concat (expand-file-name (file-name-directory output-file)) (file-name-nondirectory output-file)))))
-         (message "Running: %s" command)
-         (async-shell-command command)))
-
-
-     (defun cut-media-file (origin startTime endTime newName)
-       "This function get in input:
-     - The path to a specific video
-     - The start time of the cut (00:00:00)
-     - The end time of the cut (00:00:00)
-     - The new name of the output
-     Perform a ffmpeg command to cut the input and generate the new output in the same directory
-     "
-       (interactive "FFile name to cut from:
-     sStart Time (00:00:00):
-     sEnd Time (00:00:00):
-     sNew Name: ")
-
-       (setq totalSeconds (- (timeToSeconds endTime) (timeToSeconds startTime)))
-       (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" (concat (expand-file-name (file-name-directory origin)) (file-name-nondirectory origin)) "\" -t " (number-to-string totalSeconds) " -c:v copy -c:a copy \"" (concat (expand-file-name (file-name-directory origin)) newName) "\""))
-
-       (message "ffmpegCommand: %s" ffmpegCommand)
-       (async-shell-command ffmpegCommand)
-       )
-
-     (require 'seq)
-
-     (defun concatenate-media-files ()
-       "Concatenate a list of files with the same encoding in the same directory"
-       (interactive)
-       (setq
-        files (apply 'files-from-dired-current-directory '()))
-       (let* ((newFile (read-string "Insert the new file name: "))
-              (concatContent (seq-drop (seq-reduce (lambda (a b) (concat a "\nfile './" (replace-regexp-in-string "'" "\'" (file-name-nondirectory b)) "'")) files "") 1))
-              (unused (write-region concatContent nil "./concatFile.txt"))
-              (outputFile (expand-file-name (concat default-directory newFile)))
-              (ffmpegCommand (concat "ffmpeg -f concat -safe 0 -i ./concatFile.txt -c copy \"" outputFile  "\"")))
-         ;; (message "concatContent: %s - outputFile: %s - ffmpegCommand: %s" concatContent outputFile ffmpegCommand)
-         (shell-command ffmpegCommand)
-         (delete-file "./concatFile.txt")
-         )
-       )
-
-     (defun play-sound ()
-       "play the sound using ffplay"
-       (interactive)
-       (unless (command-exists-p "ffplay") (error "Please install ffplay (ffmpeg)"))
-       (setq files (funcall 'files-from-dired-current-directory))
-       (setq command
-             (mapconcat (lambda (file)
-                          (let ((fileComplete (expand-file-name file))
-                                (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-                            (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension)))
-                        files " && ")
-             )
-       (message "play sound command %s" command)
-       (call-process-shell-command command)
-       )
-
-     (defun preview-crop-media-file (file &optional height width topX topY)
-       "Preview using ffplay the crop of a mediafile.
-        file input crop to preview@
-        height of the output rectangle. if 0 or invalid, input file height will be used
-        width of the output rectangle. if 0 or invalid, input file width will be used
-        topX cordinate of the top left corner. Default 0
-        topY cordinate of the top left corner. Default 0"
-       (interactive (list
-                     (read-file-name (format "File to preview: "))
-                     (read-string (format "Height (default \"in_h\"): "))
-                     (read-string (format "Width (default \"in_w\"): "))
-                     (read-number (format "Top Left Corner X: ") 0)
-                     (read-number (format "Top Left Corner Y: ") 0)
-                     ))
-       (unless (command-exists-p "ffplay") (error "Please install ffplay (ffmpeg)"))
-       (when (eq (string-to-number height) 0) (setq height "in_h"))
-       (when (eq (string-to-number width) 0) (setq width "in_w"))
-       (setq fileComplete (expand-file-name file))
-       ;; (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-       (setq command (format "ffplay -i %s -vf \"crop=%s:%s:%d:%d\"" fileComplete width height topX topY))
-       (message command)
-       (call-process-shell-command command nil 0)
-       )
-
-     (defun crop-media-file (file newFile &optional height width topX topY)
-       "Preview using ffplay the crop of a mediafile.
-        file to crop
-        newFile result file cropped
-        height of the output rectangle. if 0 or invalid, input file height will be used
-        width of the output rectangle. if 0 or invalid, input file width will be used
-        topX cordinate of the top left corner. Default 0
-        topY cordinate of the top left corner. Default 0"
-       (interactive (list
-                     (read-file-name (format "File to crop: "))
-                     (read-file-name (format "New File: "))
-                     (read-string (format "Height (default \"in_h\"): "))
-                     (read-string (format "Width (default \"in_w\"): "))
-                     (read-number (format "Top Left Corner X: ") 0)
-                     (read-number (format "Top Left Corner Y: ") 0)
-                     ))
-       (unless (command-exists-p "ffmpeg") (error "Please install ffmpeg"))
-       (when (eq (string-to-number height) 0) (setq height "in_h"))
-       (when (eq (string-to-number width) 0) (setq width "in_w"))
-       (setq fileComplete (expand-file-name file))
-       ;;(fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-       (setq command (format "ffmpeg -i %s -vf \"crop=%s:%s:%d:%d\" %s" fileComplete width height topX topY newFile))
-       (message command)
-       (call-process-shell-command command nil 0)
-       )
-   #+end_src
-** File Conversion
-
-   Collect the functions for file conversions, mainly using shell commands
-
-   #+BEGIN_SRC emacs-lisp
-     (defun convert-to-mp3 ()
-       (interactive)
-       (setq files (mapcar 'expand-file-name (apply 'files-from-dired-current-directory '())))
-       (mapcar (lambda (f) (shell-command
-                            (format "ffmpeg -i \"%s\" -vn -ar 44100 -ac 2 -b:a 192k \"%s.mp3\"" f (file-name-sans-extension f)))) files)
-       )
-
-     (defun convert-to-gif (file)
-       (interactive "f")
-       (let ((fileComplete (expand-file-name file))
-             (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
-         (shell-command (format "ffmpeg -i %s -vf \"fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse\" -loop 0 %s.gif" fileComplete fileCompleteNoExtension))))
-
-   #+END_SRC
-** Filename & Path to clipboard
-
-   Functions to get the name of the file and path to clipboard
-
-   #+BEGIN_SRC emacs-lisp
-     (defun copy-file-name-to-kill-ring (filename-manipulate-func)
-       "Copy the current buffer file name to the kill-ring after the application of the input function."
-       (interactive)
-       (let ((filename (if (equal major-mode 'dired-mode)
-                           default-directory
-                         (buffer-file-name))))
-         (when filename
-           (let ((changedFilename (funcall filename-manipulate-func filename)))
-             (when changedFilename
-               (kill-new changedFilename))))))
-
-     (defun copy-file-name-and-path-to-kill-ring ()
-       "Copy the current buffer file name and path to kill-ring."
-       (interactive)
-       (copy-file-name-to-kill-ring 'identity))
-
-     (defun copy-just-file-name-to-kill-ring ()
-       "Copy just the current buffer file name to kill-ring."
-       (interactive)
-       (copy-file-name-to-kill-ring 'file-name-nondirectory))
-   #+END_SRC
-** Formatting
-
-   Functions for formatting code.
-
-   #+BEGIN_SRC emacs-lisp
-     (defun apply-case-char (startcol endcol function)
-       "apply the function to the char at start position. endcol not used"
-       (move-to-column startcol t)
-       (let ((c (string (following-char))))
-         (delete-char 1)
-         (insert (funcall function c)))
-       )
-
-     (defun upcase-first-region (begin end)
-       "Uppercase the first char of each line of the selected region"
-       (interactive "r")
-       (apply-on-rectangle 'apply-case-char begin end 'upcase)
-       )
-
-     ;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
-     (defun unfill-paragraph (&optional region)
-       "Takes a multi-line paragraph and makes it into a single line of text."
-       (interactive (progn (barf-if-buffer-read-only) '(t)))
-       (let ((fill-column (point-max))
-             ;; This would override `fill-column' if it's an integer.
-             (emacs-lisp-docstring-fill-column t))
-         (fill-paragraph nil region)))
-
-     ;https://www.emacswiki.org/emacs/UnfillRegion
-     (defun unfill-region (beg end)
-       "Unfill the region, joining text paragraphs into a single
-         logical line.  This is useful, e.g., for use with
-         `visual-line-mode'."
-       (interactive "*r")
-       (let ((fill-column (point-max)))
-         (fill-region beg end)))
-
-     (defun upcase-initial-word()
-       (interactive)
-       (search-forward-regexp "[[:space:]]*")
-       (let ((bounds (bounds-of-thing-at-point 'word)))
-         (upcase-initials-region (point) (cdr bounds)))
-       (forward-word)
-       )
-
-     (defun tidy-html ()
-       "Tidies the HTML content in the buffer using `tidy'"
-       (interactive)
-       (shell-command-on-region
-        ;; beginning and end of buffer
-        (point-min)
-        (point-max)
-        ;; command and parameters
-        "tidy -indent -wrap 150 -xml -utf8 -quiet"
-        ;; output buffer
-        (current-buffer)
-        ;; replace?
-        t
-        ;; name of the error buffer
-        "*Tidy Error Buffer*"
-        ;; show error buffer?
-        t))
-   #+END_SRC
-** Numbers (Integer)
-
-   Contains function to manage integers, in particular increase and decrease.
-   source: https://emacsredux.com/blog/2013/07/25/increment-and-decrement-integer-at-point/
-
-   #+begin_src emacs-lisp
-     (require 'thingatpt)
-
-     (defun thing-at-point-goto-end-of-integer ()
-       "Go to end of integer at point."
-       (let ((inhibit-changing-match-data t))
-         ;; Skip over optional sign
-         (when (looking-at "[+-]")
-           (forward-char 1))
-         ;; Skip over digits
-         (skip-chars-forward "[[:digit:]]")
-         ;; Check for at least one digit
-         (unless (looking-back "[[:digit:]]")
-           (error "No integer here"))))
-     (put 'integer 'beginning-op 'thing-at-point-goto-end-of-integer)
-
-     (defun thing-at-point-goto-beginning-of-integer ()
-       "Go to end of integer at point."
-       (let ((inhibit-changing-match-data t))
-         ;; Skip backward over digits
-         (skip-chars-backward "[[:digit:]]")
-         ;; Check for digits and optional sign
-         (unless (looking-at "[+-]?[[:digit:]]")
-           (error "No integer here"))
-         ;; Skip backward over optional sign
-         (when (looking-back "[+-]")
-           (backward-char 1))))
-     (put 'integer 'beginning-op 'thing-at-point-goto-beginning-of-integer)
-
-     (defun thing-at-point-bounds-of-integer-at-point ()
-       "Get boundaries of integer at point."
-       (save-excursion
-         (let (beg end)
-           (thing-at-point-goto-beginning-of-integer)
-           (setq beg (point))
-           (thing-at-point-goto-end-of-integer)
-           (setq end (point))
-           (cons beg end))))
-     (put 'integer 'bounds-of-thing-at-point 'thing-at-point-bounds-of-integer-at-point)
-
-     (defun thing-at-point-integer-at-point ()
-       "Get integer at point."
-       (let ((bounds (bounds-of-thing-at-point 'integer)))
-         (string-to-number (buffer-substring (car bounds) (cdr bounds)))))
-     (put 'integer 'thing-at-point 'thing-at-point-integer-at-point)
-
-     (defun increment-integer-at-point (&optional inc)
-       "Increment integer at point by one.
-
-     ith numeric prefix arg INC, increment the integer by INC amount."
-       (interactive "p")
-       (let ((inc (or inc 1))
-             (n (thing-at-point 'integer))
-             (bounds (bounds-of-thing-at-point 'integer)))
-         (delete-region (car bounds) (cdr bounds))
-         (insert (int-to-string (+ n inc)))))
-
-     (defun decrement-integer-at-point (&optional dec)
-       "Decrement integer at point by one.
-
-     ith numeric prefix arg DEC, decrement the integer by DEC amount."
-       (interactive "p")
-       (increment-integer-at-point (- (or dec 1))))
-
-   #+end_src
-** Date
-  Use ~date~ unix command to insert date
-  #+begin_src emacs-lisp
-    (defun insert-current-date-iso-8601 ()
-      "Call the `date' unix command to insert the current date"
-      (interactive)
-      (if (command-exists-p "ffplay")
-          (insert (s-trim (shell-command-to-string "date -u +\"%Y-%m-%dT%H:%M:%SZ\"")))
-        (error "Please install ffplay (ffmpeg)"))
-      )
-  #+end_src
-** Rectangles
-
-   Custom Functions regading rectangles
-
-   #+BEGIN_SRC emacs-lisp
-
-     (defun upcase-rectangle (b e)
-       "change chars in rectangle to uppercase"
-       (interactive "r")
-       (apply-on-rectangle 'apply-fun-rectangle-line b e 'upcase-region))
-
-     (defun downcase-rectangle (b e)
-       "change chars in rectangle to uppercase"
-       (interactive "r")
-       (apply-on-rectangle 'apply-fun-rectangle-line b e 'downcase-region))
-
-     (defun apply-fun-rectangle-line (startcol endcol function)
-       (when (= (move-to-column startcol) startcol)
-         (funcall function (point)
-                  (progn (move-to-column endcol 'coerce)
-                         (point)))))
-   #+END_SRC
-** Selection
-
-   function regarding the selection of text
-
-   #+BEGIN_SRC emacs-lisp
-
-     (defun reselect-last-region ()
-       (interactive)
-       (let ((start (mark t))
-             (end (point)))
-         (goto-char start)
-         (call-interactively' set-mark-command)
-         (goto-char end)))
-
-   #+END_SRC
-** Random
-
-   Generate random things to insert in the buffer
-
-   #+BEGIN_SRC emacs-lisp
-     (defun xah-insert-random-number (NUM)
-       "Insert NUM random digits.
-     NUM default to 5.
-     Call `universal-argument' before for different count.
-     URL `http://xahlee.info/emacs/emacs/elisp_insert_random_number_string.html'
-     Version 2017-05-24"
-       (interactive "P")
-       (let (($charset "1234567890" )
-             ($baseCount 10))
-         (dotimes (_ (if (numberp NUM) (abs NUM) 5 ))
-           (insert (elt $charset (random $baseCount))))))
-
-     (defun xah-insert-random-hex (NUM)
-       "Insert NUM random hexadecimal digits.
-     NUM default to 5.
-     Call `universal-argument' before for different count.
-     URL `http://xahlee.info/emacs/emacs/elisp_insert_random_number_string.html'
-     Version 2017-08-03"
-       (interactive "P")
-       (let (($n (if (numberp NUM) (abs NUM) 5 )))
-         (insert (format  (concat "%0" (number-to-string $n) "x" ) (random (1- (expt 16 $n)))))))
-
-     (defun xah-insert-random-string (NUM)
-       "Insert a random alphanumerics string of length 5.
-     The possible chars are: A to Z, a to z, 0 to 9.
-     Call `universal-argument' before for different count.
-     URL `http://xahlee.info/emacs/emacs/elisp_insert_random_number_string.html'
-     Version 2018-08-03"
-       (interactive "P")
-       (let* (($charset "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
-              ($baseCount (length $charset)))
-         (dotimes (_ (if (numberp NUM) (abs NUM) 5))
-           (insert (elt $charset (random $baseCount))))))
-
-     (defun xah-insert-random-uuid ()
-       "Insert a UUID.
-     This commands calls “uuidgen” on MacOS, Linux, and calls PowelShell on Microsoft Windows.
-     URL `http://xahlee.info/emacs/emacs/elisp_generate_uuid.html'
-     Version 2020-06-04"
-       (interactive)
-       (cond
-        ((string-equal system-type "windows-nt")
-         (shell-command "pwsh.exe -Command [guid]::NewGuid().toString()" t))
-        ((string-equal system-type "darwin") ; Mac
-         (shell-command "uuidgen | tr A-Z a-z | tr -d '\n'" t))
-        ((string-equal system-type "gnu/linux")
-         (shell-command "uuidgen | tr A-Z a-z | tr -d '\n'" t))
-        (t
-         ;; code here by Christopher Wellons, 2011-11-18.
-         ;; and editted Hideki Saito further to generate all valid variants for "N" in xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx format.
-         (let ((myStr (md5 (format "%s%s%s%s%s%s%s%s%s%s"
-                                   (user-uid)
-                                   (emacs-pid)
-                                   (system-name)
-                                   (user-full-name)
-                                   (current-time)
-                                   (emacs-uptime)
-                                   (garbage-collect)
-                                   (buffer-string)
-                                   (random)
-                                   (recent-keys)))))
-           (insert (format "%s-%s-4%s-%s%s-%s"
-                           (substring myStr 0 8)
-                           (substring myStr 8 12)
-                           (substring myStr 13 16)
-                           (format "%x" (+ 8 (random 4)))
-                           (substring myStr 17 20)
-                           (substring myStr 20 32)))))))
-   #+END_SRC
-** Text Manipulation
-
-   Functions for manipulate text
-
-   #+BEGIN_SRC emacs-lisp
-     (defun copy-line-from-point-as-string (&optional prefix suffix)
-       (unless prefix (setq prefix ""))
-       (unless suffix (setq suffix ""))
-       (setq currentPoint (point))
-       (end-of-line)
-       (setq result (concat prefix (buffer-substring-no-properties currentPoint (point)) suffix))
-       (eval result)
-       )
-
-     ;; FROM http://xahlee.info/emacs/emacs/elisp_change_brackets.html
-     (defun xah-change-bracket-pairs ( @from-chars @to-chars)
-       "Change bracket pairs from one type to another.
-
-     For example, change all parenthesis () to square brackets [].
-
-     Works on selected text, or current text block.
-
-     When called in lisp program, @from-chars or @to-chars is a string of bracket pair. eg \"(paren)\",  \"[bracket]\", etc.
-     The first and last characters are used. (the middle is for convenience in ido selection.)
-     If the string contains “,2”, then the first 2 chars and last 2 chars are used, for example  \"[[bracket,2]]\".
-     If @to-chars is equal to string “none”, the brackets are deleted.
-
-     URL `http://xahlee.info/emacs/emacs/elisp_change_brackets.html'
-     Version 2020-11-01"
-       (interactive
-        (let (($bracketsList
-               '("(paren)"
-                 "{brace}"
-                 "[square]"
-                 "<greater>"
-                 "`emacs'"
-                 "`markdown`"
-                 "~tilde~"
-                 "=equal="
-                 "\"ascii quote\""
-                 "[[double square,2]]"
-                 "“curly quote”"
-                 "‘single quote’"
-                 "‹french angle›"
-                 "«french double angle»"
-                 "「corner」"
-                 "『white corner』"
-                 "【lenticular】"
-                 "〖white lenticular〗"
-                 "〈angle〉"
-                 "《double angle》"
-                 "〔tortoise〕"
-                 "〘white tortoise〙"
-                 "⦅white paren⦆"
-                 "〚white square〛"
-                 "⦃white curly⦄"
-                 "〈pointing angle〉"
-                 "⦑ANGLE WITH DOT⦒"
-                 "⧼CURVED ANGLE⧽"
-                 "⟦math square⟧"
-                 "⟨math angle⟩"
-                 "⟪math DOUBLE ANGLE⟫"
-                 "⟮math FLATTENED PARENTHESIS⟯"
-                 "⟬math WHITE TORTOISE SHELL⟭"
-                 "❛HEAVY SINGLE QUOTATION MARK ORNAMENT❜"
-                 "❝HEAVY DOUBLE TURNED COMMA QUOTATION MARK ORNAMENT❞"
-                 "❨MEDIUM LEFT PARENTHESIS ORNAMENT❩"
-                 "❪MEDIUM FLATTENED LEFT PARENTHESIS ORNAMENT❫"
-                 "❴MEDIUM LEFT CURLY ORNAMENT❵"
-                 "❬MEDIUM LEFT-POINTING ANGLE ORNAMENT❭"
-                 "❮HEAVY LEFT-POINTING ANGLE QUOTATION MARK ORNAMENT❯"
-                 "❰HEAVY LEFT-POINTING ANGLE ORNAMENT❱"
-                 "none"
-                 )))
-          (list
-           (ido-completing-read "Replace this:" $bracketsList )
-           (ido-completing-read "To:" $bracketsList ))))
-       (let ( $p1 $p2 )
-         (if (use-region-p)
-             (setq $p1 (region-beginning) $p2 (region-end))
-           (save-excursion
-             (if (re-search-backward "\n[ \t]*\n" nil "move")
-                 (progn (re-search-forward "\n[ \t]*\n")
-                        (setq $p1 (point)))
-               (setq $p1 (point)))
-             (if (re-search-forward "\n[ \t]*\n" nil "move")
-                 (progn (re-search-backward "\n[ \t]*\n")
-                        (setq $p2 (point)))
-               (setq $p2 (point)))))
-         (save-excursion
-           (save-restriction
-             (narrow-to-region $p1 $p2)
-             (let ( (case-fold-search nil)
-                    $fromLeft
-                    $fromRight
-                    $toLeft
-                    $toRight)
-               (cond
-                ((string-match ",2" @from-chars  )
-                 (progn
-                   (setq $fromLeft (substring @from-chars 0 2))
-                   (setq $fromRight (substring @from-chars -2))))
-                (t
-                 (progn
-                   (setq $fromLeft (substring @from-chars 0 1))
-                   (setq $fromRight (substring @from-chars -1)))))
-               (cond
-                ((string-match ",2" @to-chars)
-                 (progn
-                   (setq $toLeft (substring @to-chars 0 2))
-                   (setq $toRight (substring @to-chars -2))))
-                ((string-match "none" @to-chars)
-                 (progn
-                   (setq $toLeft "")
-                   (setq $toRight "")))
-                (t
-                 (progn
-                   (setq $toLeft (substring @to-chars 0 1))
-                   (setq $toRight (substring @to-chars -1)))))
-               (cond
-                ((string-match "markdown" @from-chars)
-                 (progn
-                   (goto-char (point-min))
-                   (while
-                       (re-search-forward "`\\([^`]+?\\)`" nil t)
-                     (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
-                     (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-                ((string-match "tilde" @from-chars)
-                 (progn
-                   (goto-char (point-min))
-                   (while
-                       (re-search-forward "~\\([^~]+?\\)~" nil t)
-                     (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
-                     (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-                ((string-match "ascii quote" @from-chars)
-                 (progn
-                   (goto-char (point-min))
-                   (while
-                       (re-search-forward "\"\\([^\"]+?\\)\"" nil t)
-                     (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
-                     (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-                ((string-match "equal" @from-chars)
-                 (progn
-                   (goto-char (point-min))
-                   (while
-                       (re-search-forward "=\\([^=]+?\\)=" nil t)
-                     (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
-                     (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-                (t (progn
-                     (progn
-                       (goto-char (point-min))
-                       (while (search-forward $fromLeft nil t)
-                         (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
-                         (replace-match $toLeft "FIXEDCASE" "LITERAL")))
-                     (progn
-                       (goto-char (point-min))
-                       (while (search-forward $fromRight nil t)
-                         (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
-                         (replace-match $toRight "FIXEDCASE" "LITERAL")))))))))))
-
-     (defun xah-html-decode-percent-encoded-url ()
-       "Decode percent encoded URL of current line or selection.
-
-     Example:
-      %28D%C3%BCrer%29
-     becomes
-      (Dürer)
-
-     Example:
-      %E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8
-     becomes
-      文本编辑器
-
-     URL `http://xahlee.info/emacs/emacs/emacs_url_percent_decode.html'
-     Version 2018-10-26"
-       (interactive)
-       (let ( $p1 $p2 $input-str $newStr)
-         (if (use-region-p)
-             (setq $p1 (region-beginning) $p2 (region-end))
-           (setq $p1 (line-beginning-position) $p2 (line-end-position)))
-         (setq $input-str (buffer-substring-no-properties $p1 $p2))
-         (require 'url-util)
-         (setq $newStr (url-unhex-string $input-str))
-         (if (string-equal $newStr $input-str)
-             (progn (message "no change" ))
-           (progn
-             (delete-region $p1 $p2)
-             (insert (decode-coding-string $newStr 'utf-8))))))
-
-     (defun xah-html-encode-percent-encoded-url ()
-       "Percent encode URL in current line or selection.
-
-     Example:
-         http://example.org/(Dürer)
-     becomes
-         http://example.org/(D%C3%BCrer)
-
-     Example:
-         http://example.org/文本编辑器
-     becomes
-         http://example.org/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8
-
-     URL `http://xahlee.info/emacs/emacs/emacs_url_percent_decode.html'
-     Version 2018-10-26"
-       (interactive)
-       (let ($p1 $p2 $input-str $newStr)
-         (if (use-region-p)
-             (setq $p1 (region-beginning) $p2 (region-end))
-           (setq $p1 (line-beginning-position) $p2 (line-end-position)))
-         (setq $input-str (buffer-substring-no-properties $p1 $p2))
-         (require 'url-util)
-         (setq $newStr (url-encode-url $input-str))
-         (if (string-equal $newStr $input-str)
-             (progn (message "no change" ))
-           (progn
-             (delete-region $p1 $p2)
-             (insert $newStr)))))
-
-     (defun sort-words (reverse beg end)
-           "Sort words in region alphabetically, in REVERSE if negative.
-         Prefixed with negative \\[universal-argument], sorts in reverse.
-
-         The variable `sort-fold-case' determines whether alphabetic case
-         affects the sort order.
-
-         See `sort-regexp-fields'."
-           (interactive "*P\nr")
-           (sort-regexp-fields reverse "\\w+" "\\&" beg end))
-
-     (defun xah-insert-alphabets-az (&optional *use-uppercase-p)
-       "Insert letters a to z vertically.
-     If `universal-argument' is called first, use CAPITAL letters.
-
-     URL `http://ergoemacs.org/emacs/emacs_insert-alphabets.html'
-     Version 2015-11-06"
-       (interactive "P")
-       (let ((startChar (if *use-uppercase-p 65 97 )))
-         (dotimes (-i 26)
-           (insert (format "%c\n" (+ startChar -i))))))
-
-     (defun string-to-register (value registerName)
-       "Add the input string to a specific register"
-       (interactive
-        (list
-         (read-string "Enter value:")
-         (read-char "Enter register name:")))
-       (set-register registerName value)
-       )
-   #+END_SRC
-** Window Manipulation
-
-   Functions for manipulating the windows
-
-   #+BEGIN_SRC emacs-lisp
-     (defun set-window-width (n)
-       "Set the selected window's width."
-       (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
-
-     (defun set-80-columns ()
-       "Set the selected window to 80 columns."
-       (interactive)
-       (set-window-width 80))
-   #+END_SRC
 ** Bash Commands
 *** Youtube-dl - yt-dlp
 
@@ -2069,64 +1247,52 @@ Add ~graphql-mode~
       )
   #+end_src
 
-** Dired
+** Buffers
+  Functions over buffers
+
+  #+begin_src emacs-lisp
+    (defun kill-all-buffers ()
+      (interactive)
+      (mapcar 'kill-buffer (buffer-list))
+      (delete-other-windows))
+  #+end_src
+** Cursor Movement
+
+   Collect all the functions that move the cursor somewhere
 
    #+begin_src emacs-lisp
-     (defun dired-do-command-interactive (command)
-       "Run COMMAND on marked files interactively. Any files not already open will be opened.
-          After this command has been run, any buffers it's modified will remain
-          open and unsaved."
-       (interactive "CRun on marked files M-x ")
-       (save-window-excursion
-         (mapc (lambda (filename)
-                 (find-file filename)
-                 (call-interactively command))
-               (dired-get-marked-files))))
+     (defun goto-column (column)
+       (interactive "nColumn: ")
+       (move-to-column column t))
 
-     (defun dired-do-command (command)
-       "Run COMMAND on marked files. Passing each file in input of the command, called not iteractively"
-       (interactive "CRun on marked files M-x ")
-       (save-window-excursion
-         (mapc (lambda (filename)
-                 (funcall command filename))
-               (dired-get-marked-files))))
-
-     (defun xah-dired-sort ()
-       "Sort dired dir listing in different ways.
-          Prompt for a choice.
-          URL `http://ergoemacs.org/emacs/dired_sort.html'
-          Version 2015-07-30"
-       (interactive)
-       (let (-sort-by -arg)
-         (setq -sort-by (ido-completing-read "Sort by:" '( "date" "size" "name" "dir")))
-         (cond
-          ((equal -sort-by "name") (setq -arg "-Al --si --time-style long-iso "))
-          ((equal -sort-by "date") (setq -arg "-Al --si --time-style long-iso -t"))
-          ((equal -sort-by "size") (setq -arg "-Al --si --time-style long-iso -S"))
-          ((equal -sort-by "dir") (setq -arg "-Al --si --time-style long-iso --group-directories-first"))
-          (t (error "logic error 09535" )))
-         (dired-sort-other -arg )))
+     (defun switch-to-existing-buffer-other-window (part)
+       "Switch to buffer with PART in its name."
+       (interactive
+        (list (read-buffer-to-switch "Switch to buffer in other window: ")))
+       (let ((candidates
+              (cl-remove
+               nil
+               (mapcar (lambda (buf)
+                         (let ((pos (string-match part (buffer-name buf))))
+                           (when pos
+                             (cons pos buf))))
+                       (buffer-list)))))
+         (unless candidates
+           (user-error "There is no buffers with %S in its name." part))
+         (setq candidates (cl-sort candidates #'< :key 'car))
+         (switch-to-buffer-other-window (cdr (car candidates)))))
    #+end_src
-** Magit
-
-   Functions to enhance magit capabilities
-
-   #+begin_src emacs-lisp
-     (defun parse-url (url)
-       "convert a git remote location as a HTTP URL"
-       (if (string-match "^http" url)
-           url
-         (replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git?\\)"
-                                   "https://\\2/\\3"
-                                   url)))
-     (defun magit-open-repo ()
-       "open remote repo URL"
-       (interactive)
-       (let ((url (magit-get "remote" "origin" "url")))
-         (progn
-           (browse-url (parse-url url))
-           (message "opening repo %s" url))))
-   #+end_src
+** Date
+  Use ~date~ unix command to insert date
+  #+begin_src emacs-lisp
+    (defun insert-current-date-iso-8601 ()
+      "Call the `date' unix command to insert the current date"
+      (interactive)
+      (if (command-exists-p "ffplay")
+          (insert (s-trim (shell-command-to-string "date -u +\"%Y-%m-%dT%H:%M:%SZ\"")))
+        (error "Please install ffplay (ffmpeg)"))
+      )
+  #+end_src
 ** Development
 *** Higher Order & Cross Language Functions
 
@@ -3056,6 +2222,840 @@ Add ~graphql-mode~
         (goto-definition type csharpDefinitionRegex)
         )
         #+END_SRC
+** Dired
+
+   #+begin_src emacs-lisp
+     (defun dired-do-command-interactive (command)
+       "Run COMMAND on marked files interactively. Any files not already open will be opened.
+          After this command has been run, any buffers it's modified will remain
+          open and unsaved."
+       (interactive "CRun on marked files M-x ")
+       (save-window-excursion
+         (mapc (lambda (filename)
+                 (find-file filename)
+                 (call-interactively command))
+               (dired-get-marked-files))))
+
+     (defun dired-do-command (command)
+       "Run COMMAND on marked files. Passing each file in input of the command, called not iteractively"
+       (interactive "CRun on marked files M-x ")
+       (save-window-excursion
+         (mapc (lambda (filename)
+                 (funcall command filename))
+               (dired-get-marked-files))))
+
+     (defun xah-dired-sort ()
+       "Sort dired dir listing in different ways.
+          Prompt for a choice.
+          URL `http://ergoemacs.org/emacs/dired_sort.html'
+          Version 2015-07-30"
+       (interactive)
+       (let (-sort-by -arg)
+         (setq -sort-by (ido-completing-read "Sort by:" '( "date" "size" "name" "dir")))
+         (cond
+          ((equal -sort-by "name") (setq -arg "-Al --si --time-style long-iso "))
+          ((equal -sort-by "date") (setq -arg "-Al --si --time-style long-iso -t"))
+          ((equal -sort-by "size") (setq -arg "-Al --si --time-style long-iso -S"))
+          ((equal -sort-by "dir") (setq -arg "-Al --si --time-style long-iso --group-directories-first"))
+          (t (error "logic error 09535" )))
+         (dired-sort-other -arg )))
+   #+end_src
+** Elisp
+
+  Functions used throughout the elisp code to generate other functionalities
+#+begin_src emacs-lisp
+
+  (defun command-exists-p (command)
+    "check if the given input command actually exists"
+    (setq commandExist nil)
+    (condition-case nil
+        (progn
+          (call-process command nil 0)
+          (setq commandExist t)
+          )
+      (error nil)
+      )
+    commandExist
+    )
+
+  (defun files-from-dired-current-directory ()
+    "Ask the user for a list of files from the current directory showing the files in dired"
+    (setq
+     files (if (not (null (dired-get-marked-files)))
+               (dired-get-marked-files)
+             (list (read-file-name "The initial file name: ")))
+     )
+    (message "%s" files)
+    (while (yes-or-no-p "Another file? ")
+      (progn
+        (setq files (append files (list (read-file-name "Next file name: "))))
+        )
+      )
+    files
+    )
+#+end_src
+
+** File Conversion
+
+   Collect the functions for file conversions, mainly using shell commands
+
+   #+BEGIN_SRC emacs-lisp
+     (defun convert-to-mp3 ()
+       (interactive)
+       (setq files (mapcar 'expand-file-name (apply 'files-from-dired-current-directory '())))
+       (mapcar (lambda (f) (shell-command
+                            (format "ffmpeg -i \"%s\" -vn -ar 44100 -ac 2 -b:a 192k \"%s.mp3\"" f (file-name-sans-extension f)))) files)
+       )
+
+     (defun convert-to-gif (file)
+       (interactive "f")
+       (let ((fileComplete (expand-file-name file))
+             (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+         (shell-command (format "ffmpeg -i %s -vf \"fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse\" -loop 0 %s.gif" fileComplete fileCompleteNoExtension))))
+
+   #+END_SRC
+** Filename & Path to clipboard
+
+   Functions to get the name of the file and path to clipboard
+
+   #+BEGIN_SRC emacs-lisp
+     (defun copy-file-name-to-kill-ring (filename-manipulate-func)
+       "Copy the current buffer file name to the kill-ring after the application of the input function."
+       (interactive)
+       (let ((filename (if (equal major-mode 'dired-mode)
+                           default-directory
+                         (buffer-file-name))))
+         (when filename
+           (let ((changedFilename (funcall filename-manipulate-func filename)))
+             (when changedFilename
+               (kill-new changedFilename))))))
+
+     (defun copy-file-name-and-path-to-kill-ring ()
+       "Copy the current buffer file name and path to kill-ring."
+       (interactive)
+       (copy-file-name-to-kill-ring 'identity))
+
+     (defun copy-just-file-name-to-kill-ring ()
+       "Copy just the current buffer file name to kill-ring."
+       (interactive)
+       (copy-file-name-to-kill-ring 'file-name-nondirectory))
+   #+END_SRC
+** FFMPEG
+
+   Here you can find the functions to instruct ffmpeg. Very useful when
+   you have to cut a specific video, extract audio, convert to a specific
+   format.
+
+   #+begin_src emacs-lisp
+     (defun timeToSeconds (time)
+       "get as input the time in format 00:00:00 and return the total seconds"
+       (+ (string-to-number (substring time 6))
+          (*
+           (string-to-number (substring time 3 5))
+           60
+           )
+          (*
+           (string-to-number (substring time 0 2))
+           3600
+           )
+          )
+       )
+
+     (defun semitone-coefficient (semitones)
+       "Calculate the frequency coefficient for a given number of SEMITONES.
+     The coefficient represents the ratio of the frequency to the base frequency.
+     SEMITONES should be an integer between -12 and 12."
+       (if (and (integerp semitones) (<= -12 semitones 12))
+           (let ((semitone-ratio (expt 2 (/ 1.0 12))))
+             (expt semitone-ratio semitones))
+         (error "SEMITONES must be an integer between -12 and 12")))
+
+     (defun transpose-mp3 (input-file semitones output-file)
+       "Asynchronously transpose an MP3 file by a given number of SEMITONES using ffmpeg.
+     Prompts interactively for INPUT-FILE, SEMITONES, and OUTPUT-FILE if called interactively.
+     INPUT-FILE is the path to the original MP3 file.
+     SEMITONES is the number of semitones to transpose up (positive) or down (negative).
+     OUTPUT-FILE is the path to save the transposed MP3 file."
+       (interactive
+        (list
+         (read-file-name "Input MP3 file: " nil nil t nil 'file-readable-p)
+         (read-number "Semitones to transpose (e.g., 1 for up, -1 for down): ")
+         (read-file-name "Output MP3 file: " nil nil nil)))
+       (let* ((coefficient (semitone-coefficient semitones))
+              (pitch-filter (format "rubberband=pitch=%.12f" coefficient))
+              (command (format "ffmpeg -i \"%s\" -filter:a \"%s\" -acodec libmp3lame \"%s\""
+                               (concat (expand-file-name (file-name-directory input-file)) (file-name-nondirectory input-file))
+                               pitch-filter
+                               (concat (expand-file-name (file-name-directory output-file)) (file-name-nondirectory output-file)))))
+         (message "Running: %s" command)
+         (async-shell-command command)))
+
+
+     (defun cut-media-file (origin startTime endTime newName)
+       "This function get in input:
+     - The path to a specific video
+     - The start time of the cut (00:00:00)
+     - The end time of the cut (00:00:00)
+     - The new name of the output
+     Perform a ffmpeg command to cut the input and generate the new output in the same directory
+     "
+       (interactive "FFile name to cut from:
+     sStart Time (00:00:00):
+     sEnd Time (00:00:00):
+     sNew Name: ")
+
+       (setq totalSeconds (- (timeToSeconds endTime) (timeToSeconds startTime)))
+       (setq ffmpegCommand (concat "ffmpeg -ss " startTime " -i \"" (concat (expand-file-name (file-name-directory origin)) (file-name-nondirectory origin)) "\" -t " (number-to-string totalSeconds) " -c:v copy -c:a copy \"" (concat (expand-file-name (file-name-directory origin)) newName) "\""))
+
+       (message "ffmpegCommand: %s" ffmpegCommand)
+       (async-shell-command ffmpegCommand)
+       )
+
+     (require 'seq)
+
+     (defun concatenate-media-files ()
+       "Concatenate a list of files with the same encoding in the same directory"
+       (interactive)
+       (setq
+        files (apply 'files-from-dired-current-directory '()))
+       (let* ((newFile (read-string "Insert the new file name: "))
+              (concatContent (seq-drop (seq-reduce (lambda (a b) (concat a "\nfile './" (replace-regexp-in-string "'" "\'" (file-name-nondirectory b)) "'")) files "") 1))
+              (unused (write-region concatContent nil "./concatFile.txt"))
+              (outputFile (expand-file-name (concat default-directory newFile)))
+              (ffmpegCommand (concat "ffmpeg -f concat -safe 0 -i ./concatFile.txt -c copy \"" outputFile  "\"")))
+         ;; (message "concatContent: %s - outputFile: %s - ffmpegCommand: %s" concatContent outputFile ffmpegCommand)
+         (shell-command ffmpegCommand)
+         (delete-file "./concatFile.txt")
+         )
+       )
+
+     (defun play-sound ()
+       "play the sound using ffplay"
+       (interactive)
+       (unless (command-exists-p "ffplay") (error "Please install ffplay (ffmpeg)"))
+       (setq files (funcall 'files-from-dired-current-directory))
+       (setq command
+             (mapconcat (lambda (file)
+                          (let ((fileComplete (expand-file-name file))
+                                (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+                            (format "ffplay -nodisp -autoexit \"%s\"" fileComplete fileCompleteNoExtension)))
+                        files " && ")
+             )
+       (message "play sound command %s" command)
+       (call-process-shell-command command)
+       )
+
+     (defun preview-crop-media-file (file &optional height width topX topY)
+       "Preview using ffplay the crop of a mediafile.
+        file input crop to preview@
+        height of the output rectangle. if 0 or invalid, input file height will be used
+        width of the output rectangle. if 0 or invalid, input file width will be used
+        topX cordinate of the top left corner. Default 0
+        topY cordinate of the top left corner. Default 0"
+       (interactive (list
+                     (read-file-name (format "File to preview: "))
+                     (read-string (format "Height (default \"in_h\"): "))
+                     (read-string (format "Width (default \"in_w\"): "))
+                     (read-number (format "Top Left Corner X: ") 0)
+                     (read-number (format "Top Left Corner Y: ") 0)
+                     ))
+       (unless (command-exists-p "ffplay") (error "Please install ffplay (ffmpeg)"))
+       (when (eq (string-to-number height) 0) (setq height "in_h"))
+       (when (eq (string-to-number width) 0) (setq width "in_w"))
+       (setq fileComplete (expand-file-name file))
+       ;; (fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+       (setq command (format "ffplay -i %s -vf \"crop=%s:%s:%d:%d\"" fileComplete width height topX topY))
+       (message command)
+       (call-process-shell-command command nil 0)
+       )
+
+     (defun crop-media-file (file newFile &optional height width topX topY)
+       "Preview using ffplay the crop of a mediafile.
+        file to crop
+        newFile result file cropped
+        height of the output rectangle. if 0 or invalid, input file height will be used
+        width of the output rectangle. if 0 or invalid, input file width will be used
+        topX cordinate of the top left corner. Default 0
+        topY cordinate of the top left corner. Default 0"
+       (interactive (list
+                     (read-file-name (format "File to crop: "))
+                     (read-file-name (format "New File: "))
+                     (read-string (format "Height (default \"in_h\"): "))
+                     (read-string (format "Width (default \"in_w\"): "))
+                     (read-number (format "Top Left Corner X: ") 0)
+                     (read-number (format "Top Left Corner Y: ") 0)
+                     ))
+       (unless (command-exists-p "ffmpeg") (error "Please install ffmpeg"))
+       (when (eq (string-to-number height) 0) (setq height "in_h"))
+       (when (eq (string-to-number width) 0) (setq width "in_w"))
+       (setq fileComplete (expand-file-name file))
+       ;;(fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
+       (setq command (format "ffmpeg -i %s -vf \"crop=%s:%s:%d:%d\" %s" fileComplete width height topX topY newFile))
+       (message command)
+       (call-process-shell-command command nil 0)
+       )
+   #+end_src
+** Formatting
+
+   Functions for formatting code.
+
+   #+BEGIN_SRC emacs-lisp
+     (defun apply-case-char (startcol endcol function)
+       "apply the function to the char at start position. endcol not used"
+       (move-to-column startcol t)
+       (let ((c (string (following-char))))
+         (delete-char 1)
+         (insert (funcall function c)))
+       )
+
+     (defun upcase-first-region (begin end)
+       "Uppercase the first char of each line of the selected region"
+       (interactive "r")
+       (apply-on-rectangle 'apply-case-char begin end 'upcase)
+       )
+
+     ;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
+     (defun unfill-paragraph (&optional region)
+       "Takes a multi-line paragraph and makes it into a single line of text."
+       (interactive (progn (barf-if-buffer-read-only) '(t)))
+       (let ((fill-column (point-max))
+             ;; This would override `fill-column' if it's an integer.
+             (emacs-lisp-docstring-fill-column t))
+         (fill-paragraph nil region)))
+
+     ;https://www.emacswiki.org/emacs/UnfillRegion
+     (defun unfill-region (beg end)
+       "Unfill the region, joining text paragraphs into a single
+         logical line.  This is useful, e.g., for use with
+         `visual-line-mode'."
+       (interactive "*r")
+       (let ((fill-column (point-max)))
+         (fill-region beg end)))
+
+     (defun upcase-initial-word()
+       (interactive)
+       (search-forward-regexp "[[:space:]]*")
+       (let ((bounds (bounds-of-thing-at-point 'word)))
+         (upcase-initials-region (point) (cdr bounds)))
+       (forward-word)
+       )
+
+     (defun tidy-html ()
+       "Tidies the HTML content in the buffer using `tidy'"
+       (interactive)
+       (shell-command-on-region
+        ;; beginning and end of buffer
+        (point-min)
+        (point-max)
+        ;; command and parameters
+        "tidy -indent -wrap 150 -xml -utf8 -quiet"
+        ;; output buffer
+        (current-buffer)
+        ;; replace?
+        t
+        ;; name of the error buffer
+        "*Tidy Error Buffer*"
+        ;; show error buffer?
+        t))
+   #+END_SRC
+** Indentation
+
+   unctions for alignment of text and indentation of buffer
+
+   #+BEGIN_SRC emacs-lisp
+     (defun indent-buffer-or-region ()
+       "indent whole buffer"
+       (interactive)
+       (delete-trailing-whitespace)
+       (setq regionStart (point-min)
+             regionEnd   (point-max))
+       (when (use-region-p)
+         (setq regionStart (region-beginning)
+               regionEnd   (region-end)))
+       (save-excursion (indent-region regionStart regionEnd nil))
+       (untabify regionStart regionEnd))
+
+   #+END_SRC
+
+** Magit
+
+   Functions to enhance magit capabilities
+
+   #+begin_src emacs-lisp
+     (defun parse-url (url)
+       "convert a git remote location as a HTTP URL"
+       (if (string-match "^http" url)
+           url
+         (replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git?\\)"
+                                   "https://\\2/\\3"
+                                   url)))
+     (defun magit-open-repo ()
+       "open remote repo URL"
+       (interactive)
+       (let ((url (magit-get "remote" "origin" "url")))
+         (progn
+           (browse-url (parse-url url))
+           (message "opening repo %s" url))))
+   #+end_src
+** Numbers (Integer)
+
+   Contains function to manage integers, in particular increase and decrease.
+   source: https://emacsredux.com/blog/2013/07/25/increment-and-decrement-integer-at-point/
+
+   #+begin_src emacs-lisp
+     (require 'thingatpt)
+
+     (defun thing-at-point-goto-end-of-integer ()
+       "Go to end of integer at point."
+       (let ((inhibit-changing-match-data t))
+         ;; Skip over optional sign
+         (when (looking-at "[+-]")
+           (forward-char 1))
+         ;; Skip over digits
+         (skip-chars-forward "[[:digit:]]")
+         ;; Check for at least one digit
+         (unless (looking-back "[[:digit:]]")
+           (error "No integer here"))))
+     (put 'integer 'beginning-op 'thing-at-point-goto-end-of-integer)
+
+     (defun thing-at-point-goto-beginning-of-integer ()
+       "Go to end of integer at point."
+       (let ((inhibit-changing-match-data t))
+         ;; Skip backward over digits
+         (skip-chars-backward "[[:digit:]]")
+         ;; Check for digits and optional sign
+         (unless (looking-at "[+-]?[[:digit:]]")
+           (error "No integer here"))
+         ;; Skip backward over optional sign
+         (when (looking-back "[+-]")
+           (backward-char 1))))
+     (put 'integer 'beginning-op 'thing-at-point-goto-beginning-of-integer)
+
+     (defun thing-at-point-bounds-of-integer-at-point ()
+       "Get boundaries of integer at point."
+       (save-excursion
+         (let (beg end)
+           (thing-at-point-goto-beginning-of-integer)
+           (setq beg (point))
+           (thing-at-point-goto-end-of-integer)
+           (setq end (point))
+           (cons beg end))))
+     (put 'integer 'bounds-of-thing-at-point 'thing-at-point-bounds-of-integer-at-point)
+
+     (defun thing-at-point-integer-at-point ()
+       "Get integer at point."
+       (let ((bounds (bounds-of-thing-at-point 'integer)))
+         (string-to-number (buffer-substring (car bounds) (cdr bounds)))))
+     (put 'integer 'thing-at-point 'thing-at-point-integer-at-point)
+
+     (defun increment-integer-at-point (&optional inc)
+       "Increment integer at point by one.
+
+     ith numeric prefix arg INC, increment the integer by INC amount."
+       (interactive "p")
+       (let ((inc (or inc 1))
+             (n (thing-at-point 'integer))
+             (bounds (bounds-of-thing-at-point 'integer)))
+         (delete-region (car bounds) (cdr bounds))
+         (insert (int-to-string (+ n inc)))))
+
+     (defun decrement-integer-at-point (&optional dec)
+       "Decrement integer at point by one.
+
+     ith numeric prefix arg DEC, decrement the integer by DEC amount."
+       (interactive "p")
+       (increment-integer-at-point (- (or dec 1))))
+
+   #+end_src
+** Org-calendar Cursor Show
+
+For some reason the cursor doesn't show in org-calendar.
+With this code it should
+Reference: https://emacs.stackexchange.com/questions/78420/use-keyboard-in-org-calendar
+
+#+begin_src emacs-lisp
+  (defun my-func (orig-fun &rest args)
+    (when (equal (car args) '(setq cursor-type nil))
+      (setcar args '(setq cursor-type 'box)))
+    (apply orig-fun args))
+
+  (advice-add 'org-eval-in-calendar :around #'my-func)
+#+end_src
+
+** Random
+
+   Generate random things to insert in the buffer
+
+   #+BEGIN_SRC emacs-lisp
+     (defun xah-insert-random-number (NUM)
+       "Insert NUM random digits.
+     NUM default to 5.
+     Call `universal-argument' before for different count.
+     URL `http://xahlee.info/emacs/emacs/elisp_insert_random_number_string.html'
+     Version 2017-05-24"
+       (interactive "P")
+       (let (($charset "1234567890" )
+             ($baseCount 10))
+         (dotimes (_ (if (numberp NUM) (abs NUM) 5 ))
+           (insert (elt $charset (random $baseCount))))))
+
+     (defun xah-insert-random-hex (NUM)
+       "Insert NUM random hexadecimal digits.
+     NUM default to 5.
+     Call `universal-argument' before for different count.
+     URL `http://xahlee.info/emacs/emacs/elisp_insert_random_number_string.html'
+     Version 2017-08-03"
+       (interactive "P")
+       (let (($n (if (numberp NUM) (abs NUM) 5 )))
+         (insert (format  (concat "%0" (number-to-string $n) "x" ) (random (1- (expt 16 $n)))))))
+
+     (defun xah-insert-random-string (NUM)
+       "Insert a random alphanumerics string of length 5.
+     The possible chars are: A to Z, a to z, 0 to 9.
+     Call `universal-argument' before for different count.
+     URL `http://xahlee.info/emacs/emacs/elisp_insert_random_number_string.html'
+     Version 2018-08-03"
+       (interactive "P")
+       (let* (($charset "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")
+              ($baseCount (length $charset)))
+         (dotimes (_ (if (numberp NUM) (abs NUM) 5))
+           (insert (elt $charset (random $baseCount))))))
+
+     (defun xah-insert-random-uuid ()
+       "Insert a UUID.
+     This commands calls “uuidgen” on MacOS, Linux, and calls PowelShell on Microsoft Windows.
+     URL `http://xahlee.info/emacs/emacs/elisp_generate_uuid.html'
+     Version 2020-06-04"
+       (interactive)
+       (cond
+        ((string-equal system-type "windows-nt")
+         (shell-command "pwsh.exe -Command [guid]::NewGuid().toString()" t))
+        ((string-equal system-type "darwin") ; Mac
+         (shell-command "uuidgen | tr A-Z a-z | tr -d '\n'" t))
+        ((string-equal system-type "gnu/linux")
+         (shell-command "uuidgen | tr A-Z a-z | tr -d '\n'" t))
+        (t
+         ;; code here by Christopher Wellons, 2011-11-18.
+         ;; and editted Hideki Saito further to generate all valid variants for "N" in xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx format.
+         (let ((myStr (md5 (format "%s%s%s%s%s%s%s%s%s%s"
+                                   (user-uid)
+                                   (emacs-pid)
+                                   (system-name)
+                                   (user-full-name)
+                                   (current-time)
+                                   (emacs-uptime)
+                                   (garbage-collect)
+                                   (buffer-string)
+                                   (random)
+                                   (recent-keys)))))
+           (insert (format "%s-%s-4%s-%s%s-%s"
+                           (substring myStr 0 8)
+                           (substring myStr 8 12)
+                           (substring myStr 13 16)
+                           (format "%x" (+ 8 (random 4)))
+                           (substring myStr 17 20)
+                           (substring myStr 20 32)))))))
+   #+END_SRC
+** Rectangles
+
+   Custom Functions regading rectangles
+
+   #+BEGIN_SRC emacs-lisp
+
+     (defun upcase-rectangle (b e)
+       "change chars in rectangle to uppercase"
+       (interactive "r")
+       (apply-on-rectangle 'apply-fun-rectangle-line b e 'upcase-region))
+
+     (defun downcase-rectangle (b e)
+       "change chars in rectangle to uppercase"
+       (interactive "r")
+       (apply-on-rectangle 'apply-fun-rectangle-line b e 'downcase-region))
+
+     (defun apply-fun-rectangle-line (startcol endcol function)
+       (when (= (move-to-column startcol) startcol)
+         (funcall function (point)
+                  (progn (move-to-column endcol 'coerce)
+                         (point)))))
+   #+END_SRC
+** Selection
+
+   function regarding the selection of text
+
+   #+BEGIN_SRC emacs-lisp
+
+     (defun reselect-last-region ()
+       (interactive)
+       (let ((start (mark t))
+             (end (point)))
+         (goto-char start)
+         (call-interactively' set-mark-command)
+         (goto-char end)))
+
+   #+END_SRC
+** Text Manipulation
+
+   Functions for manipulate text
+
+   #+BEGIN_SRC emacs-lisp
+     (defun copy-line-from-point-as-string (&optional prefix suffix)
+       (unless prefix (setq prefix ""))
+       (unless suffix (setq suffix ""))
+       (setq currentPoint (point))
+       (end-of-line)
+       (setq result (concat prefix (buffer-substring-no-properties currentPoint (point)) suffix))
+       (eval result)
+       )
+
+     ;; FROM http://xahlee.info/emacs/emacs/elisp_change_brackets.html
+     (defun xah-change-bracket-pairs ( @from-chars @to-chars)
+       "Change bracket pairs from one type to another.
+
+     For example, change all parenthesis () to square brackets [].
+
+     Works on selected text, or current text block.
+
+     When called in lisp program, @from-chars or @to-chars is a string of bracket pair. eg \"(paren)\",  \"[bracket]\", etc.
+     The first and last characters are used. (the middle is for convenience in ido selection.)
+     If the string contains “,2”, then the first 2 chars and last 2 chars are used, for example  \"[[bracket,2]]\".
+     If @to-chars is equal to string “none”, the brackets are deleted.
+
+     URL `http://xahlee.info/emacs/emacs/elisp_change_brackets.html'
+     Version 2020-11-01"
+       (interactive
+        (let (($bracketsList
+               '("(paren)"
+                 "{brace}"
+                 "[square]"
+                 "<greater>"
+                 "`emacs'"
+                 "`markdown`"
+                 "~tilde~"
+                 "=equal="
+                 "\"ascii quote\""
+                 "[[double square,2]]"
+                 "“curly quote”"
+                 "‘single quote’"
+                 "‹french angle›"
+                 "«french double angle»"
+                 "「corner」"
+                 "『white corner』"
+                 "【lenticular】"
+                 "〖white lenticular〗"
+                 "〈angle〉"
+                 "《double angle》"
+                 "〔tortoise〕"
+                 "〘white tortoise〙"
+                 "⦅white paren⦆"
+                 "〚white square〛"
+                 "⦃white curly⦄"
+                 "〈pointing angle〉"
+                 "⦑ANGLE WITH DOT⦒"
+                 "⧼CURVED ANGLE⧽"
+                 "⟦math square⟧"
+                 "⟨math angle⟩"
+                 "⟪math DOUBLE ANGLE⟫"
+                 "⟮math FLATTENED PARENTHESIS⟯"
+                 "⟬math WHITE TORTOISE SHELL⟭"
+                 "❛HEAVY SINGLE QUOTATION MARK ORNAMENT❜"
+                 "❝HEAVY DOUBLE TURNED COMMA QUOTATION MARK ORNAMENT❞"
+                 "❨MEDIUM LEFT PARENTHESIS ORNAMENT❩"
+                 "❪MEDIUM FLATTENED LEFT PARENTHESIS ORNAMENT❫"
+                 "❴MEDIUM LEFT CURLY ORNAMENT❵"
+                 "❬MEDIUM LEFT-POINTING ANGLE ORNAMENT❭"
+                 "❮HEAVY LEFT-POINTING ANGLE QUOTATION MARK ORNAMENT❯"
+                 "❰HEAVY LEFT-POINTING ANGLE ORNAMENT❱"
+                 "none"
+                 )))
+          (list
+           (ido-completing-read "Replace this:" $bracketsList )
+           (ido-completing-read "To:" $bracketsList ))))
+       (let ( $p1 $p2 )
+         (if (use-region-p)
+             (setq $p1 (region-beginning) $p2 (region-end))
+           (save-excursion
+             (if (re-search-backward "\n[ \t]*\n" nil "move")
+                 (progn (re-search-forward "\n[ \t]*\n")
+                        (setq $p1 (point)))
+               (setq $p1 (point)))
+             (if (re-search-forward "\n[ \t]*\n" nil "move")
+                 (progn (re-search-backward "\n[ \t]*\n")
+                        (setq $p2 (point)))
+               (setq $p2 (point)))))
+         (save-excursion
+           (save-restriction
+             (narrow-to-region $p1 $p2)
+             (let ( (case-fold-search nil)
+                    $fromLeft
+                    $fromRight
+                    $toLeft
+                    $toRight)
+               (cond
+                ((string-match ",2" @from-chars  )
+                 (progn
+                   (setq $fromLeft (substring @from-chars 0 2))
+                   (setq $fromRight (substring @from-chars -2))))
+                (t
+                 (progn
+                   (setq $fromLeft (substring @from-chars 0 1))
+                   (setq $fromRight (substring @from-chars -1)))))
+               (cond
+                ((string-match ",2" @to-chars)
+                 (progn
+                   (setq $toLeft (substring @to-chars 0 2))
+                   (setq $toRight (substring @to-chars -2))))
+                ((string-match "none" @to-chars)
+                 (progn
+                   (setq $toLeft "")
+                   (setq $toRight "")))
+                (t
+                 (progn
+                   (setq $toLeft (substring @to-chars 0 1))
+                   (setq $toRight (substring @to-chars -1)))))
+               (cond
+                ((string-match "markdown" @from-chars)
+                 (progn
+                   (goto-char (point-min))
+                   (while
+                       (re-search-forward "`\\([^`]+?\\)`" nil t)
+                     (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
+                     (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
+                ((string-match "tilde" @from-chars)
+                 (progn
+                   (goto-char (point-min))
+                   (while
+                       (re-search-forward "~\\([^~]+?\\)~" nil t)
+                     (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
+                     (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
+                ((string-match "ascii quote" @from-chars)
+                 (progn
+                   (goto-char (point-min))
+                   (while
+                       (re-search-forward "\"\\([^\"]+?\\)\"" nil t)
+                     (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
+                     (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
+                ((string-match "equal" @from-chars)
+                 (progn
+                   (goto-char (point-min))
+                   (while
+                       (re-search-forward "=\\([^=]+?\\)=" nil t)
+                     (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
+                     (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
+                (t (progn
+                     (progn
+                       (goto-char (point-min))
+                       (while (search-forward $fromLeft nil t)
+                         (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
+                         (replace-match $toLeft "FIXEDCASE" "LITERAL")))
+                     (progn
+                       (goto-char (point-min))
+                       (while (search-forward $fromRight nil t)
+                         (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
+                         (replace-match $toRight "FIXEDCASE" "LITERAL")))))))))))
+
+     (defun xah-html-decode-percent-encoded-url ()
+       "Decode percent encoded URL of current line or selection.
+
+     Example:
+      %28D%C3%BCrer%29
+     becomes
+      (Dürer)
+
+     Example:
+      %E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8
+     becomes
+      文本编辑器
+
+     URL `http://xahlee.info/emacs/emacs/emacs_url_percent_decode.html'
+     Version 2018-10-26"
+       (interactive)
+       (let ( $p1 $p2 $input-str $newStr)
+         (if (use-region-p)
+             (setq $p1 (region-beginning) $p2 (region-end))
+           (setq $p1 (line-beginning-position) $p2 (line-end-position)))
+         (setq $input-str (buffer-substring-no-properties $p1 $p2))
+         (require 'url-util)
+         (setq $newStr (url-unhex-string $input-str))
+         (if (string-equal $newStr $input-str)
+             (progn (message "no change" ))
+           (progn
+             (delete-region $p1 $p2)
+             (insert (decode-coding-string $newStr 'utf-8))))))
+
+     (defun xah-html-encode-percent-encoded-url ()
+       "Percent encode URL in current line or selection.
+
+     Example:
+         http://example.org/(Dürer)
+     becomes
+         http://example.org/(D%C3%BCrer)
+
+     Example:
+         http://example.org/文本编辑器
+     becomes
+         http://example.org/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8
+
+     URL `http://xahlee.info/emacs/emacs/emacs_url_percent_decode.html'
+     Version 2018-10-26"
+       (interactive)
+       (let ($p1 $p2 $input-str $newStr)
+         (if (use-region-p)
+             (setq $p1 (region-beginning) $p2 (region-end))
+           (setq $p1 (line-beginning-position) $p2 (line-end-position)))
+         (setq $input-str (buffer-substring-no-properties $p1 $p2))
+         (require 'url-util)
+         (setq $newStr (url-encode-url $input-str))
+         (if (string-equal $newStr $input-str)
+             (progn (message "no change" ))
+           (progn
+             (delete-region $p1 $p2)
+             (insert $newStr)))))
+
+     (defun sort-words (reverse beg end)
+           "Sort words in region alphabetically, in REVERSE if negative.
+         Prefixed with negative \\[universal-argument], sorts in reverse.
+
+         The variable `sort-fold-case' determines whether alphabetic case
+         affects the sort order.
+
+         See `sort-regexp-fields'."
+           (interactive "*P\nr")
+           (sort-regexp-fields reverse "\\w+" "\\&" beg end))
+
+     (defun xah-insert-alphabets-az (&optional *use-uppercase-p)
+       "Insert letters a to z vertically.
+     If `universal-argument' is called first, use CAPITAL letters.
+
+     URL `http://ergoemacs.org/emacs/emacs_insert-alphabets.html'
+     Version 2015-11-06"
+       (interactive "P")
+       (let ((startChar (if *use-uppercase-p 65 97 )))
+         (dotimes (-i 26)
+           (insert (format "%c\n" (+ startChar -i))))))
+
+     (defun string-to-register (value registerName)
+       "Add the input string to a specific register"
+       (interactive
+        (list
+         (read-string "Enter value:")
+         (read-char "Enter register name:")))
+       (set-register registerName value)
+       )
+   #+END_SRC
+** Window Manipulation
+
+   Functions for manipulating the windows
+
+   #+BEGIN_SRC emacs-lisp
+     (defun set-window-width (n)
+       "Set the selected window's width."
+       (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
+
+     (defun set-80-columns ()
+       "Set the selected window to 80 columns."
+       (interactive)
+       (set-window-width 80))
+   #+END_SRC
 * Keybindings
 ** COMMENT Window Sizing
 
