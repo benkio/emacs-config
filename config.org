@@ -1376,7 +1376,7 @@ Prettify org
         (right-char)
         (setq filenamePathPos (point))
         (search-forward-regexp separator)
-        (left-char)
+        (if (equal (point) (line-end-position)) nil (left-char))
         (setq fileLineOrColumn (buffer-substring filenamePathPos (point)))
         (other-window 1)
         (funcall gotoFunction (string-to-number fileLineOrColumn))
@@ -1566,12 +1566,12 @@ Prettify org
       (defun sbt-shell-clean-old-output ()
         "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
         (interactive)
-        (funcall 'shell-clean-old-output "\\(\\[info\\] Compiling\\|^sbt:.*> [^[:space:]]\\)"))
+        (funcall 'shell-clean-old-output "\\(\\[info\\] Compiling\\|^Compiling\\|^sbt:.*> [^[:space:]]\\)"))
 
       (defun scala-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
         "Search into an sbt output for the first warning/error, starting from cursor position, and move to it"
         (interactive)
-        (goto-next-warn-error 'sbt-event-file-navigation ".*\\.scala.*" ":" "\\(:\\|$\\)" '(lambda () (other-window 1) ) errorMessage backwardSearch isRegexp))
+        (goto-next-warn-error 'sbt-event-file-navigation ".*\\.\\(scala\\|sc\\).*" ":" "\\(:\\|$\\)" '(lambda () (other-window 1) ) errorMessage backwardSearch isRegexp))
 
       (defun scala-import-bounds ()
         "Return the import region bounds"
