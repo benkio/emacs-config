@@ -317,7 +317,7 @@
               ("D" "Diary" entry (file+headline "~/Dropbox/notes/Diary.org" "Diary")
                "* %t\n  %?\n")
               ("g" "Gigs" entry (file+headline "~/Dropbox/notes/TODO.org" "Gigs")
-               "* %?\n :SCHEDULED: \n %i\n")
+               "* %?\n   SCHEDULED: \n %i\n")
               ))
       (setq-default abbrev-mode t)
       (setq save-abbrevs 'silently)
@@ -3223,7 +3223,6 @@ Reference: https://emacs.stackexchange.com/questions/78420/use-keyboard-in-org-c
     #+end_src
 *** Magit
     #+begin_src emacs-lisp
-      (global-set-key (kbd "C-c g s") 'magit-status)
       (global-set-key (kbd "C-c g i") 'magit-init)
       (global-set-key (kbd "C-c g c") 'magit-clone)
       (global-set-key (kbd "C-c g o") 'magit-open-repo)

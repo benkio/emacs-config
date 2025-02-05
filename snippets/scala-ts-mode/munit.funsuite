@@ -8,8 +8,8 @@ import munit._
 
 class ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends FunSuite {
   test("hello") {
-    val obtained = 42
+    val actual = 42
     val expected = 43
-    assertEquals(obtained, expected)
+    assertEquals(actual, expected)
   }
 }
