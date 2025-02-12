@@ -1697,7 +1697,7 @@ Prettify org
                             ((string= lib "Http4s")      "https://www.javadoc.io/doc/org.http4s/http4s-docs_2.13/latest/index.html?search=")
                             ((string= lib "Monocle")     "https://javadoc.io/doc/com.github.julien-truffaut/monocle-core_3.0.0-RC3/latest/api/monocle/Monocle$.html")
                             ((string= lib "Munit")       "https://www.javadoc.io/doc/org.scalameta/munit_3/latest/index.html")
-                            ((string= lib "Natchez")     "https://www.javadoc.io/doc/org.tpolecat/natchez-core_2.13/0.0.23/index.html?search=")
+                            ((string= lib "Natchez")     "https://www.javadoc.io/doc/org.tpolecat/natchez-core_2.13/latest/index.html?search=")
                             ((string= lib "Skunk")       "https://www.javadoc.io/doc/org.tpolecat/skunk-core_3/latest/index.html")
                             ((string= lib "Feral")       "https://www.javadoc.io/static/org.typelevel/feral-docs_3/0.2.3/feral/lambda.html?search=")
                             ((string= lib "Fs2")         "https://oss.sonatype.org/service/local/repositories/releases/archive/co/fs2/fs2-core_2.12/3.0.4/fs2-core_2.12-3.0.4-javadoc.jar/!/fs2/index.html?search=")

@@ -1,0 +1,5 @@
+# Author: Benkio
+# name: LogWriter[F].error(s..)
+# key: logwe
+# --
+LogWriter.error(s"[${1:`(nth 0 (s-slice-at "[.]"(buffer-name)))`}:${2:`(line-number-at-pos)`}:${3:`(current-column)`}]] $0")
