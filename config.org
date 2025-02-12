@@ -2487,12 +2487,52 @@ Prettify org
                      (read-number (format "Top Left Corner X: ") 0)
                      (read-number (format "Top Left Corner Y: ") 0)
                      ))
-       (unless (command-exists-p "ffmpeg") (error "Please install ffmpeg"))
+       (unless (command-exists-p "ffmpeg") (error "FFMpeg not Found. Please install FFMpeg"))
        (when (eq (string-to-number height) 0) (setq height "in_h"))
        (when (eq (string-to-number width) 0) (setq width "in_w"))
        (setq fileComplete (expand-file-name file))
        ;;(fileCompleteNoExtension (file-name-sans-extension (expand-file-name file))))
        (setq command (format "ffmpeg -i %s -vf \"crop=%s:%s:%d:%d\" %s" fileComplete width height topX topY newFile))
+       (message command)
+       (call-process-shell-command command nil 0)
+       )
+
+     (defun resize-image (image width height)
+       "Resize an image using FFMpeg to fixed width and height"
+       (interactive "FStarting Image:
+     nWidth:
+     nHeight: ")
+       (unless (command-exists-p "ffmpeg") (error "FFMpeg not Found. Please install FFMpeg"))
+       (setq fileComplete (expand-file-name image))
+       ; ffmpeg -i input.jpg -vf scale=320:240 output_320x240.png
+       (setq newFileName (concat (file-name-base image) (format "_%sx%s." width height) (file-name-extension image)))
+       (setq command (format "ffmpeg -i %s -vf \"scale=%s:%s\" %s" fileComplete width height newFileName))
+       (message command)
+       (call-process-shell-command command nil 0)
+       )
+
+     (defun resize-image-width (image width)
+       "Resize an image using FFMpeg to fixed width and keeping same ratio"
+       (interactive "FStarting Image:
+     nWidth: ")
+       (unless (command-exists-p "ffmpeg") (error "FFMpeg not Found. Please install FFMpeg"))
+       (setq fileComplete (expand-file-name image))
+       ; ffmpeg -i input.jpg -vf scale=320:-1 output_320x240.png
+       (setq newFileName (concat (file-name-base image) (format "_%sw." width) (file-name-extension image)))
+       (setq command (format "ffmpeg -i %s -vf \"scale=%s:-1\" %s" fileComplete width newFileName))
+       (message command)
+       (call-process-shell-command command nil 0)
+       )
+
+     (defun resize-image-height (image height)
+       "Resize an image using FFMpeg to fixed height and keeping same ratio"
+       (interactive "FStarting Image:
+     nHeight: ")
+       (unless (command-exists-p "ffmpeg") (error "FFMpeg not Found. Please install FFMpeg"))
+       (setq fileComplete (expand-file-name image))
+       ; ffmpeg -i input.jpg -vf scale=320:-1 output_320x240.png
+       (setq newFileName (concat (file-name-base image) (format "_%sh." height) (file-name-extension image)))
+       (setq command (format "ffmpeg -i %s -vf \"scale=-1:%s\" %s" fileComplete height newFileName))
        (message command)
        (call-process-shell-command command nil 0)
        )
