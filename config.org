@@ -341,6 +341,7 @@
        3. Ignore whitespaces
     10. Bash shell path (NixOs - darwin-nix)
     11. Add more parens to the list of available
+    12. Basic ERC Config
 
     #+BEGIN_SRC emacs-lisp
       (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -388,6 +389,11 @@
         (setq-local electric-pair-text-pairs electric-pair-pairs))
 
       (add-hook 'org-mode-hook 'org-add-electric-pairs)
+
+      (setq
+       erc-track-shorten-start 8
+       erc-kill-buffer-on-part t
+       )
     #+END_SRC
 
 * Packages
