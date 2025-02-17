@@ -220,7 +220,8 @@
     7. Truncate-lines for minibuffer
     8. Truncate-lines for Calendar
     9. Upcase region warning
-    10. popup confirmation windows
+    10. Popup confirmation windows
+    11. Initial *scratch* buffer comment
 
     #+BEGIN_SRC emacs-lisp
       (setq make-backup-files nil)
@@ -247,7 +248,7 @@
       (put 'upcase-region 'disabled nil)
 
       (setq use-dialog-box nil)
-
+      (setq initial-scratch-message "")
     #+END_SRC
 
 *** Enable
@@ -393,6 +394,9 @@
       (setq
        erc-track-shorten-start 8
        erc-kill-buffer-on-part t
+       erc-kill-queries-on-quit t
+       erc-kill-server-buffer-on-quit t
+       erc-interpret-mirc-color t
        )
     #+END_SRC
 
