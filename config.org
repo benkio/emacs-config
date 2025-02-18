@@ -2629,6 +2629,25 @@ Prettify org
 
    #+END_SRC
 
+** Maestral
+
+  Functions based on `maestral` (`dropbox` alternative)
+
+  #+begin_src emacs-lisp :tangle yes
+    (defun get-drobox-link (file)
+      "Given an input file in Dropbox, this functions copy the Dropbox link related to it"
+      (interactive "FDrobox file: ")
+      (unless (command-exists-p "maestral") (error "Please install maestral"))
+      (setq
+          filePathInDropbox (file-relative-name file "~/Dropbox")
+          command (concat "maestral sharelink list \"" filePathInDropbox "\"")
+          dropboxLinks (shell-command-to-string command)
+          dropboxLink (car (s-split "\n" dropboxLinks))
+       )
+      (kill-new dropboxLink)
+      )
+  #+end_src
+
 ** Magit
 
    Functions to enhance magit capabilities
