@@ -2634,17 +2634,23 @@ Prettify org
   Functions based on `maestral` (`dropbox` alternative)
 
   #+begin_src emacs-lisp :tangle yes
-    (defun get-drobox-link (file)
+    (defun get-or-create-drobox-link (file)
       "Given an input file in Dropbox, this functions copy the Dropbox link related to it"
       (interactive "FDrobox file: ")
       (unless (command-exists-p "maestral") (error "Please install maestral"))
       (setq
-          filePathInDropbox (file-relative-name file "~/Dropbox")
-          command (concat "maestral sharelink list \"" filePathInDropbox "\"")
-          dropboxLinks (shell-command-to-string command)
-          dropboxLink (car (s-split "\n" dropboxLinks))
+       filePathInDropbox (file-relative-name file "~/Dropbox")
+       getCommand (concat "maestral sharelink list \"" filePathInDropbox "\"")
+       createCommand (concat "maestral sharelink create \"" filePathInDropbox "\"")
+       dropboxLinks (s-split "\n" (shell-command-to-string getCommand))
        )
-      (kill-new dropboxLink)
+      (if (= 3 (length dropboxLinks)) ; if we have 2 links and an empty string, the first is what we want
+          (kill-new (car dropboxLinks))
+        (progn
+          (shell-command createCommand)
+          (setq dropboxLinksCreate (s-split "\n" (shell-command-to-string getCommand)))
+          (kill-new (car dropboxLinksCreate))
+          ))
       )
   #+end_src
 
