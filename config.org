@@ -746,15 +746,13 @@ Add ~graphql-mode~
       (use-package nix-mode
         :mode "\\.nix\\'")
     #+end_src
-*** RestClient
+*** Hurl
 
-    Emacs Rest Client
+    Emacs major mode for hurl
 
     #+BEGIN_SRC emacs-lisp
-      (use-package restclient
-        :config (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
-        )
-
+      (package-vc-install "https://github.com/JasZhe/hurl-mode")
+      (use-package hurl-mode :mode "\\.hurl\\'")
     #+END_SRC
 
 *** Scala
