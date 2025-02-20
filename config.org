@@ -2625,13 +2625,38 @@ Prettify org
         ;; show error buffer?
         t))
    #+END_SRC
+** HUrl
+
+  functions related to the Hurl command
+
+#+begin_src emacs-lisp
+  (defun convert-curl-buffer-or-region-to-hurl ()
+    "Convert the whole buffer or active region with curl commands to Hurl"
+    (interactive)
+    (unless (command-exists-p "hurlfmt") (error "Please install hurl"))
+    (setq regionStart (point-min)
+          regionEnd   (point-max))
+    (when (use-region-p)
+      (setq regionStart (region-beginning)
+            regionEnd   (region-end)))
+    (save-excursion
+      (setq curlCommands (mapcar (lambda (curl) (s-replace-all '(("\\\n" ."") ("\n" . "")) curl)) (remove "" (s-split "^$" (buffer-substring regionStart regionEnd))))
+            hurlOutput (string-join (mapcar (lambda (curl) (shell-command-to-string (concat "echo \"" curl "\" | hurlfmt --in curl"))) curlCommands) "")
+            )
+      (delete-region regionStart regionEnd)
+      (goto-char regionStart)
+      (insert hurlOutput)
+      )
+    )
+#+end_src
+
 ** Indentation
 
    unctions for alignment of text and indentation of buffer
 
    #+BEGIN_SRC emacs-lisp
      (defun indent-buffer-or-region ()
-       "indent whole buffer"
+       "indent whole buffer or active region"
        (interactive)
        (delete-trailing-whitespace)
        (setq regionStart (point-min)
@@ -2759,7 +2784,8 @@ Prettify org
        (increment-integer-at-point (- (or dec 1))))
 
    #+end_src
-** Org-calendar Cursor Show
+** Org
+*** Org-calendar Cursor Show
 
 For some reason the cursor doesn't show in org-calendar.
 With this code it should
