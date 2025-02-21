@@ -1074,6 +1074,14 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
 
     #+END_SRC
 
+** Mermaid
+
+  Mode to create and deal with mermaid schemas
+
+  #+begin_src emacs-lisp
+    (use-package mermaid-ts-mode)
+  #+end_src
+
 ** Org-mode
 *** Github markdown conversion
 
