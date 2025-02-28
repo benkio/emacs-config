@@ -216,7 +216,7 @@
         "Set font based on the frame size. The page in full screen should show 50 lines"
         (interactive (list
                         (selected-frame)
-                        (read-number "Ratio (140, less bigger, more smaller):" 140)
+                        (read-number "Ratio (130, less bigger, more smaller):" 130)
                       )
                      )
         (let* ((frameWidth (frame-outer-width frame))
@@ -1083,6 +1083,8 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
     (use-package mermaid-ts-mode
       :defer t
       :init (slot/vc-install :fetcher "github" :repo "JonathanHope/mermaid-ts-mode"))
+
+    (use-package mermaid-mode) ;for it's integration with the mermaid-cli
   #+end_src
 
 ** Org-mode
