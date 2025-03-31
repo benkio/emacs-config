@@ -370,6 +370,7 @@
     10. Bash shell path (NixOs - darwin-nix)
     11. Add more parens to the list of available
     12. Basic ERC Config
+    13. `emacs-startup-hook` to run functions that has to run at the end of the initialization
 
     #+BEGIN_SRC emacs-lisp
       (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -964,59 +965,69 @@ Add ~graphql-mode~
    Add the support of the emoji, based on Xah Lee code.
 
    #+BEGIN_SRC emacs-lisp
-     ;; Emacs: Font Setup http://ergoemacs.org/emacs/emacs_list_and_set_font.html
 
-     ;; set default font
-     (set-frame-font
-      (cond
-       ((member "ProggyClean Nerd Font Mono" (font-family-list)) "ProggyClean Nerd Font Mono")
-       ((member "JetBrainsMono Nerd Font Mono" (font-family-list)) "JetBrainsMono Nerd Font Mono")
-       ((member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono")
-       ((member "Inconsolata" (font-family-list)) "Inconsolata")
-       ((member "Noto Mono" (font-family-list)) "Noto Mono")
-       ((member "Consolas" (font-family-list)) "Consolas-12")
-       ((member "Menlo" (font-family-list)) "Menlo-16"))
-      ;; (cond
-      ;;  ((string-equal system-type "windows-nt")
-      ;;   (if (member "Consolas" (font-family-list)) "Consolas-12" nil ))
-      ;;  ((string-equal system-type "darwin")
-      ;;   (if (member "Menlo" (font-family-list)) "Menlo-16" nil ))
-      ;;  ((string-equal system-type "gnu/linux")
-      ;;   (if (member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono" nil ))
-      ;;  (t nil))
-      t t)
+     (defun reload-fonts ()
+       "Set the font configuration.
+        Useful if you want to call this in case those are not properly loaded.
+        Called ad the beginning of the emacs run and when the frame is created
+       "
+       (interactive)
+       ;; Emacs: Font Setup http://ergoemacs.org/emacs/emacs_list_and_set_font.html
 
-     ;; set font for emoji
-     (set-fontset-font
-      t
-      '(#x1f300 . #x1fad0)
-      (cond
-       ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
-       ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
-       ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
-       ((member "Symbola" (font-family-list)) "Symbola")
-       ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji"))
-
-      ;; Apple Color Emoji should be before Symbola, but Richard Stallman skum disabled it.
-      ;; GNU Emacs Removes Color Emoji Support on the Mac
-      ;; http://ergoemacs.org/misc/emacs_macos_emoji.html
-      ;;
-      )
-
-     ;; set font for symbols
-     (set-fontset-font
-      t
-      'symbol
-      (cond
-       ((string-equal system-type "windows-nt")
+       ;; set default font
+       (set-frame-font
         (cond
-         ((member "Segoe UI Symbol" (font-family-list)) "Segoe UI Symbol")))
-       ((string-equal system-type "darwin")
+         ((member "ProggyClean Nerd Font Mono" (font-family-list)) "ProggyClean Nerd Font Mono")
+         ((member "JetBrainsMono Nerd Font Mono" (font-family-list)) "JetBrainsMono Nerd Font Mono")
+         ((member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono")
+         ((member "Inconsolata" (font-family-list)) "Inconsolata")
+         ((member "Noto Mono" (font-family-list)) "Noto Mono")
+         ((member "Consolas" (font-family-list)) "Consolas-12")
+         ((member "Menlo" (font-family-list)) "Menlo-16"))
+        ;; (cond
+        ;;  ((string-equal system-type "windows-nt")
+        ;;   (if (member "Consolas" (font-family-list)) "Consolas-12" nil ))
+        ;;  ((string-equal system-type "darwin")
+        ;;   (if (member "Menlo" (font-family-list)) "Menlo-16" nil ))
+        ;;  ((string-equal system-type "gnu/linux")
+        ;;   (if (member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono" nil ))
+        ;;  (t nil))
+        t t)
+
+       ;; set font for emoji
+       (set-fontset-font
+        t
+        '(#x1f300 . #x1fad0)
         (cond
-         ((member "Apple Symbols" (font-family-list)) "Apple Symbols")))
-       ((string-equal system-type "gnu/linux")
+         ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+         ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+         ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+         ((member "Symbola" (font-family-list)) "Symbola")
+         ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji"))
+
+        ;; Apple Color Emoji should be before Symbola, but Richard Stallman skum disabled it.
+        ;; GNU Emacs Removes Color Emoji Support on the Mac
+        ;; http://ergoemacs.org/misc/emacs_macos_emoji.html
+        ;;
+        )
+
+       ;; set font for symbols
+       (set-fontset-font
+        t
+        'symbol
         (cond
-         ((member "Symbola" (font-family-list)) "Symbola")))))
+         ((string-equal system-type "windows-nt")
+          (cond
+           ((member "Segoe UI Symbol" (font-family-list)) "Segoe UI Symbol")))
+         ((string-equal system-type "darwin")
+          (cond
+           ((member "Apple Symbols" (font-family-list)) "Apple Symbols")))
+         ((string-equal system-type "gnu/linux")
+          (cond
+           ((member "Symbola" (font-family-list)) "Symbola")))))
+       )
+
+     (reload-fonts)
    #+END_SRC
 
 ** IComplete + FIDO
@@ -2695,11 +2706,13 @@ Prettify org
        filePathInDropbox (file-relative-name file "~/Dropbox")
        getCommand (concat "maestral sharelink list \"" filePathInDropbox "\"")
        createCommand (concat "maestral sharelink create \"" filePathInDropbox "\"")
-       dropboxLinks (s-split "\n" (shell-command-to-string getCommand))
+       dropboxLinks (delq nil (mapcar (lambda (s) (if (s-blank? s) nil s)) (s-split "\n" (shell-command-to-string getCommand))))
        )
-      (if (= 3 (length dropboxLinks)) ; if we have 2 links and an empty string, the first is what we want
-          (kill-new (car dropboxLinks))
+      (if (> (length dropboxLinks) 1) ; if we have 2 links and an empty string, the first is what we want
+          (progn (message (format "Get Dropbox Link for %s from %d links: %s" file (length dropboxLinks) dropboxLinks))
+                 (kill-new (car dropboxLinks)))
         (progn
+          (message (format "Create Dropbox Link for %s from %d links: %s" file (length dropboxLinks) dropboxLinks))
           (shell-command createCommand)
           (setq dropboxLinksCreate (s-split "\n" (shell-command-to-string getCommand)))
           (kill-new (car dropboxLinksCreate))

@@ -1,12 +1,12 @@
 # -*- mode: snippet -*-
-# name: Weaver SimpleIOSuite
+# name: Weaver FunSuite
 # key: weaver
 # --
 package ${1:`(path-to-package (buffer-file-name))`}
 
 import weaver.*
 
-object ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends SimpleIOSuite:
+object ${2:`(nth 0 (s-slice-at "[.]"(buffer-name)))`} extends FunSuite:
 
   test("${3:`(s-chop-suffix "Spec" (nth 0 (s-slice-at "[.]"(buffer-name))))`}") {
   
