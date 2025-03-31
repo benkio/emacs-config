@@ -197,14 +197,6 @@
           (eval now) ) )
 
       (run-with-timer 0 3600 'synchronize-theme)
-
-      (add-hook 'after-make-frame-functions
-          (lambda (frame)
-            (select-frame frame)
-            (when (display-graphic-p frame)
-              (synchronize-theme)
-              (eval current-theme))))
-
     #+END_SRC
 *** Frame Font Size
 
@@ -215,10 +207,12 @@
       (defun set-font-height-on-frame-width (&optional frame ratio)
         "Set font based on the frame size. The page in full screen should show 50 lines"
         (interactive (list
-                        (selected-frame)
-                        (read-number "Ratio (130, less bigger, more smaller):" 130)
+                      (selected-frame)
+                      (read-number "Ratio (130, less bigger, more smaller):" 130)
                       )
                      )
+        (setq frame (or frame (selected-frame)))  ;; Ensure frame is not nil
+        (setq ratio (or ratio 130))  ;; Default ratio if it's not provided
         (let* ((frameWidth (frame-outer-width frame))
                ;; Perfect ratio is 1400 / 10. We need an adjustment (feedback) for the other display
                ;; Based on the distance from 1400
@@ -231,9 +225,6 @@
           (set-face-attribute 'default nil :height height)
           )
         )
-
-      (add-hook 'after-make-frame-functions 'set-font-height-on-frame-width)
-      (add-hook 'window-setup-hook 'set-font-height-on-frame-width)
     #+END_SRC
 ** Behaviours
 *** Disable
@@ -356,24 +347,28 @@
 *** Set
 
     1. Recent-f save list every 5 minutes
-    2. Emacs window fullscreen at startup
-    3. Recent-f list to higher maximum size
-    4. Always load newest byte code first
-    5. Reduce the frequency of garbage collection by making it happen on each 50MB of allocated data (the default is on every 0.76MB)
-    6. Smart Tab Behaviour
-    7. Path executable on windows (git, 7z, curl...)
-    8. Winner-undo after ediff quits, hook
-    9. Set ediff options:
+    2. Recent-f list to higher maximum size
+    3. Always load newest byte code first
+    4. Reduce the frequency of garbage collection by making it happen on each 50MB of allocated data (the default is on every 0.76MB)
+    5. Smart Tab Behaviour
+    6. Path executable on windows (git, 7z, curl...)
+    7. Winner-undo after ediff quits, hook
+    8. Set ediff options:
        1. Remove separate frame
        2. Split vertical
        3. Ignore whitespaces
-    10. Bash shell path (NixOs - darwin-nix)
-    11. Add more parens to the list of available
-    12. Basic ERC Config
-    13. `emacs-startup-hook` to run functions that has to run at the end of the initialization
+    9. Bash shell path (NixOs - darwin-nix)
+    10. Add more parens to the list of available
+    11. Basic ERC Config
+    12. `emacs-startup-hook` to run functions that has to run at the end of the initialization
+        1. Maximize Frame
+        2. Set all next frames maximized
+        3. Reload PATH variable from shell
+        4. Reload custom theme
+        5. Reload Fonts
+        6. Set Font Size on frames
 
     #+BEGIN_SRC emacs-lisp
-      (add-to-list 'default-frame-alist '(fullscreen . maximized))
       (run-at-time nil (* 5 60) 'recentf-save-list)
       (setq recentf-max-saved-items 50)
 
@@ -407,11 +402,11 @@
               (?\{ . ?\})))
 
       (defvar org-electric-pairs '(
-                             (?/ . ?/)
-                             (?_ . ?_)
-                             (?~ . ?~)
-                             (?+ . ?+)
-                             (?= . ?=)) "Electric pairs for org-mode.")
+                                   (?/ . ?/)
+                                   (?_ . ?_)
+                                   (?~ . ?~)
+                                   (?+ . ?+)
+                                   (?= . ?=)) "Electric pairs for org-mode.")
 
       (defun org-add-electric-pairs ()
         (setq-local electric-pair-pairs (append electric-pair-pairs org-electric-pairs))
@@ -426,6 +421,32 @@
        erc-kill-server-buffer-on-quit t
        erc-interpret-mirc-color t
        )
+
+      (defun benkio-emacs-init ()
+        "Setup important stuff after emacs is loaded"
+        (interactive)
+        (message "Emacs has finished initializing")
+        (set-frame-parameter nil 'fullscreen 'maximized)
+        (add-to-list 'default-frame-alist '(fullscreen . maximized))
+        (message "Frame maximized")
+        (exec-path-from-shell-initialize)
+        (message "PATH reloaded")
+        (synchronize-theme)
+        (eval current-theme)
+        (message "Theme reloaded")
+        (reload-fonts)
+        (message "Font reloaded")
+        (set-font-height-on-frame-width)
+        (message "Font size reloaded")
+        )
+
+      (add-hook 'after-init-hook #'benkio-emacs-init)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (with-selected-frame frame
+                    (benkio-emacs-init))))
+      ;; Normal startup
+      (add-hook 'emacs-startup-hook #'benkio-emacs-init)
     #+END_SRC
 
 * Packages
