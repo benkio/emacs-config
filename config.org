@@ -293,6 +293,7 @@
     20. Save abbrev silently
     21. Automatically add final newline on file save and visiting
     22. When you delete files they got into the thrash instead of permanently deleted
+    23. Overwrite on region
 
     #+BEGIN_SRC emacs-lisp
       (defalias 'yes-or-no-p 'y-or-n-p)
@@ -342,6 +343,7 @@
       (setq save-abbrevs 'silently)
       (setq require-final-newline 'visit-save)
       (setq delete-by-moving-to-trash t)
+      (delete-selection-mode t)
     #+END_SRC
 
 *** Set
