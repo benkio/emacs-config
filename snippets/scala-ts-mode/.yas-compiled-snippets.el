@@ -80,7 +80,8 @@
                         "scala-cli" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/scala-cli"
                         nil nil)
-                       ("pr" "println(s\"${1:msg}\") $0"
+                       ("pr"
+                        "println(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}:${2:`(line-number-at-pos)`}:${3:`(current-column)`}]] $0\") $0"
                         "println(s\"..\")" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/pr.string"
                         nil nil)
@@ -288,4 +289,4 @@
                         nil nil)))
 
 
-;;; Do not edit! File generated at Wed Mar 12 13:23:02 2025
+;;; Do not edit! File generated at Thu Apr 17 18:29:23 2025

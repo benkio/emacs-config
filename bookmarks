@@ -1,0 +1,11 @@
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("lookup-smithy4s"
+ (filename . "~/workspace/siriusxm/privacy-lookup-service/modules/smithy/target/scala-3.3.5/src_managed/main/smithy4s/")
+ (front-context-string . "commerce\n  drwxr")
+ (rear-context-string . "0B 17 Apr 10:28 ")
+ (position . 278)
+ (last-modified 26634 10534 980249 0))
+)
