@@ -2724,9 +2724,10 @@ Prettify org
 
   Functions based on `maestral` (`dropbox` alternative)
 
+  [[https://github.com/benkio/emacs-config/issues/1][TODO: Improve the get-or-create-dropbox-link]]
   #+begin_src emacs-lisp
     (defun get-or-create-dropbox-link (file)
-      "Given an input file in Dropbox, this functions copy the Dropbox link related to it"
+      "Given an input file in Dropbox, this functions copy the Dropbox link related to it in the clipboard"
       (interactive "FDrobox file: ")
       (unless (command-exists-p "maestral") (error "Please install maestral"))
       (setq
