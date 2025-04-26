@@ -204,11 +204,11 @@
     It could be called after the startup as well.
 
     #+BEGIN_SRC emacs-lisp
-      (defun set-font-height-on-frame-width (&optional frame ratio)
+      (defun benkio-set-font-height-on-frame-width (&optional frame ratio)
         "Set font based on the frame size. The page in full screen should show 50 lines"
         (interactive (list
                       (selected-frame)
-                      (read-number "Ratio (130, less bigger, more smaller):" 130)
+                      (read-number "Ratio (140, less bigger, more smaller):" 140)
                       )
                      )
         (setq frame (or frame (selected-frame)))  ;; Ensure frame is not nil
@@ -369,7 +369,7 @@
         4. Reload custom theme
         5. Reload Fonts
         6. Set Font Size on frames
-
+    13. `project-switch-commands` set extra options
     #+BEGIN_SRC emacs-lisp
       (run-at-time nil (* 5 60) 'recentf-save-list)
       (setq recentf-max-saved-items 50)
@@ -436,9 +436,9 @@
         (synchronize-theme)
         (eval current-theme)
         (message "Theme reloaded")
-        (reload-fonts)
+        (benkio-reload-fonts)
         (message "Font reloaded")
-        (set-font-height-on-frame-width)
+        (benkio-set-font-height-on-frame-width)
         (message "Font size reloaded")
         )
 
@@ -449,6 +449,11 @@
                     (benkio-emacs-init))))
       ;; Normal startup
       (add-hook 'emacs-startup-hook #'benkio-emacs-init)
+      (setq project-switch-commands '((project-find-file "Find file" "f")
+                                        (project-find-dir "Find dir" "d")
+                                        (rg-project "ripgrep" "g")
+                                        (magit-project-status "Magit" "m")
+                                        (project-shell "shell" "s")))
     #+END_SRC
 
 * Packages
@@ -989,7 +994,7 @@ Add ~graphql-mode~
 
    #+BEGIN_SRC emacs-lisp
 
-     (defun reload-fonts ()
+     (defun benkio-reload-fonts ()
        "Set the font configuration.
         Useful if you want to call this in case those are not properly loaded.
         Called ad the beginning of the emacs run and when the frame is created
@@ -1000,7 +1005,6 @@ Add ~graphql-mode~
        ;; set default font
        (set-frame-font
         (cond
-         ((member "ProggyClean Nerd Font Mono" (font-family-list)) "ProggyClean Nerd Font Mono")
          ((member "JetBrainsMono Nerd Font Mono" (font-family-list)) "JetBrainsMono Nerd Font Mono")
          ((member "DejaVu Sans Mono" (font-family-list)) "DejaVu Sans Mono")
          ((member "Inconsolata" (font-family-list)) "Inconsolata")
@@ -1050,7 +1054,7 @@ Add ~graphql-mode~
            ((member "Symbola" (font-family-list)) "Symbola")))))
        )
 
-     (reload-fonts)
+     (benkio-reload-fonts)
    #+END_SRC
 
 ** IComplete + FIDO
@@ -3296,16 +3300,21 @@ Reference: https://emacs.stackexchange.com/questions/78420/use-keyboard-in-org-c
    #+end_src
 ** Search
    #+begin_src emacs-lisp
-     (global-set-key (kbd "C-c s") 'rg-project)
+     (global-set-key (kbd "C-c p g") 'rg-project) ;; Override project-find-regex
+     (global-set-key (kbd "C-c r g") 'rg)
      (global-set-key (kbd "C-c o") 'occur)
      (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
-     (global-set-key (kbd "C-x f p") 'project-find-file)
      (global-set-key (kbd "C-x f f") 'find-file)
    #+end_src
 ** Indentation
    #+begin_src emacs-lisp
      (global-set-key (kbd "C-c f") 'indent-buffer-or-region)
    #+end_src
+** Project
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x p s") 'project-shell)
+  (global-set-key (kbd "C-x p m") 'magit-project-status)
+#+end_src
 ** Random
    #+begin_src emacs-lisp
      (global-set-key (kbd "C-c i u") 'xah-insert-random-uuid)
