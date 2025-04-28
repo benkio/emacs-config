@@ -3315,6 +3315,7 @@ Reference: https://emacs.stackexchange.com/questions/78420/use-keyboard-in-org-c
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x p s") 'project-shell)
   (global-set-key (kbd "C-x p m") 'magit-project-status)
+  (global-set-key (kbd "C-x p g") 'rg-project)
 #+end_src
 ** Random
    #+begin_src emacs-lisp
