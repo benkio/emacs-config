@@ -370,6 +370,7 @@
         5. Reload Fonts
         6. Set Font Size on frames
     13. `project-switch-commands` set extra options
+    14. TERM env variable to DUMB because of [[https://github.com/magit/magit/issues/4209#issuecomment-1698136735][this magit problem]]
     #+BEGIN_SRC emacs-lisp
       (run-at-time nil (* 5 60) 'recentf-save-list)
       (setq recentf-max-saved-items 50)
@@ -454,6 +455,7 @@
                                         (rg-project "ripgrep" "g")
                                         (magit-project-status "Magit" "m")
                                         (project-shell "shell" "s")))
+      (setenv "TERM" "dumb")
     #+END_SRC
 
 * Packages
