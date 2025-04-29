@@ -2726,27 +2726,36 @@ Prettify org
 
   Functions based on `maestral` (`dropbox` alternative)
 
-  [[https://github.com/benkio/emacs-config/issues/1][TODO: Improve the get-or-create-dropbox-link]]
   #+begin_src emacs-lisp
     (defun get-or-create-dropbox-link (file)
-      "Given an input file in Dropbox, this functions copy the Dropbox link related to it in the clipboard"
-      (interactive "FDrobox file: ")
+      "Given an input file in Dropbox, this functions returns the Dropbox link related to it"
       (unless (command-exists-p "maestral") (error "Please install maestral"))
       (setq
        filePathInDropbox (file-relative-name file "~/Dropbox")
        getCommand (concat "maestral sharelink list \"" filePathInDropbox "\"")
        createCommand (concat "maestral sharelink create \"" filePathInDropbox "\"")
        dropboxLinks (delq nil (mapcar (lambda (s) (if (s-blank? s) nil s)) (s-split "\n" (shell-command-to-string getCommand))))
+       dropboxLink (seq-filter (lambda (link) (s-ends-with? "dl=0" link)) dropboxLinks)
        )
-      (if (> (length dropboxLinks) 1) ; if we have 2 links and an empty string, the first is what we want
+      (if (= (length dropboxLink) 1)
           (progn (message (format "Get Dropbox Link for %s from %d links: %s" file (length dropboxLinks) dropboxLinks))
-                 (kill-new (car dropboxLinks)))
+                 (message (format "Selected link %s" (car dropboxLink)))
+                 (car dropboxLink))
         (progn
           (message (format "Create Dropbox Link for %s from %d links: %s" file (length dropboxLinks) dropboxLinks))
           (shell-command createCommand)
           (setq dropboxLinksCreate (s-split "\n" (shell-command-to-string getCommand)))
-          (kill-new (car dropboxLinksCreate))
+          (car dropboxLinksCreate)
           ))
+      )
+
+    (defun get-or-create-dropbox-links ()
+      "Given an input file lists in Dropbox, this function copy the Dropbox Links of them"
+      (interactive)
+      (setq links (seq-map (lambda (filename) (get-or-create-dropbox-link filename)) (dired-get-marked-files))
+            result (mapconcat 'identity links "\n")
+            )
+      (with-temp-buffer-window (make-temp-name "dropbox-link-copy-") nil nil (princ result))
       )
   #+end_src
 
