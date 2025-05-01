@@ -2,4 +2,4 @@
 # name: println(s"..")
 # key: pr
 # --
-println(s"[${1:`(nth 0 (s-slice-at "[.]"(buffer-name)))`}:${2:`(line-number-at-pos)`}:${3:`(current-column)`}]] $0") $0
+println(s"[${1:`(nth 0 (s-slice-at "[.]"(buffer-name)))`}] $0") $0
