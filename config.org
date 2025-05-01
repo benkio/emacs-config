@@ -2735,7 +2735,7 @@ Prettify org
        getCommand (concat "maestral sharelink list \"" filePathInDropbox "\"")
        createCommand (concat "maestral sharelink create \"" filePathInDropbox "\"")
        dropboxLinks (delq nil (mapcar (lambda (s) (if (s-blank? s) nil s)) (s-split "\n" (shell-command-to-string getCommand))))
-       dropboxLink (seq-filter (lambda (link) (s-ends-with? "dl=0" link)) dropboxLinks)
+       dropboxLink (seq-filter (lambda (link)(and (s-ends-with? "dl=0" link) (s-contains? (file-name-nondirectory file) link))) dropboxLinks)
        )
       (if (= (length dropboxLink) 1)
           (progn (message (format "Get Dropbox Link for %s from %d links: %s" file (length dropboxLinks) dropboxLinks))
