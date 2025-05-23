@@ -2,8 +2,26 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("lookup-smithy4s"
- (filename . "~/workspace/siriusxm/privacy-lookup-service/modules/smithy/target/scala-3.3.5/src_managed/main/smithy4s/")
+(("privacy-options-smithy4s"
+ (filename . "~/workspace/siriusxm/privacy-options-service/modules/smithy/target/scala-3.3.6/src_managed/main/smithy4s/")
+ (front-context-string . "com\n  drwxr-xr-x")
+ (rear-context-string . "96 May 19 12:50 ")
+ (position . 264)
+ (last-modified 26667 8182 6097 0))
+("dsr-orchestrator-service-smithy4s"
+ (filename . "~/workspace/siriusxm/dsr-orchestrator-service/modules/smithy/target/scala-3.3.6/src_managed/main/smithy4s/")
+ (front-context-string . "com\n  drwxr-xr-x")
+ (rear-context-string . "6B  1 Apr 17:06 ")
+ (position . 280)
+ (last-modified 26644 50635 532942 0))
+("removal-response-lambda-smithy4s"
+ (filename . "~/workspace/siriusxm/dsr-orchestrator-service/modules/smithy/target/scala-3.3.6/src_managed/main/smithy4s/")
+ (front-context-string . "com\n  drwxr-xr-x")
+ (rear-context-string . "6B  1 Apr 17:06 ")
+ (position . 280)
+ (last-modified 26644 48221 745911 0))
+("lookup-smithy4s"
+ (filename . "~/workspace/siriusxm/privacy-lookup-service/modules/smithy/target/scala-3.3.6/src_managed/main/smithy4s/")
  (front-context-string . "commerce\n  drwxr")
  (rear-context-string . "0B 17 Apr 10:28 ")
  (position . 278)

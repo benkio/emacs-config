@@ -797,10 +797,11 @@ Add ~graphql-mode~
     Emacs major mode for hurl
 
     #+BEGIN_SRC emacs-lisp
-      ;(package-vc-install "https://github.com/JasZhe/hurl-mode")
       (use-package hurl-mode
-        :init (slot/vc-install :fetcher "github" :repo "JasZhe/hurl-mode")
+        :vc (:url "https://github.com/JasZhe/hurl-mode"
+                  :rev :newest)
         :mode "\\.hurl\\'"
+        :config (add-to-list 'auto-mode-alist '("\\.hurl\\'" . hurl-mode))
         )
     #+END_SRC
 
@@ -1151,8 +1152,19 @@ Set up ~IComplete~ and ~fido~ for completion on the minibuffer
         (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0")
         (setq org-reveal-mathjax t))
 
-      (use-package htmlize)
     #+END_SRC
+*** Htmlize
+
+#+begin_src emacs-lisp
+  (use-package htmlize)
+
+  (add-to-list 'org-src-lang-modes '("scala" . scala-ts))
+  (add-to-list 'org-src-lang-modes '("haskell" . haskell))
+  (add-to-list 'org-src-lang-modes '("mermaid" . mermaid-ts))
+  (add-to-list 'org-src-lang-modes '("typescript" . typescript-ts))
+  (add-to-list 'org-src-lang-modes '("json" . json-ts))
+#+end_src
+
 *** To Bootstrap HTML Export
 
     #+begin_src emacs-lisp
@@ -1183,6 +1195,17 @@ Prettify org
     #+begin_src emacs-lisp
       (use-package rg)
     #+end_src
+
+*** Fd-dired
+dired-mode interface for fd
+
+#+begin_src emacs-lisp
+  (use-package fd-dired
+    :config
+    (advice-add 'find-name-dired :override #'fd-name-dired) ; Overriding with fd alternative
+    (advice-add 'find-grep-dired :override #'fd-grep-dired) ; Overriding with fd alternative
+    )
+#+end_src
 
 *** Google This
 
@@ -3315,12 +3338,10 @@ Reference: https://emacs.stackexchange.com/questions/78420/use-keyboard-in-org-c
      (global-set-key (kbd "C-c p g") 'rg-project) ;; Override project-find-regex
      (global-set-key (kbd "C-c r g") 'rg)
      (global-set-key (kbd "C-c o") 'occur)
+     (global-set-key (kbd "C-c f n") 'find-name-dired)
+     (global-set-key (kbd "C-c f g") 'find-grep-dired)
      (global-unset-key (kbd "C-x f")) ;; Disable (set-fill-colmun keybinding)
      (global-set-key (kbd "C-x f f") 'find-file)
-   #+end_src
-** Indentation
-   #+begin_src emacs-lisp
-     (global-set-key (kbd "C-c f") 'indent-buffer-or-region)
    #+end_src
 ** Project
 #+begin_src emacs-lisp
