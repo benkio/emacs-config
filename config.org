@@ -271,36 +271,34 @@
 
 *** Enable
 
-    1. y/n for yes and no
-    2. Save cursor position
-    3. Electric parentesis
-    4. Auto-revert-mode
-    5. Visual Line mode
-    6. UTF-8
-    7. Allow narrow-to-region to be used without confirmation
-    8. Recursive minibuffer change
-    9. Recent-f mode
-    10. Warn when opening files bigger than 100MB
-    11. Better Scrolling
-    12. Winner Mode: restore windows, especially for ediff sessions
-    13. Save on frame focus out: https://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
-    14. hs-minor-mode when coding
-    15. Dired hide details by default
-    16. ~term-line-mode~ on ~ansi-term~ to enable normal ~C-x~, ~M-x~ and editing
-    17. ~org-agenda~ task files
-    18. ~org-capture~ default file and template
-    19. ~abbrev-mode~ always on
-    20. Save abbrev silently
-    21. Automatically add final newline on file save and visiting
-    22. When you delete files they got into the thrash instead of permanently deleted
-    23. Overwrite on region
+     1. y/n for yes and no
+     2. Save cursor position
+     3. Electric parentesis
+     4. Auto-revert-mode
+     5. UTF-8
+     6. Allow narrow-to-region to be used without confirmation
+     7. Recursive minibuffer change
+     8. Recent-f mode
+     9. Warn when opening files bigger than 100MB
+    10. Better Scrolling
+    11. Winner Mode: restore windows, especially for ediff sessions
+    12. Save on frame focus out: https://emacsredux.com/blog/2014/03/22/a-peek-at-emacs-24-dot-4-focus-hooks/
+    13. hs-minor-mode when coding
+    14. Dired hide details by default
+    15. ~term-line-mode~ on ~ansi-term~ to enable normal ~C-x~, ~M-x~ and editing
+    16. ~org-agenda~ task files
+    17. ~org-capture~ default file and template
+    18. ~abbrev-mode~ always on
+    19. Save abbrev silently
+    20. Automatically add final newline on file save and visiting
+    21. When you delete files they got into the thrash instead of permanently deleted
+    22. Overwrite on region
 
     #+BEGIN_SRC emacs-lisp
       (defalias 'yes-or-no-p 'y-or-n-p)
       (savehist-mode 1)
       (electric-pair-mode 1)
       (global-auto-revert-mode 1)
-      (global-visual-line-mode 1)
 
       (set-language-environment "UTF-8")
       (prefer-coding-system 'utf-8)
