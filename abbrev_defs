@@ -619,6 +619,7 @@
     ("fistraised0" "✊" nil :count 0)
     ("fistright0" "🤜" nil :count 0)
     ("five0" "5️⃣" nil :count 0)
+    ("fix0" "🔧" nil :count 0)
     ("flags0" "🎏" nil :count 0)
     ("flamingo0" "🦩" nil :count 0)
     ("flashlight0" "🔦" nil :count 0)
