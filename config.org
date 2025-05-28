@@ -3182,6 +3182,30 @@ Functions for manipulate text
       (read-char "Enter register name:")))
     (set-register registerName value)
     )
+
+  ;; https://github.com/bkaestner/redacted.el/issues/8
+  (defun redacted-redact-region (beg end)
+    (interactive "r")
+    (let ((ov (make-overlay beg end))
+          (string (make-string (- end beg) ? ))
+          (index 0)
+          char)
+      (save-excursion
+        (goto-char beg)
+        (while (<= (point) (1- end))
+          (setq char (char-after))
+          (pcase (get-char-code-property char 'general-category)
+            ((or 'Cc 'Cf 'Zs 'Zl 'Zp) (aset string index char))
+            ('Ll (aset string index (make-glyph-code ?▃)))
+            (_   (aset string index (make-glyph-code ?▆))))
+          (cl-incf index)
+          (forward-char 1))
+        (overlay-put ov 'display string)
+        (overlay-put ov 'redacted t))))
+
+  (defun redacted-remove (beg end)
+    (interactive "r")
+    (remove-overlays beg end 'redacted t))
 #+end_src
 ** Window Manipulation
 
