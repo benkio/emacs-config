@@ -220,17 +220,18 @@ It could be called after the startup as well.
 ** Behaviours
 *** Disable
 
-1. Backup files
-2. Autosave and beckup files
-3. Blinking cursor
-4. Ringing Bell
-5. Using Tabs
-6. Windows keys
-7. Truncate-lines for minibuffer
-8. Truncate-lines for Calendar
-9. Upcase region warning
-10. Popup confirmation windows
-11. Initial *scratch* buffer comment
+ 1. Backup files
+ 2. Autosave and beckup files
+ 3. Blinking cursor
+ 4. Ringing Bell
+ 5. Using Tabs
+ 6. Windows keys
+ 7. Truncate-lines
+ 8. Truncate-lines for minibuffer
+ 9. Truncate-lines for Calendar
+10. Upcase region warning
+11. Popup confirmation windows
+12. Initial *scratch* buffer comment
 
 #+begin_src emacs-lisp
   (setq make-backup-files nil)
