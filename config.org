@@ -152,7 +152,7 @@ Minimalistic theme setup.
 
 
   (defun benkio-dark-theme ()
-    "Load Simple Dark Benkio Theme"
+    "Load Simple Dark Benkio Theme Solarized Inspired"
     (interactive)
     (set-foreground-color "#E5E5E5")
     (set-background-color "grey15")
@@ -164,7 +164,7 @@ Minimalistic theme setup.
     )
 
   (defun benkio-light-theme ()
-    "Load Simple Light Benkio Theme"
+    "Load Simple Light Benkio Theme Solarized Inspired"
     (interactive)
     (set-foreground-color "#657b83")
     (set-background-color "#fdf6e3")
