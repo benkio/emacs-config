@@ -154,7 +154,7 @@ Minimalistic theme setup.
   (defun benkio-dark-theme ()
     "Load Simple Dark Benkio Theme"
     (interactive)
-    (set-foreground-color "white")
+    (set-foreground-color "#E5E5E5")
     (set-background-color "grey15")
     (set-face-attribute 'region nil :background "SlateBlue4")
     (set-face-attribute 'line-number-current-line nil :background "SlateBlue4")
@@ -166,10 +166,10 @@ Minimalistic theme setup.
   (defun benkio-light-theme ()
     "Load Simple Light Benkio Theme"
     (interactive)
-    (set-foreground-color "black")
-    (set-background-color "old lace")
-    (set-face-attribute 'region nil :background "LightSkyBlue1")
-    (set-face-attribute 'line-number-current-line nil :background "LightSkyBlue1")
+    (set-foreground-color "#657b83")
+    (set-background-color "#fdf6e3")
+    (set-face-attribute 'region nil :background "#CFEDFF")
+    (set-face-attribute 'line-number-current-line nil :background "#CFEDFF")
     (set-face-attribute 'idle-highlight nil :background "plum1")
     (set-face-attribute 'mode-line nil :background "PaleGreen")
     (setq current-theme '(benkio-light-theme))
