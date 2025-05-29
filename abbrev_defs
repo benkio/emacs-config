@@ -310,6 +310,7 @@
     ("clap0" "👏" nil :count 0)
     ("clapper0" "🎬" nil :count 0)
     ("classicalbuilding0" "🏛" nil :count 0)
+    ("clean0" "🧹" nil :count 0)
     ("climbing0" "🧗" nil :count 0)
     ("climbingman0" "🧗‍♂️" nil :count 0)
     ("climbingwoman0" "🧗‍♀️" nil :count 0)
