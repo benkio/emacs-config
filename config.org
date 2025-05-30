@@ -359,6 +359,7 @@ It could be called after the startup as well.
     6. Set Font Size on frames
 13. `project-switch-commands` set extra options
 14. TERM env variable to DUMB because of [[https://github.com/magit/magit/issues/4209#issuecomment-1698136735][this magit problem]]
+15. Indent defaults for ~indent-buffer-or-region~
 #+begin_src emacs-lisp
   (run-at-time nil (* 5 60) 'recentf-save-list)
   (setq recentf-max-saved-items 50)
@@ -444,6 +445,8 @@ It could be called after the startup as well.
                                     (magit-project-status "Magit" "m")
                                     (project-shell "shell" "s")))
   (setenv "TERM" "dumb")
+  (setq-default c-basic-offset 2)
+  (setq-default tab-width 2)
 #+end_src
 * Packages
 ** Completion
