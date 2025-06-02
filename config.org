@@ -232,6 +232,7 @@ It could be called after the startup as well.
 10. Upcase region warning
 11. Popup confirmation windows
 12. Initial *scratch* buffer comment
+13. visual-line-mode
 
 #+begin_src emacs-lisp
   (setq make-backup-files nil)
@@ -250,15 +251,14 @@ It could be called after the startup as well.
     (setq w32-pass-apps-to-system nil)
     (setq w32-apps-modifier 'hyper)) ; Menu/App key
 
-  (add-hook 'minibuffer-setup-hook
-            (lambda () (setq truncate-lines nil)))
-  (add-hook 'calendar-initial-window-hook
-            (lambda () (setq truncate-lines nil)))
+  (setq-default truncate-lines nil)
+  (setq truncate-lines nil)
 
   (put 'upcase-region 'disabled nil)
 
   (setq use-dialog-box nil)
   (setq initial-scratch-message "")
+  (global-visual-line-mode -1)
 #+end_src
 *** Enable
 
@@ -628,7 +628,7 @@ Useful in languages like ML, haskell, elm, scala 3..
 #+begin_src emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 #+end_src
-*** Latex
+*** COMMENT Latex
 #+begin_src emacs-lisp
   (use-package tex
     :defer t
