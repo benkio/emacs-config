@@ -81,9 +81,14 @@
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/scala-cli"
                         nil nil)
                        ("pr"
-                        "println(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}:${2:`(line-number-at-pos)`}:${3:`(current-column)`}]] $0\") $0"
+                        "println(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}] $0\") $0"
                         "println(s\"..\")" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/pr.string"
+                        nil nil)
+                       ("prd"
+                        "println(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}] $2: \\${$2}\") $0"
+                        "println(s\"..\")" nil nil nil
+                        "/Users/benkio/.emacs.d/snippets/scala-ts-mode/pr.debug"
                         nil nil)
                        ("object"
                         "object $1 {\n  def apply($2) : $1 = $1($2)$0\n}"
@@ -101,7 +106,7 @@
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/munit.scalacheck"
                         nil nil)
                        ("mfs"
-                        "package ${1:`(path-to-package (buffer-file-name))`}\n\nimport munit._\n\nclass ${2:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`} extends FunSuite {\n  test(\"hello\") {\n    val actual = 42\n    val expected = 43\n    assertEquals(actual, expected)\n  }\n}"
+                        "package ${1:`(path-to-package (buffer-file-name))`}\n\nimport munit._\n\nclass ${2:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`} extends FunSuite {\n  test(\"${3}\") {\n    val actual = 42\n    val expected = 43\n    assertEquals(actual, expected)\n  }\n}"
                         "munit funsuite" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/munit.funsuite"
                         nil nil)
@@ -126,12 +131,12 @@
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/ls.val-new"
                         nil nil)
                        ("logwi"
-                        "LogWriter.info(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}:${2:`(line-number-at-pos)`}:${3:`(current-column)`}] $0\")"
+                        "LogWriter.info(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}] $0\")"
                         "LogWriter[F].info(s..)" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/logWI"
                         nil nil)
                        ("logwe"
-                        "LogWriter.error(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}:${2:`(line-number-at-pos)`}:${3:`(current-column)`}]] $0\")"
+                        "LogWriter.error(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}] $0\")"
                         "LogWriter[F].error(s..)" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/logWE"
                         nil nil)
@@ -289,4 +294,4 @@
                         nil nil)))
 
 
-;;; Do not edit! File generated at Thu Apr 17 18:29:23 2025
+;;; Do not edit! File generated at Sat Jun  7 19:03:32 2025

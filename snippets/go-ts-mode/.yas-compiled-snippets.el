@@ -9,8 +9,8 @@
                         "test" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/go-ts-mode/test"
                         nil nil)
-                       ("struct" "type $1 struct {\n	$0\n}"
-                        "struct" nil nil nil
+                       ("struct" "type $1 struct {\n	$0\n}" "struct"
+                        nil nil nil
                         "/Users/benkio/.emacs.d/snippets/go-ts-mode/struct"
                         nil nil)
                        ("range"
@@ -43,16 +43,15 @@
                         nil nil
                         "/Users/benkio/.emacs.d/snippets/go-ts-mode/init"
                         nil nil)
-                       ("imp" "import (\n	\"$1\"\n)" "imp" nil
-                        nil nil
+                       ("imp" "import (\n	\"$1\"\n)" "imp" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/go-ts-mode/imp"
                         nil nil)
-                       ("ifunc" "func ($1) $2 {\n	$0\n}" "ifunc"
-                        nil nil nil
+                       ("ifunc" "func ($1) $2 {\n	$0\n}" "ifunc" nil
+                        nil nil
                         "/Users/benkio/.emacs.d/snippets/go-ts-mode/ifunc"
                         nil nil)
-                       ("iferr" "if err != nil {\n	$0\n}" "iferr"
-                        nil nil nil
+                       ("iferr" "if err != nil {\n	$0\n}" "iferr" nil
+                        nil nil
                         "/Users/benkio/.emacs.d/snippets/go-ts-mode/iferr"
                         nil nil)
                        ("func"
@@ -76,4 +75,4 @@
                         nil nil)))
 
 
-;;; Do not edit! File generated at Thu Apr 17 18:29:23 2025
+;;; Do not edit! File generated at Sat Jun  7 19:03:32 2025
