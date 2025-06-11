@@ -1070,6 +1070,7 @@
     ("mouse0" "🐭" nil :count 0)
     ("mouse20" "🐁" nil :count 0)
     ("mousetrap0" "🪤" nil :count 0)
+    ("move0" "🚚" nil :count 0)
     ("moviecamera0" "🎥" nil :count 0)
     ("moyai0" "🗿" nil :count 0)
     ("mozambique0" "🇲🇿" nil :count 0)
