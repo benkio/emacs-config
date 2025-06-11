@@ -80,14 +80,14 @@
                         "scala-cli" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/scala-cli"
                         nil nil)
-                       ("pr"
+                       ("prs"
                         "println(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}] $0\") $0"
                         "println(s\"..\")" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/pr.string"
                         nil nil)
                        ("prd"
                         "println(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}] $2: \\${$2}\") $0"
-                        "println(s\"..\")" nil nil nil
+                        "println(s\"debug: x: x\")" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/pr.debug"
                         nil nil)
                        ("object"
@@ -131,12 +131,12 @@
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/ls.val-new"
                         nil nil)
                        ("logwi"
-                        "LogWriter.info(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}] $0\")"
+                        "${1:LogWriter}.info(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}] $0\")"
                         "LogWriter[F].info(s..)" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/logWI"
                         nil nil)
                        ("logwe"
-                        "LogWriter.error(s\"[${1:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}] $0\")"
+                        "${1:LogWriter}.error(s\"[${2:`(nth 0 (s-slice-at \"[.]\"(buffer-name)))`}] $0\")"
                         "LogWriter[F].error(s..)" nil nil nil
                         "/Users/benkio/.emacs.d/snippets/scala-ts-mode/logWE"
                         nil nil)
@@ -294,4 +294,4 @@
                         nil nil)))
 
 
-;;; Do not edit! File generated at Sat Jun  7 19:03:32 2025
+;;; Do not edit! File generated at Wed Jun 11 15:26:10 2025

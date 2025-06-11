@@ -1,5 +1,5 @@
 # Author: Jonas Bonèr <jonas@jonasboner.com>
 # name: println(s"..")
-# key: pr
+# key: prs
 # --
 println(s"[${1:`(nth 0 (s-slice-at "[.]"(buffer-name)))`}] $0") $0

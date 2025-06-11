@@ -1,5 +1,5 @@
 # Author: Jonas Bonèr <jonas@jonasboner.com>
-# name: println(s"..")
+# name: println(s"debug: x: x")
 # key: prd
 # --
 println(s"[${1:`(nth 0 (s-slice-at "[.]"(buffer-name)))`}] $2: \${$2}") $0
