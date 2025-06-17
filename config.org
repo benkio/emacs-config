@@ -3252,6 +3252,7 @@ Sometimes you need to see the line without breaking it
   (global-set-key (kbd "C-x C-l") 'crux-downcase-region)
   (global-set-key (kbd "C-x C-u") 'crux-upcase-region)
   (global-set-key (kbd "M-c") 'upcase-initial-word)
+  (global-set-key (kbd "C-c s l") 'sort-lines)
 #+end_src
 *** Transpose Words
 #+begin_src emacs-lisp
