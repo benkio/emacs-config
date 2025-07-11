@@ -284,6 +284,7 @@ It could be called after the startup as well.
 11. Automatically add final newline on file save and visiting
 12. When you delete files they got into the thrash instead of permanently deleted
 13. Overwrite on region
+14. org-mode config
 
 #+begin_src emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -333,6 +334,8 @@ It could be called after the startup as well.
   (setq require-final-newline 'visit-save)
   (setq delete-by-moving-to-trash t)
   (delete-selection-mode t)
+
+  (setq org-export-headline-levels 6) ;; Exporting headlines goes till h6 instead of stopping to h4 and then li
 #+end_src
 *** Set
 
@@ -543,6 +546,7 @@ between developers.
 *** Elisp
 #+begin_src emacs-lisp
   (use-package s)
+  (use-package pcsv)
 #+end_src
 *** Elm
 
