@@ -2,7 +2,13 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("privacy-options-smithy4s"
+(("dsr-orchestrator-e2e-smithy4s"
+ (filename . "~/workspace/siriusxm/dsr-orchestrator-e2e/target/scala-3.3.6/resource_managed/main/sxm-sbt/sources/")
+ (front-context-string . ".scala-build\n  d")
+ (rear-context-string . "28 Jun 25 12:15 ")
+ (position . 258)
+ (last-modified 26717 8054 561531 0))
+("privacy-options-smithy4s"
  (filename . "~/workspace/siriusxm/privacy-options-service/modules/smithy/target/scala-3.3.6/src_managed/main/smithy4s/")
  (front-context-string . "com\n  drwxr-xr-x")
  (rear-context-string . "96 May 19 12:50 ")

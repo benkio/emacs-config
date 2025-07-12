@@ -1136,11 +1136,7 @@ Slide generation from org
   (add-to-list 'org-src-lang-modes '("typescript" . typescript-ts))
   (add-to-list 'org-src-lang-modes '("json" . json-ts))
 #+end_src
-*** To Bootstrap HTML Export
 
-#+begin_src emacs-lisp
-  (use-package ox-twbs)
-#+end_src
 *** Export to Jira/Confluence
 
 #+begin_src emacs-lisp
