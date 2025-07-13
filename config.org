@@ -547,6 +547,7 @@ between developers.
 #+begin_src emacs-lisp
   (use-package s)
   (use-package pcsv)
+  (use-package dash)
 #+end_src
 *** Elm
 
