@@ -199,7 +199,7 @@ It could be called after the startup as well.
     "Set font based on the frame size. The page in full screen should show 50 lines"
     (interactive (list
                   (selected-frame)
-                  (read-number "Ratio (140, less bigger, more smaller):" 140)
+                  (read-number "Ratio (200, less bigger, more smaller):" 200)
                   )
                  )
     (setq frame (or frame (selected-frame)))  ;; Ensure frame is not nil
