@@ -350,19 +350,18 @@ It could be called after the startup as well.
    1. Remove separate frame
    2. Split vertical
    3. Ignore whitespaces
-9. Bash shell path (NixOs - darwin-nix)
-10. Add more parens to the list of available
-11. Basic ERC Config
-12. `emacs-startup-hook` to run functions that has to run at the end of the initialization
+9. Add more parens to the list of available
+10. Basic ERC Config
+11. `emacs-startup-hook` to run functions that has to run at the end of the initialization
     1. Maximize Frame
     2. Set all next frames maximized
     3. Reload PATH variable from shell
     4. Reload custom theme
     5. Reload Fonts
     6. Set Font Size on frames
-13. `project-switch-commands` set extra options
-14. TERM env variable to DUMB because of [[https://github.com/magit/magit/issues/4209#issuecomment-1698136735][this magit problem]]
-15. Indent defaults for ~indent-buffer-or-region~
+12. `project-switch-commands` set extra options
+13. TERM env variable to DUMB because of [[https://github.com/magit/magit/issues/4209#issuecomment-1698136735][this magit problem]]
+14. Indent defaults for ~indent-buffer-or-region~
 #+begin_src emacs-lisp
   (run-at-time nil (* 5 60) 'recentf-save-list)
   (setq recentf-max-saved-items 50)
@@ -387,7 +386,6 @@ It could be called after the startup as well.
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (setq ediff-split-window-function 'split-window-horizontally)
   (setq ediff-diff-options "-w")
-  (setq explicit-shell-file-name "/run/current-system/sw/bin/bash")
 
   ;; make electric-pair-mode work on more brackets
   (setq electric-pair-pairs
