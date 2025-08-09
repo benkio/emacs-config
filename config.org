@@ -14,13 +14,14 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-archives
-        '(("gnu" . "https://elpa.gnu.org/packages/")
+        '(("elpa-gnu" . "https://elpa.gnu.org/packages/")
+  	      ("elpa-nongnu" . "https://elpa.nongnu.org/nongnu/")
+          ("melpa" . "https://melpa.org/packages/")
           ("melpa-stb" . "https://stable.melpa.org/packages/")
-          ("melpa" . "https://melpa.org/packages/"))
+          )
         tls-checktrust t
         tls-program '("gnutls-cli --x509cafile %t -p %p %h")
         gnutls-verify-error t)
-
   (package-refresh-contents)
 
   (when (not package-archive-contents)
@@ -232,7 +233,8 @@ It could be called after the startup as well.
 10. Upcase region warning
 11. Popup confirmation windows
 12. Initial *scratch* buffer comment
-13. visual-line-mode
+13. ~visual-line-mode~
+14. Confirmation of elisp code execution in org / babel
 
 #+begin_src emacs-lisp
   (setq make-backup-files nil)
@@ -259,6 +261,7 @@ It could be called after the startup as well.
   (setq use-dialog-box nil)
   (setq initial-scratch-message "")
   (global-visual-line-mode -1)
+  (customize-set-variable 'org-confirm-babel-evaluate nil)
 #+end_src
 *** Enable
 
@@ -1151,6 +1154,17 @@ Prettify org
     (with-eval-after-load 'org (global-org-modern-mode))
   )
 #+end_src
+*** org-contrib: Ox-Extra
+Add the ox-extra module needed to add the :ignore: tag to org.
+Used to export the CV
+#+begin_src emacs-lisp
+  (use-package org-contrib
+    :ensure t)
+  (require 'ox-extra) ;; the package I wanted to include in my config
+  ;; and a function to activate the features of this package:
+  (ox-extras-activate '(latex-header-blocks ignore-headlines))
+#+end_src
+
 ** Search
 *** Ripgrep
 
