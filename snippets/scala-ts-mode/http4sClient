@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: http4s Ember Client GET Request
+# key: hemberc
+# --
+import org.http4s.ember.client.EmberClientBuilder
+import cats.effect.IO
+import org.http4s.*
+import cats.effect.*
+import org.http4s.syntax.all.uri
+
+object Main extends IOApp:
+
+  val exampleReq: Request[IO] = Request[IO](Method.GET, uri"http://localhost:8080/path")
+
+  def run(args: List[String]): IO[ExitCode] =
+      EmberClientBuilder
+        .default[IO]
+        .build
+        .use(client =>
+          client
+            .run(exampleReq)
+            .use(response =>
+              response.as[String]
+            )
+        ).as(ExitCode.Success)

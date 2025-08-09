@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: http4s Route
+# key: hroute
+# --
+import cats.effect.${1:IO}
+import org.http4s.HttpRoutes
+import org.http4s.dsl.io.*
+
+val ${2:serviceName}Routes: HttpRoutes[$1] = HttpRoutes.of[$1] {
+  case GET -> Root / "${3:path}" =>
+    Ok(s"${4:Response for $3}")
+}$0

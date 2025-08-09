@@ -1,0 +1,28 @@
+# -*- mode: snippet -*-
+# name: http4s Ember Server with Middleware
+# key: hembers
+# --
+import cats.effect.IO
+import com.comcast.ip4s.*
+import org.http4s.HttpRoutes
+import org.http4s.dsl.io.*
+import org.http4s.ember.server.EmberServerBuilder
+import org.http4s.server.middleware.{Logger , CORS}
+
+object Server {
+  val routes: HttpRoutes[IO] = HttpRoutes.of[IO] {
+    case GET -> Root / "path" =>
+      Ok(s"Response for path")
+  }
+
+  def run: IO[Unit] =
+    val httpApp = Logger.httpApp(true, true)(
+      CORS.policy.withAllowOriginAll(routes.orNotFound)
+    )
+    EmberServerBuilder
+      .default[IO]
+      .withHost(host"0.0.0.0")
+      .withPort(port"8080")
+      .withHttpApp(httpApp)
+      .build
+      .use(_ => IO.never)
