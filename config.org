@@ -2357,6 +2357,25 @@ Functions used throughout the elisp code to generate other functionalities
       )
     files
     )
+
+  (defun replay-command-with-delay (command times delay)
+    "Run COMMAND TIMES times, waiting DELAY seconds between each call.
+  COMMAND is any interactively callable function.
+  With prefix argument TIMES, run it that many times."
+    (interactive
+     (list (read-command "Command to replay: ")
+           (read-number "Insert number of times: " (prefix-numeric-value current-prefix-arg))
+           (read-number "Delay in seconds: " 1)))
+    (setq counter 0
+          internalTimes times
+          internalCommand command
+          fn (lambda ()
+                (setq counter (1+ counter))
+                (call-interactively internalCommand)
+                (when (>= counter internalTimes)
+                  (cancel-function-timers fn))))
+    (run-at-time 0 delay fn)
+    )
 #+end_src
 ** File Conversion
 

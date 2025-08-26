@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: Spark Session Creation
+# key: SparkSessionCreation
+# --
+SparkSession.builder
+  .master(${1:"local[4]"})
+  .appName(${2:"Spark App"})
+  .config("spark.some.config.option", "some-value")
+  .getOrCreate()
