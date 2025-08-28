@@ -204,7 +204,7 @@ It could be called after the startup as well.
                   )
                  )
     (setq frame (or frame (selected-frame)))  ;; Ensure frame is not nil
-    (setq ratio (or ratio 130))  ;; Default ratio if it's not provided
+    (setq ratio (or ratio 200))  ;; Default ratio if it's not provided
     (let* ((frameWidth (frame-outer-width frame))
            ;; Perfect ratio is 1400 / 10. We need an adjustment (feedback) for the other display
            ;; Based on the distance from 1400

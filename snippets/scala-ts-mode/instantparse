@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Instant Parse
+# key: instantparse
+# --
+Instant.parse("${1:`(insert-current-date-iso-8601)`}")
