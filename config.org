@@ -1618,7 +1618,7 @@ Functions used by following sections to implement some IDE features
                   (read-string (format "type (%s): " (thing-at-point 'word))
                                nil nil (thing-at-point 'word))
                   (completing-read "Library: "
-                                   '("all" "angular" "backbone" "cpp" "coffeescript" "crystal" "elixir" "javascript" "julia" "jquery" "knockout" "kubernetes" "less" "lodash" "love" "marionette" "markdown" "matplotlib" "modernizr" "moment" "openjdk" "nginx" "numpy" "pandas" "postgresql" "python" "rails" "ruby" "rust" "scala" "sass" "tensorflow" "typescript" "underscore.js") nil nil)
+                                   '("all" "angular" "backbone" "cpp" "coffeescript" "crystal" "elixir" "golang" "javascript" "julia" "jquery" "knockout" "kubernetes" "less" "lodash" "love" "marionette" "markdown" "matplotlib" "modernizr" "moment" "openjdk" "nginx" "numpy" "pandas" "postgresql" "python" "rails" "ruby" "rust" "scala" "sass" "tensorflow" "typescript" "underscore.js") nil nil)
                   ))
     (require 'browse-url)
     (setq libUrlPrefix (cond
@@ -1628,6 +1628,7 @@ Functions used by following sections to implement some IDE features
                         ((string= lib "coffeescript")  "https://devdocs.io/#q=cs "   )
                         ((string= lib "crystal")       "https://devdocs.io/#q=cr "   )
                         ((string= lib "elixir")        "https://devdocs.io/#q=ex "   )
+                        ((string= lib "golang")        "https://devdocs.io/#q=go "   )
                         ((string= lib "javascript")    "https://devdocs.io/#q=js "   )
                         ((string= lib "julia")         "https://devdocs.io/#q=jl "   )
                         ((string= lib "jquery")        "https://devdocs.io/#q=$ "    )
