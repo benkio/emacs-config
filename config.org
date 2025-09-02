@@ -2267,7 +2267,7 @@ Functions useful when dealing with typescript.
     "Open the typescript doc in browser searching for the input queryType. Uses the general dev-open-doc"
       (interactive (list
                     (read-string (format "type (%s): " (thing-at-point 'word)))))
-      (funcall 'dev-open-doc queryType "typescript")
+      (funcall-interactively 'dev-open-doc queryType "typescript")
     )
 #+end_src
 *** C#
