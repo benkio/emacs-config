@@ -1612,13 +1612,13 @@ Functions used by following sections to implement some IDE features
       )
     )
 
-  (defun dev-open-doc (queryType lib)
+  (defun dev-open-doc (queryType &optional lib)
     "Open the dev doc page in browser searching for the input queryType"
     (interactive (list
                   (read-string (format "type (%s): " (thing-at-point 'word))
                                nil nil (thing-at-point 'word))
                   (completing-read "Library: "
-                                   '("all" "angular" "backbone" "cpp" "coffeescript" "crystal" "elixir" "javascript" "julia" "jquery" "knockout" "kubernetes" "less" "lodash" "love" "marionette" "markdown" "matplotlib" "modernizr" "moment" "openjdk" "nginx" "numpy" "pandas" "postgresql" "python" "rails" "ruby" "rust" "sass" "tensorflow" "typescript" "underscore.js") nil nil)
+                                   '("all" "angular" "backbone" "cpp" "coffeescript" "crystal" "elixir" "javascript" "julia" "jquery" "knockout" "kubernetes" "less" "lodash" "love" "marionette" "markdown" "matplotlib" "modernizr" "moment" "openjdk" "nginx" "numpy" "pandas" "postgresql" "python" "rails" "ruby" "rust" "scala" "sass" "tensorflow" "typescript" "underscore.js") nil nil)
                   ))
     (require 'browse-url)
     (setq libUrlPrefix (cond
@@ -1650,6 +1650,7 @@ Functions used by following sections to implement some IDE features
                         ((string= lib "rails")         "https://devdocs.io/#q=ror "  )
                         ((string= lib "ruby")          "https://devdocs.io/#q=rb "   )
                         ((string= lib "rust")          "https://devdocs.io/#q=rs "   )
+                        ((string= lib "scala")         "https://devdocs.io/#q=scala " )
                         ((string= lib "sass")          "https://devdocs.io/#q=scss " )
                         ((string= lib "tensorflow")    "https://devdocs.io/#q=tf "   )
                         ((string= lib "typescript")    "https://devdocs.io/#q=ts "   )
@@ -2259,6 +2260,13 @@ Functions useful when dealing with typescript.
                   (read-string (format "type (%s): " (thing-at-point 'word))
                                nil nil (thing-at-point 'word))))
     (goto-definition type typescriptDefinitionRegex)
+    )
+
+  (defun ts-open-doc (queryType)
+    "Open the typescript doc in browser searching for the input queryType. Uses the general dev-open-doc"
+      (interactive (list
+                    (read-string (format "type (%s): " (thing-at-point 'word)))))
+      (funcall 'dev-open-doc queryType "typescript")
     )
 #+end_src
 *** C#
@@ -3480,6 +3488,7 @@ Add git-link keybidings
   (global-set-key (kbd "C-c c t p") 'ts-import-type-at-point)
   (global-set-key (kbd "C-c c t x") 'ts-extract-code-line-or-region)
   (global-set-key (kbd "C-c c t g") 'ts-goto-definition)
+  (global-set-key (kbd "C-c c t d") 'ts-open-doc)
 #+end_src
 *** CSharp
 #+begin_src emacs-lisp
