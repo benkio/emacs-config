@@ -467,6 +467,16 @@ Auto completion framework
     (setq company-dabbrev-downcase nil)
     (global-company-mode t))
 #+end_src
+*** Corfu
+
+Drop-down completions
+
+#+begin_src emacs-lisp
+  (use-package corfu
+    :ensure t
+    :hook ((prog-mode . corfu-mode)))
+#+end_src
+
 ** Development
 *** General
 **** format-all
@@ -493,24 +503,27 @@ Add treesit for tree sitter support
   (setq treesit-language-source-alist
    '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
      (c . ("https://github.com/tree-sitter/tree-sitter-c"))
+     (cmake . ("https://github.com/uyha/tree-sitter-cmake"))
      (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
      (css . ("https://github.com/tree-sitter/tree-sitter-css"))
+     (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
      (go . ("https://github.com/tree-sitter/tree-sitter-go"))
      (html . ("https://github.com/tree-sitter/tree-sitter-html"))
      (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
      (json . ("https://github.com/tree-sitter/tree-sitter-json"))
      (lua . ("https://github.com/Azganoth/tree-sitter-lua"))
+     (markdown . ("https://github.com/ikatyang/tree-sitter-markdown"))
      (make . ("https://github.com/alemuller/tree-sitter-make"))
      (mermaid . ("https://github.com/monaqa/tree-sitter-mermaid"))
      (ocaml . ("https://github.com/tree-sitter/tree-sitter-ocaml" "ocaml/src" "ocaml"))
-     (python . ("https://github.com/tree-sitter/tree-sitter-python"))
      (php . ("https://github.com/tree-sitter/tree-sitter-php"))
-     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+     (python . ("https://github.com/tree-sitter/tree-sitter-python"))
      (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby"))
      (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
      (sql . ("https://github.com/m-novikov/tree-sitter-sql"))
      (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
+     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
      (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
      (zig . ("https://github.com/GrayJack/tree-sitter-zig"))))
   (defun nf/treesit-install-all-languages ()
@@ -624,6 +637,15 @@ Useful in languages like ML, haskell, elm, scala 3..
   (use-package indent-guide
     :config (indent-guide-global-mode))
 #+end_src
+*** LSP
+
+Enable default eglot LSP Server
+
+#+begin_src emacs-lisp
+  (use-package eglot
+  :ensure t)
+#+end_src
+
 *** Json
 
 #+begin_src emacs-lisp
@@ -632,7 +654,13 @@ Useful in languages like ML, haskell, elm, scala 3..
 *** Typescript
 
 #+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.cjs\\'" . typescript-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.js\\'"  . typescript-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.mjs\\'" . typescript-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.mts\\'" . typescript-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.ts\\'"  . typescript-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-ts-mode))
 #+end_src
 *** COMMENT Latex
 #+begin_src emacs-lisp
