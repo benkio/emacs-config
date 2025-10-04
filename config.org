@@ -207,7 +207,7 @@ It could be called after the startup as well.
     (let* (
            (frameWidth (frame-outer-width frame))
            ;; Perfect ratio is (frameWidth / 10) + 25. This is what I observed (~40loc per screen)
-           (ratio (if (= 0 inputRatio) (+ 25 (/ frameWidth 10)) inputRatio))  ;; Default ratio if it's not provided
+           (ratio (if (or (inputRadio) (= 0 inputRatio)) (+ 25 (/ frameWidth 10)) inputRatio))  ;; Default ratio if it's not provided
            (zeroAdjustment (/ (- frameWidth (* ratio 10)) 2))
            (heightComputed (+ (/ frameWidth 10) zeroAdjustment))
            (height (if (< heightComputed 0) ratio heightComputed))
