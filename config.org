@@ -3406,9 +3406,9 @@ Sometimes you need to see the line without breaking it
 ** Org-mode
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c o l") #'org-store-link)
-  (global-set-key (kbd "C-c o a") #'org-agenda)
-  (global-set-key (kbd "C-c o c") #'org-capture)
+  (global-set-key (kbd "C-c r l") #'org-store-link)
+  (global-set-key (kbd "C-c r a") #'org-agenda)
+  (global-set-key (kbd "C-c r c") #'org-capture)
 #+end_src
 ** Search
 #+begin_src emacs-lisp
