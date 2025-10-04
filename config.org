@@ -3355,6 +3355,11 @@ Sometimes you need to see the line without breaking it
   (global-set-key (kbd "C-c t t") 'toggle-truncate-lines)
 #+end_src
 ** Text Manipulation
+*** Align
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c a r") 'align-regexp)
+#+end_src
+
 *** IEdit
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c ;") 'iedit-mode)
@@ -3401,9 +3406,9 @@ Sometimes you need to see the line without breaking it
 ** Org-mode
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c l") #'org-store-link)
-  (global-set-key (kbd "C-c a") #'org-agenda)
-  (global-set-key (kbd "C-S-o") #'org-capture)
+  (global-set-key (kbd "C-c o l") #'org-store-link)
+  (global-set-key (kbd "C-c o a") #'org-agenda)
+  (global-set-key (kbd "C-c o c") #'org-capture)
 #+end_src
 ** Search
 #+begin_src emacs-lisp
