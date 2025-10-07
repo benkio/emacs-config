@@ -176,7 +176,7 @@ Minimalistic theme setup.
     (setq current-theme '(benkio-light-theme))
     )
 
-  (defun synchronize-theme ()
+  (defun benkio-synchronize-theme ()
     (setq hour
           (string-to-number
            (substring (current-time-string) 11 13)))
@@ -188,7 +188,7 @@ Minimalistic theme setup.
       (setq current-theme now)
       (eval now) ) )
 
-  (run-with-timer 0 3600 'synchronize-theme)
+  (run-with-timer 0 3600 'benkio-synchronize-theme)
 #+end_src
 *** Frame Font Size
 
@@ -416,7 +416,7 @@ It could be called after the startup as well.
    )
 
   (defun benkio-emacs-init ()
-    "Setup important stuff after emacs is loaded"
+    "Setup important stuff after emacs frame Is Loaded"
     (interactive)
     (message "Emacs has finished initializing")
     (set-frame-parameter nil 'fullscreen 'maximized)
@@ -424,7 +424,7 @@ It could be called after the startup as well.
     (message "Frame maximized")
     (exec-path-from-shell-initialize)
     (message "PATH reloaded")
-    (synchronize-theme)
+    (benkio-synchronize-theme)
     (eval current-theme)
     (message "Theme reloaded")
     (benkio-reload-fonts)
@@ -433,13 +433,13 @@ It could be called after the startup as well.
     (message "Font size reloaded")
     )
 
-  (add-hook 'after-init-hook #'benkio-emacs-init)
+  ;; https://emacs.stackexchange.com/questions/24609/determine-graphical-display-on-startup-for-emacs-server-client
+  ;; Apply the init function when a new frame is created
   (add-hook 'after-make-frame-functions
             (lambda (frame)
               (with-selected-frame frame
                 (benkio-emacs-init))))
   ;; Normal startup
-  (add-hook 'emacs-startup-hook #'benkio-emacs-init)
   (setq project-switch-commands '((project-find-file "Find file" "f")
                                     (project-find-dir "Find dir" "d")
                                     (rg-project "ripgrep" "g")
