@@ -1330,7 +1330,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
     (setq
      urls (mapconcat (lambda (s) (concat "\"" s "\"")) (split-string (s-trim urls)) " ")
      directory (expand-file-name (read-directory-name "Select output directory: "))
-     aria2Command (concat "aria2c -d \"" directory "\" -Z " urls)
+     aria2Command (concat "aria2c -V --seed-ratio=0.0 --seed-time=144000 -d \"" directory "\" -Z " urls)
      )
 
     (print aria2Command)
