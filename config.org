@@ -67,7 +67,10 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
   (use-package exec-path-from-shell
     :if (memq window-system '(mac ns x))
     :config
-    (exec-path-from-shell-initialize))
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+    (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+    )
 #+end_src
 *** Local Mode Location
 
@@ -1225,6 +1228,15 @@ https://github.com/bbatsov/super-save
     :config
     (super-save-mode +1))
 #+end_src
+** Ssh-agency
+
+Makes emacs and magit aware of the system ssh-agent. Especially useful
+to avoid authentication problems and misalignment
+
+#+begin_src elisp
+  (use-package ssh-agency)
+#+end_src
+
 ** Undo-tree
 Allow to visually go back and forth between undo history
 #+begin_src emacs-lisp
