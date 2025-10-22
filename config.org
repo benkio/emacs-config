@@ -628,6 +628,18 @@ Add ~graphql-mode~
     (add-hook 'haskell-mode-hook 'custom-haskell-mode-hook)
     )
 #+end_src
+*** Hurl
+
+Emacs major mode for hurl
+
+#+begin_src emacs-lisp
+  (use-package hurl-mode
+    :vc (:url "https://github.com/JasZhe/hurl-mode"
+              :rev :newest)
+    :mode "\\.hurl\\'"
+    :config (add-to-list 'auto-mode-alist '("\\.hurl\\'" . hurl-mode))
+    )
+#+end_src
 *** Indent Guide
 
 Used to highlight different indentation levels.
@@ -636,6 +648,11 @@ Useful in languages like ML, haskell, elm, scala 3..
 #+begin_src emacs-lisp
   (use-package indent-guide
     :config (indent-guide-global-mode))
+#+end_src
+*** Json
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
 #+end_src
 *** LSP
 
@@ -646,11 +663,72 @@ Enable default eglot LSP Server
   :ensure t)
 #+end_src
 
-*** Json
+*** Markdown
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :mode (("\\.md\\'" . gfm-mode)
+           ("\\.markdown\\'" . gfm-mode))
+    :config
+    (setq markdown-fontify-code-blocks-natively t)
+    :preface
+    (defun jekyll-insert-image-url ()
+      (interactive)
+      (let* ((files (directory-files "../assets/images"))
+             (selected-file (completing-read "Select image: " files nil t)))
+        (insert (format "![%s](/assets/images/%s)" selected-file selected-file))))
+
+    (defun jekyll-insert-post-url ()
+      (interactive)
+      (let* ((files (remove "." (mapcar #'file-name-sans-extension (directory-files "."))))
+             (selected-file (completing-read "Select article: " files nil t)))
+        (insert (format "{%% post_url %s %%}" selected-file)))))
+
+  (use-package markdown-toc)
+#+end_src
+*** Nix
 
 #+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
+  (use-package nix-mode
+    :mode "\\.nix\\'")
 #+end_src
+*** PHP
+#+begin_src emacs-lisp
+    (add-to-list 'auto-mode-alist '("\\.php\\'" . php-ts-mode))
+#+end_src
+
+*** Scala
+
+Add all the needed components for scala:
+- scala mode
+- sbt mode
+
+#+begin_src emacs-lisp
+  ;; ;; Enable scala-mode and sbt-mode
+  ;; (use-package scala-mode
+  ;;   :mode "\\.s\\(cala\\|bt\\|c\\)$"
+  ;;   :config (add-hook 'scala-mode-hook 'hs-minor-mode)
+  ;;   )
+  (use-package scala-ts-mode)
+  (add-to-list 'treesit-language-source-alist '(scala "https://github.com/tree-sitter/tree-sitter-scala"))
+
+  (use-package sbt-mode
+    :commands sbt-start sbt-command
+    :config
+    ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
+    ;; allows using SPACE when in the minibuffer
+    (substitute-key-definition
+     'minibuffer-complete-word
+     'self-insert-command
+     minibuffer-local-completion-map)
+    ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
+    (setq sbt:program-options '("-Dsbt.supershell=false"))
+    )
+#+end_src
+*** Smithy
+#+begin_src emacs-lisp
+  (use-package smithy-mode)
+#+end_src
+
 *** Typescript
 
 #+begin_src emacs-lisp
@@ -783,78 +861,6 @@ Enable default eglot LSP Server
   ;; Uses xelatex, just in case I want to have fancy fonts
   (setq org-latex-pdf-process
         '("xelatex -interaction nonstopmode %f"))
-#+end_src
-*** Markdown
-#+begin_src emacs-lisp
-  (use-package markdown-mode
-    :mode (("\\.md\\'" . gfm-mode)
-           ("\\.markdown\\'" . gfm-mode))
-    :config
-    (setq markdown-fontify-code-blocks-natively t)
-    :preface
-    (defun jekyll-insert-image-url ()
-      (interactive)
-      (let* ((files (directory-files "../assets/images"))
-             (selected-file (completing-read "Select image: " files nil t)))
-        (insert (format "![%s](/assets/images/%s)" selected-file selected-file))))
-
-    (defun jekyll-insert-post-url ()
-      (interactive)
-      (let* ((files (remove "." (mapcar #'file-name-sans-extension (directory-files "."))))
-             (selected-file (completing-read "Select article: " files nil t)))
-        (insert (format "{%% post_url %s %%}" selected-file)))))
-
-  (use-package markdown-toc)
-#+end_src
-*** Nix
-
-#+begin_src emacs-lisp
-  (use-package nix-mode
-    :mode "\\.nix\\'")
-#+end_src
-*** Hurl
-
-Emacs major mode for hurl
-
-#+begin_src emacs-lisp
-  (use-package hurl-mode
-    :vc (:url "https://github.com/JasZhe/hurl-mode"
-              :rev :newest)
-    :mode "\\.hurl\\'"
-    :config (add-to-list 'auto-mode-alist '("\\.hurl\\'" . hurl-mode))
-    )
-#+end_src
-*** Scala
-
-Add all the needed components for scala:
-- scala mode
-- sbt mode
-
-#+begin_src emacs-lisp
-  ;; ;; Enable scala-mode and sbt-mode
-  ;; (use-package scala-mode
-  ;;   :mode "\\.s\\(cala\\|bt\\|c\\)$"
-  ;;   :config (add-hook 'scala-mode-hook 'hs-minor-mode)
-  ;;   )
-  (use-package scala-ts-mode)
-  (add-to-list 'treesit-language-source-alist '(scala "https://github.com/tree-sitter/tree-sitter-scala"))
-
-  (use-package sbt-mode
-    :commands sbt-start sbt-command
-    :config
-    ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
-    ;; allows using SPACE when in the minibuffer
-    (substitute-key-definition
-     'minibuffer-complete-word
-     'self-insert-command
-     minibuffer-local-completion-map)
-    ;; sbt-supershell kills sbt-mode:  https://github.com/hvesalai/emacs-sbt-mode/issues/152
-    (setq sbt:program-options '("-Dsbt.supershell=false"))
-    )
-#+end_src
-*** Smithy
-#+begin_src emacs-lisp
-  (use-package smithy-mode)
 #+end_src
 *** Web
 
