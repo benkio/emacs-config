@@ -1523,14 +1523,15 @@ Functions used by following sections to implement some IDE features
     (newline)
     )
 
-  (defun goto-definition (type typeDefinitionRegexp)
+  (defun goto-definition (type typeDefinitionRegexp files)
     "Higher order function that just apply the regexp in input to move the cursor at the definition point.
   eg. \\(.*class  type .*\\|.*trait  type .*\\|.*object  type .*\\|.*type  type .*\\) to go to a scala definition
 
      - type: the type to search for
      - typedefinitionregexp: function that builds the regexp used in the search
+     - files: the type of files to search in the project (eg. scala, hs...)
   "
-    (project-find-regexp (funcall typeDefinitionRegexp type))
+    (rg-project (funcall typeDefinitionRegexp type) files)
     )
 
   (defun build-import (inputType existingImportRegexp typeDefinitionRegexp build-import-from-existing-import-or-source importInsertionFunc)
@@ -1544,7 +1545,7 @@ Functions used by following sections to implement some IDE features
     (setq startingBuffer (buffer-name))
     (condition-case nil
         (project-find-regexp (funcall existingImportRegexp inputType))
-      (error (goto-definition inputType typeDefinitionRegexp))
+      (error (goto-definition inputType typeDefinitionRegexp "everything"))
       )
 
     ;; In linux, if 1 result is found xref is not created, and the focus
@@ -1682,7 +1683,7 @@ Functions used by following sections to implement some IDE features
 Functions used specifically for dealing with scala code.
 
 #+begin_src emacs-lisp
-  (setq scalaDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*trait " type ".*\\|.*object " type ".*\\|.*type " type ".*\\|.*enum " type ".*\\)")))
+  (setq scalaDefinitionRegex (lambda (type) (concat "\(.*class " type ".*\|.*trait " type ".*\|.*object " type ".*\|.*type " type ".*\|.*enum " type ".*\|.*def " type ".*\)")))
   (defun sbt-event-file-navigation (&optional notSplitWindow)
     "Navigate to the file that has a problem. it can navigate using a
           different window."
@@ -1827,12 +1828,12 @@ Functions used specifically for dealing with scala code.
     (funcall 'extract-code-line-or-region-template "val " " = " nil "def " "(" ")" " = {" "}" name parameters from to)
     )
 
-  (defun scala-goto-definition (type)
-    "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type"
+  (defun scala-goto-definition (typeOrFun)
+    "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type or function"
     (interactive (list
-                  (read-string (format "type (%s): " (thing-at-point 'word))
+                  (read-string (format "type or fun (%s): " (thing-at-point 'word))
                                nil nil (thing-at-point 'word))))
-    (goto-definition type scalaDefinitionRegex)
+    (goto-definition typeOrFun scalaDefinitionRegex "scala")
     )
 
   (defun scala-open-doc (queryType lib)
@@ -1908,7 +1909,7 @@ Functions useful when dealing with Haskell.
 
 #+begin_src emacs-lisp
 
-  (setq haskellDefinitionRegex (lambda (type) (concat "\\(.*data " type ".*\\|.*type " type ".*\\|.*newtype " type ".*\\|" type " ::.*\\)")))
+  (setq haskellDefinitionRegex (lambda (type) (concat "\(.*data " type ".*\|.*type " type ".*\|.*newtype " type ".*\|" type " ::.*\)")))
 
   (defun hs-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
@@ -2106,7 +2107,7 @@ Functions useful when dealing with Haskell.
     (interactive (list
                   (read-string (format "type (%s): " (thing-at-point 'word))
                                nil nil (thing-at-point 'word))))
-    (goto-definition type haskellDefinitionRegex)
+    (goto-definition type haskellDefinitionRegex "haskell")
     )
 
   (defun hs-hoogle (hoogleSearch)
@@ -2123,7 +2124,7 @@ Functions useful when dealing with Haskell.
 Functions useful when dealing with typescript.
 
 #+begin_src emacs-lisp
-  (setq typescriptDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*interface " type ".*\\|.*type " type ".*\\)")))
+  (setq typescriptDefinitionRegex (lambda (type) (concat "\(.*class " type ".*\|.*interface " type ".*\|.*type " type ".*\)")))
 
   (defun ts-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
@@ -2275,7 +2276,7 @@ Functions useful when dealing with typescript.
     (interactive (list
                   (read-string (format "type (%s): " (thing-at-point 'word))
                                nil nil (thing-at-point 'word))))
-    (goto-definition type typescriptDefinitionRegex)
+    (goto-definition type typescriptDefinitionRegex "typescript")
     )
 
   (defun ts-open-doc (queryType)
@@ -2290,7 +2291,7 @@ Functions useful when dealing with typescript.
 Functions used specifically for dealing with c# code.
 
 #+begin_src emacs-lisp
-  (setq csharpDefinitionRegex (lambda (type) (concat "\\(.*class " type ".*\\|.*interface " type ".*\\|.*enum " type ".*\\)")))
+  (setq csharpDefinitionRegex (lambda (type) (concat "\(.*class " type ".*\|.*interface " type ".*\|.*enum " type ".*\)")))
 
   (defun dotnet-event-file-navigation (&optional notSplitWindow)
     "Navigate to the file that has a problem. it can navigate using a
@@ -2382,7 +2383,7 @@ Functions used specifically for dealing with c# code.
     (interactive (list
                   (read-string (format "type (%s): " (thing-at-point 'word))
                                nil nil (thing-at-point 'word))))
-    (goto-definition type csharpDefinitionRegex)
+    (goto-definition type csharpDefinitionRegex "csharp")
     )
 #+end_src
 ** Dired
