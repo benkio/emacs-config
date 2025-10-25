@@ -867,6 +867,25 @@ Add all the needed components for scala:
 #+begin_src emacs-lisp
   (use-package lorem-ipsum)
   (use-package simple-httpd)
+  (use-package web-mode
+    :ensure t
+    :mode
+    (("\\.phtml\\'" . web-mode)
+     ("\\.php\\'" . web-mode)
+     ("\\.tpl\\'" . web-mode)
+     ("\\.[agj]sp\\'" . web-mode)
+     ("\\.as[cp]x\\'" . web-mode)
+     ("\\.erb\\'" . web-mode)
+     ("\\.mustache\\'" . web-mode)
+     ("\\.djhtml\\'" . web-mode)
+     ("\\.html?\\'" . web-mode)
+     )
+    :config
+    (setq web-mode-engines-alist
+          '(("php"    . "\\.phtml\\'")
+            ("blade"  . "\\.blade\\."))
+          )
+    )
 #+end_src
 *** Yasnippet
 
