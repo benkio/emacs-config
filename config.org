@@ -871,7 +871,7 @@ Add all the needed components for scala:
     :ensure t
     :mode
     (("\\.phtml\\'" . web-mode)
-     ("\\.php\\'" . web-mode)
+     ("\\blabe.php\\'" . web-mode)
      ("\\.tpl\\'" . web-mode)
      ("\\.[agj]sp\\'" . web-mode)
      ("\\.as[cp]x\\'" . web-mode)
