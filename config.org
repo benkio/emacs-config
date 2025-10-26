@@ -1553,31 +1553,53 @@ Functions used by following sections to implement some IDE features
     (rg-project (funcall typeDefinitionRegexp type) files)
     )
 
-  (defun build-import (inputType existingImportRegexp typeDefinitionRegexp build-import-from-existing-import-or-source importInsertionFunc)
+  (defun build-import (inputType existingImportRegexp typeDefinitionRegexp build-import-from-existing-import-or-source importInsertionFunc files)
     "Template function to import a specific type:
      - type: target type
      - existingImportRegexp: lambda that computes the regexp, used to search for exisiting type imports.
      - typeDefinitionRegexp: lambda that computes the regexp, used to search for exisiting type definition.
      - build-import-from-existing-import-or-source: computes the import to insert. Very context dependent(cursor's position)
      - importInsertionFunc: executed into the origin buffer, this decides how/where to insert the import.
+     - files: The files to search in
   "
+    (defun waitForRg ()
+      "Wait for rg to finish and the buffer to be there"
+      (pop-to-buffer "*rg*")
+      (while (not (search-forward "rg finished" nil t))
+        (progn
+          (message "rg is still runnning %s" (process-live-p "rg"))
+          (pop-to-buffer "*rg*")
+          (point-min)
+          (sleep-for 0.1)
+          ))
+      )
     (setq startingBuffer (buffer-name))
-    (condition-case nil
-        (project-find-regexp (funcall existingImportRegexp inputType))
-      (error (goto-definition inputType typeDefinitionRegexp "everything"))
-      )
+    (setq startingWindow (selected-window))
+    (setq oneWindow (one-window-p))
+    (rg-project (funcall existingImportRegexp inputType) files)
+    (waitForRg)
 
-    ;; In linux, if 1 result is found xref is not created, and the focus
-    ;; goes directly to the match
-    (when (get-buffer "*xref*")
-      (switch-to-buffer "*xref*")
-      (xref-next-line)
-      (xref-goto-xref t)
-      )
+    (when (search-forward "no matches found" nil t)
+      (progn
+        (kill-this-buffer)
+        (select-window startingWindow)
+        (when oneWindow (delete-other-windows))
+        (goto-definition inputType typeDefinitionRegexp files)
+        (waitForRg)
+        ))
+
+    (goto-char (point-min))
+    (compilation-next-error 1)
+    (compile-goto-error)
 
     (setq result (funcall build-import-from-existing-import-or-source inputType startingBuffer))
+    (kill-this-buffer) ;; File with the import or definition
+    (kill-buffer "*rg*")
+    (select-window startingWindow)
     (switch-to-buffer startingBuffer)
-    (funcall importInsertionFunc result))
+    (when oneWindow (delete-other-windows))
+    (funcall importInsertionFunc result)
+    )
 
   (defun remove-unused-import (unusedImportSearch gotoUnusedImport importBoundFunc narrowImportFix)
     "Template function that clean the unused import applying the input functions"
@@ -1817,6 +1839,7 @@ Functions used specifically for dealing with scala code.
                                 (newline)
                                 (insert result)
                                 ))
+             "scala"
              ))
 
   (defun scala-extract-code-line-or-region (name &optional parameters from to)
@@ -2095,6 +2118,7 @@ Functions useful when dealing with Haskell.
                                 (previous-line)
                                 (insert result)
                                 ))
+             "haskell""
              ))
 
   (defun hs-string-to-multiline-string (&optional $from $to)
@@ -2230,6 +2254,7 @@ Functions useful when dealing with typescript.
                                 (previous-line)
                                 (insert result)
                                 ))
+             "typescript"
              )
     )
 
@@ -2367,6 +2392,7 @@ Functions used specifically for dealing with c# code.
                                 (previous-line)
                                 (insert result)
                                 ))
+             "csharp"
              ))
 
   (defun csharp-extract-code-line-or-region (name &optional parameters from to)
