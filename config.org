@@ -2118,7 +2118,7 @@ Functions useful when dealing with Haskell.
                                 (previous-line)
                                 (insert result)
                                 ))
-             "haskell""
+             "haskell"
              ))
 
   (defun hs-string-to-multiline-string (&optional $from $to)
