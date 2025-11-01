@@ -365,6 +365,7 @@ It could be called after the startup as well.
 12. `project-switch-commands` set extra options
 13. TERM env variable to DUMB because of [[https://github.com/magit/magit/issues/4209#issuecomment-1698136735][this magit problem]]
 14. Indent defaults for ~indent-buffer-or-region~
+15. Org-mode to export html source code using classes instead of inline colors
 #+begin_src emacs-lisp
   (run-at-time nil (* 5 60) 'recentf-save-list)
   (setq recentf-max-saved-items 50)
@@ -451,6 +452,7 @@ It could be called after the startup as well.
   (setenv "TERM" "dumb")
   (setq-default c-basic-offset 2)
   (setq-default tab-width 2)
+  (setq org-html-htmlize-output-type 'css)
 #+end_src
 * Packages
 ** Completion
@@ -2469,7 +2471,7 @@ Functions used specifically for dealing with c# code.
        (t (error "logic error 09535" )))
       (dired-sort-other -arg )))
 #+end_src
-** Elisp
+** COMMENT Elisp
 
 Functions used throughout the elisp code to generate other functionalities
 #+begin_src emacs-lisp
@@ -2510,7 +2512,7 @@ Functions used throughout the elisp code to generate other functionalities
     (interactive
      (list (read-command "Command to replay: ")
            (read-number "Insert number of times: " (prefix-numeric-value current-prefix-arg))
-           (read-number "Delay in seconds: " 1)))
+           (read-number "Delay in seconds: " 0.5)))
     (setq counter 0
           internalTimes times
           internalCommand command
