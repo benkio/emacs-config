@@ -2471,7 +2471,7 @@ Functions used specifically for dealing with c# code.
        (t (error "logic error 09535" )))
       (dired-sort-other -arg )))
 #+end_src
-** COMMENT Elisp
+** Elisp
 
 Functions used throughout the elisp code to generate other functionalities
 #+begin_src emacs-lisp
