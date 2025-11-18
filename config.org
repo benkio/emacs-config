@@ -3135,17 +3135,17 @@ Functions for manipulate text
   (defun xah-change-bracket-pairs ( @from-chars @to-chars)
     "Change bracket pairs from one type to another.
 
-  For example, change all parenthesis () to square brackets [].
+    For example, change all parenthesis () to square brackets [].
 
-  Works on selected text, or current text block.
+    Works on selected text, or current text block.
 
-  When called in lisp program, @from-chars or @to-chars is a string of bracket pair. eg \"(paren)\",  \"[bracket]\", etc.
-  The first and last characters are used. (the middle is for convenience in ido selection.)
-  If the string contains “,2”, then the first 2 chars and last 2 chars are used, for example  \"[[bracket,2]]\".
-  If @to-chars is equal to string “none”, the brackets are deleted.
+    When called in lisp program, @from-chars or @to-chars is a string of bracket pair. eg \"(paren)\",  \"[bracket]\", etc.
+    The first and last characters are used. (the middle is for convenience in ido selection.)
+    If the string contains “,2”, then the first 2 chars and last 2 chars are used, for example  \"[[bracket,2]]\".
+    If @to-chars is equal to string “none”, the brackets are deleted.
 
-  URL `http://xahlee.info/emacs/emacs/elisp_change_brackets.html'
-  Version 2020-11-01"
+    URL `http://xahlee.info/emacs/emacs/elisp_change_brackets.html'
+    Version 2020-11-01"
     (interactive
      (let (($bracketsList
             '("(paren)"
@@ -3277,7 +3277,7 @@ Functions for manipulate text
                       (overlay-put (make-overlay (match-beginning 0) (match-end 0)) 'face 'highlight)
                       (replace-match $toRight "FIXEDCASE" "LITERAL")))))))))))
 
-  (defun xah-html-decode-percent-encoded-url ()
+  (defun xah-html-percent-decode-url (&optional Begin End)
     "Decode percent encoded URL of current line or selection.
 
   Example:
@@ -3291,67 +3291,75 @@ Functions for manipulate text
    文本编辑器
 
   URL `http://xahlee.info/emacs/emacs/emacs_url_percent_decode.html'
-  Version 2018-10-26"
+  Created: 2022-04-08
+  Version: 2023-09-24"
     (interactive)
-    (let ( $p1 $p2 $input-str $newStr)
-      (if (use-region-p)
-          (setq $p1 (region-beginning) $p2 (region-end))
-        (setq $p1 (line-beginning-position) $p2 (line-end-position)))
-      (setq $input-str (buffer-substring-no-properties $p1 $p2))
+    (let (xbeg xend xinput xnewStr)
+      (if (and Begin End)
+          (setq xbeg Begin xend End)
+        (if (region-active-p)
+            (setq xbeg (region-beginning) xend (region-end))
+          (setq xbeg (line-beginning-position) xend (line-end-position))))
+      (setq xinput (buffer-substring-no-properties xbeg xend))
       (require 'url-util)
-      (setq $newStr (url-unhex-string $input-str))
-      (if (string-equal $newStr $input-str)
-          (progn (message "no change" ))
+      (setq xnewStr (url-unhex-string xinput))
+      (if (string-equal xnewStr xinput)
+          (message "percent-decode no change")
         (progn
-          (delete-region $p1 $p2)
-          (insert (decode-coding-string $newStr 'utf-8))))))
+          (delete-region xbeg xend)
+          (insert (decode-coding-string xnewStr 'utf-8))))))
 
-  (defun xah-html-encode-percent-encoded-url ()
+  (defun xah-html-percent-encode-url (&optional Begin End)
     "Percent encode URL in current line or selection.
 
   Example:
-      http://example.org/(Dürer)
+   http://example.org/(Dürer)
   becomes
-      http://example.org/(D%C3%BCrer)
+   http://example.org/(D%C3%BCrer)
 
   Example:
-      http://example.org/文本编辑器
+   http://example.org/文本编辑器
   becomes
-      http://example.org/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8
+   http://example.org/%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8
 
   URL `http://xahlee.info/emacs/emacs/emacs_url_percent_decode.html'
-  Version 2018-10-26"
+  Created: 2022-04-08
+  Version: 2023-09-24"
     (interactive)
-    (let ($p1 $p2 $input-str $newStr)
-      (if (use-region-p)
-          (setq $p1 (region-beginning) $p2 (region-end))
-        (setq $p1 (line-beginning-position) $p2 (line-end-position)))
-      (setq $input-str (buffer-substring-no-properties $p1 $p2))
-      (require 'url-util)
-      (setq $newStr (url-encode-url $input-str))
-      (if (string-equal $newStr $input-str)
-          (progn (message "no change" ))
+    (require 'url-util)
+    (let (xbeg xend xinput xnewStr)
+      (if (and Begin End)
+          (setq xbeg Begin xend End)
+        (if (region-active-p)
+            (setq xbeg (region-beginning) xend (region-end))
+          (setq xbeg (line-beginning-position) xend (line-end-position))))
+      (setq xinput (buffer-substring-no-properties xbeg xend)
+            xnewStr (url-encode-url xinput))
+      (if (string-equal xnewStr xinput)
+          (message "no change")
         (progn
-          (delete-region $p1 $p2)
-          (insert $newStr)))))
+          (delete-region xbeg xend)
+          (insert xnewStr)))
+      xnewStr
+      ))
 
   (defun sort-words (reverse beg end)
-        "Sort words in region alphabetically, in REVERSE if negative.
-      Prefixed with negative \\[universal-argument], sorts in reverse.
+    "Sort words in region alphabetically, in REVERSE if negative.
+        Prefixed with negative \\[universal-argument], sorts in reverse.
 
-      The variable `sort-fold-case' determines whether alphabetic case
-      affects the sort order.
+        The variable `sort-fold-case' determines whether alphabetic case
+        affects the sort order.
 
-      See `sort-regexp-fields'."
-        (interactive "*P\nr")
-        (sort-regexp-fields reverse "\\w+" "\\&" beg end))
+        See `sort-regexp-fields'."
+    (interactive "*P\nr")
+    (sort-regexp-fields reverse "\\w+" "\\&" beg end))
 
   (defun xah-insert-alphabets-az (&optional *use-uppercase-p)
     "Insert letters a to z vertically.
-  If `universal-argument' is called first, use CAPITAL letters.
+    If `universal-argument' is called first, use CAPITAL letters.
 
-  URL `http://ergoemacs.org/emacs/emacs_insert-alphabets.html'
-  Version 2015-11-06"
+    URL `http://ergoemacs.org/emacs/emacs_insert-alphabets.html'
+    Version 2015-11-06"
     (interactive "P")
     (let ((startChar (if *use-uppercase-p 65 97 )))
       (dotimes (-i 26)
