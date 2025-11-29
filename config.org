@@ -2109,7 +2109,7 @@ Functions useful when dealing with Haskell.
                                nil nil (thing-at-point 'word))))
     (funcall 'build-import
              type
-             (lambda (type) (concat "^import .*" type "[ ,]?.*)$"))
+             (lambda (type) (concat "^import .*" type "[ ,]?.*\\)$"))
              haskellDefinitionRegex
              'hs-build-import-from-existing-import-or-source
              (lambda (result) (save-excursion
