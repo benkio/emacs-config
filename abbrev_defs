@@ -285,7 +285,7 @@
     ("chartwithdownwardstrend0" "📉" nil :count 0)
     ("chartwithupwardstrend0" "📈" nil :count 0)
     ("checkeredflag0" "🏁" nil :count 0)
-    ("checkmark0" "✓" nil :count 0)
+    ("checkmark0" "✅" nil :count 0)
     ("cheese0" "🧀" nil :count 0)
     ("cherries0" "🍒" nil :count 0)
     ("cherryblossom0" "🌸" nil :count 0)
