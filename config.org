@@ -200,20 +200,34 @@ It could be called after the startup as well.
 
 #+begin_src emacs-lisp
   (defun benkio-set-font-height-on-frame-width (&optional frame inputRatio)
-    "Set font based on the frame size. The page in full screen should show 50 lines"
+    "Set font based on the frame size to show approximately 40 lines per screen.
+Works for both client and standalone Emacs, independent of screen size.
+Uses 180 as a reference font height and scales proportionally based on frame height."
     (interactive (list
                   (selected-frame)
-                  (read-number "Ratio:" 0)
+                  (read-number "Font height (0 for auto):" 0)
                   )
                  )
     (setq frame (or frame (selected-frame)))  ;; Ensure frame is not nil
     (let* (
-           (frameWidth (frame-outer-width frame))
-           ;; Perfect ratio is (frameWidth / 10) + 25. This is what I observed (~40loc per screen)
-           (height (if (or (equal inputRatio nil) (= 0 inputRatio)) (- (/ frameWidth 10) 30) inputRatio))  ;; Default ratio if it's not provided
+           ;; Get the frame's total height in pixels
+           (framePixelHeight (frame-pixel-height frame))
+           ;; Reference values: 180 font height works well for approximately 1080px frame height
+           ;; This gives us a scaling factor to maintain ~40 lines per screen
+           (referenceFrameHeight 1080)  ;; Frame height where 180 font height works well
+           (referenceFontHeight 180)    ;; Known good font height value
+           ;; Calculate font height proportionally to maintain ~40 lines
+           ;; Formula: height = (currentFrameHeight / referenceFrameHeight) * referenceFontHeight
+           (calculatedHeight (if (or (equal inputRatio nil) (= 0 inputRatio))
+                                 (round (* (/ (float framePixelHeight) referenceFrameHeight)
+                                           referenceFontHeight))
+                               inputRatio))
+           ;; Ensure reasonable bounds (80-300 is a safe range for font heights)
+           (height (max 80 (min 300 calculatedHeight)))
            )
 
-      (message "Set font based on the frame size(divided by 10): %d height: %d" frameWidth height) ;Adding this will make it run at startup, weird
+      (message "Frame height: %dpx, Calculated font height: %d (target: ~40 lines per screen)" 
+               framePixelHeight height)
       (set-face-attribute 'default nil :height height)
       )
     )
