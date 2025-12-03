@@ -1580,14 +1580,37 @@ Functions used by following sections to implement some IDE features
   "
     (defun waitForRg ()
       "Wait for rg to finish and the buffer to be there"
-      (pop-to-buffer "*rg*")
-      (while (not (search-forward "rg finished" nil t))
-        (progn
-          (message "rg is still runnning %s" (process-live-p "rg"))
-          (pop-to-buffer "*rg*")
-          (point-min)
-          (sleep-for 0.1)
-          ))
+      (let ((max-wait 300)  ; 30 seconds timeout (300 * 0.1)
+            (wait-count 0)
+            (rg-buffer nil)
+            (rg-process nil))
+        (while (and (< wait-count max-wait)
+                    (progn
+                      (setq rg-buffer (get-buffer "*rg*"))
+                      (if rg-buffer
+                          (progn
+                            (pop-to-buffer "*rg*")
+                            (setq rg-process (get-buffer-process rg-buffer))
+                            (goto-char (point-min))
+                            (if (search-forward "rg finished" nil t)
+                                nil  ; Found "rg finished", exit loop
+                              (progn
+                                (if rg-process
+                                    (message "rg is still running (process: %s)" (process-status rg-process))
+                                  (message "rg is still running (waiting for process to start)"))
+                                (sleep-for 0.1)
+                                (setq wait-count (1+ wait-count))
+                                t)))  ; Continue loop
+                        (progn
+                          (message "Waiting for rg buffer to be created...")
+                          (sleep-for 0.1)
+                          (setq wait-count (1+ wait-count))
+                          t)))))  ; Continue loop
+        (if (>= wait-count max-wait)
+            (error "rg timed out after 30 seconds")
+          (progn
+            (goto-char (point-min))
+            (message "rg finished"))))
       )
     (setq startingBuffer (buffer-name))
     (setq startingWindow (selected-window))
@@ -2250,7 +2273,10 @@ Functions useful when dealing with typescript.
     dependent typescript source file."
     (if (string= (current-word) "import")
         (copy-line-from-point-as-string) ;; copy import line
-      (concat "import { " type " } from '" (s-chop-suffixes '(".ts" ".tsx" ".ts.html") (file-relative-name (buffer-file-name) startingBuffer))  "';")
+      (let ((target-file (buffer-file-name))
+            (source-dir (file-name-directory (buffer-file-name (get-buffer startingBuffer)))))
+        (concat "import { " type " } from '" (s-chop-suffixes '(".ts" ".tsx" ".ts.html") (file-relative-name target-file source-dir))  "';")
+        )
       )
     )
 
