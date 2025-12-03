@@ -2183,7 +2183,7 @@ Functions useful when dealing with Haskell.
 Functions useful when dealing with typescript.
 
 #+begin_src emacs-lisp
-  (setq typescriptDefinitionRegex (lambda (type) (concat "\(.*class " type ".*\|.*interface " type ".*\|.*type " type ".*\)")))
+  (setq typescriptDefinitionRegex (lambda (type) (concat "\(.*class " type ".*\|.*interface " type ".*\|.*const " type ".*\|.*type " type ".*\)")))
 
   (defun ts-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
