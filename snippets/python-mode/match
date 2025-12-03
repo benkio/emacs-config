@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Match
+# key: match
+# --
+match $1:
+    case $2:
+        $0
+    case $3:
+        pass
+    case _:
+        pass  # Default case
