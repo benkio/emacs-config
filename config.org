@@ -22,11 +22,9 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
         tls-checktrust t
         tls-program '("gnutls-cli --x509cafile %t -p %p %h")
         gnutls-verify-error t)
-  (package-initialize)
+  (package-refresh-contents)
 
-  ;; Only refresh package contents if they don't exist
-  ;; This avoids slow startup on every launch
-  (unless package-archive-contents
+  (when (not package-archive-contents)
     (package-refresh-contents))
 
   (require 'org)
@@ -182,15 +180,16 @@ Minimalistic theme setup.
     )
 
   (defun benkio-synchronize-theme ()
-    "Synchronize theme based on time of day (light 6-15, dark otherwise)"
-    (let ((hour (string-to-number
-                 (substring (current-time-string) 11 13)))
-          (new-theme (if (member hour (number-sequence 6 15))
-                         #'benkio-light-theme
-                       #'benkio-dark-theme)))
-      (unless (eq new-theme current-theme)
-        (setq current-theme new-theme)
-        (funcall new-theme))))
+    (setq hour
+          (string-to-number
+           (substring (current-time-string) 11 13)))
+    (if (member hour (number-sequence 6 15))
+        (setq now '(benkio-light-theme))
+      (setq now '(benkio-dark-theme)))
+    (if (equal now current-theme)
+        nil
+      (setq current-theme now)
+      (eval now) ) )
 
   (run-with-timer 0 3600 'benkio-synchronize-theme)
 #+end_src
