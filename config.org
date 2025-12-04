@@ -22,9 +22,11 @@ https://cestlaz.github.io/posts/using-emacs-1-setup/
         tls-checktrust t
         tls-program '("gnutls-cli --x509cafile %t -p %p %h")
         gnutls-verify-error t)
-  (package-refresh-contents)
+  (package-initialize)
 
-  (when (not package-archive-contents)
+  ;; Only refresh package contents if they don't exist
+  ;; This avoids slow startup on every launch
+  (unless package-archive-contents
     (package-refresh-contents))
 
   (require 'org)
@@ -164,7 +166,7 @@ Minimalistic theme setup.
     (set-face-attribute 'line-number-current-line nil :background "SlateBlue4")
     (set-face-attribute 'idle-highlight nil :background "DarkOrange3")
     (set-face-attribute 'mode-line nil :background "PaleGreen")
-    (setq current-theme '(benkio-dark-theme))
+    (setq current-theme #'benkio-dark-theme)
     )
 
   (defun benkio-light-theme ()
@@ -176,20 +178,19 @@ Minimalistic theme setup.
     (set-face-attribute 'line-number-current-line nil :background "#CFEDFF")
     (set-face-attribute 'idle-highlight nil :background "plum1")
     (set-face-attribute 'mode-line nil :background "PaleGreen")
-    (setq current-theme '(benkio-light-theme))
+    (setq current-theme #'benkio-light-theme)
     )
 
   (defun benkio-synchronize-theme ()
-    (setq hour
-          (string-to-number
-           (substring (current-time-string) 11 13)))
-    (if (member hour (number-sequence 6 15))
-        (setq now '(benkio-light-theme))
-      (setq now '(benkio-dark-theme)))
-    (if (equal now current-theme)
-        nil
-      (setq current-theme now)
-      (eval now) ) )
+    "Synchronize theme based on time of day (light 6-15, dark otherwise)"
+    (let ((hour (string-to-number
+                 (substring (current-time-string) 11 13)))
+          (new-theme (if (member hour (number-sequence 6 15))
+                         #'benkio-light-theme
+                       #'benkio-dark-theme)))
+      (unless (eq new-theme current-theme)
+        (setq current-theme new-theme)
+        (funcall new-theme))))
 
   (run-with-timer 0 3600 'benkio-synchronize-theme)
 #+end_src
@@ -226,7 +227,7 @@ Uses 180 as a reference font height and scales proportionally based on frame hei
            (height (max 80 (min 300 calculatedHeight)))
            )
 
-      (message "Frame height: %dpx, Calculated font height: %d (target: ~40 lines per screen)" 
+      (message "Frame height: %dpx, Calculated font height: %d (target: ~40 lines per screen)"
                framePixelHeight height)
       (set-face-attribute 'default nil :height height)
       )
@@ -325,7 +326,7 @@ Uses 180 as a reference font height and scales proportionally based on frame hei
         scroll-preserve-screen-position 1)
   (winner-mode)
   (add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
-  (defadvice select-window (after select-window-and-do-stuff activate) (save-some-buffers t))
+  (advice-add 'select-window :after (lambda (&rest _) (save-some-buffers t)))
 
   (add-hook 'prog-mode-hook #'hs-minor-mode)
 
@@ -333,9 +334,9 @@ Uses 180 as a reference font height and scales proportionally based on frame hei
             (lambda ()
               (dired-hide-details-mode)))
 
-  (defadvice ansi-term (after advice-term-line-mode activate) (term-line-mode))
+  (advice-add 'ansi-term :after (lambda (&rest _) (term-line-mode)))
   (setq org-agenda-files '("~/Dropbox/notes/TODO.org"))
-  (setq org-default-notes-file (concat org-directory "~/Dropbox/notes/TODO.org"))
+  (setq org-default-notes-file "~/Dropbox/notes/TODO.org")
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/Dropbox/notes/TODO.org" "TODOs")
            "* TODO %?\n  %i\n")
@@ -385,7 +386,9 @@ Uses 180 as a reference font height and scales proportionally based on frame hei
   (setq recentf-max-saved-items 50)
 
   (setq load-prefer-newer t)
-  (setq gc-cons-threshold 50000000)
+  ;; Increase GC threshold during initialization for faster startup
+  ;; Will be managed by gcmh-mode after initialization
+  (setq gc-cons-threshold (* 100 1024 1024))  ; 100MB during init
   (setq tab-always-indent 'complete)
   (when (eq system-type 'windows-nt)
     (add-to-list 'exec-path "C:/Program Files/Git/bin")
@@ -443,7 +446,8 @@ Uses 180 as a reference font height and scales proportionally based on frame hei
     (exec-path-from-shell-initialize)
     (message "PATH reloaded")
     (benkio-synchronize-theme)
-    (eval current-theme)
+    (when current-theme
+      (funcall current-theme))
     (message "Theme reloaded")
     (benkio-reload-fonts)
     (message "Font reloaded")
@@ -489,7 +493,6 @@ Drop-down completions
 
 #+begin_src emacs-lisp
   (use-package corfu
-    :ensure t
     :hook ((prog-mode . corfu-mode)))
 #+end_src
 
@@ -672,11 +675,25 @@ Useful in languages like ML, haskell, elm, scala 3..
 #+end_src
 *** LSP
 
-Enable default eglot LSP Server
+Enable eglot LSP Server with configurations for supported languages
 
 #+begin_src emacs-lisp
   (use-package eglot
-  :ensure t)
+    :hook ((scala-ts-mode . eglot-ensure)
+           (haskell-mode . eglot-ensure)
+           (typescript-ts-mode . eglot-ensure)
+           (tsx-ts-mode . eglot-ensure))
+    :config
+    ;; Configure language servers
+    (add-to-list 'eglot-server-programs
+                 '(scala-ts-mode . ("metals")))
+    (add-to-list 'eglot-server-programs
+                 '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+    (add-to-list 'eglot-server-programs
+                 '((typescript-ts-mode tsx-ts-mode) . ("typescript-language-server" "--stdio")))
+    ;; Optional: Configure eglot settings
+    (setq eglot-autoshutdown t)
+    (setq eglot-confirm-server-initiated-edits nil))
 #+end_src
 
 *** Markdown
@@ -753,7 +770,6 @@ Add all the needed components for scala:
   (add-to-list 'auto-mode-alist '("\\.mjs\\'" . typescript-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.mts\\'" . typescript-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.ts\\'"  . typescript-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-ts-mode))
 #+end_src
 *** COMMENT Latex
@@ -884,7 +900,6 @@ Add all the needed components for scala:
   (use-package lorem-ipsum)
   (use-package simple-httpd)
   (use-package web-mode
-    :ensure t
     :mode
     (("\\.phtml\\'" . web-mode)
      ("\\blabe.php\\'" . web-mode)
@@ -991,9 +1006,7 @@ https://github.com/emacsfodder/move-text
 Improvement on moving single line or region up and down
 #+begin_src emacs-lisp
   (use-package move-text
-    :config (move-text-default-bindings)
-    :ensure t
-    )
+    :config (move-text-default-bindings))
 #+end_src
 ** Error Check
 *** Hunspell
@@ -1227,8 +1240,7 @@ Prettify org
 Add the ox-extra module needed to add the :ignore: tag to org.
 Used to export the CV
 #+begin_src emacs-lisp
-  (use-package org-contrib
-    :ensure t)
+  (use-package org-contrib)
   (require 'ox-extra) ;; the package I wanted to include in my config
   ;; and a function to activate the features of this package:
   (ox-extras-activate '(latex-header-blocks ignore-headlines))
@@ -1258,6 +1270,16 @@ Allow you to search the thing under cursor on google
 
 #+begin_src emacs-lisp
   (use-package google-this)
+#+end_src
+** GCMH (Garbage Collection Magic Hack)
+
+Optimize garbage collection to reduce pauses during editing
+https://github.com/emacscollective/gcmh
+
+#+begin_src emacs-lisp
+  (use-package gcmh
+    :config
+    (gcmh-mode 1))
 #+end_src
 ** Super Save
 
@@ -1351,16 +1373,23 @@ this files contains the functions that interact with youtube. Mainly using ~yout
       (read-string "Output format\n(mp4|flv|ogg|webm|mkv|avi-best|aac|flac|mp3|m4a|opus|vorbis|wav): ")
       )
      )
-    (unless (command-exists-p "yt-dlp") (error "Please install yt-dlp"))
-    (setq supportedAudioFormats (list "best" "aac" "flac" "mp3" "m4a" "opus" "vorbis" "wav"))
-    (setq supportedVideoFormats (list "mp4" "flv" "ogg" "webm" "mkv" "avi"))
-    (cond
-     ((member outputFormat supportedAudioFormats) (setq youtubeDlPCommand (format "yt-dlp -x --audio-format %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
-     ((member outputFormat supportedVideoFormats) (setq youtubeDlPCommand (format "yt-dlp --recode-video %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
-     (t (error (message "Please insert a valid output format: %s" outputFormat)))
-     )
-    (async-shell-command youtubeDlPCommand)
-    )
+    (condition-case err
+        (progn
+          (unless (command-exists-p "yt-dlp")
+            (error "Please install yt-dlp"))
+          (unless (file-directory-p destinationPath)
+            (error "Destination directory does not exist: %s" destinationPath))
+          (let ((supportedAudioFormats (list "best" "aac" "flac" "mp3" "m4a" "opus" "vorbis" "wav"))
+                (supportedVideoFormats (list "mp4" "flv" "ogg" "webm" "mkv" "avi"))
+                (youtubeDlPCommand))
+            (cond
+             ((member outputFormat supportedAudioFormats)
+              (setq youtubeDlPCommand (format "yt-dlp -x --audio-format %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
+             ((member outputFormat supportedVideoFormats)
+              (setq youtubeDlPCommand (format "yt-dlp --recode-video %s -o '%s%%(title)s-%%(id)s.%%(ext)s' %s" outputFormat destinationPath youtubeUrl)))
+             (t (error "Please insert a valid output format: %s" outputFormat)))
+            (async-shell-command youtubeDlPCommand)))
+      (error (message "Error in yt-dlp: %s" err))))
 #+end_src
 *** Aria 2
 
@@ -1368,36 +1397,42 @@ this files contains the functions that interact with youtube. Mainly using ~yout
   (defun download-urls-or-region (&optional opt-urls)
     "Select a region containing aria2c inputs. This will call aria2c asynchronously and dowload them in the current dir or in the specified one. if the region is empty it will ask for urls one by one"
     (interactive)
-    ; Requirements check: aria2c ;;;;;;;;;;;;
-    (unless (command-exists-p "aria2c") (error "Please install aria2"))
-     ; input validation ;;;;;;;;;;;;;;;;;;;;
-    (setq urls (or
-                opt-urls
-                (when (use-region-p) (replace-regexp-in-string "\n" " " (buffer-substring-no-properties (region-beginning) (region-end))))
-                )
-          )
-    (when (equal urls nil)
-      (while (yes-or-no-p "Another aria2 input? ")
-        (setq urls (concat urls " " (read-string "Next aria2 input: ")))
-        ))
-    (setq
-     urls (mapconcat (lambda (s) (concat "\"" s "\"")) (split-string (s-trim urls)) " ")
-     directory (expand-file-name (read-directory-name "Select output directory: "))
-     aria2Command (concat "aria2c -V --seed-ratio=0.0 --seed-time=144000 -d \"" directory "\" -Z " urls)
-     )
-
-    (print aria2Command)
-    (async-shell-command aria2Command)
-    )
+    (condition-case err
+        (progn
+          ;; Requirements check: aria2c
+          (unless (command-exists-p "aria2c")
+            (error "Please install aria2"))
+          ;; Input validation
+          (let ((urls (or opt-urls
+                          (when (use-region-p)
+                            (replace-regexp-in-string "\n" " " (buffer-substring-no-properties (region-beginning) (region-end)))))))
+            (when (equal urls nil)
+              (while (yes-or-no-p "Another aria2 input? ")
+                (setq urls (concat urls " " (read-string "Next aria2 input: ")))))
+            (let ((directory (expand-file-name (read-directory-name "Select output directory: "))))
+              (unless (file-directory-p directory)
+                (error "Directory does not exist: %s" directory))
+              (let ((urls-quoted (mapconcat (lambda (s) (concat "\"" s "\"")) (split-string (s-trim urls)) " "))
+                    (aria2Command (concat "aria2c -V --seed-ratio=0.0 --seed-time=144000 -d \"" directory "\" -Z " urls-quoted)))
+                (message "Running: %s" aria2Command)
+                (async-shell-command aria2Command)))))
+      (error (message "Error in download-urls-or-region: %s" err))))
 #+end_src
 ** Buffers
 Functions over buffers
 
 #+begin_src emacs-lisp
   (defun kill-all-buffers ()
+    "Kill all buffers and delete other windows."
     (interactive)
-    (mapcar 'kill-buffer (buffer-list))
-    (delete-other-windows))
+    (condition-case err
+        (progn
+          (mapc (lambda (buf)
+                  (unless (string-match-p "\\*.*\\*" (buffer-name buf))
+                    (kill-buffer buf)))
+                (buffer-list))
+          (delete-other-windows))
+      (error (message "Error killing buffers: %s" err))))
 #+end_src
 ** Cursor Movement
 
