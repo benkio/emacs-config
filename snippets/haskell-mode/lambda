@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Lambda - Anonymous Function
+# key: anfn
+# --
+(\\$1 -> $0)
