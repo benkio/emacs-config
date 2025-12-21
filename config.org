@@ -2034,6 +2034,186 @@ Functions used specifically for dealing with scala code.
         (insert ".stripMargin")
         )))
 #+end_src
+*** Java
+
+Functions used specifically for dealing with java code.
+
+#+begin_src emacs-lisp
+  (setq javaDefinitionRegex (lambda (type) (concat "\(.*class " type ".*\|.*interface " type ".*\|.*enum " type ".*\)")))
+  (defun java-event-file-navigation (&optional notSplitWindow)
+    "Navigate to the file that has a problem. it can navigate using a
+          different window."
+    (funcall 'event-file-navigation "^" "(" notSplitWindow))
+
+  (defun java-build-import-from-existing-import-or-source (type startingBuffer)
+    "Considering the cursor is at the beginning of the target import line
+           or into the java source file containing the definition of the
+          target file. This functions return the import to insert into the
+          dependent java source file."
+    (if (string= (current-word) "import")
+        (copy-line-from-point-as-string) ;; copy import line
+      (concat "import " (java-path-to-package (buffer-file-name)) "." type ";") ;; copy package and make it an import
+      ))
+
+  (defun java-path-to-package (path)
+    "transform a path to a package"
+    (let ((java-path (or (nth 1 (split-string path "src/main/java/"))
+                        (nth 1 (split-string path "src/java/"))
+                        (nth 1 (split-string path "java/"))
+                        (nth 1 (split-string path "src/")))))
+      (if java-path
+          (string-join
+           (butlast
+            (s-split "/" java-path))
+           ".")
+        "")))
+
+  (defun java-path-to-package ()
+    "transform a path to a package, current buffer"
+    (interactive)
+    (setq package (java-path-to-package (buffer-file-name)))
+    (insert (concat "package " package ";"))
+    )
+
+                                          ; keybinded functions ;;;;;;;;;;;;;;;;;
+  (defun java-shell-clean-old-output ()
+    "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
+    (interactive)
+    (funcall 'shell-clean-old-output "\\(\\[INFO\\] Building\\|\\[ERROR\\] BUILD FAILURE\\|BUILD SUCCESS\\|^> \\)"))
+
+  (defun java-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
+    "Search into a maven/gradle output for the first warning/error, starting from cursor position, and move to it"
+    (interactive)
+    (goto-next-warn-error 'java-event-file-navigation ".*\\.java.*" "," ")" '(lambda () (progn
+                                                                                          (other-window -1)
+                                                                                          (left-char)) ) errorMessage backwardSearch isRegexp))
+
+  (defun java-import-bounds ()
+    "Return the import region bounds"
+    (save-excursion
+      (search-backward-regexp "\\(;\|import\\)")
+      (if (string= (current-word) "import")
+          (progn
+            (setq startOfImport (point)
+                  endOfImport (line-end-position))
+            (list startOfImport endOfImport)
+            )
+        (progn
+          (setq endOfImport (line-end-position))
+          (search-backward-regexp "\\(;\|import\\)")
+          (if (string= (current-word) "import")
+              (list (point) endOfImport)
+            (list (point) endOfImport))
+          ))))
+
+  (defun java-remove-unused-import ()
+    "Parse a shell output in search of the first unused import and remove it"
+    (interactive)
+    (funcall 'remove-unused-import
+             "\\(.*unused.*import\\|.*is never used\\|.*cannot be resolved\\)"
+             'java-goto-next-warn-error
+             'java-import-bounds
+             (lambda (targetType)
+               (delete-region (point-min) (point-max))           ;; single import
+               )
+             ))
+
+  (defun java-import-type-at-point (type)
+    "Try to import into the current file the type at point"
+    (interactive (list
+                  (read-string (format "type (%s): " (thing-at-point 'word))
+                               nil nil (thing-at-point 'word))))
+    (funcall 'build-import
+             type
+             (lambda (type) (concat "import.*" type ".*;$"))
+             javaDefinitionRegex
+             'java-build-import-from-existing-import-or-source
+             (lambda (result) (save-excursion
+                                (beginning-of-buffer)
+                                (end-of-line)
+                                (search-forward-regexp "^$")
+                                (newline)
+                                (insert result)
+                                ))
+             "java"
+             ))
+
+  (defun java-extract-code-line-or-region (name &optional parameters from to)
+    "Extract the code to field or method:
+           Require:
+             - Name of the field/method
+             - Optional list of parameters (if empty it will be a field)
+
+           if no code region is selected then it extracts the rest of the line from current position
+           Return type not specified.
+          "
+    (interactive (list
+                  (read-string "field/method name: " )
+                  (progn
+                    (setq
+                     param (read-string "param name (RET to finish): ")
+                     params nil
+                     )
+                    (while (not (equal "" (s-trim param)))
+                      (push (s-trim param) params)
+                      (setq param (read-string "param name (RET to finish): "))
+                      )
+                    (mapconcat 'identity (reverse params) ", ")
+                    )
+                  (if (use-region-p) (region-beginning) (point))
+                  (if (use-region-p) (region-end) (line-end-position))
+                  ))
+    (funcall 'extract-code-line-or-region-template "private " " = " ";" "public void " "(" ")" " { " "}" name parameters from to)
+    )
+
+  (defun java-goto-definition (typeOrFun)
+    "Using the higher order function and the lambda defined above, it search in the project for the definition of the input type or function"
+    (interactive (list
+                  (read-string (format "type or fun (%s): " (thing-at-point 'word))
+                               nil nil (thing-at-point 'word))))
+    (goto-definition typeOrFun javaDefinitionRegex "java")
+    )
+
+  (defun java-open-doc (queryType lib)
+    "Open the java doc in browser searching for the input queryType"
+    (interactive (list
+                  (read-string (format "type (%s): " (thing-at-point 'word))
+                               nil nil (thing-at-point 'word))
+                  (completing-read "Library: "
+                                   '("Standard Library" "Spring Framework" "Apache Commons" "Guava" "JUnit" "Mockito" "Jackson" "SLF4J" "Log4j" "Hibernate" "JPA" "JUnit 5" "AssertJ" "Lombok") nil t)
+                  ))
+    (require 'browse-url)
+    (setq libUrlPrefix (cond
+                        ((string= lib "Standard Library") "https://docs.oracle.com/javase/8/docs/api/?search=")
+                        ((string= lib "Spring Framework") "https://docs.spring.io/spring-framework/docs/current/javadoc-api/?search=")
+                        ((string= lib "Apache Commons") "https://commons.apache.org/proper/commons-lang/javadocs/api-release/?search=")
+                        ((string= lib "Guava") "https://guava.dev/releases/31.1-jre/api/docs/?search=")
+                        ((string= lib "JUnit") "https://junit.org/junit4/javadoc/latest/?search=")
+                        ((string= lib "JUnit 5") "https://junit.org/junit5/docs/current/api/?search=")
+                        ((string= lib "Mockito") "https://javadoc.io/doc/org.mockito/mockito-core/latest/?search=")
+                        ((string= lib "Jackson") "https://fasterxml.github.io/jackson-databind/javadoc/2.13/?search=")
+                        ((string= lib "SLF4J") "https://www.slf4j.org/api/?search=")
+                        ((string= lib "Log4j") "https://logging.apache.org/log4j/2.x/log4j-api/apidocs/?search=")
+                        ((string= lib "Hibernate") "https://docs.jboss.org/hibernate/orm/5.6/javadocs/?search=")
+                        ((string= lib "JPA") "https://javaee.github.io/javaee-spec/javadocs/?search=")
+                        ((string= lib "AssertJ") "https://assertj.github.io/doc/?search=")
+                        ((string= lib "Lombok") "https://projectlombok.org/api/?search=")
+                        (t                           "https://docs.oracle.com/javase/8/docs/api/?search=")
+                        ))
+    (browse-url (concat libUrlPrefix queryType))
+    )
+
+  (defun java-github-search-open-repo (queryType repo)
+    "Search on github for the querytype in the given repo and open the selected file in a separate buffer"
+    (interactive (list
+                  (read-string (format "searchTerm (%s): " (thing-at-point 'word))
+                               nil nil (thing-at-point 'word))
+                  (completing-read "repository: "
+                                   '("spring-projects/spring-framework" "apache/commons-lang" "google/guava" "junit-team/junit4" "junit-team/junit5" "mockito/mockito" "FasterXML/jackson" "projectlombok/lombok" "assertj/assertj-core") nil nil)
+                  ))
+    (github-search-open-repo queryType repo)
+    )
+#+end_src
 *** Haskell
 
 Functions useful when dealing with Haskell.
