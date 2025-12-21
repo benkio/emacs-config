@@ -527,7 +527,9 @@ Add treesit for tree sitter support
      (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
      (go . ("https://github.com/tree-sitter/tree-sitter-go"))
      (html . ("https://github.com/tree-sitter/tree-sitter-html"))
+     (java . ("https://github.com/tree-sitter/tree-sitter-java"))
      (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
+     (kotlin . ("https://github.com/fwcd/tree-sitter-kotlin"))
      (json . ("https://github.com/tree-sitter/tree-sitter-json"))
      (lua . ("https://github.com/Azganoth/tree-sitter-lua"))
      (markdown . ("https://github.com/ikatyang/tree-sitter-markdown"))
@@ -770,6 +772,20 @@ Add all the needed components for scala:
   (add-to-list 'auto-mode-alist '("\\.mts\\'" . typescript-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.ts\\'"  . typescript-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-ts-mode))
+#+end_src
+*** Java
+
+#+begin_src emacs-lisp
+  (use-package java-snippets)
+  (use-package java-ts-mode)
+  (add-to-list 'auto-mode-alist '("\\.java\\'" . java-ts-mode))
+#+end_src
+*** Kotlin
+
+#+begin_src emacs-lisp
+  (use-package kotlin-ts-mode)
+  (add-to-list 'auto-mode-alist '("\\.kt\\'" . kotlin-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.kts\\'" . kotlin-ts-mode))
 #+end_src
 *** COMMENT Latex
 #+begin_src emacs-lisp
