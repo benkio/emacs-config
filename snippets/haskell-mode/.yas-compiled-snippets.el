@@ -5,12 +5,16 @@
                      '(("tr"
                         "trace (printf \"debug: %s\" (show $1 $0)) $"
                         "traceThis" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/haskell-mode/traceThis"
+                        "/Users/benkio/.emacs.d/snippets/haskell-mode/traceThis"
                         nil nil)
                        ("trshid" "traceShowId $" "trace show id" nil
                         nil nil
-                        "/home/benkio/.emacs.d/snippets/haskell-mode/traceShowId"
+                        "/Users/benkio/.emacs.d/snippets/haskell-mode/traceShowId"
+                        nil nil)
+                       ("anfn" "(\\\\$1 -> $0)"
+                        "Lambda - Anonymous Function" nil nil nil
+                        "/Users/benkio/.emacs.d/snippets/haskell-mode/lambda"
                         nil nil)))
 
 
-;;; Do not edit! File generated at Thu Aug 28 10:13:59 2025
+;;; Do not edit! File generated at Sat Dec 13 12:05:07 2025

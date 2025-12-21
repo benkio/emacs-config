@@ -4,66 +4,66 @@
 (yas-define-snippets 'shell-mode
                      '(("sFixOI" "scalafix OrganizeImports"
                         "scalafix OrganizeImports" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/scalafixOrganizeImports"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/scalafixOrganizeImports"
                         nil nil)
                        ("sbtW"
                         "sbt --supershell=false printWarnings && sbt --supershell=false Test/printWarnings"
                         "sbt Warnings" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/sbtWarnings"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/sbtWarnings"
                         nil nil)
                        ("sbtTOM"
                         "sbt --supershell=false \"Test/testOnly *.$1 -- \\\\\"--tests=$2\\\\\"\"$0"
                         "sbt testOnly with text MUnit" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/sbtTestOnlyWithTextMUnit"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/sbtTestOnlyWithTextMUnit"
                         nil nil)
                        ("sbtTOZ"
                         "sbt --supershell=false \"Test/testOnly *.$1 -- -z \\\\\"$2\\\\\"\"$0"
                         "sbt testOnly with text" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/sbtTestOnlyWithText"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/sbtTestOnlyWithText"
                         nil nil)
                        ("sbtTO"
                         "sbt --supershell=false \"Test/testOnly *.$1\" $0"
                         "sbt testOnly" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/sbtTestOnly"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/sbtTestOnly"
                         nil nil)
                        ("sbtTC"
                         "sbt --supershell=false Test/compile$0"
                         "sbt test compile" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/sbtTestCompile"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/sbtTestCompile"
                         nil nil)
                        ("sbtT" "sbt --supershell=false test$0"
                         "sbt test" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/sbtTest"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/sbtTest"
                         nil nil)
                        ("sbtS" "sbt --supershell=false$0" "sbt Start"
                         nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/sbtStart"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/sbtStart"
                         nil nil)
                        ("sbtITC"
                         "sbt --supershell=false IntegrationTest/compile$0"
                         "sbt integration test compile" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/sbtIntegrationTestCompile"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/sbtIntegrationTestCompile"
                         nil nil)
                        ("sbtFix"
                         "sbt --supershell=false \"scalafixAll; scalafmtAll\""
                         "sbt fix & format" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/sbtFormat"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/sbtFormat"
                         nil nil)
                        ("sbtC" "sbt --supershell=false compile$0"
                         "sbt Compile" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/sbtCompile"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/sbtCompile"
                         nil nil)
                        (".nt" "dotnet test" "dotnet test" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/dotnetTest"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/dotnetTest"
                         nil nil)
                        (".nFMT" "dotnet format --fix-style warn"
                         "dotnet format" nil nil nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/dotnetFormat"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/dotnetFormat"
                         nil nil)
                        (".nb" "dotnet build" "dotnet build" nil nil
                         nil
-                        "/home/benkio/.emacs.d/snippets/shell-mode/dotnetBuild"
+                        "/Users/benkio/.emacs.d/snippets/shell-mode/dotnetBuild"
                         nil nil)))
 
 
-;;; Do not edit! File generated at Thu Aug 28 10:13:59 2025
+;;; Do not edit! File generated at Sat Dec 13 12:05:07 2025
