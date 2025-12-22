@@ -2043,22 +2043,8 @@ Done by AI. In could be suboptimal
   (setq javaDefinitionRegex (lambda (type) (concat "\(.*class " type ".*\|.*interface " type ".*\|.*enum " type ".*\)")))
   (defun java-event-file-navigation (&optional notSplitWindow)
     "Navigate to the file that has a problem. it can navigate using a
-          different window. Handles Gradle/Maven error format: /path/to/file.java:line:"
-    (let ((current-point (point)))
-      (beginning-of-line)
-      (when (search-forward-regexp "\\.java:" (line-end-position) t)
-        (left-char) ; move back to just before the colon
-        (setq filenamePathEnd (point))
-        (search-backward-regexp "^\\| " nil t)
-        (when (looking-at " ")
-          (forward-char))
-        (setq filePathStart (point))
-        (setq filePath (expand-file-name (string-trim (buffer-substring filePathStart filenamePathEnd))))
-        (goto-char current-point) ; restore cursor position for line/column parsing
-        (when (and (not notSplitWindow) (= (count-windows) 1)) (split-window-right))
-        (other-window 1)
-        (message "find file: %s" filePath)
-        (find-file (string-trim filePath)))))
+        different window."
+    (funcall 'event-file-navigation "^" ":" notSplitWindow))
 
   (defun java-build-import-from-existing-import-or-source (type startingBuffer)
     "Considering the cursor is at the beginning of the target import line
@@ -2073,9 +2059,9 @@ Done by AI. In could be suboptimal
   (defun java-file-path-to-package (path)
     "transform a path to a package"
     (let ((java-path (or (nth 1 (split-string path "src/main/java/"))
-                        (nth 1 (split-string path "src/java/"))
-                        (nth 1 (split-string path "java/"))
-                        (nth 1 (split-string path "src/")))))
+                         (nth 1 (split-string path "src/java/"))
+                         (nth 1 (split-string path "java/"))
+                         (nth 1 (split-string path "src/")))))
       (if java-path
           (string-join
            (butlast
@@ -2094,18 +2080,14 @@ Done by AI. In could be suboptimal
   (defun java-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
     (interactive)
-    (goto-char (point-min))
-    (set-mark (point))
-    (search-forward-regexp "^> Task .*FAILED")
-    (beginning-of-line)
-    (delete-region (region-beginning) (region-end))
-    (goto-char (point-min)))
+    (funcall 'shell-clean-old-output "\\(> Task.* FAILED\\|gradle build \\)"))
 
   (defun java-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into a maven/gradle output for the first warning/error, starting from cursor position, and move to it"
     (interactive)
-    (goto-next-warn-error 'java-event-file-navigation ".*\\.java:.*" ":" "\\(:\\| \\)" '(lambda () (progn
-                                                                                          (other-window -1)) ) errorMessage backwardSearch isRegexp))
+    (goto-next-warn-error 'java-event-file-navigation ".*\\.java.*" ":" ":" '(lambda () (progn
+                                                                                          (other-window -1)
+                                                                                          (left-char)) ) errorMessage backwardSearch isRegexp))
 
   (defun java-import-bounds ()
     "Return the import region bounds"
