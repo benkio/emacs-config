@@ -2037,6 +2037,7 @@ Functions used specifically for dealing with scala code.
 *** Java
 
 Functions used specifically for dealing with java code.
+Done by AI. In could be suboptimal
 
 #+begin_src emacs-lisp
   (setq javaDefinitionRegex (lambda (type) (concat "\(.*class " type ".*\|.*interface " type ".*\|.*enum " type ".*\)")))
@@ -2093,7 +2094,12 @@ Functions used specifically for dealing with java code.
   (defun java-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
     (interactive)
-    (funcall 'shell-clean-old-output "\\(\\[INFO\\] Building\\|\\[ERROR\\] BUILD FAILURE\\|BUILD SUCCESS\\|^> \\)"))
+    (goto-char (point-min))
+    (set-mark (point))
+    (search-forward-regexp "^> Task .*FAILED")
+    (beginning-of-line)
+    (delete-region (region-beginning) (region-end))
+    (goto-char (point-min)))
 
   (defun java-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into a maven/gradle output for the first warning/error, starting from cursor position, and move to it"
