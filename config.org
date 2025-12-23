@@ -1427,7 +1427,7 @@ this files contains the functions that interact with youtube. Mainly using ~yout
             (let ((directory (expand-file-name (read-directory-name "Select output directory: "))))
               (unless (file-directory-p directory)
                 (error "Directory does not exist: %s" directory))
-              (let ((urls-quoted (mapconcat (lambda (s) (concat "\"" s "\"")) (split-string (s-trim urls)) " "))
+              (let* ((urls-quoted (mapconcat (lambda (s) (concat "\"" s "\"")) (split-string (s-trim urls)) " "))
                     (aria2Command (concat "aria2c -V --seed-ratio=0.0 --seed-time=144000 -d \"" directory "\" -Z " urls-quoted)))
                 (message "Running: %s" aria2Command)
                 (async-shell-command aria2Command)))))
@@ -2080,7 +2080,7 @@ Done by AI. In could be suboptimal
   (defun java-shell-clean-old-output ()
     "When called on a shell buffer this function goes back to the beginning of the last compilation and delete the rest (old compilation)"
     (interactive)
-    (funcall 'shell-clean-old-output "\\(> Task.* FAILED\\|gradle build \\)"))
+    (funcall 'shell-clean-old-output "\\(> Task.* FAILED\\|gradle build\\|gradle run\\)"))
 
   (defun java-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into a maven/gradle output for the first warning/error, starting from cursor position, and move to it"
