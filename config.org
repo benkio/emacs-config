@@ -509,51 +509,20 @@ Package that will format your code based on extenal programs and the mode/langua
                                           ("Haskell" fourmolu)
                                           ("Scala" scalafmt)
                                           ))
-    ;; Workaround till next release to recognize treesitter mode
-    (add-to-list 'language-id--definitions '("Scala" scala-mode scala-ts-mode))
     )
 #+end_src
-**** treesit
+**** treesit & treesit-auto
+
 Add treesit for tree sitter support
+
 #+begin_src emacs-lisp
   (require 'treesit)
   (setq treesit-font-lock-level 4) ;; https://github.com/KaranAhlawat/scala-ts-mode/issues/12
-  (setq treesit-language-source-alist
-   '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
-     (c . ("https://github.com/tree-sitter/tree-sitter-c"))
-     (cmake . ("https://github.com/uyha/tree-sitter-cmake"))
-     (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
-     (css . ("https://github.com/tree-sitter/tree-sitter-css"))
-     (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
-     (go . ("https://github.com/tree-sitter/tree-sitter-go"))
-     (html . ("https://github.com/tree-sitter/tree-sitter-html"))
-     (java . ("https://github.com/tree-sitter/tree-sitter-java"))
-     (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
-     (kotlin . ("https://github.com/fwcd/tree-sitter-kotlin"))
-     (json . ("https://github.com/tree-sitter/tree-sitter-json"))
-     (lua . ("https://github.com/Azganoth/tree-sitter-lua"))
-     (markdown . ("https://github.com/ikatyang/tree-sitter-markdown"))
-     (make . ("https://github.com/alemuller/tree-sitter-make"))
-     (mermaid . ("https://github.com/monaqa/tree-sitter-mermaid"))
-     (ocaml . ("https://github.com/tree-sitter/tree-sitter-ocaml" "ocaml/src" "ocaml"))
-     (php . ("https://github.com/tree-sitter/tree-sitter-php"))
-     (python . ("https://github.com/tree-sitter/tree-sitter-python"))
-     (ruby . ("https://github.com/tree-sitter/tree-sitter-ruby"))
-     (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
-     (sql . ("https://github.com/m-novikov/tree-sitter-sql"))
-     (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
-     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-     (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
-     (zig . ("https://github.com/GrayJack/tree-sitter-zig"))))
-  (defun nf/treesit-install-all-languages ()
-    "Install all languages specified by `treesit-language-source-alist'."
-    (interactive)
-    (let ((languages (mapcar 'car treesit-language-source-alist)))
-      (dolist (lang languages)
-              (treesit-install-language-grammar lang)
-              (message "`%s' parser was installed." lang)
-              (sit-for 0.75))))
+  (use-package treesit-auto
+    :custom
+    (treesit-auto-install 'prompt)
+    :config
+    (treesit-auto-add-to-auto-mode-alist 'all))
 #+end_src
 *** APL
 
@@ -669,11 +638,6 @@ Useful in languages like ML, haskell, elm, scala 3..
   (use-package indent-guide
     :config (indent-guide-global-mode))
 #+end_src
-*** Json
-
-#+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
-#+end_src
 *** LSP
 
 Enable eglot LSP Server with configurations for supported languages
@@ -725,11 +689,6 @@ Enable eglot LSP Server with configurations for supported languages
   (use-package nix-mode
     :mode "\\.nix\\'")
 #+end_src
-*** PHP
-#+begin_src emacs-lisp
-    (add-to-list 'auto-mode-alist '("\\.php\\'" . php-ts-mode))
-#+end_src
-
 *** Scala
 
 Add all the needed components for scala:
@@ -763,29 +722,16 @@ Add all the needed components for scala:
   (use-package smithy-mode)
 #+end_src
 
-*** Typescript
-
-#+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.cjs\\'" . typescript-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.js\\'"  . typescript-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.mjs\\'" . typescript-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.mts\\'" . typescript-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.ts\\'"  . typescript-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-ts-mode))
-#+end_src
 *** Java
 
 #+begin_src emacs-lisp
   (use-package java-snippets)
   (use-package java-ts-mode)
-  (add-to-list 'auto-mode-alist '("\\.java\\'" . java-ts-mode))
 #+end_src
 *** Kotlin
 
 #+begin_src emacs-lisp
   (use-package kotlin-ts-mode)
-  (add-to-list 'auto-mode-alist '("\\.kt\\'" . kotlin-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.kts\\'" . kotlin-ts-mode))
 #+end_src
 *** COMMENT Latex
 #+begin_src emacs-lisp
@@ -1228,12 +1174,6 @@ Slide generation from org
 
 #+begin_src emacs-lisp
   (use-package htmlize)
-
-  (add-to-list 'org-src-lang-modes '("scala" . scala-ts))
-  (add-to-list 'org-src-lang-modes '("haskell" . haskell))
-  (add-to-list 'org-src-lang-modes '("mermaid" . mermaid-ts))
-  (add-to-list 'org-src-lang-modes '("typescript" . typescript-ts))
-  (add-to-list 'org-src-lang-modes '("json" . json-ts))
 #+end_src
 
 *** Export to Jira/Confluence
