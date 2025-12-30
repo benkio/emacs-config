@@ -1,5 +1,5 @@
 # Author: Jonas Bonèr <jonas@jonasboner.com>
 # name: (args) => ...
-# key: ano
+# key: anfn
 # --
 ($1) => ${2:body} $0

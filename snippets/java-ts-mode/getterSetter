@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# contributor: Ignacy Moryc <imoryc@gmail.com>
+# name: getAset
+# key: gs
+# --
+
+public void set$1($2 ${1:$(downcase yas-text)}) {
+        this.${1:$(downcase yas-text)} = ${1:$(downcase yas-text)};
+}
+
+public $2 get$1() {
+        return this.${1:$(downcase yas-text)};
+}
