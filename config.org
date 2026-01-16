@@ -981,6 +981,29 @@ LLM for Emacs
     :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
     :init (setopt ellama-auto-scroll t)
     :config
+    ;; Configure Ollama provider with auto-detection
+    (require 'llm-ollama)
+    (defcustom ellama-preferred-model nil
+      "Preferred Ollama model name. If nil, auto-detects first available model.
+Set this to a specific model name like \"llama3.2:3b\" to use a fixed model."
+      :type '(choice (string :tag "Model name")
+                     (const :tag "Auto-detect" nil))
+      :group 'ellama)
+    (defun ellama-setup-provider ()
+      "Setup ellama provider with auto-detection or preferred model."
+      (let ((model (or ellama-preferred-model
+                       (condition-case nil
+                           (car (ellama-get-ollama-chat-model-names))
+                         (error nil)))))
+        (if model
+            (setopt ellama-provider
+                    (make-llm-ollama
+                     :chat-model model
+                     :host "localhost"
+                     :port 11434))
+          (message "Warning: No Ollama models found. Please run 'ollama pull <model>' or set ellama-preferred-model"))))
+    ;; Setup provider after ellama is loaded
+    (ellama-setup-provider)
     ;; show ellama context in header line in all buffers
     (ellama-context-header-line-global-mode +1)
     ;; show ellama session id in header line in all buffers
@@ -2391,6 +2414,7 @@ Functions useful when dealing with Haskell.
     (browse-url (concat "https://hoogle.haskell.org/?hoogle=" hoogleSearch))
     )
 #+end_src
+
 *** Typescript
 
 Functions useful when dealing with typescript.
