@@ -2588,7 +2588,7 @@ Functions useful when dealing with PureScript.
                                 (previous-line)
                                 (insert result)
                                 ))
-             "purescript"
+             "purs"
              ))
 
   (defun ps-string-to-multiline-string (&optional $from $to)
