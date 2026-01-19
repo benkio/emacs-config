@@ -2620,7 +2620,7 @@ Functions useful when dealing with PureScript.
     (interactive (list
                   (read-string (format "type (%s): " (thing-at-point 'word))
                                nil nil (thing-at-point 'word))))
-    (goto-definition type purescriptDefinitionRegex "purescript")
+    (goto-definition type purescriptDefinitionRegex "purs")
     )
 
   (defun ps-pursuit (pursuitSearch)
