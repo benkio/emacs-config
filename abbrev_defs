@@ -555,7 +555,7 @@
     ("facewithheadbandage0" "🤕" nil :count 0)
     ("facewithspiraleyes0" "😵‍💫" nil :count 0)
     ("facewiththermometer0" "🤒" nil :count 0)
-    ("factory0" "🏯" nil :count 0)
+    ("factory0" "🏭" nil :count 0)
     ("factoryworker0" "🧑‍🏭" nil :count 0)
     ("fairy0" "🧚" nil :count 0)
     ("fairyman0" "🧚‍♂️" nil :count 0)
