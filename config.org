@@ -1749,6 +1749,7 @@ Functions used by following sections to implement some IDE features
                                    '("all" "angular" "backbone" "cpp" "coffeescript" "crystal" "elixir" "golang" "javascript" "julia" "jquery" "knockout" "kubernetes" "less" "lodash" "love" "marionette" "markdown" "matplotlib" "modernizr" "moment" "openjdk" "nginx" "node" "numpy" "pandas" "postgresql" "python" "rails" "ruby" "rust" "scala" "sass" "tensorflow" "typescript" "underscore.js") nil nil)
                   ))
     (require 'browse-url)
+    (kill-new (or (s-present? queryType) (thing-at-point 'word t)))
     (setq libUrlPrefix (cond
                         ((string= lib "angular")       "https://devdocs.io/#q=ng "   )
                         ((string= lib "backbone")      "https://devdocs.io/#q=bb "   )
@@ -1958,6 +1959,7 @@ Functions used specifically for dealing with scala code.
                                    '("Cats" "Cats-Effect" "Circe" "Doobie" "Http4s" "Monocle" "Munit" "Natchez" "Scalacheck" "Skunk" "Smithy4s" "Spark" "Standard Library" "Feral" "Fs2" "Weaver") nil t)
                   ))
     (require 'browse-url)
+    (kill-new (or (s-present? queryType) (thing-at-point 'word t)))
     (setq libUrlPrefix (cond
                         ((string= lib "Cats")        "https://typelevel.org/cats/api/cats/index.html?search=")
                         ((string= lib "Cats-Effect") "https://javadoc.io/doc/org.typelevel/cats-effect_3/latest/index.html?search=")
@@ -2166,6 +2168,7 @@ Done by AI. In could be suboptimal
                                    '("Standard Library" "Spring Framework" "Apache Commons" "Guava" "JUnit" "Mockito" "Jackson" "SLF4J" "Log4j" "Hibernate" "JPA" "JUnit 5" "AssertJ" "Lombok") nil t)
                   ))
     (require 'browse-url)
+    (kill-new (or (s-present? queryType) (thing-at-point 'word t)))
     (setq libUrlPrefix (cond
                         ((string= lib "Standard Library") "https://docs.oracle.com/javase/8/docs/api/?search=")
                         ((string= lib "Spring Framework") "https://docs.spring.io/spring-framework/docs/current/javadoc-api/?search=")
@@ -2797,11 +2800,20 @@ Functions useful when dealing with typescript.
     (goto-definition type typescriptDefinitionRegex "typescript")
     )
 
-  (defun ts-open-doc (queryType)
+  (defun ts-open-doc (queryType lib)
     "Open the typescript doc in browser searching for the input queryType. Uses the general dev-open-doc"
     (interactive (list
-                  (read-string (format "type (%s): " (thing-at-point 'word)))))
-    (funcall-interactively 'dev-open-doc queryType "typescript")
+                  (read-string (format "type (%s): " (thing-at-point 'word)))
+                  (completing-read "Library: "
+                                   '("Standard Library" "Effect-ts") nil t)
+                  ))
+    (require 'browse-url)
+    (kill-new (or (s-present? queryType) (thing-at-point 'word t)))
+    (setq libUrlPrefix (cond
+                        ((string= lib "Effect-ts")   "https://effect-ts.github.io/effect")
+                        (t                           "https://devdocs.io/#q=ts ")
+                        ))
+    (browse-url (concat libUrlPrefix queryType))
     )
 #+end_src
 *** C#
