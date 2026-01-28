@@ -1424,10 +1424,7 @@ Functions over buffers
     (interactive)
     (condition-case err
         (progn
-          (mapc (lambda (buf)
-                  (unless (string-match-p "\\*.*\\*" (buffer-name buf))
-                    (kill-buffer buf)))
-                (buffer-list))
+          (mapc (lambda (buf) (kill-buffer buf)) (buffer-list))
           (delete-other-windows))
       (error (message "Error killing buffers: %s" err))))
 #+end_src
