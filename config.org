@@ -969,48 +969,6 @@ Improvement on moving single line or region up and down
   (use-package move-text
     :config (move-text-default-bindings))
 #+end_src
-** Ellama
-
-LLM for Emacs
-
-#+begin_src emacs-lisp
-  (use-package ellama
-    :ensure t
-    :bind ("C-c e e" . ellama)
-    ;; send last message in chat buffer with C-c C-c
-    :hook (org-ctrl-c-ctrl-c-final . ellama-chat-send-last-message)
-    :init (setopt ellama-auto-scroll t)
-    :config
-    ;; Configure Ollama provider with auto-detection
-    (require 'llm-ollama)
-    (defcustom ellama-preferred-model nil
-      "Preferred Ollama model name. If nil, auto-detects first available model.
-Set this to a specific model name like \"llama3.2:3b\" to use a fixed model."
-      :type '(choice (string :tag "Model name")
-                     (const :tag "Auto-detect" nil))
-      :group 'ellama)
-    (defun ellama-setup-provider ()
-      "Setup ellama provider with auto-detection or preferred model."
-      (let ((model (or ellama-preferred-model
-                       (condition-case nil
-                           (car (ellama-get-ollama-chat-model-names))
-                         (error nil)))))
-        (if model
-            (setopt ellama-provider
-                    (make-llm-ollama
-                     :chat-model model
-                     :host "localhost"
-                     :port 11434))
-          (message "Warning: No Ollama models found. Please run 'ollama pull <model>' or set ellama-preferred-model"))))
-    ;; Setup provider after ellama is loaded
-    (ellama-setup-provider)
-    ;; show ellama context in header line in all buffers
-    (ellama-context-header-line-global-mode +1)
-    ;; show ellama session id in header line in all buffers
-    (ellama-session-header-line-global-mode +1))
-#+end_src
-
-
 ** Error Check
 *** Hunspell
 
@@ -1749,7 +1707,7 @@ Functions used by following sections to implement some IDE features
                                    '("all" "angular" "backbone" "cpp" "coffeescript" "crystal" "elixir" "golang" "javascript" "julia" "jquery" "knockout" "kubernetes" "less" "lodash" "love" "marionette" "markdown" "matplotlib" "modernizr" "moment" "openjdk" "nginx" "node" "numpy" "pandas" "postgresql" "python" "rails" "ruby" "rust" "scala" "sass" "tensorflow" "typescript" "underscore.js") nil nil)
                   ))
     (require 'browse-url)
-    (kill-new (or (s-present? queryType) (thing-at-point 'word t)))
+    (kill-new (if (s-blank? queryType) (thing-at-point 'word t) queryType))
     (setq libUrlPrefix (cond
                         ((string= lib "angular")       "https://devdocs.io/#q=ng "   )
                         ((string= lib "backbone")      "https://devdocs.io/#q=bb "   )
@@ -1959,7 +1917,7 @@ Functions used specifically for dealing with scala code.
                                    '("Cats" "Cats-Effect" "Circe" "Doobie" "Http4s" "Monocle" "Munit" "Natchez" "Scalacheck" "Skunk" "Smithy4s" "Spark" "Standard Library" "Feral" "Fs2" "Weaver") nil t)
                   ))
     (require 'browse-url)
-    (kill-new (or (s-present? queryType) (thing-at-point 'word t)))
+    (kill-new (if (s-blank? queryType) (thing-at-point 'word t) queryType))
     (setq libUrlPrefix (cond
                         ((string= lib "Cats")        "https://typelevel.org/cats/api/cats/index.html?search=")
                         ((string= lib "Cats-Effect") "https://javadoc.io/doc/org.typelevel/cats-effect_3/latest/index.html?search=")
@@ -2168,7 +2126,7 @@ Done by AI. In could be suboptimal
                                    '("Standard Library" "Spring Framework" "Apache Commons" "Guava" "JUnit" "Mockito" "Jackson" "SLF4J" "Log4j" "Hibernate" "JPA" "JUnit 5" "AssertJ" "Lombok") nil t)
                   ))
     (require 'browse-url)
-    (kill-new (or (s-present? queryType) (thing-at-point 'word t)))
+    (kill-new (if (s-blank? queryType) (thing-at-point 'word t) queryType))
     (setq libUrlPrefix (cond
                         ((string= lib "Standard Library") "https://docs.oracle.com/javase/8/docs/api/?search=")
                         ((string= lib "Spring Framework") "https://docs.spring.io/spring-framework/docs/current/javadoc-api/?search=")
@@ -2808,9 +2766,9 @@ Functions useful when dealing with typescript.
                                    '("Standard Library" "Effect-ts") nil t)
                   ))
     (require 'browse-url)
-    (kill-new (or (s-present? queryType) (thing-at-point 'word t)))
+    (kill-new (if (s-blank? queryType) (thing-at-point 'word t) queryType))
     (setq libUrlPrefix (cond
-                        ((string= lib "Effect-ts")   "https://effect-ts.github.io/effect")
+                        ((string= lib "Effect-ts")   "https://effect-ts.github.io/effect/?search=")
                         (t                           "https://devdocs.io/#q=ts ")
                         ))
     (browse-url (concat libUrlPrefix queryType))
