@@ -2473,7 +2473,7 @@ Functions useful when dealing with PureScript.
     (interactive)
     (unless errorMessage (setq errorMessage ""))
     (unless isRegexp (setq errorMessage (regexp-quote errorMessage)))
-    (setq searchRegexp (concat (getenv "HOME") ".*\\.purs.*" errorMessage))
+    (setq searchRegexp (concat ".*\\.purs.*" errorMessage))
     (condition-case
         nil
         (funcall (searchFunction backwardSearch) searchRegexp)
@@ -2486,9 +2486,9 @@ Functions useful when dealing with PureScript.
     (other-window -1)
 
     (save-excursion
-      (search-forward "The import of '")
+      (search-forward "The import of ")
       (setq p1 (point))
-      (search-forward "'")
+      (search-forward-regexp " ")
       (left-char)
       (setq targetImport (buffer-substring-no-properties p1 (point)))
       )
@@ -2528,8 +2528,9 @@ Functions useful when dealing with PureScript.
   (defun ps-remove-unused-import ()
     "Parse a shell output (spago) in search of the first unused import and remove it"
     (interactive)
+    (search-backward "is redundant")
     (funcall 'remove-unused-import
-             ".*Unused import.*$"
+             "$"
              'ps-goto-next-unused-import
              'ps-import-bounds
              (lambda (targetType)
@@ -2552,7 +2553,6 @@ Functions useful when dealing with PureScript.
                  )
                )
              ))
-
   (defun ps-build-import-from-existing-import-or-source (type startingBuffer)
     "Considering the cursor is at the beginning of the target import line
       or into the purescript source file containing the definition of the
