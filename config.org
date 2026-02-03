@@ -2432,7 +2432,7 @@ Functions useful when dealing with PureScript.
     "Navigate to the file that has a problem. it can navigate using a
      different window."
     (beginning-of-line) ;; Often called from the end of the line of the file path targeted
-    (funcall 'event-file-navigation "at " ":" notSplitWindow))
+    (funcall 'event-file-navigation "\\[\\(WARNING\\|ERROR\\).*\\] " ":" notSplitWindow))
 
   (defun ps-goto-next-warn-error (&optional errorMessage backwardSearch isRegexp)
     "Search into a spago output for the first warning/error, starting from cursor position, and move to it"
